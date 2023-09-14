@@ -1,14 +1,15 @@
-import "react-native-gesture-handler";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
-import { StyleSheet } from 'react-native';
 
 import Main from './src/Screens/Main/Main';
 import Cart from "./src/Screens/Cart/Cart";
 import YouAndMe from "./src/Screens/YouAndME/YouAndMe";
 import MyGift from "./src/Screens/MyGift/MyGift";
 import MyPage from "./src/Screens/MyPage/MyPage";
+import SignUp from "./src/Screens/SignUp/SignUp";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ export default function App() {
         <Stack.Screen name="YouAndMe" component={YouAndMe} />
         <Stack.Screen name="MyGift" component={MyGift} />
         <Stack.Screen name="MyPage" component={MyPage} />
+        <Stack.Screen name="SignUp" component={SignUp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

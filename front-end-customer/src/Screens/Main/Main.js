@@ -1,7 +1,6 @@
 import { View, Button, Text } from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
-import { Searchbar } from "react-native-paper";
 
 export default function Main({ navigation }) {
   state = {
@@ -20,11 +19,7 @@ export default function Main({ navigation }) {
             <Ionicons name="location-sharp" color={"#BFBFBF"} size={40} />
           </View>
           <View style={{ flex: 6 }}>
-            <Searchbar
-              placeholder="Search"
-              onChangeText={onChangeSearch}
-              value={searchQuery}
-            />
+            
           </View>
         </View>
         <View style={[styles.box, { backgroundColor: "purple" }]}></View>

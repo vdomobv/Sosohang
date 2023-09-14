@@ -41,6 +41,10 @@ export default function Main({ navigation }) {
       <View style={[styles.box, { backgroundColor: "blue" }]}></View>
       <View style={[styles.box, { backgroundColor: "yellow" }]}></View>
       <View style={[styles.box, { backgroundColor: "green" }]}></View>
+      <Button
+          title="회원가입"
+          onPress={() => navigation.navigate("SignUp")}
+        /> 
     </View>
   );
 }

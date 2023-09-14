@@ -13,6 +13,10 @@ const styles = StyleSheet.create({
   location : {
     flex : 1,
     alignItems : "center",
+  },
+
+  searchbar : {
+    backgroundColor : "lightgray",
   }
 });
 

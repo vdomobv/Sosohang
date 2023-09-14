@@ -1,6 +1,7 @@
 import { View, Button, Text } from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
+import { SearchBar } from "@rneui/themed";
 
 export default function Main({ navigation }) {
   state = {
@@ -14,12 +15,23 @@ export default function Main({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={[styles.box]}>
-        <View style={[styles.box, { flexDirection: "row" }]}>
+        <View style={[styles.box, { flexDirection: "row", alignItems:"center" }]}>
           <View style={[styles.location]}>
             <Ionicons name="location-sharp" color={"#BFBFBF"} size={40} />
           </View>
           <View style={{ flex: 6 }}>
-            
+            <SearchBar
+              style={[styles.searchbar]}
+              lightTheme
+              platform="android"
+              searchIcon={null}
+              clearIcon={null}
+              cancelIcon={null}
+              placeholder="원하는 상점을 검색해보세요."
+            ></SearchBar>
+          </View>
+          <View style={[styles.alarm]}>
+            <Ionicons name="notifications" color={"gold"} size={40} />
           </View>
         </View>
         <View style={[styles.box, { backgroundColor: "purple" }]}></View>

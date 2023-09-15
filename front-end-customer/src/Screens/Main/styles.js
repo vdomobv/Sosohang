@@ -44,27 +44,35 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-  subtitle : {
-    fontSize : 16,
+  subtitle: {
+    fontSize: 16,
   },
 
-  carouselContainer : {
-    flexDirection : 'row',
-    marginVertical : 10,
+  carouselContainer: {
+    flexDirection: "row",
+    marginVertical: 10,
   },
 
-  imageContainer : {
-    width : 70,
-    height : 70,
+  imageContainer: {
+    width: 70,
+    height: 70,
   },
 
-  textConatiner : {
-    justifyContent : "center",
+  textConatiner: {
+    justifyContent: "center",
   },
 
-  text : {
-    textAlign : "center",
-  }
+  text: {
+    textAlign: "center",
+  },
+
+  intro: {
+    marginVertical : 25,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+
+  
 });
 
 export default styles;

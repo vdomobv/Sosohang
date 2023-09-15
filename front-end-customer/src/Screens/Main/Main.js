@@ -7,6 +7,7 @@ import Category from "../../Components/Category/Category";
 import Line from "../../Components/Line/Line";
 import Carousel from "../../Components/Carousel/Carousel";
 import HashTag from "../../Components/HashTag/HashTag";
+import Tabs from "../../Components/Tabs/Tabs";
 
 const categoryData = [
   { name: "카페/제과", image: require("assets/images/bread.png") },
@@ -170,7 +171,7 @@ export default function Main({ navigation }) {
 
         <View style={[styles.section]}>
           <Text style={[styles.title]}>소소행이 뭐에요? 🧐</Text>
-          <View style={{ flexDirection: "row", justifyContent:"space-evenly" }}>
+          <View style={[styles.intro]}>
             <Image
               style={styles.imageContainer}
               source={require("assets/images/gift.png")}
@@ -191,7 +192,7 @@ export default function Main({ navigation }) {
           </View>
         </View>
       </ScrollView>
-      <View></View>
+      <Tabs navigation={navigation}/>
     </>
   );
 }

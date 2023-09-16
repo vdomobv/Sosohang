@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
 
   headBox: {
+    marginHorizontal : 10,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -23,8 +24,8 @@ const styles = StyleSheet.create({
   searchbar: {
     backgroundColor: "#E9EEE8",
     borderRadius: 30,
-    width: "100%",
     textAlign: "center",
+    alignItems : "center",
   },
 
   categories: {

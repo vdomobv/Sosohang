@@ -22,6 +22,14 @@ const styles = StyleSheet.create({
     margin: 5,
     width: '80%',
   },
+  
+  minibutton: {
+    width: '15%',
+    borderRadius: 5, // 버튼 둥글게
+    padding: 12, // 내부 패딩
+    backgroundColor: '#46C27D',
+    marginLeft: 5
+  },
 
   button: {
     width: '80%', // 버튼 너비를 80%로 설정

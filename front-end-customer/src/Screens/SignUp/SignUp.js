@@ -36,6 +36,7 @@ export default function SignUp({ navigation }) {
     navigation.navigate("FindPassword");
   };
 
+  // 인증 버튼 핸들러
   const handleAuth = () => {
     if (phoneNumber.length === 11) {
       // 인증 로직 작성
@@ -96,7 +97,7 @@ export default function SignUp({ navigation }) {
           if (/^[0-9]*$/.test(text)) {
             // 숫자인 경우에만 상태 업데이트
             if (text.length <= 11) {
-              setPhoneNumber(text);
+              setLoginPhoneNumber(text);
             }
           } else {
             // 숫자가 아닌 경우 경고창 표시

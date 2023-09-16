@@ -15,33 +15,33 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    borderWidth: 1, // 테두리 두께
-    borderColor: 'gray', // 테두리 색상
-    borderRadius: 5, // 테두리 둥글기
-    padding: 8, // 내부 패딩
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
+    padding: 8,
     margin: 5,
     width: '80%',
   },
   
   minibutton: {
     width: '15%',
-    borderRadius: 5, // 버튼 둥글게
-    padding: 12, // 내부 패딩
+    borderRadius: 5,
+    padding: 11,
     backgroundColor: '#46C27D',
     marginLeft: 5
   },
 
   button: {
-    width: '80%', // 버튼 너비를 80%로 설정
-    borderRadius: 5, // 버튼 둥글게
-    padding: 12, // 내부 패딩
+    width: '80%',
+    borderRadius: 5,
+    padding: 10,
     marginTop: 15,
     backgroundColor: '#46C27D',
   },
 
   buttonText: {
     color: '#ffffff', 
-    fontSize: 16, 
+    fontSize: 18, 
     fontWeight: 'bold', 
     textAlign: 'center', 
   },

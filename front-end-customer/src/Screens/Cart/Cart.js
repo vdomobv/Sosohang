@@ -1,6 +1,6 @@
 import styles from "./styles";
 import { View, Text, ScrollView } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Checkbox from 'expo-checkbox';
 import Tabs from "../../Components/Tabs/Tabs";
@@ -26,6 +26,19 @@ const dummy = [
 
 export default function Cart({navigation}) {
   const [checkAll, setCheckAll] = useState(false);
+  const [checkedItems, setCheckedItems] = useState(dummy.map(() => checkAll));
+
+  useEffect(() => {
+    setCheckedItems(dummy.map(() => checkAll));
+  }, [checkAll])
+
+  useEffect(() => {
+    const allShopsChecked = checkedItems.every(val => val === true);
+    if(allShopsChecked) {
+      setCheckAll(true);
+    }
+}, [checkedItems]);
+
   return (
     <>
       <View style={styles.container}>
@@ -41,8 +54,13 @@ export default function Cart({navigation}) {
           <View style={styles.listBody}>
             <ScrollView style={styles.scrollList}>
               {
-                dummy.map((d) => {
-                  return <CartShop data={d}/>
+                dummy.map((d, index) => {
+                  return <CartShop key={index} checked={checkedItems[index]} data={d}
+                  onCheckChange = {(checked) => {
+                    const newCheckedItems = [...checkedItems];
+                    newCheckedItems[index] = checked;
+                    setCheckedItems(newCheckedItems);
+                  }}/>
                 })
               }
             </ScrollView>

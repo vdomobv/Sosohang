@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./styles";
 import { View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from 'expo-checkbox';
 
-export default function Product({ product }) {
-    const [isChecked, setIsChecked] = useState(false);
+export default function Product({ product, productCheck, onCheckChange }) {
+    const [isChecked, setIsChecked] = useState(productCheck);
+
+    useEffect(() => {
+        setIsChecked(productCheck);
+    }, [productCheck]);
+
     return (
         <View style={styles.container}>
             <Checkbox
                 value={isChecked}
-                onValueChange={() => setIsChecked(!isChecked)}
+                onValueChange={() => {
+                    const newCheck = !productCheck;
+                    setIsChecked(newCheck);
+                    onCheckChange(newCheck);
+                }}
                 color={isChecked ? '#4630EB' : undefined} />
             <Image style={{ flex: 2 }} source={product.image}></Image>
             <View style={{ flex: 4 }}>

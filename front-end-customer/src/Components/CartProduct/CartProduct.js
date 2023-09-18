@@ -10,9 +10,10 @@ export default function CartProduct({
   productCheck,
   onCheckChange,
   updateTotalPrice,
-  totalPrice
+  totalPrice,
 }) {
   const [isChecked, setIsChecked] = useState(productCheck);
+  const [productCount, setProductCount] = useState(product.count);
 
   useEffect(() => {
     setIsChecked(productCheck);
@@ -21,16 +22,16 @@ export default function CartProduct({
   return (
     <View style={styles.container}>
       <Checkbox
-      totalPrice={totalPrice}
+        totalPrice={totalPrice}
         value={isChecked}
         onValueChange={() => {
           const newCheck = !productCheck;
           setIsChecked(newCheck);
           onCheckChange(newCheck);
           if (newCheck) {
-            updateTotalPrice(product.count * product.price); // add product price to total
+            updateTotalPrice(productCount * product.price);
           } else {
-            updateTotalPrice(-product.count * product.price); // subtract product price from total
+            updateTotalPrice(-productCount * product.price);
           }
         }}
         color={isChecked ? "#4630EB" : undefined}
@@ -41,12 +42,28 @@ export default function CartProduct({
         <Text>{product.price} 원</Text>
 
         <View style={styles.counter}>
-          <Ionicons name="remove" style={styles.minus} />
-          <Text>{product.count}</Text>
-          <Ionicons name="add" style={styles.minus} />
+          <Ionicons
+            name="remove"
+            style={styles.minus}
+            onPress={() => {
+              if (productCount > 1) {
+                updateTotalPrice(-product.price);
+                setProductCount(productCount - 1);
+              }
+            }}
+          />
+          <Text>{productCount}</Text>
+          <Ionicons
+            name="add"
+            style={styles.plus}
+            onPress={() => {
+              updateTotalPrice(+product.price);
+              setProductCount(productCount + 1);
+            }}
+          />
         </View>
         <Text style={[styles.textBold, { textAlign: "right" }]}>
-          {product.count * product.price} 원
+          {productCount * product.price} 원
         </Text>
       </View>
     </View>

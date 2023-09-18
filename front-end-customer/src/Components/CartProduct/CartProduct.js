@@ -11,6 +11,8 @@ export default function CartProduct({
   onCheckChange,
   updateTotalPrice,
   totalPrice,
+  setSelectedProducts,
+  shopname
 }) {
   const [isChecked, setIsChecked] = useState(productCheck);
   const [productCount, setProductCount] = useState(product.count);
@@ -18,6 +20,19 @@ export default function CartProduct({
   useEffect(() => {
     setIsChecked(productCheck);
   }, [productCheck]);
+
+  useEffect(() => {
+    product['name'] = shopname
+    if (isChecked) {
+      setSelectedProducts((prevSet) => new Set([...prevSet, product]));
+    } else {
+      setSelectedProducts((prevSet) => {
+        const newSet = new Set(prevSet);
+        newSet.delete(product);
+        return newSet;
+      });
+    }
+  }, [isChecked]);
 
   return (
     <View style={styles.container}>

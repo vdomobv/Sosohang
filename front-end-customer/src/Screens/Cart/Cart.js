@@ -47,6 +47,7 @@ export default function Cart({ navigation }) {
   const [checkAll, setCheckAll] = useState(false);
   const [checkedItems, setCheckedItems] = useState(dummy.map(() => checkAll));
   const [totalPrice, setTotalPrice] = useState(0);
+  const [selectedProducts, setSelectedProducts] = useState(new Set());
 
   useEffect(() => {
     setCheckedItems(dummy.map(() => checkAll));
@@ -112,6 +113,7 @@ export default function Cart({ navigation }) {
                       newCheckedItems[index] = checked;
                       setCheckedItems(newCheckedItems);
                     }}
+                    setSelectedProducts={setSelectedProducts}
                   />
                 );
               })}
@@ -123,7 +125,16 @@ export default function Cart({ navigation }) {
             <Text style={styles.priceText}> 총 결제 금액</Text>
             <Text style={styles.priceText}>{totalPrice} 원</Text>
           </View>
-          <TouchableOpacity style={styles.okay} onPress={()=>{console.log(selectedItems)}}>
+          <TouchableOpacity
+            style={styles.okay}
+            onPress={() => {
+              if (selectedProducts.size) {
+                navigation.navigate('MakeCard', {selectedProducts: selectedProducts})
+              } else {
+                alert('선물을 선택해주세요.')
+              }
+            }}
+          >
             <Text style={[styles.priceText, { color: "white" }]}>선물하기</Text>
           </TouchableOpacity>
         </View>

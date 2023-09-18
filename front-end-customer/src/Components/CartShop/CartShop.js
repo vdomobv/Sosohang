@@ -13,11 +13,14 @@ export default function CartShop({
   onCheckChange,
   totalPrice,
   updateTotalPrice,
+  setSelectedProducts
 }) {
   const [shopChecked, setShopChecked] = useState(checked);
   const [checkedProducts, setCheckedProducts] = useState(
     data.products.map(() => false)
   );
+
+  // const [selectedProducts, setSelectedProducts] = useState(new Set());
 
   useEffect(() => {
     const allProductsChecked = checkedProducts.every((val) => val === true);
@@ -30,6 +33,7 @@ export default function CartShop({
     setShopChecked(checked);
     setCheckedProducts(data.products.map(() => checked));
   }, [checked]);
+
 
   return (
     <View style={styles.container}>
@@ -71,6 +75,8 @@ export default function CartShop({
                   setCheckedProducts(newCheckedProducts);
                 }}
                 product={d}
+                shopname ={data.name}
+                setSelectedProducts={setSelectedProducts}
               />
             );
           })}

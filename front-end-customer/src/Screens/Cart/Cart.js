@@ -2,47 +2,14 @@ import styles from "./styles";
 import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useEffect, useState } from "react";
 
+import CartDummy from "../../Dummys/Cart/Dummy";
+
 import Checkbox from "expo-checkbox";
 import Tabs from "../../Components/Tabs/Tabs";
 import CartShop from "../../Components/CartShop/CartShop";
 import Title from "../../Components/Title/Title";
 
-const dummy = [
-  {
-    name: "프랭크커핀바",
-    products: [
-      {
-        name: "브라운치즈 크로플",
-        count: 2,
-        price: 9000,
-        image: require("assets/images/bread.png"),
-      },
-      {
-        name: "카페 라떼  & 타르트",
-        count: 1,
-        price: 10000,
-        image: require("assets/images/bread.png"),
-      },
-    ],
-  },
-  {
-    name: "아이디얼",
-    products: [
-      {
-        name: "아메리카노",
-        count: 2,
-        price: 4500,
-        image: require("assets/images/bread.png"),
-      },
-      {
-        name: "카페라떼",
-        count: 1,
-        price: 5000,
-        image: require("assets/images/bread.png"),
-      },
-    ],
-  },
-];
+const dummy = CartDummy;
 
 export default function Cart({ navigation }) {
   const [checkAll, setCheckAll] = useState(false);

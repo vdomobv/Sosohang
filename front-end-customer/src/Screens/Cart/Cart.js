@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 
 import Checkbox from "expo-checkbox";
@@ -123,9 +123,9 @@ export default function Cart({ navigation }) {
             <Text style={styles.priceText}> 총 결제 금액</Text>
             <Text style={styles.priceText}>{totalPrice} 원</Text>
           </View>
-          <View style={styles.okay}>
+          <TouchableOpacity style={styles.okay} onPress={()=>{console.log(selectedItems)}}>
             <Text style={[styles.priceText, { color: "white" }]}>선물하기</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <Tabs navigation={navigation} />

@@ -2,8 +2,8 @@ import styles from "./styles";
 import { View, Text, } from "react-native";
 
 
-export default function MakeCard() {
-
+export default function MakeCard({ route, navigation }) {
+console.log(route.params.selectedProducts);
   return (
     <>
       <View style={styles.container}>

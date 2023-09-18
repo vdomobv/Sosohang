@@ -2,7 +2,7 @@ import styles from "./styles";
 import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useEffect, useState } from "react";
 
-import CartDummy from "../../Dummys/Cart/Dummy";
+import CartDummy from "../../Dummys/Cart/CartDummy";
 
 import Checkbox from "expo-checkbox";
 import Tabs from "../../Components/Tabs/Tabs";

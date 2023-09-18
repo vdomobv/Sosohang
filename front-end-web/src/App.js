@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './App.css';
 
-import NotFound from "./pages/NotFound/index.jsx"
-import Main from "./pages/Main/index.jsx"
-import Login from "./pages/Login/index.jsx"
-import SignUp from "./pages/SignUp/index.jsx"
+import NotFound from "./pages/NotFound"
+import Main from "./pages/Main"
+import Login from "./pages/Login"
+import SignUp from "./pages/SignUp"
 
 const router = createBrowserRouter([
   { path: "*", element: <NotFound /> },

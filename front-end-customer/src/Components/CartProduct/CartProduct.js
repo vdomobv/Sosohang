@@ -12,7 +12,7 @@ export default function CartProduct({
   updateTotalPrice,
   totalPrice,
   setSelectedProducts,
-  shopname
+  shopname,
 }) {
   const [isChecked, setIsChecked] = useState(productCheck);
   const [productCount, setProductCount] = useState(product.count);
@@ -22,7 +22,7 @@ export default function CartProduct({
   }, [productCheck]);
 
   useEffect(() => {
-    product['name'] = shopname
+    product["shopname"] = shopname;
     if (isChecked) {
       setSelectedProducts((prevSet) => new Set([...prevSet, product]));
     } else {
@@ -62,8 +62,10 @@ export default function CartProduct({
             style={styles.minus}
             onPress={() => {
               if (productCount > 1) {
-                updateTotalPrice(-product.price);
                 setProductCount(productCount - 1);
+                if (isChecked) {
+                  updateTotalPrice(-product.price);
+                }
               }
             }}
           />
@@ -72,8 +74,10 @@ export default function CartProduct({
             name="add"
             style={styles.plus}
             onPress={() => {
-              updateTotalPrice(+product.price);
               setProductCount(productCount + 1);
+              if (isChecked) {
+                updateTotalPrice(+product.price);
+              }
             }}
           />
         </View>

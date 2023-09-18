@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useEffect, useState } from "react";
 
 import Checkbox from "expo-checkbox";
@@ -67,6 +67,7 @@ export default function Cart({ navigation }) {
   return (
     <>
       <View style={styles.container}>
+      <Text style={styles.title}>선물포장하기</Text>
         <View style={styles.cartList}>
           <View style={styles.listHead}>
             <Text>
@@ -131,7 +132,7 @@ export default function Cart({ navigation }) {
               if (selectedProducts.size) {
                 navigation.navigate('MakeCard', {selectedProducts: selectedProducts})
               } else {
-                alert('선물을 선택해주세요.')
+                Alert.alert('선물을 선택해주세요.')
               }
             }}
           >

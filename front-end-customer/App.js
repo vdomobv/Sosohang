@@ -11,20 +11,26 @@ import MyGift from "./src/Screens/MyGift/MyGift";
 import MyPage from "./src/Screens/MyPage/MyPage";
 import SignUp from "./src/Screens/SignUp/SignUp";
 import Map from "./src/Screens/Map/Map";
+import FindPassword from "./src/Screens/FindPassword/FindPassword";
+import ChangePassword from "./src/Screens/ChangePassword/ChangePassword";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Main" component={Main} />
+      <Stack.Navigator
+        initialRouteName="Main" screenOptions={{headerShown:false}}
+      >
+        <Stack.Screen name="Main" component={Main}  />
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="YouAndMe" component={YouAndMe} />
         <Stack.Screen name="MyGift" component={MyGift} />
         <Stack.Screen name="MyPage" component={MyPage} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Map" component={Map} />
+        <Stack.Screen name="FindPassword" component={FindPassword} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} />
       </Stack.Navigator>
     </NavigationContainer>
   );

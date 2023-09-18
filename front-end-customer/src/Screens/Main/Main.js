@@ -1,4 +1,4 @@
-import { View, Image, Text, ScrollView, Dimensions } from "react-native";
+import { View, Image, Text, ScrollView, Dimensions, Button } from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { SearchBar } from "@rneui/themed";
@@ -191,7 +191,11 @@ export default function Main({ navigation }) {
               <Text style={styles.text}>간편한 홍보를</Text>
             </View>
           </View>
-        </View>
+          <Button
+          title="회원가입"
+          onPress={() => navigation.navigate("SignUp")}
+        /> 
+    </View>
       </ScrollView>
       <Tabs navigation={navigation}/>
     </>

@@ -1,4 +1,4 @@
-const Dummy = [
+const MainDummy = [
     {
       name: "아늑1",
       address: "광주 광산구 수완로 50번길 34-4 1층",
@@ -41,4 +41,4 @@ const Dummy = [
     },
   ];
 
-  export default Dummy;
+  export default MainDummy;

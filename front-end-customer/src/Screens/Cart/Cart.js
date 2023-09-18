@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Checkbox from "expo-checkbox";
 import Tabs from "../../Components/Tabs/Tabs";
 import CartShop from "../../Components/CartShop/CartShop";
+import Title from "../../Components/Title/Title";
 
 const dummy = [
   {
@@ -67,7 +68,7 @@ export default function Cart({ navigation }) {
   return (
     <>
       <View style={styles.container}>
-      <Text style={styles.title}>선물포장하기</Text>
+        <Title title={"장바구니"} />
         <View style={styles.cartList}>
           <View style={styles.listHead}>
             <Text>
@@ -130,9 +131,11 @@ export default function Cart({ navigation }) {
             style={styles.okay}
             onPress={() => {
               if (selectedProducts.size) {
-                navigation.navigate('MakeCard', {selectedProducts: selectedProducts})
+                navigation.navigate("MakeCard", {
+                  selectedProducts: selectedProducts,
+                });
               } else {
-                Alert.alert('선물을 선택해주세요.')
+                Alert.alert("선물을 선택해주세요.");
               }
             }}
           >

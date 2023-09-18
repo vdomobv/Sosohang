@@ -7,13 +7,7 @@ const styles = StyleSheet.create({
     marginTop : 25,
   },
 
-  title: {
-    fontSize: 21,
-    marginTop: 10,
-    marginBottom: 25,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
+
 });
 
 export default styles

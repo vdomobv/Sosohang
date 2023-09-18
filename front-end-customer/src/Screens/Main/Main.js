@@ -1,4 +1,11 @@
-import { View, Image, Text, ScrollView, Dimensions, Button } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  ScrollView,
+  Dimensions,
+  Button,
+} from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { SearchBar } from "@rneui/themed";
@@ -9,65 +16,13 @@ import Carousel from "../../Components/Carousel/Carousel";
 import HashTag from "../../Components/HashTag/HashTag";
 import Tabs from "../../Components/Tabs/Tabs";
 
-const categoryData = [
-  { name: "카페/제과", image: require("assets/images/bread.png") },
-  { name: "음식점", image: require("assets/images/noodle.png") },
-  { name: "생활/소품", image: require("assets/images/necessaries.png") },
-  { name: "여가/체험", image: require("assets/images/palette.png") },
-  { name: "건강/뷰티", image: require("assets/images/health_beauty.png") },
-];
+import CategoryData from "../../Dummys/Main/CategoryData";
+import Dummy from "../../Dummys/Main/Dummy";
+import HashTagData from "../../Dummys/Main/HashTagData";
 
-const dummydata = [
-  {
-    name: "아늑1",
-    address: "광주 광산구 수완로 50번길 34-4 1층",
-    image: require("assets/dummyimages/아늑.jpg"),
-  },
-  {
-    name: "아늑2",
-    address: "광주 광산구 수완로 50번길 34-4 1층",
-    image: require("assets/dummyimages/아늑.jpg"),
-  },
-  {
-    name: "아늑3",
-    address: "광주 광산구 수완로 50번길 34-4 1층",
-    image: require("assets/dummyimages/아늑.jpg"),
-  },
-  {
-    name: "아늑4",
-    address: "광주 광산구 수완로 50번길 34-4 1층",
-    image: require("assets/dummyimages/아늑.jpg"),
-  },
-  {
-    name: "아늑5",
-    address: "광주 광산구 수완로 50번길 34-4 1층",
-    image: require("assets/dummyimages/아늑.jpg"),
-  },
-  {
-    name: "아늑6",
-    address: "광주 광산구 수완로 50번길 34-4 1층",
-    image: require("assets/dummyimages/아늑.jpg"),
-  },
-  {
-    name: "아늑7",
-    address: "광주 광산구 수완로 50번길 34-4 1층",
-    image: require("assets/dummyimages/아늑.jpg"),
-  },
-  {
-    name: "아늑8",
-    address: "광주 광산구 수완로 50번길 34-4 1층",
-    image: require("assets/dummyimages/아늑.jpg"),
-  },
-];
-
-const hashTags = [
-  { name: "#아늑한" },
-  { name: "#감성적인" },
-  { name: "#아기자기한" },
-  { name: "#맛잘알" },
-  { name: "#커피장인" },
-  { name: "#넓은" },
-];
+const categoryData = CategoryData;
+const dummydata = Dummy;
+const hashTags = HashTagData;
 
 export default function Main({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
@@ -89,7 +44,14 @@ export default function Main({ navigation }) {
       >
         <View style={[styles.headBox]}>
           <View style={[styles.location]}>
-            <Ionicons onPress={() => {navigation.navigate('Map')}} name="location-sharp" color={"#BFBFBF"} size={40} />
+            <Ionicons
+              onPress={() => {
+                navigation.navigate("Map");
+              }}
+              name="location-sharp"
+              color={"#BFBFBF"}
+              size={40}
+            />
           </View>
           <View style={{ flex: 6 }}>
             <SearchBar
@@ -100,7 +62,7 @@ export default function Main({ navigation }) {
               clearIcon={false}
               cancelIcon={false}
               placeholder="원하는 상점을 검색해보세요."
-              inputStyle = {{ marginHorizontal : 0, width : '100%'}}
+              inputStyle={{ marginHorizontal: 0, width: "100%" }}
             ></SearchBar>
           </View>
           <View style={[styles.alarm]}>
@@ -192,12 +154,12 @@ export default function Main({ navigation }) {
             </View>
           </View>
           <Button
-          title="회원가입"
-          onPress={() => navigation.navigate("SignUp")}
-        /> 
-    </View>
+            title="회원가입"
+            onPress={() => navigation.navigate("SignUp")}
+          />
+        </View>
       </ScrollView>
-      <Tabs navigation={navigation}/>
+      <Tabs navigation={navigation} />
     </>
   );
 }

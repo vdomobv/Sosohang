@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./styles";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 
-export default function FindPassword() {
+export default function FindPassword({ navigation }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [authCode, setAuthCode] = useState("");
   const [showInput, setShowInput] = useState(false);
@@ -24,11 +24,13 @@ export default function FindPassword() {
   const handleAuthCode = () => {
     if (authCode.length === 5) {
       // 인증 확인 로직 작성
-      if (authCode === showInput) {
-        Alert.alert("알림", "인증이 완료되었습니다.");
-      } else {
-        Alert.alert("알림", "인증 번호가 올바르지 않습니다.");
-      }
+      // if (authCode === showInput) {
+      //   Alert.alert("알림", "인증이 완료되었습니다.");
+        navigation.navigate("ChangePassword");
+ 
+      // } else {
+      //   Alert.alert("알림", "인증 번호가 올바르지 않습니다.");
+      // }
     } else {
       Alert.alert("알림", "인증 번호를 바르게 입력해 주세요.");
     }

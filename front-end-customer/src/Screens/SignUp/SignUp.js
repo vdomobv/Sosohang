@@ -61,7 +61,6 @@ export default function SignUp({ navigation }) {
               // 여기에서 회원가입 로직 작성
               // 예: Firebase를 사용하여 회원가입 요청을 보냅니다.
             } else {
-              // 비밀번호와 confirmPassword가 일치하지 않을 경우 경고창 표시
               Alert.alert("알림", "비밀번호가 일치하지 않습니다.");
             }
           } else {

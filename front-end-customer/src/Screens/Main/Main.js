@@ -12,13 +12,14 @@ import { SearchBar } from "@rneui/themed";
 
 import Category from "../../Components/Category/Category";
 import Line from "../../Components/Line/Line";
-import Carousel from "../../Components/Carousel/Carousel";
+import CarouselItem from "../../Components/CarouselItem/CarouselItem";
 import HashTag from "../../Components/HashTag/HashTag";
 import Tabs from "../../Components/Tabs/Tabs";
 
 import CategoryData from "../../Dummys/Main/CategoryData";
 import MainDummy from "../../Dummys/Main/MainDummy";
 import HashTagData from "../../Dummys/Main/HashTagData";
+import Carousel from "../../Components/Carousel/Carousel";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -99,7 +100,7 @@ export default function Main({ navigation }) {
             style={[styles.carouselContainer]}
           >
             {dummydata.map((data) => {
-              return <Carousel key={data.name} props={data} />;
+              return <CarouselItem key={data.name} props={data} />;
             })}
           </ScrollView>
         </View>
@@ -111,24 +112,16 @@ export default function Main({ navigation }) {
               선물 받을 친구의 취향으로 골라보세요! 😘
             </Text>
           </View>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={[styles.hashtagConatiner]}
-          >
-            {hashTags.map((data) => {
+          <Carousel
+            content={hashTags.map((data) => {
               return <HashTag key={data.name} props={data} />;
             })}
-          </ScrollView>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            style={[styles.carouselContainer]}
-          >
-            {dummydata.map((data) => {
-              return <Carousel key={data.name} props={data} />;
+          />
+          <Carousel
+            content={dummydata.map((data) => {
+              return <CarouselItem key={data.name} props={data} />;
             })}
-          </ScrollView>
+          />
           <Line />
         </View>
 

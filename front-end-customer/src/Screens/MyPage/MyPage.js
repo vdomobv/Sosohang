@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 
 import Tabs from "../../Components/Tabs/Tabs";
 import Title from "../../Components/Title/Title";
@@ -9,6 +9,7 @@ import CarouselItem from "../../Components/CarouselItem/CarouselItem";
 import Carousel from "../../Components/Carousel/Carousel";
 import Box from "../../Components/Box/Box";
 import Gift from "../../Components/Gift/Gift";
+import StampAfter from "../../Components/StampAfter/StampAfter";
 
 import userDummy from "../../Dummys/MyPage/UserDummy";
 import dibsDummy from "../../Dummys/MyPage/DibsDummy";
@@ -49,10 +50,13 @@ export default function MyPage({ navigation }) {
               <Text style={styles.phone}>{user.phone}</Text>
             </View>
           </View>
-          <Image
-            style={styles.stamp}
-            source={require("assets/images/stamp.png")}
-          ></Image>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("StampList");
+            }}
+          >
+            <StampAfter />
+          </TouchableOpacity>
         </View>
 
         <Line />

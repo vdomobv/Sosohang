@@ -1,12 +1,6 @@
 import styles from "./styles";
-import { View, Text, ScrollView } from "react-native";
+import { View } from "react-native";
 
-export default function Box({content}) {
-    return (
-      <ScrollView style={styles.container}>
-        {content}
-      </ScrollView>
-    );
-  }
-  
-  
+export default function ScrollBox({ content }) {
+  return <View style={styles.container}>{content}</View>;
+}

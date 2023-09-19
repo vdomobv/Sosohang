@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
     borderRadius : 10,
     padding : 5,
     marginHorizontal : 10,
+    flex : 1
   },
-
 });
 
 export default styles

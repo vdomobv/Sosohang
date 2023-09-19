@@ -27,7 +27,7 @@ export default function Coupon({ navigation, data }) {
       }}
     >
       <View style={styles.header}>
-        <SubTitle subTitle={data.shopname} />
+        <SubTitle customStyles={{margin : 10}} subTitle={data.shopname} />
         <Text style={styles.count}>
           {data.stamp}
           <Text style={styles.total}> /10</Text>

@@ -4,6 +4,8 @@ import React, { useState } from "react";
 
 export default function MakeCard({ route, navigation }) {
   console.log(route.params.selectedProducts);
+  const selectedProducts = route.params.selectedProducts; // 선택된 상품 정보 가져오기
+  const totalPrice = selectedProducts.totalPrice; // 총 결제 금액 가져오기
 
   const [selectedButton, setSelectedButton] = useState(null);
   const [message, setMessage] = useState(""); // 입력된 텍스트를 관리할 상태 변수
@@ -129,7 +131,6 @@ export default function MakeCard({ route, navigation }) {
                       setPhoneNumber(text);
                     }
                   } else {
-                    // 숫자가 아닌 경우 경고창 표시
                     Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
                   }
                 }}
@@ -138,8 +139,23 @@ export default function MakeCard({ route, navigation }) {
           </View>
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>🎁 상품 내역</Text>
+
+            <Text>선택한 상품 넣을겁니다.</Text>
+
+            <View style={styles.total}>
+              <View style={styles.price}>
+                <Text style={styles.priceText}> 총 결제 금액</Text>
+                <Text style={styles.priceText}>{totalPrice} 원</Text>
+              </View>
+            </View>
           </View>
+          <TouchableOpacity
+            style={styles.okay}
+          >
+            <Text style={[styles.priceText, { color: "white" }]}>결제하기</Text>
+          </TouchableOpacity>
         </View >
+
       </ScrollView>
     </>
   );

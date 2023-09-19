@@ -84,6 +84,30 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingLeft: 15,
   },
+  
+  total: {
+    flex: 1,
+  },
+
+  price: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 5,
+    marginHorizontal : 10,
+  },
+
+  priceText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+
+  okay: {
+    backgroundColor: "#FFBF46",
+    margin: 10,
+    borderRadius: 10,
+    padding: 10,
+  },
 
 });
 

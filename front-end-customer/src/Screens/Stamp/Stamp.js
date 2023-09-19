@@ -18,7 +18,7 @@ export default function Stamp({ route, navigation }) {
         <Box
           content={
             <View style={styles.stampBox}>
-              <SubTitle subTitle={"현재 적립 소복소복"} fontcolor="#FFBF46" />
+              <SubTitle subTitle={"현재 적립 소복소복"} customStyles={{ color: "#FFBF46" }} />
               <Text style={styles.stampCount}>
                 {stamp.stamp} <Text style={styles.stampTotal}>/10</Text>
               </Text>

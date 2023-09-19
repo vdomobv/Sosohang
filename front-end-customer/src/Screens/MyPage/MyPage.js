@@ -16,11 +16,11 @@ import dibsDummy from "../../Dummys/MyPage/DibsDummy";
 import buyDummy from "../../Dummys/MyPage/BuyDummy";
 
 const user = userDummy;
-const dibs = dibsDummy.map((data) => {
-  return <CarouselItem props={data} />;
+const dibs = dibsDummy.map((data, index) => {
+  return <CarouselItem key={index} props={data} />;
 });
-const buy = buyDummy.map((data) => {
-  return <Gift data={data} />;
+const buy = buyDummy.map((data, index) => {
+  return <Gift key={index} data={data} />;
 });
 
 export default function MyPage({ navigation }) {
@@ -63,8 +63,8 @@ export default function MyPage({ navigation }) {
 
         <View style={styles.section2}>
           <View style={styles.header}>
-            <SubTitle subTitle={"❤️ 찜 목록"} />
-            <Text>상세보기 ＞ </Text>
+            <SubTitle customStyles={{ marginVertical: 10 }} subTitle={"❤️ 찜 목록"} />
+            <Text onPress={() => { navigation.navigate('Dibs', { dibs: dibsDummy }) }}>상세보기 ＞ </Text>
           </View>
           <Carousel content={dibs} />
         </View>
@@ -73,7 +73,7 @@ export default function MyPage({ navigation }) {
 
         <View style={styles.section3}>
           <View style={styles.header}>
-            <SubTitle subTitle={"💸 구매 내역"} />
+            <SubTitle customStyles={{ marginVertical: 10 }} subTitle={"💸 구매 내역"} />
           </View>
           <ScrollBox content={buy} />
         </View>

@@ -35,9 +35,9 @@ const styles = StyleSheet.create({
 
   button: {
     backgroundColor: '#E9EEE8',
-    width: 70,
+
     height: 45,
-    padding: 10,
+    padding: 8,
     borderRadius: 15,
     margin: 10,
     elevation: 5, // Android shadow
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center'
   },
-  
+
   innerInput: { top: 250, 
     height: 150, 
     textAlign: 'center', 
@@ -82,8 +82,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 5,
     padding: 8,
-    paddingLeft: 10,
-    marginHorizontal: 40, // 보내는 사람 입력창 좌우 여백
+    paddingLeft: 15,
   },
 
 });

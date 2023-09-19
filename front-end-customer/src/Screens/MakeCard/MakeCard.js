@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { ScrollView, View, Text, Image, TouchableOpacity, TextInput } from "react-native";
+import { ScrollView, View, Text, Image, TouchableOpacity, TextInput, Alert } from "react-native";
 import React, { useState } from "react";
 
 export default function MakeCard({ route, navigation }) {
@@ -7,12 +7,35 @@ export default function MakeCard({ route, navigation }) {
 
   const [selectedButton, setSelectedButton] = useState(null);
   const [message, setMessage] = useState(""); // 입력된 텍스트를 관리할 상태 변수
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null); // 선택된 이미지 상태 변수
 
   const handleButtonClick = (button) => {
     if (selectedButton === button) {
       setSelectedButton(null);
+      setSelectedImage(null); // 버튼이 선택 해제되면 이미지도 초기화
     } else {
       setSelectedButton(button);
+
+      if (button === "+") {
+        setSelectedImage(null); // 이미지 초기화
+      } else {
+        // 해당 버튼에 따라 이미지 업데이트
+        switch (button) {
+          case "생일":
+            setSelectedImage(require('assets/images/Bday2.png'));
+            break;
+          case "감사":
+            setSelectedImage(require('assets/images/Thx2.png'));
+            break;
+          case "응원":
+            setSelectedImage(require('assets/images/Cheerup2.png'));
+            break;
+          default:
+            setSelectedImage(null); // 다른 버튼인 경우 이미지 초기화
+            break;
+        }
+      }
     }
   };
 
@@ -25,65 +48,42 @@ export default function MakeCard({ route, navigation }) {
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>📝 메시지카드 작성</Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  selectedButton === "+" ? styles.selectedButton : null,
-                ]}
-                onPress={() => handleButtonClick("+")}
-              >
-                <Text style={styles.buttonText}>+</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  selectedButton === "생일" ? styles.selectedButton : null,
-                ]}
-                onPress={() => handleButtonClick("생일")}
-              >
-                <Text style={styles.buttonText}>생일</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  selectedButton === "감사" ? styles.selectedButton : null,
-                ]}
-                onPress={() => handleButtonClick("감사")}
-              >
-                <Text style={styles.buttonText}>감사</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  selectedButton === "응원" ? styles.selectedButton : null,
-                ]}
-                onPress={() => handleButtonClick("응원")}
-              >
-                <Text style={styles.buttonText}>응원</Text>
-              </TouchableOpacity>
+              {["+", "생일", "감사", "응원"].map((button, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.button, { width: 70 },
+                    selectedButton === button ? styles.selectedButton : null,
+                  ]}
+                  onPress={() => handleButtonClick(button)}
+                >
+                  <Text style={styles.buttonText}>{button}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
 
           <View style={styles.cardimage}>
             <Image
               source={require('assets/images/greencard.png')} // 이미지 파일의 경로
-              style={{ width: '95%', height: 550,}}
+              style={{ width: '95%', height: 550, }}
             />
-        <View style={[styles.innerBox, { top: 35, height: 200 }]}>
-          {/* 작은 박스 내용: 이미지 카드 */}
-          <Text style={styles.title}>카메라를 통해 사진을 찍거나, 앨범에서 사진을 선택하세요.</Text>
-        </View>
+            <View style={[styles.innerBox, { top: 35, height: 200 }]}>
+              <Text style={styles.title}>카메라를 통해 사진을 찍거나, 앨범에서 사진을 선택하세요.</Text>
+              <Image
+                source={selectedImage} // 선택된 이미지 표시
+                style={{ position: 'absolute', width: 330, height: 200 }}
+              />
+            </View>
 
-        <TextInput
+            <TextInput
               style={[styles.innerBox, styles.innerInput]}
               placeholder="메시지를 입력하세요."
               onChangeText={(text) => setMessage(text)} // 텍스트 변경 시 호출되는 함수
               value={message}
               maxLength={100} // 최대 글자 수 제한
               multiline={true} // 여러 줄 입력 가능하도록 설정
+            // keyboardType="default" // 한글 키보드
             />
 
             {/* 글자 수 표시 */}
@@ -91,23 +91,51 @@ export default function MakeCard({ route, navigation }) {
               ({message.length}/100자)
             </Text>
 
-        </View>
+          </View>
 
 
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>😊 보내는 사람 👉</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { marginHorizontal: 40 }]}
               placeholder="상대방에게 표시되는 이름이에요."
-            // onChangeText={(text) => setPassword(text)}
-            // value={sendname}
             />
           </View>
 
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>😍 받는 사람 🖐</Text>
+            <TouchableOpacity style={[styles.button, { marginHorizontal: 40, marginBottom: 20 }]}
+            // 연락처 가져오기 기능 구현
+            // onPress={getPhoneNumber}
+            >
+              <Text style={styles.buttonText}>+ 연락처 가져오기</Text>
+            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', marginHorizontal: 40 }}>
+              <TextInput
+                style={[styles.input, { width: 100 }]}
+                placeholder="이름"
+              // keyboardType="default" // 한글 키보드
+              />
+              <TextInput
+                style={[styles.input, { width: 220, marginLeft: 10 }]}
+                placeholder="전화번호"
+                keyboardType="numeric"
+                maxLength={11} // 이 부분을 추가하여 최대 길이를 11로 설정
+                onChangeText={(text) => {
+                  // 입력된 값이 숫자인지 확인
+                  if (/^[0-9]*$/.test(text)) {
+                    // 숫자인 경우에만 상태 업데이트
+                    if (text.length <= 11) {
+                      setPhoneNumber(text);
+                    }
+                  } else {
+                    // 숫자가 아닌 경우 경고창 표시
+                    Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
+                  }
+                }}
+              />
+            </View>
           </View>
-
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>🎁 상품 내역</Text>
           </View>
@@ -116,4 +144,3 @@ export default function MakeCard({ route, navigation }) {
     </>
   );
 }
-

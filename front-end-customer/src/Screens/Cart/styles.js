@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
 
   okay: {
-    backgroundColor: "gold",
+    backgroundColor: "#FFBF46",
     margin: 10,
     borderRadius: 10,
     padding: 10,

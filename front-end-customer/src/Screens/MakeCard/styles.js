@@ -7,14 +7,13 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
 
-  subcontainer: {
-    marginVertical: 12,
-  },
+  // subcontainer: {
+  //   marginVertical: 12,
+  // },
 
   title: {
     fontSize: 21,
     marginTop: 10,
-    marginBottom: 25,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -22,6 +21,8 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 20,
     marginLeft: 20,
+    marginTop: 30,
+    marginBottom: 10,
     fontWeight: 'bold',
   },
 
@@ -35,11 +36,11 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#E9EEE8',
     width: 70,
-    height: 50,
+    height: 45,
     padding: 10,
     borderRadius: 15,
     margin: 10,
-    elevation: 10, // Add elevation for Android shadow
+    elevation: 5, // Android shadow
   },
 
   selectedButton: {
@@ -52,16 +53,37 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
+  cardimage: {
+    alignItems: 'center', // 가로 중앙 정렬
+    marginTop: 10,
+  },
+
+  innerBox: {
+    position: 'absolute',
+    backgroundColor: '#F8F2CA',
+    width: '80%',
+    borderRadius: 8,
+    marginBottom: 50,
+    padding: 30,
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
+  
+  innerInput: { top: 250, 
+    height: 150, 
+    textAlign: 'center', 
+    fontSize: 18, 
+    fontWeight: 'bold'
+  },
+
   input: {
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5,
     padding: 8,
     paddingLeft: 10,
-    margin: 10,
-    marginHorizontal: 20,
-
-    // width: '90%',
+    marginHorizontal: 40, // 보내는 사람 입력창 좌우 여백
   },
 
 });

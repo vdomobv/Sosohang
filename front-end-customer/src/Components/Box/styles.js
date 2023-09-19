@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     marginHorizontal : 10,
     flex : 1
   },
+
 });
 
 export default styles

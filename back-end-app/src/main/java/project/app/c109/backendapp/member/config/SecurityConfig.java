@@ -16,18 +16,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable(); // CSRF 보호 비활성화
         http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .antMatchers("/public/**").permitAll()
+                                .antMatchers("/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults());
         return http.build();
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

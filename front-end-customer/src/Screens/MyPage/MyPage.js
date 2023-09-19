@@ -7,7 +7,7 @@ import Line from "../../Components/Line/Line";
 import SubTitle from "../../Components/SubTitle/SubTitle";
 import CarouselItem from "../../Components/CarouselItem/CarouselItem";
 import Carousel from "../../Components/Carousel/Carousel";
-import Box from "../../Components/Box/Box";
+import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import Gift from "../../Components/Gift/Gift";
 import StampAfter from "../../Components/StampAfter/StampAfter";
 
@@ -75,7 +75,7 @@ export default function MyPage({ navigation }) {
           <View style={styles.header}>
             <SubTitle subTitle={"💸 구매 내역"} />
           </View>
-          <Box content={buy} />
+          <ScrollBox content={buy} />
         </View>
       </ScrollView>
       <Tabs navigation={navigation} />

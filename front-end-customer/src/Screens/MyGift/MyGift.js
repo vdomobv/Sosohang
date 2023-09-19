@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 import Tabs from "../../Components/Tabs/Tabs";
 import Title from "../../Components/Title/Title";
-import Box from "../../Components/Box/Box";
+import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import Gift from "../../Components/Gift/Gift";
 
 import MyGiftDummy from "../../Dummys/MyGift/MyGiftDummy";
@@ -18,7 +18,7 @@ export default function MyGift({ navigation }) {
     <>
       <View style={styles.container}>
         <Title title={"받은 선물함"}></Title>
-        <Box content={gifts}/>
+        <ScrollBox content={gifts}/>
       </View>
       <Tabs navigation={navigation} />
     </>

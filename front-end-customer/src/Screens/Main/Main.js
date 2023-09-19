@@ -17,11 +17,11 @@ import HashTag from "../../Components/HashTag/HashTag";
 import Tabs from "../../Components/Tabs/Tabs";
 
 import CategoryData from "../../Dummys/Main/CategoryData";
-import Dummy from "../../Dummys/Main/Dummy";
+import MainDummy from "../../Dummys/Main/MainDummy";
 import HashTagData from "../../Dummys/Main/HashTagData";
 
 const categoryData = CategoryData;
-const dummydata = Dummy;
+const dummydata = MainDummy;
 const hashTags = HashTagData;
 
 export default function Main({ navigation }) {

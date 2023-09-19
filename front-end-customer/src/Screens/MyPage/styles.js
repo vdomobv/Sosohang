@@ -26,11 +26,7 @@ const styles = StyleSheet.create({
     height: 70,
   },
 
-  stamp: {
-    borderRadius: 100,
-    width: 75,
-    height: 75,
-  },
+  
 
   user: {
     marginLeft: 10,

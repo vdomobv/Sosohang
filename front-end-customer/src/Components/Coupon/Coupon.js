@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 
 import SubTitle from "../SubTitle/SubTitle";
 
@@ -17,8 +17,15 @@ const stampImages = {
 };
 
 export default function Coupon({ navigation, data }) {
+  const stamp = data;
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate("Stamp", { stamp: stamp, image: stampImages[data.stamp] });
+      }}
+    >
       <View style={styles.header}>
         <SubTitle subTitle={data.shopname} />
         <Text style={styles.count}>
@@ -28,6 +35,6 @@ export default function Coupon({ navigation, data }) {
       </View>
 
       <Image style={styles.image} source={stampImages[data.stamp]} />
-    </View>
+    </TouchableOpacity>
   );
 }

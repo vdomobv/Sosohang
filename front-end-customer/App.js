@@ -15,6 +15,7 @@ import Map from "./src/Screens/Map/Map";
 import FindPassword from "./src/Screens/FindPassword/FindPassword";
 import ChangePassword from "./src/Screens/ChangePassword/ChangePassword";
 import StampList from "./src/Screens/StampList/StampList";
+import Stamp from "./src/Screens/Stamp/Stamp";
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,7 @@ export default function App() {
         <Stack.Screen name="FindPassword" component={FindPassword} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
         <Stack.Screen name="StampList" component={StampList} />
+        <Stack.Screen name="Stamp" component={Stamp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

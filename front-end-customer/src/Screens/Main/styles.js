@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     backgroundColor: "white",
     height: "100%",
+    marginTop : 25
   },
 
   banner: {

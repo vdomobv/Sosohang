@@ -57,9 +57,13 @@ const styles = StyleSheet.create({
     marginLeft : 10
   },
 
-  section2 : {
-    marginVertical : 10
-  }
+  section2: {
+    marginLeft : 10
+  },
+
+  
+
+  
 });
 
 export default styles

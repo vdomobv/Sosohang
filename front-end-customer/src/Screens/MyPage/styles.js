@@ -3,24 +3,24 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginTop: 25,
   },
 
   section1: {
-    justifyContent : 'space-around',
+    justifyContent: "space-around",
     flexDirection: "row",
-    margin : 10
+    margin: 10,
   },
 
   profile: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   profileImage: {
     borderRadius: 100,
-    borderColor: 'lightgrey',
+    borderColor: "lightgrey",
     borderWidth: 1,
     width: 70,
     height: 70,
@@ -32,38 +32,33 @@ const styles = StyleSheet.create({
     height: 75,
   },
 
-  user : {
-    marginLeft : 10
+  user: {
+    marginLeft: 10,
   },
 
-  name : {
-    fontWeight : 'bold',
-    fontSize : 20
+  name: {
+    fontWeight: "bold",
+    fontSize: 20,
   },
 
-  phone : {
-    fontSize : 18
+  phone: {
+    fontSize: 18,
   },
 
-  header : {
-    marginHorizontal : 20,
-    flexDirection : 'row',
-    alignItems : 'center',
-    justifyContent : 'space-between',
-  },
-
-  carouselContainer : {
+  header: {
+    marginHorizontal: 10,
     flexDirection: "row",
-    marginLeft : 10
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 
   section2: {
-    marginLeft : 10
+    marginLeft: 10,
   },
 
-  
-
-  
+  section3: {
+    marginHorizontal: 10,
+  },
 });
 
-export default styles
+export default styles;

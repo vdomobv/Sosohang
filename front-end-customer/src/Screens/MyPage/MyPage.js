@@ -7,11 +7,20 @@ import Line from "../../Components/Line/Line";
 import SubTitle from "../../Components/SubTitle/SubTitle";
 import CarouselItem from "../../Components/CarouselItem/CarouselItem";
 import Carousel from "../../Components/Carousel/Carousel";
+import Box from "../../Components/Box/Box";
+import Gift from "../../Components/Gift/Gift";
 
 import userDummy from "../../Dummys/MyPage/UserDummy";
 import dibsDummy from "../../Dummys/MyPage/DibsDummy";
+import buyDummy from "../../Dummys/MyPage/BuyDummy";
+
 const user = userDummy;
-const dibs = dibsDummy;
+const dibs = dibsDummy.map((data) => {
+  return <CarouselItem props={data} />;
+});
+const buy = buyDummy.map((data) => {
+  return <Gift data={data} />;
+});
 
 export default function MyPage({ navigation }) {
   return (
@@ -53,13 +62,17 @@ export default function MyPage({ navigation }) {
             <SubTitle subTitle={"❤️ 찜 목록"} />
             <Text>상세보기 ＞ </Text>
           </View>
-          <Carousel
-            content={dibs.map((data) => {
-              return <CarouselItem props={data} />;
-            })}
-          />
+          <Carousel content={dibs} />
         </View>
+
         <Line />
+
+        <View style={styles.section3}>
+          <View style={styles.header}>
+            <SubTitle subTitle={"💸 구매 내역"} />
+          </View>
+          <Box content={buy} />
+        </View>
       </ScrollView>
       <Tabs navigation={navigation} />
     </>

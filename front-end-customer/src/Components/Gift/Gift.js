@@ -18,14 +18,35 @@ export default function Gift({ navigation, data }) {
           <Text style={styles.shopName}>{data.shopname}</Text>
           <Text style={styles.name}>{data.name}</Text>
           <Text style={styles.price}>
-            {data["from"] ? "남은 금액 : " + data.price : data.price} 원
+            {data["from"] ? "남은 금액 : " + data.currentPrice : data.totalPrice} 원
           </Text>
         </View>
       </View>
       {data.to ? (
         <View style={styles.buttons}>
-          <CustomButton content={"취소하기"} bgcolor="#FFBF46" />
-          <CustomButton content={"재주문"} />
+          {data.currentPrice == data.price ? (
+            <CustomButton
+              pressFuction={() => {
+                console.log("취소하기 기능");
+              }}
+              content={"취소하기"}
+              customStyles={{ backgroundColor: "#FFBF46" }}
+            />
+          ) : (
+            <CustomButton
+              content={"취소하기"}
+              disabled={true}
+              customStyles={{ backgroundColor: "#BFBFBF" }}
+            />
+          )}
+          
+          <CustomButton
+            navigation={navigation}
+            content={"재주문"}
+            pressFuction={() => {
+              navigation.navigate("MakeCard", { selectedProducts: data });
+            }}
+          />
         </View>
       ) : undefined}
     </View>

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
+import SubTitle from "../SubTitle/SubTitle";
 
 export default function Gift({ navigation, data }) {
   const [modalState, setModalState] = useState(false);
@@ -35,7 +36,6 @@ export default function Gift({ navigation, data }) {
             {data.currentPrice == data.price ? (
               <CustomButton
                 pressFuction={() => {
-                  console.log("취소하기");
                   setModalState(true);
                 }}
                 content={"취소하기"}
@@ -63,20 +63,36 @@ export default function Gift({ navigation, data }) {
         modalState={modalState}
         content={
           <>
-              <Text style={styles.modalText}>
-                🚨 선물 취소 시, 선물 받은 친구에게 문자 및 알람이 전송됩니다.
-              </Text>
-              <Text style={styles.modalText}>
-                🚨 선물 전체 사용 및 분할 사용 시, 선물 취소는 더이상
-                불가능합니다.
-              </Text>
-              <Text style={styles.modalText}>
-                🚨 환불은 결제수단에 따라 환불 소요 기간이 약 2 ~ 3일 이상
-                소요될 수 있습니다.
-              </Text>
+            <Text style={styles.modalText}>
+              🚨 선물 취소 시, 선물 받은 친구에게 문자 및 알람이 전송됩니다.
+            </Text>
+            <Text style={styles.modalText}>
+              🚨 선물 전체 사용 및 분할 사용 시, 선물 취소는 더이상
+              불가능합니다.
+            </Text>
+            <Text style={styles.modalText}>
+              🚨 환불은 결제수단에 따라 환불 소요 기간이 약 2 ~ 3일 이상 소요될
+              수 있습니다.
+            </Text>
+            <View style={styles.checkText}>
+              <SubTitle
+                subTitle={"위 사항을 인지하였으며"}
+                customStyles={{
+                  textAlign: "center",
+                }}
+              />
+              <SubTitle
+                subTitle={"선물 취소를 진행하시겠습니까?"}
+                customStyles={{
+                  textAlign: "center",
+                }}
+              />
+            </View>
             <View style={styles.buttons}>
               <CustomButton
-              pressFuction={() => {setModalState(false)}}
+                pressFuction={() => {
+                  setModalState(false);
+                }}
                 content={"돌아가기"}
                 customStyles={{ backgroundColor: "#FFBF46" }}
               />

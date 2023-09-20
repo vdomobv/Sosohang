@@ -22,13 +22,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  searchbar: {
-    backgroundColor: "#E9EEE8",
-    borderRadius: 30,
-    textAlign: "center",
-    alignItems : "center",
-  },
-
   categories: {
     flexDirection: "row",
     marginVertical: 10,

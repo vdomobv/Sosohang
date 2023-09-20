@@ -17,6 +17,7 @@ import ChangePassword from "./src/Screens/ChangePassword/ChangePassword";
 import StampList from "./src/Screens/StampList/StampList";
 import Stamp from "./src/Screens/Stamp/Stamp";
 import Dibs from "./src/Screens/Dibs/Dibs";
+import PurchaseHistory from "./src/Screens/PurchaseHistory/PurchaseHistory";
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,7 @@ export default function App() {
         <Stack.Screen name="StampList" component={StampList} />
         <Stack.Screen name="Stamp" component={Stamp} />
         <Stack.Screen name="Dibs" component={Dibs} />
+        <Stack.Screen name="PurchaseHistory" component={PurchaseHistory} />
       </Stack.Navigator>
     </NavigationContainer>
   );

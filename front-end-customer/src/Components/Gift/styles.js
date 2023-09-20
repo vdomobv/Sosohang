@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   person: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom :5
+    marginBottom: 5,
   },
 
   body: {
@@ -56,12 +56,18 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
 
-  buttons : {
-    flexDirection : 'row',
-    flex : 1
+  buttons: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 
+  modalText: {
+    fontSize: 22,
+  },
 
+  checkText : {
+    marginVertical : 10
+  }
 });
 
 export default styles;

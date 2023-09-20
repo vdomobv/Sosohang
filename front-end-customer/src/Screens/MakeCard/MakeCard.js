@@ -1,6 +1,7 @@
 import styles from "./styles";
 import { ScrollView, View, Text, Image, TouchableOpacity, TextInput, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from "@expo/vector-icons";
 
 import CartProduct from "../../Components/CartProduct/CartProduct";
@@ -9,12 +10,27 @@ export default function MakeCard({ route, navigation }) {
   const { selectedProducts, totalPrice } = route.params;
   const selectedProductsArray = Array.from(selectedProducts);
 
-
-
   const [selectedButton, setSelectedButton] = useState(null);
   const [message, setMessage] = useState(""); // 입력된 텍스트를 관리할 상태 변수
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedImage, setSelectedImage] = useState(null); // 선택된 이미지 상태 변수
+
+  // "+" 버튼을 눌렀을 때 갤러리 열기
+  const openImagePicker = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('미디어 라이브러리 권한이 필요합니다.', '앱 설정에서 권한을 허용해주세요.');
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+      });
+
+      if (!result.canceled) {
+        setSelectedButton(null); // "+" 버튼 선택 해제
+        setSelectedImage(result.assets); // 선택한 이미지를 selectedImage에 설정
+      }
+    }
+  };
 
   const handleButtonClick = (button) => {
     if (selectedButton === button) {
@@ -24,7 +40,7 @@ export default function MakeCard({ route, navigation }) {
       setSelectedButton(button);
 
       if (button === "+") {
-        setSelectedImage(null); // 이미지 초기화
+        openImagePicker(); // "+" 버튼을 눌렀을 때 갤러리 열기
       } else {
         // 해당 버튼에 따라 이미지 업데이트
         switch (button) {
@@ -102,7 +118,13 @@ export default function MakeCard({ route, navigation }) {
                     styles.button, { width: 70 },
                     selectedButton === button ? styles.selectedButton : null,
                   ]}
-                  onPress={() => handleButtonClick(button)}
+                  onPress={() => {
+                    if (button === "+") {
+                      openImagePicker(); // "+" 버튼을 눌렀을 때 갤러리 열기
+                    } else {
+                      handleButtonClick(button);
+                    }
+                  }}
                 >
                   <Text style={styles.buttonText}>{button}</Text>
                 </TouchableOpacity>
@@ -115,12 +137,18 @@ export default function MakeCard({ route, navigation }) {
               source={require('assets/images/greencard.png')} // 이미지 파일의 경로
               style={{ width: '95%', height: 550, }}
             />
+
             <View style={[styles.innerBox, { top: 35, height: 200 }]}>
               <Text style={styles.title}>카메라를 통해 사진을 찍거나, 앨범에서 사진을 선택하세요.</Text>
               <Image
                 source={selectedImage} // 선택된 이미지 표시
                 style={{ position: 'absolute', width: 330, height: 200 }}
               />
+              {/* {selectedImage && (
+                <Image
+                  source={{ uri: selectedImage }}
+                  style={{ width: '100%', height: 200, resizeMode: 'contain' }} // 이미지 크기 조정
+                /> */}
             </View>
 
             <TextInput
@@ -130,7 +158,6 @@ export default function MakeCard({ route, navigation }) {
               value={message}
               maxLength={100} // 최대 글자 수 제한
               multiline={true} // 여러 줄 입력 가능하도록 설정
-            // keyboardType="default" // 한글 키보드
             />
 
             {/* 글자 수 표시 */}
@@ -161,7 +188,6 @@ export default function MakeCard({ route, navigation }) {
               <TextInput
                 style={[styles.input, { width: 100 }]}
                 placeholder="이름"
-              // keyboardType="default" // 한글 키보드
               />
               <TextInput
                 style={[styles.input, { width: 220, marginLeft: 10 }]}

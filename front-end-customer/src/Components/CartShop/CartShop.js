@@ -59,7 +59,7 @@ export default function CartShop({
             }}
             color={shopChecked ? "#4630EB" : undefined}
           />{" "}
-          {data.name} <Ionicons name="home-outline" />
+          {data.name} <Ionicons style={styles.shopName} name="home-outline" />
         </Text>
         <View style={styles.products}>
           {data.products.map((d, index) => {

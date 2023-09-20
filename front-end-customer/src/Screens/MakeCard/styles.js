@@ -84,9 +84,26 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingLeft: 15,
   },
+
+  shopName: {
+    marginLeft: 30,
+    marginVertical: 10,
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  
+  box: {
+    marginHorizontal: 20,
+    backgroundColor : '#E9EEE8',
+    borderRadius : 10,
+    padding : 5,
+    marginBottom: 10,
+  },
+
   
   total: {
     flex: 1,
+    marginHorizontal: 20,
   },
 
   price: {
@@ -104,7 +121,7 @@ const styles = StyleSheet.create({
 
   okay: {
     backgroundColor: "#FFBF46",
-    margin: 10,
+    margin: 20,
     borderRadius: 10,
     padding: 10,
   },

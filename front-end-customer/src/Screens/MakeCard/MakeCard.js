@@ -1,11 +1,32 @@
 import styles from "./styles";
 import { ScrollView, View, Text, Image, TouchableOpacity, TextInput, Alert } from "react-native";
 import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+
+import CartProduct from "../../Components/CartProduct/CartProduct";
 
 export default function MakeCard({ route, navigation }) {
   console.log(route.params.selectedProducts);
-  const selectedProducts = route.params.selectedProducts; // 선택된 상품 정보 가져오기
-  const totalPrice = selectedProducts.totalPrice; // 총 결제 금액 가져오기
+  // console.log(route.params.selectedProducts.shopname);
+
+  const { selectedProducts, totalPrice } = route.params;
+
+  const selectedProductsArray = Array.from(selectedProducts);
+
+  // 선택된 상품의 개수에 따라 shopnames를 단일 값 또는 배열로 설정합니다.
+  let shopnames;
+  if (selectedProductsArray.length === 1) {
+    // 선택된 상품이 하나인 경우
+    shopnames = selectedProductsArray[0].shopname;
+  } else {
+    // 선택된 상품이 여러 개인 경우 중복을 제거한 배열 생성
+    const uniqueShopNamesSet = new Set(selectedProductsArray.map((product) => product.shopname));
+    shopnames = Array.from(uniqueShopNamesSet); // 배열로 변환
+  }
+
+
+  console.log("Shop Name:", shopnames);
+
 
   const [selectedButton, setSelectedButton] = useState(null);
   const [message, setMessage] = useState(""); // 입력된 텍스트를 관리할 상태 변수
@@ -140,8 +161,25 @@ export default function MakeCard({ route, navigation }) {
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>🎁 상품 내역</Text>
 
-            <Text>선택한 상품 넣을겁니다.</Text>
 
+            <Text style={styles.shopName}>{shopnames} <Ionicons style={styles.shopName} name="home-outline" /></Text>
+            <View style={styles.box}>
+              {Array.from(selectedProducts).map((product, index) => (
+                <CartProduct
+                  key={index}
+                  product={product}
+                  productCheck={true} // 선택된 상품이므로 true로 설정
+                  updateTotalPrice={(priceChange) => {
+                    // 총 결제 금액을 업데이트하는 함수를 구현하세요.
+                  }}
+                  totalPrice={totalPrice} // 총 결제 금액을 props로 전달
+                  setSelectedProducts={(newSelectedProducts) => {
+                    // 선택한 상품을 업데이트하는 함수를 구현하세요.
+                  }}
+                  shopname={product.shopname} // 상점 이름을 props로 설정
+                />
+              ))}
+            </View>
             <View style={styles.total}>
               <View style={styles.price}>
                 <Text style={styles.priceText}> 총 결제 금액</Text>

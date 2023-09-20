@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   background-color: white;
   box-shadow: 0 1px 7px -5px black;
   position : sticky;
+  z-index: 999999;
 
   .logo {
     width: 150px;

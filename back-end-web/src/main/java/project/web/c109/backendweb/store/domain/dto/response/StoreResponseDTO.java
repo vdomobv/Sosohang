@@ -1,23 +1,20 @@
-package project.web.c109.backendweb.store.domain.dto.request;
+package project.web.c109.backendweb.store.domain.dto.response;
 
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
-import javax.validation.constraints.*;
+
 
 @Getter
 @Setter
-public class requestStoreDTO {
+public class StoreResponseDTO {
 
-	@NotNull
+	private Integer storeSeq;
+
 	private Integer categorySeq;
 
-	@NotBlank
-	private String storePassword;
-
-	@NotBlank
 	private String storeName;
 
-	@NotBlank
 	private String storeId;
 
 	private String storeLocation;
@@ -28,7 +25,6 @@ public class requestStoreDTO {
 
 	private String storeParkinglot;
 
-	@NotBlank
 	private String registrationNumber;
 
 	private String storeWorkhour;
@@ -39,5 +35,5 @@ public class requestStoreDTO {
 
 	private String storeUrl;
 
-	// addedDate는 일반적으로 서버에서 설정하므로 DTO에 포함시키지 않았습니다.
+	private Date addedDate;
 }

@@ -1,11 +1,10 @@
 package project.web.c109.backendweb.store.domain.entity;
 
-import java.sql.Date;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
@@ -58,6 +57,6 @@ public class Store {
 	private String storeUrl;
 
 	@Column (name="added_date")
-	private Date addedDate;
+	private LocalDateTime addedDate;
 
 }

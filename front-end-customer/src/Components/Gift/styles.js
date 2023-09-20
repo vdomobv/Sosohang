@@ -58,10 +58,12 @@ const styles = StyleSheet.create({
 
   buttons : {
     flexDirection : 'row',
-    flex : 1
+    alignItems : 'center',
   },
 
-
+  modalText : {
+    fontSize : 22
+  }
 });
 
 export default styles;

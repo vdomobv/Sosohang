@@ -44,7 +44,7 @@ export default function ChangePassword() {
         value={confirmPassword}
       />
       <TouchableOpacity
-        style={[styles.button]} // 버튼 스타일 및 너비를 적용
+        style={[styles.button]}
         onPress={handleChangePassword}
       >
         <Text style={[styles.buttonText]}>

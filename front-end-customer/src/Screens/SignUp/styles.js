@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 25,
   },
 
   title: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   },
   
   minibutton: {
-    width: '15%',
+    width: '20%',
     borderRadius: 5,
     padding: 11,
     backgroundColor: '#46C27D',
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     width: '80%',
     borderRadius: 5,
     padding: 10,
-    marginTop: 15,
+    marginTop: 10,
     backgroundColor: '#46C27D',
   },
 
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   horizontalLine: {
     borderBottomWidth: 1, // 선 두께
     borderColor: 'gray',
-    marginVertical: 22, // 위아래 여백 조정
+    marginVertical: 13, // 위아래 여백 조정
     borderStyle: 'solid',
     borderleftWidth: 330, // 좌측 여백
     borderRightWidth: 330, // 우측 여백

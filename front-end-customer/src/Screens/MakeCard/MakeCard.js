@@ -1,11 +1,15 @@
 import styles from "./styles";
 import { ScrollView, View, Text, Image, TouchableOpacity, TextInput, Alert } from "react-native";
 import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+
+import CartProduct from "../../Components/CartProduct/CartProduct";
 
 export default function MakeCard({ route, navigation }) {
-  console.log(route.params.selectedProducts);
-  const selectedProducts = route.params.selectedProducts; // 선택된 상품 정보 가져오기
-  const totalPrice = selectedProducts.totalPrice; // 총 결제 금액 가져오기
+  const { selectedProducts, totalPrice } = route.params;
+  const selectedProductsArray = Array.from(selectedProducts);
+
+
 
   const [selectedButton, setSelectedButton] = useState(null);
   const [message, setMessage] = useState(""); // 입력된 텍스트를 관리할 상태 변수
@@ -39,6 +43,47 @@ export default function MakeCard({ route, navigation }) {
         }
       }
     }
+  };
+
+  // 상품을 상점 이름을 기준으로 그룹화
+  const groupedProducts = selectedProductsArray.reduce((groups, product) => {
+    const shopname = product.shopname;
+    if (!groups[shopname]) {
+      groups[shopname] = [];
+    }
+    groups[shopname].push(product);
+    return groups;
+  }, {});
+
+  // 그룹화된 상품을 렌더링
+  const renderGroupedProducts = () => {
+    return Object.keys(groupedProducts).map((shopname) => {
+      const productsInShop = groupedProducts[shopname];
+      return (
+        <View key={shopname}>
+          <Text style={styles.shopName}>
+            {shopname} <Ionicons style={styles.shopIcon} name="home-outline" />
+          </Text>
+          <View style={styles.box}>
+            {productsInShop.map((product, index) => (
+              <CartProduct
+                key={index}
+                product={product}
+                productCheck={true}
+                updateTotalPrice={(priceChange) => {
+                  // 총 결제 금액을 업데이트하는 함수를 구현하세요.
+                }}
+                totalPrice={totalPrice}
+                setSelectedProducts={(newSelectedProducts) => {
+                  // 선택한 상품을 업데이트하는 함수를 구현하세요.
+                }}
+                shopname={product.shopname}
+              />
+            ))}
+          </View>
+        </View>
+      );
+    });
   };
 
   return (
@@ -139,8 +184,7 @@ export default function MakeCard({ route, navigation }) {
           </View>
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>🎁 상품 내역</Text>
-
-            <Text>선택한 상품 넣을겁니다.</Text>
+            {renderGroupedProducts()}
 
             <View style={styles.total}>
               <View style={styles.price}>

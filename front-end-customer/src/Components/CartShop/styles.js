@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
   shopName : {
     marginHorizontal : 10,
     marginBottom : 5,
+    fontSize : 18,
+    fontWeight : 'bold',
   },
 
   products : {

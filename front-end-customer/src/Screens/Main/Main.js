@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
-import { SearchBar } from "@rneui/themed";
 
 import Category from "../../Components/Category/Category";
 import Line from "../../Components/Line/Line";
@@ -20,6 +19,7 @@ import CategoryData from "../../Dummys/Main/CategoryData";
 import MainDummy from "../../Dummys/Main/MainDummy";
 import HashTagData from "../../Dummys/Main/HashTagData";
 import Carousel from "../../Components/Carousel/Carousel";
+import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -55,16 +55,7 @@ export default function Main({ navigation }) {
             />
           </View>
           <View style={{ flex: 6 }}>
-            <SearchBar
-              style={[styles.searchbar]}
-              lightTheme
-              platform="android"
-              searchIcon={false}
-              clearIcon={false}
-              cancelIcon={false}
-              placeholder="원하는 상점을 검색해보세요."
-              inputStyle={{ marginHorizontal: 0, width: "100%" }}
-            ></SearchBar>
+            <CustomSearchBar placeholderText={"원하는 상점을 검색해보세요."} />
           </View>
           <View style={[styles.alarm]}>
             <Ionicons name="notifications" color={"gold"} size={40} />

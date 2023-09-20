@@ -82,6 +82,7 @@ export default function Cart({ navigation }) {
                       newCheckedItems[index] = checked;
                       setCheckedItems(newCheckedItems);
                     }}
+                    shopname={d.name}
                     setSelectedProducts={setSelectedProducts}
                   />
                 );
@@ -100,6 +101,7 @@ export default function Cart({ navigation }) {
               if (selectedProducts.size) {
                 navigation.navigate("MakeCard", {
                   selectedProducts: selectedProducts,
+                  totalPrice: totalPrice,
                 });
               } else {
                 Alert.alert("선물을 선택해주세요.");

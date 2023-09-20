@@ -70,7 +70,7 @@ export default function FindPassword({ navigation }) {
       {showInput && (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
           <TextInput
-            style={[styles.input, { width: '63%' }]}
+            style={[styles.input, { width: '57%' }]}
             placeholder="인증 번호 5자를 입력해 주세요."
             keyboardType="numeric"
             maxLength={5} // 5자리로 설정
@@ -82,7 +82,7 @@ export default function FindPassword({ navigation }) {
             onPress={handleAuthCode}
           >
             <Text style={[styles.buttonText]}>
-              인증
+              확인
             </Text>
           </TouchableOpacity>
         </View>

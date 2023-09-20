@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 
   minibutton: {
-    width: '15%',
+    width: '20%',
     borderRadius: 5,
     padding: 11,
     backgroundColor: '#46C27D',

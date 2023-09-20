@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
 
   okay: {
     backgroundColor: "#FFBF46",
-    margin: 20,
+    marginHorizontal: 20,
+    marginVertical: 10,
     borderRadius: 10,
     padding: 10,
   },

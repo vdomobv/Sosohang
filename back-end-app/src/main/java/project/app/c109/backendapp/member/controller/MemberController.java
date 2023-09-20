@@ -1,5 +1,6 @@
 package project.app.c109.backendapp.member.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/members")
+@Tag(name = "Template", description = "템플릿 API Document")
 public class MemberController {
 
     private final MemberService memberService;

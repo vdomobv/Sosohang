@@ -14,12 +14,15 @@ import Line from "../../Components/Line/Line";
 import CarouselItem from "../../Components/CarouselItem/CarouselItem";
 import HashTag from "../../Components/HashTag/HashTag";
 import Tabs from "../../Components/Tabs/Tabs";
-
 import CategoryData from "../../Dummys/Main/CategoryData";
 import MainDummy from "../../Dummys/Main/MainDummy";
 import HashTagData from "../../Dummys/Main/HashTagData";
 import Carousel from "../../Components/Carousel/Carousel";
 import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
+import Loading from "../../Components/Loading/Loading";
+
+import { useState, useEffect } from "react";
+import { getCoords, setCoords, storeCoords, removeData } from "../../Utils/Location";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -27,7 +30,29 @@ const hashTags = HashTagData;
 
 export default function Main({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
-  const windwoWidth = Dimensions.get("window").width;
+
+  const [waiting, setWaiting] = useState(true);
+  const [nowCoords, SetNowCoords] = useState({});
+
+  useEffect(() => {
+    const initializeCoords = async () => {
+      const coords = JSON.parse(await getCoords());
+      if (coords) {
+        console.log("coords is");
+        SetNowCoords(coords);
+      } else {
+        console.log("coords isn't");
+        const newCoords = await setCoords();
+        storeCoords(newCoords);
+        SetNowCoords(newCoords);
+      }
+      setWaiting(false);
+    };
+
+    initializeCoords();
+  }, []);
+
+  console.log('nowCoords : ', nowCoords)
 
   state = {
     search: "",
@@ -37,7 +62,7 @@ export default function Main({ navigation }) {
     this.setState({ search });
   };
 
-  return (
+  return (waiting ? <Loading /> :
     <>
       <ScrollView
         style={styles.scrollViewContainer}
@@ -47,7 +72,7 @@ export default function Main({ navigation }) {
           <View style={[styles.location]}>
             <Ionicons
               onPress={() => {
-                navigation.navigate("Map");
+                navigation.navigate("Map", { nowCoords });
               }}
               name="location-sharp"
               color={"#BFBFBF"}
@@ -58,7 +83,12 @@ export default function Main({ navigation }) {
             <CustomSearchBar placeholderText={"원하는 상점을 검색해보세요."} />
           </View>
           <View style={[styles.alarm]}>
-            <Ionicons name="notifications" color={"gold"} size={40} />
+            <Ionicons
+              onPress={() => {
+                // 테스트용으로 만들어둔 것입니당
+                removeData('location');
+                removeData('coords');
+              }} name="notifications" color={"gold"} size={40} />
           </View>
         </View>
         <View style={[styles.banner, { height: windowHeight * 0.12 }]}>

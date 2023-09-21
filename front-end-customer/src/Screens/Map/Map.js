@@ -13,6 +13,9 @@ export default function Map() {
     latitude: 35.1595454,
     longitude: 126.8526012,
   });
+  const [location, setLocation] = useState({});
+  const [district, setDistrict] = useState("");
+  const [street, setStreet] = useState("");
 
   const getLocation = async () => {
     try {
@@ -25,23 +28,32 @@ export default function Map() {
       console.log(coords.latitude, coords.longitude);
 
       setCoords({ latitude, longitude });
-      // setIsLoading(false);
-    } catch (e) {
-      Alert.alert("위치정보를 가져올 수 없습니다.");
-    }
 
-    render(() => {
-      <Loading/>;
-    });
+      const location = await Location.reverseGeocodeAsync(
+        { latitude, longitude },
+        { useGoogleMaps: false }
+      );
+
+      setStreet(location[0].street);
+      setDistrict(location[0].district);
+
+      setIsLoading(false);
+    } catch (e) {
+      console.log(e);
+      Alert.alert("위치정보를 가져올 수 없습니다.");
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     getLocation();
   }, []);
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <View style={styles.container}>
-      <Title title={"지도"} />
+      <Title title={street ? street : district} />
       <MapView
         style={styles.map}
         region={{

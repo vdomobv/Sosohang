@@ -6,9 +6,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    position : 'absolute',
-    zIndex : 2
   },
+
+  image : {
+    width : 100,
+    height : 100
+  }
 });
 
 export default styles

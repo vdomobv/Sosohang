@@ -51,25 +51,21 @@ export const setLocation = async (latitude, longitude) => {
             { useGoogleMaps: false }
         );
 
+        await AsyncStorage.setItem(
+            "location",
+            JSON.stringify(location)
+        );
+
+        return location;
     } catch (e) {
         console.log("SetLocation Error: ", e);
     }
 };
 
-// storeCoords
-export const storeCoords = async (coords) => {
+// storeData
+export const storeData = async (key, data) => {
     try {
-        await AsyncStorage.setItem("coords", JSON.stringify(coords));
-    } catch (e) {
-        console.log("StoreLocation Error: ", e);
-    }
-};
-
-
-// storeLocation
-export const storeLocation = async (coords) => {
-    try {
-        await AsyncStorage.setItem("location", JSON.stringify(location));
+        await AsyncStorage.setItem(key, JSON.stringify(data));
     } catch (e) {
         console.log("StoreLocation Error: ", e);
     }
@@ -81,5 +77,33 @@ export const removeData = async (key) => {
         await AsyncStorage.removeItem(key);
     } catch (e) {
         console.error(e);
+    }
+};
+
+// initializeCoords
+export const initializeCoords = async () => {
+    const coords = JSON.parse(await getCoords());
+    if (coords) {
+        console.log("coords is");
+        return coords;
+    } else {
+        console.log("coords isn't");
+        const newCoords = await setCoords();
+        storeData('coords', newCoords);
+        return newCoords;
+    }
+};
+
+// initializeLocation
+export const initializeLocation = async (latitude, longitude) => {
+    const location = JSON.parse(await getLocation());
+    if (location) {
+        console.log("location is");
+        return location;
+    } else {
+        console.log("location isn't");
+        const newLocation = await setLocation(latitude, longitude);
+        storeData('location', newLocation);
+        return newLocation;
     }
 };

@@ -22,7 +22,7 @@ import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
 import Loading from "../../Components/Loading/Loading";
 
 import { useState, useEffect } from "react";
-import { getCoords, setCoords, storeCoords, removeData } from "../../Utils/Location";
+import { initializeCoords, initializeLocation, removeData } from "../../Utils/Location";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -32,27 +32,21 @@ export default function Main({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
 
   const [waiting, setWaiting] = useState(true);
-  const [nowCoords, SetNowCoords] = useState({});
+  const [coords, SetCoords] = useState({});
+  const [location, setLocation] = useState({});
 
   useEffect(() => {
-    const initializeCoords = async () => {
-      const coords = JSON.parse(await getCoords());
-      if (coords) {
-        console.log("coords is");
-        SetNowCoords(coords);
-      } else {
-        console.log("coords isn't");
-        const newCoords = await setCoords();
-        storeCoords(newCoords);
-        SetNowCoords(newCoords);
-      }
+    const fetchLocation = async () => {
+      const resultCoords = await initializeCoords();
+      SetCoords(resultCoords);
+
+      const resultLocation = await initializeLocation(resultCoords.latitude, resultCoords.longitude);
+      setLocation(resultLocation);
       setWaiting(false);
     };
 
-    initializeCoords();
+    fetchLocation();
   }, []);
-
-  console.log('nowCoords : ', nowCoords)
 
   state = {
     search: "",
@@ -62,6 +56,7 @@ export default function Main({ navigation }) {
     this.setState({ search });
   };
 
+  // console.log(coords, location)
   return (waiting ? <Loading /> :
     <>
       <ScrollView
@@ -72,7 +67,7 @@ export default function Main({ navigation }) {
           <View style={[styles.location]}>
             <Ionicons
               onPress={() => {
-                navigation.navigate("Map", { nowCoords });
+                navigation.navigate("Map", { coords, location });
               }}
               name="location-sharp"
               color={"#BFBFBF"}

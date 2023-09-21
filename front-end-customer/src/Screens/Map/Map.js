@@ -6,16 +6,17 @@ import { useEffect, useState } from "react";
 import Title from "../../Components/Title/Title";
 
 export default function Map({ route }) {
-  const nowCoords = route.params.nowCoords;
+  const [nowCoords, setNowCoords] = useState(route.params.coords);
+  const [nowLocation, setNowLocation] = useState(route.params.location[0]);
 
   return (
     <View style={styles.container}>
-      <Title title={street ? street : district} />
+      <Title title={nowLocation.street ? nowLocation.street : nowLocation.district} />
       <MapView
         style={styles.map}
         region={{
-          latitude: coords.latitude,
-          longitude: coords.longitude,
+          latitude: nowCoords.latitude,
+          longitude: nowCoords.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -23,8 +24,8 @@ export default function Map({ route }) {
       >
         <Marker
           coordinate={{
-            latitude: coords.latitude,
-            longitude: coords.longitude,
+            latitude: nowCoords.latitude,
+            longitude: nowCoords.longitude,
           }}
         />
       </MapView>

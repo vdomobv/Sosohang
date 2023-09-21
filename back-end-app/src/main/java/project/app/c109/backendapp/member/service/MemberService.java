@@ -3,7 +3,7 @@ package project.app.c109.backendapp.member.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.app.c109.backendapp.member.domain.dto.MemberFormDto;
+import project.app.c109.backendapp.member.domain.dto.SignUpFormDto;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.domain.entity.MemberRole;
 import project.app.c109.backendapp.member.repository.MemberRepository;
@@ -22,15 +22,15 @@ public class MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Member createMember(MemberFormDto memberFormDto) {
+    public Member createMember(SignUpFormDto signUpFormDto) {
         // PasswordEncoder를 사용하여 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(memberFormDto.getMemberPassword());
+        String encodedPassword = passwordEncoder.encode(signUpFormDto.getMemberPassword());
 
         // Member 엔터티 생성
         Member member = Member.builder()
-                .memberNickname(memberFormDto.getMemberNickname())
+                .memberNickname(signUpFormDto.getMemberNickname())
                 .memberPassword(encodedPassword) // 암호화된 비밀번호 설정
-                .memberPhone(memberFormDto.getMemberPhone())
+                .memberPhone(signUpFormDto.getMemberPhone())
                 .memberRole(MemberRole.MEMBER)
                 .build();
 

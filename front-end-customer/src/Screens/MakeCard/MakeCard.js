@@ -1,7 +1,8 @@
 import styles from "./styles";
-import { ScrollView, View, Text, Image, TouchableOpacity, TextInput, Alert } from "react-native";
-import React, { useState, useEffect } from "react";
+import { ScrollView, View, Text, Image, TouchableOpacity, TextInput, Alert, Linking } from "react-native";
+import React, { useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
+import * as Contacts from 'expo-contacts';
 import { Ionicons } from "@expo/vector-icons";
 
 import CartProduct from "../../Components/CartProduct/CartProduct";
@@ -11,9 +12,12 @@ export default function MakeCard({ route, navigation }) {
   const selectedProductsArray = Array.from(selectedProducts);
 
   const [selectedButton, setSelectedButton] = useState(null);
-  const [message, setMessage] = useState(""); // 입력된 텍스트를 관리할 상태 변수
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedImage, setSelectedImage] = useState(null); // 선택된 이미지 상태 변수
+  const [message, setMessage] = useState(""); // 입력된 텍스트를 관리할 상태 변수
+  const [contacts, setContacts] = useState([]); // 연락처 데이터를 저장할 상태 변수 추가
+  const [contactName, setContactName] = useState("");
+  const [contactPhoneNumber, setContactPhoneNumber] = useState("");
+
 
   // "+" 버튼을 눌렀을 때 갤러리 열기
   const openImagePicker = async () => {
@@ -58,6 +62,42 @@ export default function MakeCard({ route, navigation }) {
             break;
         }
       }
+    }
+  };
+
+  // 연락처 가져오기 함수
+  const getContacts = async () => {
+    // 연락처 액세스 권한 요청
+    const { status } = await Contacts.requestPermissionsAsync();
+
+    if (status !== 'granted') {
+      Alert.alert('연락처 접근 권한이 필요합니다.', '앱 설정에서 권한을 허용해주세요.');
+      return;
+    }
+    const { data } = await Contacts.getContactsAsync();
+
+    if (data.length > 0) {
+      console.log(data);
+      setContacts(data);
+    } else {
+      Alert.alert('연락처가 없습니다.');
+    }
+  };
+
+  // 연락처 가져오기 버튼을 눌렀을 때 호출
+  const handleGetContacts = () => {
+    // getContacts();
+    Linking.openURL('content://contacts/people/');
+  };
+
+  // 연락처 목록 보여주고 선택한 연락처 처리
+  const handleContactSelection = (selectedContact) => {
+    if (selectedContact) {
+      const { name, phoneNumbers } = selectedContact;
+      const phoneNumber = phoneNumbers[0]?.number || '';
+
+      setContactName(name);
+      setContactPhoneNumber(phoneNumber);
     }
   };
 
@@ -139,16 +179,11 @@ export default function MakeCard({ route, navigation }) {
             />
 
             <View style={[styles.innerBox, { top: 35, height: 200 }]}>
-              <Text style={styles.title}>카메라를 통해 사진을 찍거나, 앨범에서 사진을 선택하세요.</Text>
+              <Text style={styles.title}>+ 버튼을 눌러 핸드폰 앨범의 사진을 선택할 수 있어요.</Text>
               <Image
                 source={selectedImage} // 선택된 이미지 표시
                 style={{ position: 'absolute', width: 330, height: 200 }}
               />
-              {/* {selectedImage && (
-                <Image
-                  source={{ uri: selectedImage }}
-                  style={{ width: '100%', height: 200, resizeMode: 'contain' }} // 이미지 크기 조정
-                /> */}
             </View>
 
             <TextInput
@@ -160,13 +195,10 @@ export default function MakeCard({ route, navigation }) {
               multiline={true} // 여러 줄 입력 가능하도록 설정
             />
 
-            {/* 글자 수 표시 */}
             <Text style={{ position: 'absolute', bottom: 110 }}>
               ({message.length}/100자)
             </Text>
-
           </View>
-
 
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>😊 보내는 사람 👉</Text>
@@ -179,8 +211,7 @@ export default function MakeCard({ route, navigation }) {
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>😍 받는 사람 🖐</Text>
             <TouchableOpacity style={[styles.button, { marginHorizontal: 40, marginBottom: 20 }]}
-            // 연락처 가져오기 기능 구현
-            // onPress={getPhoneNumber}
+              onPress={getContacts}
             >
               <Text style={styles.buttonText}>+ 연락처 가져오기</Text>
             </TouchableOpacity>
@@ -188,26 +219,31 @@ export default function MakeCard({ route, navigation }) {
               <TextInput
                 style={[styles.input, { width: 100 }]}
                 placeholder="이름"
+                value={contactName}
+                onChangeText={(text) => {
+                  setContactName(text); // 이름 입력 시 상태 업데이트
+                }}
               />
               <TextInput
                 style={[styles.input, { width: 220, marginLeft: 10 }]}
                 placeholder="전화번호"
                 keyboardType="numeric"
-                maxLength={11} // 이 부분을 추가하여 최대 길이를 11로 설정
+                maxLength={11}
+                value={contactPhoneNumber}
                 onChangeText={(text) => {
-                  // 입력된 값이 숫자인지 확인
-                  if (/^[0-9]*$/.test(text)) {
-                    // 숫자인 경우에만 상태 업데이트
-                    if (text.length <= 11) {
-                      setPhoneNumber(text);
-                    }
-                  } else {
-                    Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
-                  }
+                  setContactPhoneNumber(text); // 전화번호 입력 시 상태 업데이트
                 }}
               />
             </View>
+            <ScrollView>
+              {contacts.map((contact, index) => (
+                <TouchableOpacity key={index} onPress={() => handleContactSelection(contact)}>
+                  <Text>{contact.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </View>
+
           <View style={styles.subcontainer} >
             <Text style={styles.subtitle}>🎁 상품 내역</Text>
             {renderGroupedProducts()}

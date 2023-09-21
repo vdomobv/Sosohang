@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import Postcode from '@actbase/react-daum-postcode';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
 
 import Title from "../../Components/Title/Title";
 import { geoCoding } from "../../Utils/Location";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Map({ route }) {
   const [nowCoords, setNowCoords] = useState(route.params.coords);
@@ -24,7 +25,12 @@ export default function Map({ route }) {
   return (
     <>
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => { setSearching(true); }}>
+        <TouchableOpacity style={styles.header} onPress={() => { setSearching(true); }}>
+          <Ionicons
+            name="location-sharp"
+            color={"#BFBFBF"}
+            size={40}
+          />
           <Title title={nowLocation} />
         </TouchableOpacity>
         <MapView
@@ -44,6 +50,8 @@ export default function Map({ route }) {
             }}
           />
         </MapView>
+        {!searching && <View style={styles.info} />}
+        {!searching && <Text style={styles.infoText}>상단 주소를 눌러 위치를 바꿔보세요.</Text>}
       </View>
       {searching && <Postcode
         style={{ width: '100%', height: '100%' }}

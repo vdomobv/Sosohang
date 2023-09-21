@@ -13,6 +13,7 @@ export default function Map() {
     latitude: 35.1595454,
     longitude: 126.8526012,
   });
+  const [city, setCity] = useState("");
 
   const getLocation = async () => {
     try {
@@ -25,21 +26,20 @@ export default function Map() {
       console.log(coords.latitude, coords.longitude);
 
       setCoords({ latitude, longitude });
-      // setIsLoading(false);
+      setIsLoading(false);
     } catch (e) {
       Alert.alert("위치정보를 가져올 수 없습니다.");
+      setIsLoading(false);
     }
-
-    render(() => {
-      <Loading/>;
-    });
   };
 
   useEffect(() => {
     getLocation();
   }, []);
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <View style={styles.container}>
       <Title title={"지도"} />
       <MapView

@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
+import { Alert } from "react-native";
 
 // getCoords
 export const getCoords = async () => {
@@ -99,7 +100,11 @@ export const initializeLocation = async (latitude, longitude) => {
     const location = JSON.parse(await getLocation());
     if (location) {
         console.log("location is");
-        return location;
+        if (typeof location === 'string') {
+            return location;
+        } else {
+            return location[0].street ? location[0].street : location[0].district
+        }
     } else {
         console.log("location isn't");
         const newLocation = await setLocation(latitude, longitude);
@@ -107,3 +112,25 @@ export const initializeLocation = async (latitude, longitude) => {
         return newLocation;
     }
 };
+
+// geoCoding
+export const geoCoding = async (address) => {
+    try {
+        await Location.requestForegroundPermissionsAsync();
+        const geocodeResult = await Location.geocodeAsync(address);
+        const latitude = geocodeResult[0].latitude;
+        const longitude = geocodeResult[0].longitude;
+
+        // console.log("GEOCODE RESULT COORDS : ", latitude, longitude);
+        await AsyncStorage.setItem(
+            "coords",
+            JSON.stringify({ latitude, longitude })
+        );
+
+        return { latitude, longitude };
+
+    } catch (e) {
+        console.log(e);
+        Alert.alert('장소 검색을 위해서 위치 접근을 허용해주세요');
+    }
+}

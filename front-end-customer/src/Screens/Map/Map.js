@@ -32,8 +32,8 @@ export default function Map({ route }) {
           region={{
             latitude: nowCoords.latitude,
             longitude: nowCoords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
           }}
           provider={PROVIDER_GOOGLE}
         >

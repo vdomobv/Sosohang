@@ -1,8 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-
+// App.js
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import { useState, useEffect } from "react";
 
 import Main from "./src/Screens/Main/Main";
 import Cart from "./src/Screens/Cart/Cart";
@@ -19,10 +20,40 @@ import Stamp from "./src/Screens/Stamp/Stamp";
 import Dibs from "./src/Screens/Dibs/Dibs";
 import PurchaseHistory from "./src/Screens/PurchaseHistory/PurchaseHistory";
 
+import { getLocation } from "./src/Utils/GetLocation";
+import { setLocation } from "./src/Utils/SetLocation";
+import { getCoords } from "./src/Utils/GetCoords";
+import { setCoords } from "./src/Utils/SetCoords";
+import Loading from "./src/Components/Loading/Loading";
+
 const Stack = createStackNavigator();
 
 export default function App() {
-  return (
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [nowCoords, SetNowCoords] = useState({});
+
+  useEffect(() => {
+    const initializeCoords = async () => {
+      const coords = await getCoords(); // await 사용
+      if (coords) {
+        console.log("coords is");
+        SetNowCoords(coords);
+      } else {
+        console.log("coords isn't");
+        const newCoords = await setCoords(); // await 사용
+        SetNowCoords(newCoords);
+      }
+    };
+
+    initializeCoords();
+
+    console.log("nowCoords : ", nowCoords["latitude"]);
+    console.log("nowCoords :", nowCoords);
+  }, []);
+
+  return appIsReady ? (
+    <Loading />
+  ) : (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Main"

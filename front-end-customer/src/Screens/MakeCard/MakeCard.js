@@ -235,10 +235,10 @@ export default function MakeCard({ route, navigation }) {
                 }}
               />
             </View>
-            <ScrollView>
+            <ScrollView style={{ marginLeft: 53, marginTop: 10 }}>
               {contacts.map((contact, index) => (
                 <TouchableOpacity key={index} onPress={() => handleContactSelection(contact)}>
-                  <Text>{contact.name}</Text>
+                  <Text style={{ marginVertical: 5, fontSize: 20 }}>{contact.name}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>

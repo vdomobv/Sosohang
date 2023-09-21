@@ -1,13 +1,17 @@
+import React from "react";
+import { View, Text, Image } from "react-native";
 import styles from "./styles";
-import { View, Text } from "react-native";
 
-import Tabs from "../../Components/Tabs/Tabs";
+import SubTitle from "../SubTitle/SubTitle"
 
-export default function Loading({ isLoading }) {
+export default function Loading() {
   return (
-        <View style={styles.container}>
-          <Text>너랑나랑</Text>
-        </View>
-     
+    <View style={styles.container}>
+      <Image
+        style={styles.image}
+        source={require("assets/images/sosohang_favicon.png")}
+      />
+      <SubTitle subTitle={"로딩중"} />
+    </View>
   );
 }

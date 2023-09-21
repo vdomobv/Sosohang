@@ -114,7 +114,7 @@ function ItemTable() {
                   editData(index, "productName", e.currentTarget.innerText);
                 }}
                 contentEditable={editableRowIndex === index}
-                suppressContentEditableWarning={true}
+                suppressContentEditableWarning={true}                
               >
                 {item.productName}
               </td>
@@ -122,10 +122,16 @@ function ItemTable() {
                 onClick={() => setEditableRowIndex(index)}
                 onBlur={(e) => {
                   setEditableRowIndex(null);
-                  editData(index, "productPrice", e.currentTarget.innerText);
+                  editData(index, "productPrice", e.currentTarget.innerText + "원");
                 }}
                 contentEditable={editableRowIndex === index}
                 suppressContentEditableWarning={true}
+                onInput={(e) => {
+                  const numExp = /[^0-9]/g;
+                  if (numExp.test(e.target.innerText)) {
+                    e.target.innerText = e.target.innerText.replace(numExp, "");
+                  }
+                }}
               >
                 {item.productPrice}
               </td>
@@ -133,10 +139,18 @@ function ItemTable() {
                 onClick={() => setEditableRowIndex(index)}
                 onBlur={(e) => {
                   setEditableRowIndex(null);
-                  editData(index, "productDcrate", e.currentTarget.innerText);
+                  editData(index, "productDcrate", (e.currentTarget.innerText + " %"));
                 }}
                 contentEditable={editableRowIndex === index}
                 suppressContentEditableWarning={true}
+                onInput={(e) => {
+                  const numExp = /[^0-9.]/g;
+                  if (numExp.test(e.target.innerText)) {
+                    e.target.innerText = e.target.innerText.replace(numExp, "");
+                  }
+                }}
+                value={3}
+
               >
                 {item.productDcrate}
               </td>
@@ -183,6 +197,12 @@ function ItemTable() {
                 }}
                 contentEditable={editableRowIndex === index}
                 suppressContentEditableWarning={true}
+                onInput={(e) => {
+                  const numExp = /[^0-9]/g;
+                  if (numExp.test(e.target.innerText)) {
+                    e.target.innerText = e.target.innerText.replace(numExp, "");
+                  }
+                }}
               >
                 {item.productCount}
               </td>

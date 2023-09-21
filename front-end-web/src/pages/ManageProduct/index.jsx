@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import Header from "../../components/Header";
-import ItemTable from "../../components/ItemTable"
+import EventProductTable from "../../components/EventProductTable"
 import Wrapper from "./styles";
 
 
@@ -9,7 +9,7 @@ function ManageProduct() {
     <div>        
       <Header />
       <Wrapper>
-        <ItemTable />          
+        <EventProductTable />          
       </Wrapper>
     </div>
     );

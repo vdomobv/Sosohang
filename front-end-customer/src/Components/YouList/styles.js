@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   container: {
     height : 130,
     borderColor: "white",
-    margin: 10,
+    margin: 5,
+    marginLeft: 45,
   },
 
   youContainer: {
@@ -12,27 +13,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  name: {
-    // fontSize: 18,
-    // fontWeight: "bold",
-    // textAlign: "left",
+  imageContainer: {
+    height : 90,
+    width: 90,
+    borderStyle: "solid",
+    borderRadius: 100,
+    borderColor: "lightgrey",
+    borderWidth: 1,
   },
 
-  // imageContainer: {
-  //   height : 70,
-  //   width: 70,
-  //   backgroundColor: "#E9EEE8",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   borderRadius: 10,
-  //   paddingVertical : 5,
-  //   paddingHorizontal : 0
-  // },
+  image: {
+    height: 85,
+    width: 85,
+    borderRadius: 100,
+  },
 
-  // image: {
-  //   height: 50,
-  //   width: 50,
-  // },
+  name: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: 25,
+  },
+
 });
 
 export default styles;

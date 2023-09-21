@@ -7,7 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Main from "./src/Screens/Main/Main";
 import Cart from "./src/Screens/Cart/Cart";
 import MakeCard from "./src/Screens/MakeCard/MakeCard";
-import YouAndMe from "./src/Screens/YouAndME/YouAndMe";
+import YouAndMe from "./src/Screens/YouAndMe/YouAndMe";
 import MyGift from "./src/Screens/MyGift/MyGift";
 import MyPage from "./src/Screens/MyPage/MyPage";
 import SignUp from "./src/Screens/SignUp/SignUp";

@@ -58,6 +58,7 @@ function SignUp() {
   const [closeFriday, setCloseFriday] = useState(false); // 휴무일 - 금요일
   const [closeSaturday, setCloseSaturday] = useState(false); // 휴무일 - 토요일
   const [closeSunday, setCloseSunday] = useState(false); // 휴무일 - 일요일
+  const [closeDay, setCloseDay] = useState(false); // 휴무일 - 기타
 
   // 사업자등록번호 유효성 검사
   const regNumCheck = (regNum) => {
@@ -650,7 +651,7 @@ function SignUp() {
             </div>
             <div>
               <Form.Label>상점 휴무일</Form.Label>
-              <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ display: "flex", flexDirection: "row", alignContent:"space-evenly"}}>
                 <ToggleButton
                   id="close-monday-toggle-check"
                   type="checkbox"
@@ -714,6 +715,23 @@ function SignUp() {
                 >
                   일요일
                 </ToggleButton>
+                <InputGroup style={{width:"350px"}}>
+                  <ToggleButton
+                    id="close-day-toggle-check"
+                    type="checkbox"
+                    variant="outline-primary"
+                    checked={closeDay}
+                    onChange={(e) => setCloseDay(e.currentTarget.checked)}
+                    style={{borderRadius:"5%"}}
+                  >
+                    기타
+                  </ToggleButton>
+                  <Form.Control
+                    placeholder="휴무일에 대한 정보를 입력해주세요"
+                    aria-label="휴무일에 대한 정보를 입력해주세요"
+                    disabled={!closeDay}
+                  />
+                </InputGroup>
               </div>
             </div>
             <div>
@@ -721,7 +739,7 @@ function SignUp() {
               <InputGroup>
                 <Form.Control
                   placeholder="상점 홈페이지"
-                  aria-label="storeURL"
+                  aria-label="상점 홈페이지를 입력하세요."
                 />
               </InputGroup>
             </div>

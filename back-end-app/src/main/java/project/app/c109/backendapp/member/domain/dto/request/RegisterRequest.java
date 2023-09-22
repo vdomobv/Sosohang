@@ -1,4 +1,4 @@
-package project.app.c109.backendapp.member.domain.dto;
+package project.app.c109.backendapp.member.domain.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +9,7 @@ import javax.validation.constraints.Size;
 
 @Setter
 @Getter
-public class SignUpFormDto {
-
+public class RegisterRequest {
     @NotBlank(message = "닉네임을 입력하세요.")
     private String memberNickname;
 
@@ -21,5 +20,4 @@ public class SignUpFormDto {
     @NotBlank(message = "비밀번호를 입력하세요.")
     @Size(min = 8, message = "비밀번호는 최소 8자 이상이어야 합니다.")
     private String memberPassword;
-
 }

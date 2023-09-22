@@ -1,14 +1,21 @@
 package project.app.c109.backendapp.member.service;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.app.c109.backendapp.member.domain.dto.SignUpFormDto;
+import project.app.c109.backendapp.config.security.jwt.JwtUtils;
+import project.app.c109.backendapp.member.domain.dto.request.LoginRequest;
+import project.app.c109.backendapp.member.domain.dto.request.RegisterRequest;
+import project.app.c109.backendapp.member.domain.dto.response.LoginResponse;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.domain.entity.MemberRole;
 import project.app.c109.backendapp.member.repository.MemberRepository;
 
-import java.util.Optional;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @Transactional
@@ -16,38 +23,41 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
     }
 
-    public Member createMember(SignUpFormDto signUpFormDto) {
-        // PasswordEncoder를 사용하여 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(signUpFormDto.getMemberPassword());
+    public Member register(RegisterRequest registerRequest) {
+        if (memberRepository.existsByMemberPhone(registerRequest.getMemberPhone())) {
+            throw new EntityExistsException("Phone number already in use.");
+        }
 
-        // Member 엔터티 생성
         Member member = Member.builder()
-                .memberNickname(signUpFormDto.getMemberNickname())
-                .memberPassword(encodedPassword) // 암호화된 비밀번호 설정
-                .memberPhone(signUpFormDto.getMemberPhone())
+                .memberNickname(registerRequest.getMemberNickname())
+                .memberPassword(passwordEncoder.encode(registerRequest.getMemberPassword()))
+                .memberPhone(registerRequest.getMemberPhone())
                 .memberRole(MemberRole.MEMBER)
                 .build();
 
-        // 생성된 회원 엔터티를 저장
-        return saveMember(member);
-    }
-
-    public Member saveMember(Member member) {
-        validateDuplicateMember(member);
         return memberRepository.save(member);
     }
 
-    private void validateDuplicateMember(Member member) {
-        Optional<Member> findMember = memberRepository.findByMemberPhone(member.getMemberPhone());
-        if (findMember.isPresent()) {
-            throw new IllegalStateException("이미 가입된 회원입니다.");
-        }
-    }
-}
+    public LoginResponse login(LoginRequest loginRequest) {
+        Member member = memberRepository.findByMemberPhone(loginRequest.getMemberPhone())
+                .orElseThrow(() -> new EntityNotFoundException("Invalid credentials."));
 
+        if (!passwordEncoder.matches(loginRequest.getMemberPassword(), member.getMemberPassword())) {
+            throw new BadCredentialsException("Invalid credentials.");
+        }
+
+        List<String> roles = Collections.singletonList(member.getMemberRole().toString()); // 역할 정보 추가
+        String token = jwtUtils.generateToken(member.getMemberPhone(), roles); // 역할 정보를 함께 전달
+
+        return new LoginResponse(token, member);
+    }
+
+}

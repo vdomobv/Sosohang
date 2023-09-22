@@ -6,14 +6,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import project.app.c109.backendapp.member.domain.dto.SignUpFormDto;
+import project.app.c109.backendapp.member.domain.dto.request.LoginRequest;
+import project.app.c109.backendapp.member.domain.dto.request.RegisterRequest;
+import project.app.c109.backendapp.member.domain.dto.response.LoginResponse;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.service.MemberService;
 
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/api/v1/member")
 @Tag(name = "MEMBER", description = "MEMBER API DOC")
 public class MemberController {
 
@@ -23,32 +28,39 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    /**
-     * 회원 가입 요청 처리
-     *
-     * @param signUpFormDto 회원 가입 폼 데이터
-     * @param bindingResult 입력 데이터 유효성 검사 결과
-     * @return 회원 가입 결과 및 회원 정보
-     */
-    @PostMapping("/signup")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpFormDto signUpFormDto, BindingResult bindingResult) {
-        // 입력 데이터 유효성 검사
-        if (bindingResult.hasErrors()) {
-            // BindingResult에서 오류 정보를 가져와서 응답으로 전달
-            StringBuilder errorMessage = new StringBuilder("회원 가입 요청 실패: ");
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessage.append(fieldError.getDefaultMessage()).append("; ");
-            }
-            return ResponseEntity.badRequest().body(errorMessage.toString());
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            return handleValidationErrors(result);
         }
-        // Member 엔터티 생성 및 저장
-        try {
-            Member member = memberService.createMember(signUpFormDto); // createMember 메서드 호출
-            System.out.println("등록된 Member 정보: " + member);
-            return ResponseEntity.status(HttpStatus.CREATED).body(member);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body("회원 가입 요청 실패: " + e.getMessage());
-        }
+
+        Member member = memberService.register(registerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(member); // 201 Created for resource creation
     }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            return handleValidationErrors(result);
+        }
+
+        LoginResponse response = memberService.login(loginRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    private ResponseEntity<?> handleValidationErrors(BindingResult result) {
+        StringBuilder errorMsg = new StringBuilder();
+        for (FieldError error : result.getFieldErrors()) {
+            errorMsg.append(error.getDefaultMessage()).append("\n");
+        }
+        return ResponseEntity.badRequest().body(errorMsg.toString().trim());
+    }
+
+    @GetMapping("/jwt_test")
+    public ResponseEntity<String> testEndpoint() {
+        return ResponseEntity.ok("토큰이 있는 사용자");
+    }
+
+
+
+
 }

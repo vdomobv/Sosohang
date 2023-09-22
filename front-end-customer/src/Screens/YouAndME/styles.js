@@ -6,14 +6,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 25,
   },
-
-  title: {
-    fontSize: 21,
-    marginTop: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
   
   youList: {
     marginVertical: 20,

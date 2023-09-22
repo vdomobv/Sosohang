@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import axios from "axios";
 import styles from "./styles";
 
 export default function SignUp({ navigation }) {
   const [loginPhoneNumber, setLoginPhoneNumber] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  const [phoneNumber, setPhoneNumber] = useState("");
-
   const [authCode, setAuthCode] = useState("");
   const [showInput, setShowInput] = useState(false);
 
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
@@ -23,14 +23,31 @@ export default function SignUp({ navigation }) {
         loginPassword.match(/^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/)
       ) {
         // 로그인 로직 작성
+        axios
+          .post("http://localhost:8080/api/v1/member/login", {
+              memberPhone: loginPhoneNumber,
+              memberPassword: loginPassword,
+          })
+          .then((response) => {
+            // 로그인 성공 시 처리
+            if (response.data.token) {
+              Alert.alert("알림", "로그인 성공!");
+              console.log("로그인 성공");
+            } else {
+              Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");
+            }
+          })
+          .catch((error) => {
+            // 로그인 실패 시 처리
+            Alert.alert("알림", "로그인에 실패하였습니다. 다시 시도해 주세요.");
+            console.log(error)
+          });
       } else {
-        // 비밀번호가 조건에 맞지 않을 경우 경고창 표시
         Alert.alert(
           "알림", "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
         );
       }
     } else {
-      // 전화번호가 11자리가 아닐 경우 경고창 표시
       Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
     }
   };
@@ -44,6 +61,8 @@ export default function SignUp({ navigation }) {
   const handleAuth = () => {
     if (phoneNumber.length === 11) {
       // 인증 번호 발송 로직 작성
+
+
       // 인증 번호 발송 후, input 창(인증 번호 입력 창)을 표시하도록 상태 업데이트
       setShowInput(true);
       // 인증 번호를 발송하도록 구현
@@ -67,11 +86,9 @@ export default function SignUp({ navigation }) {
   };
 
   const handleSignUp = () => {
-    // 전화번호가 11자리인지 확인
     if (phoneNumber.length === 11) {
       // 인증 완료했는지 확인
       if (authCode === showInput) {
-        // 비밀번호가 조건에 맞는지 확인
         if (
           password.match(/^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/)
         ) {
@@ -81,23 +98,40 @@ export default function SignUp({ navigation }) {
             if (nickname.length >= 2 && nickname.length <= 10) {
               // 비밀번호와 confirmPassword가 일치하는지 확인
               if (password === confirmPassword) {
-                // 여기에서 회원가입 로직 작성
-                // 예: Firebase를 사용하여 회원가입 요청을 보냅니다.
+                // 회원가입 로직 작성
+                axios
+                  .post("http://localhost:8080/api/v1/member/register", {
+                      memberNickname: nickname,
+                      memberPhone: phoneNumber,
+                      memberPassword: confirmPassword,
+                  })
+                  .then((response) => {
+                    // 회원가입 성공 시 처리
+                    if (response.data.success) {
+                      Alert.alert("알림", response.data.message);
+                    } else {
+                      Alert.alert("알림", response.data.message);
+                      // Alert.alert("알림", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
+                    }
+                  })
+                  .catch((error) => {
+                    // 회원가입 실패 시 처리
+                    Alert.alert("알림", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
+                    console.log(error);
+                  });
               } else {
                 Alert.alert("알림", "비밀번호가 일치하지 않습니다.");
               }
             } else {
-              // 닉네임 길이가 2글자 미만 또는 10글자를 초과할 경우 경고창 표시
               Alert.alert("알림", "닉네임은 2~10글자를 입력해 주세요.");
             }
           } else {
-            // confirmPassword가 비어있을 경우 경고창 표시
             Alert.alert("알림", "비밀번호를 한 번 더 입력해 주세요.");
           }
         } else {
-          // 비밀번호가 조건에 맞지 않을 경우 경고창 표시
           Alert.alert(
-            "알림", "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
+            "알림",
+            "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
           );
         }
       } else {
@@ -178,7 +212,7 @@ export default function SignUp({ navigation }) {
           value={phoneNumber}
         />
         <TouchableOpacity
-          style={[styles.minibutton]}
+          style={[styles.miniButton]}
           onPress={handleAuth}
         >
           <Text style={[styles.buttonText]}>
@@ -199,7 +233,7 @@ export default function SignUp({ navigation }) {
             value={authCode}
           />
           <TouchableOpacity
-            style={[styles.minibutton]}
+            style={[styles.miniButton]}
             onPress={handleAuthCode}
           >
             <Text style={[styles.buttonText]}>

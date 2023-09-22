@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  cardimage: {
+  cardImage: {
     alignItems: 'center', // 가로 중앙 정렬
     marginTop: 10,
   },

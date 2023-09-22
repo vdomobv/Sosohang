@@ -6,6 +6,17 @@ import ProductModalDelete from "../../components/ProductModalDelete";
 import axios from "axios"
 
 function ProductTableActive() {
+ useEffect(() => {
+  axios
+    .get("http://localhost:8080/api/owners/products")
+    .then((res) => {
+      console.log(res.data)
+    })
+    .catch(() => {
+      console.error();
+    })
+ })
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);

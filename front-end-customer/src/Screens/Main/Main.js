@@ -22,7 +22,13 @@ import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
 import Loading from "../../Components/Loading/Loading";
 
 import { useState, useEffect } from "react";
-import { initializeCoords, initializeLocation, removeData } from "../../Utils/Location";
+import { useIsFocused } from "@react-navigation/native";
+
+import {
+  initializeCoords,
+  initializeLocation,
+  removeData,
+} from "../../Utils/Location";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -34,19 +40,34 @@ export default function Main({ navigation }) {
   const [waiting, setWaiting] = useState(true);
   const [coords, setCoords] = useState({});
   const [location, setLocation] = useState({});
+  const isFocused = useIsFocused();
+  const fetchLocation = async () => {
+    const resultCoords = await initializeCoords();
+    setCoords(resultCoords);
+
+    const resultLocation = await initializeLocation(
+      resultCoords.latitude,
+      resultCoords.longitude
+    );
+    setLocation(resultLocation);
+    setWaiting(false);
+  };
 
   useEffect(() => {
-    const fetchLocation = async () => {
-      const resultCoords = await initializeCoords();
-      setCoords(resultCoords);
+    fetchLocation();
+  }, [isFocused]);
 
-      const resultLocation = await initializeLocation(resultCoords.latitude, resultCoords.longitude);
-      setLocation(resultLocation);
-      setWaiting(false);
-    };
-
+  useEffect(() => {
     fetchLocation();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("beforeRemove", (e) => {
+      const routeName = e.data.state.routeNames[e.data.state.index];
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   state = {
     search: "",
@@ -57,7 +78,9 @@ export default function Main({ navigation }) {
   };
 
   // console.log(coords, location)
-  return (waiting ? <Loading /> :
+  return waiting ? (
+    <Loading />
+  ) : (
     <>
       <ScrollView
         style={styles.scrollViewContainer}
@@ -81,9 +104,13 @@ export default function Main({ navigation }) {
             <Ionicons
               onPress={() => {
                 // 테스트용으로 만들어둔 것입니당
-                removeData('location');
-                removeData('coords');
-              }} name="notifications" color={"gold"} size={40} />
+                removeData("location");
+                removeData("coords");
+              }}
+              name="notifications"
+              color={"gold"}
+              size={40}
+            />
           </View>
         </View>
         <View style={[styles.banner, { height: windowHeight * 0.12 }]}>

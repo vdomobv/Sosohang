@@ -33,6 +33,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	//Zxing
+	implementation 'com.google.zxing:core:3.4.1'
+	implementation 'com.google.zxing:javase:3.4.1'
+
 	//SWAGGER
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
 

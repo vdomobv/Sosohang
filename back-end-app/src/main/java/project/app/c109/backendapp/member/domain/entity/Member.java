@@ -20,6 +20,7 @@ public class Member {
     @Column(length = 50)
     private String memberNickname;
 
+    @Setter
     @Column(length = 200)
     private String memberPassword;
 
@@ -28,6 +29,5 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
-
 
 }

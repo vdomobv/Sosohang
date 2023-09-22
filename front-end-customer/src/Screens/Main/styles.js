@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     backgroundColor: "white",
     height: "100%",
-    marginTop : 25
+    marginTop: 25,
   },
 
   banner: {
@@ -13,13 +13,25 @@ const styles = StyleSheet.create({
   },
 
   headBox: {
-    marginHorizontal : 10,
+    marginHorizontal: 10,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
 
   location: {
     alignItems: "center",
+    flex: 2,
+    flexDirection: "row",
+  },
+
+  alarm: {
+    flex: 1,
+    alignItems: "flex-end",
+  },
+
+  searchbar: {
+    flex: 6,
   },
 
   categories: {
@@ -62,12 +74,10 @@ const styles = StyleSheet.create({
   },
 
   intro: {
-    marginVertical : 25,
+    marginVertical: 25,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
-
-  
 });
 
 export default styles;

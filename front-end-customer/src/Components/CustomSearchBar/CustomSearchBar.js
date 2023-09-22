@@ -1,9 +1,11 @@
 import styles from "./styles";
 import { SearchBar } from "@rneui/themed";
 
-export default function CustomSearchBar({ placeholderText}) {
+export default function CustomSearchBar({ placeholderText }) {
   return (
     <SearchBar
+      containerStyle={styles.containerStyle}
+      inputContainerStyle={styles.inputContainerStyle}
       style={[styles.searchbar]}
       lightTheme
       platform="android"
@@ -11,8 +13,7 @@ export default function CustomSearchBar({ placeholderText}) {
       clearIcon={false}
       cancelIcon={false}
       placeholder={placeholderText}
-      inputStyle={{ marginHorizontal: 0, width: "100%" }}
+      inputStyle={styles.inputStyle}
     ></SearchBar>
-
   );
 }

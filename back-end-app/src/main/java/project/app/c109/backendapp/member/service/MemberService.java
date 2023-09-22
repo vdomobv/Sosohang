@@ -54,8 +54,8 @@ public class MemberService {
             throw new BadCredentialsException("Invalid credentials.");
         }
 
-        List<String> roles = Collections.singletonList(member.getMemberRole().toString()); // 역할 정보 추가
-        String token = jwtUtils.generateToken(member.getMemberPhone(), roles); // 역할 정보를 함께 전달
+        List<String> roles = Collections.singletonList(member.getMemberRole().toString());
+        String token = jwtUtils.generateToken(member.getMemberPhone(), roles);
 
         return new LoginResponse(token, member);
     }

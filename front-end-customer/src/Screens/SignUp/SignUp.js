@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import axios from "axios";
 import styles from "./styles";
 
 export default function SignUp({ navigation }) {
   const [loginPhoneNumber, setLoginPhoneNumber] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  const [phoneNumber, setPhoneNumber] = useState("");
-
   const [authCode, setAuthCode] = useState("");
   const [showInput, setShowInput] = useState(false);
 
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
@@ -23,6 +23,22 @@ export default function SignUp({ navigation }) {
         loginPassword.match(/^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/)
       ) {
         // 로그인 로직 작성
+        axios
+          .post("http://localhost:8080/api/v1/member/login", {
+            memberPhone: loginPhoneNumber,
+            memberPassword: loginPassword,
+          })
+          .then((response) => {
+            // 로그인 성공 시 처리
+            Alert.alert("알림", response.data.message);
+            // 다른 화면으로 이동 또는 다른 작업 수행
+            console.log(response)
+          })
+          .catch((error) => {
+            // 로그인 실패 시 처리
+            Alert.alert("알림", "로그인에 실패하였습니다. 다시 시도해 주세요.");
+            console.log(error)
+          });
       } else {
         // 비밀번호가 조건에 맞지 않을 경우 경고창 표시
         Alert.alert(
@@ -44,6 +60,8 @@ export default function SignUp({ navigation }) {
   const handleAuth = () => {
     if (phoneNumber.length === 11) {
       // 인증 번호 발송 로직 작성
+
+
       // 인증 번호 발송 후, input 창(인증 번호 입력 창)을 표시하도록 상태 업데이트
       setShowInput(true);
       // 인증 번호를 발송하도록 구현
@@ -81,8 +99,22 @@ export default function SignUp({ navigation }) {
             if (nickname.length >= 2 && nickname.length <= 10) {
               // 비밀번호와 confirmPassword가 일치하는지 확인
               if (password === confirmPassword) {
-                // 여기에서 회원가입 로직 작성
-                // 예: Firebase를 사용하여 회원가입 요청을 보냅니다.
+                // 회원가입 로직 작성
+                axios
+                  .post("http://localhost:8080/api/v1/member/register", {
+                    memberNickname: nickname,
+                    memberPhone: phoneNumber,
+                    memberPassword: confirmPassword,
+                  })
+                  .then((response) => {
+                    // 회원가입 성공 시 처리
+                    Alert.alert("알림", response.data.message);
+                    // 로그인 화면으로 이동 또는 다른 작업 수행
+                  })
+                  .catch((error) => {
+                    // 회원가입 실패 시 처리
+                    Alert.alert("알림", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
+                  });
               } else {
                 Alert.alert("알림", "비밀번호가 일치하지 않습니다.");
               }
@@ -97,7 +129,8 @@ export default function SignUp({ navigation }) {
         } else {
           // 비밀번호가 조건에 맞지 않을 경우 경고창 표시
           Alert.alert(
-            "알림", "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
+            "알림",
+            "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
           );
         }
       } else {

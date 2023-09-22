@@ -1,6 +1,7 @@
 import styles from "./styles";
 import { ScrollView, View, Text, TouchableOpacity } from "react-native";
 
+import Title from "../../Components/Title/Title";
 import Tabs from "../../Components/Tabs/Tabs";
 import YouList from "../../Components/YouList/YouList";
 
@@ -17,7 +18,7 @@ export default function YouAndMe({ navigation }) {
     <>
       <ScrollView>
         <View style={styles.container}>
-          <Text style={styles.title}>너랑나랑</Text>
+        <Title title={"너랑나랑"} />
           <View>
           {toNameData.map((data, index) => {
               return (

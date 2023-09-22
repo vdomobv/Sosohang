@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 
   day: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -72,14 +72,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 35,
     width: 250,
-    marginLeft: 95,
-    marginBottom: 10,
+    marginLeft: 65,
+    marginVertical: 10,
     padding: 5,
   },
 
   cardimage: {
     alignItems: 'center', // 가로 중앙 정렬
-    marginTop: 5,
   },
 
   innerBox: {
@@ -94,6 +93,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
+  messageText: {
+
+  },
+
   innerInput: { 
     top: 178, 
     height: 130, 
@@ -102,13 +105,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
 
-  input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    padding: 8,
-    paddingLeft: 15,
-  },
+  // input: {
+  //   borderWidth: 1,
+  //   borderColor: 'gray',
+  //   borderRadius: 5,
+  //   padding: 8,
+  //   paddingLeft: 15,
+  // },
   
 });
 

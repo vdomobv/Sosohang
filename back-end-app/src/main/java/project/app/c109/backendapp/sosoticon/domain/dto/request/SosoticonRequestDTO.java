@@ -1,58 +1,17 @@
-package project.app.c109.backendapp.sosoticon.domain.entity;
+package project.app.c109.backendapp.sosoticon.domain.dto.request;
 
-import javax.persistence.*;
+public class SosoticonRequestDTO {
 
-@Entity
-@Table(name = "sosoticon")
-public class Sosoticon {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sosoticon_seq")
-    private Long sosoticonSeq;
-
-    @Column(name = "member_seq")
     private Long memberSeq;
-
-    @Column(name = "category_seq")
     private Long categorySeq;
-
-    @Column(name = "order_id")
     private Long orderId;
-
-    @Column(name = "sosoticon_taker")
     private String sosoticonTaker;
-
-    @Column(name = "sosoticon_text")
     private String sosoticonText;
-
-    @Column(name = "sosoticon_audio")
     private String sosoticonAudio;
-
-    @Column(name = "sosoticon_image")
     private String sosoticonImage;
-
-    @Column(name = "sosoticon_code")
     private String sosoticonCode;
-
-    @Column(name = "sosoticon_status")
     private Integer sosoticonStatus;
-
-    @Column(name = "sosoticon_value")
     private Integer sosoticonValue;
-
-    // Default constructor
-    public Sosoticon() {}
-
-    // Getter and Setter methods
-
-    public Long getSosoticonSeq() {
-        return sosoticonSeq;
-    }
-
-    public void setSosoticonSeq(Long sosoticonSeq) {
-        this.sosoticonSeq = sosoticonSeq;
-    }
 
     public Long getMemberSeq() {
         return memberSeq;

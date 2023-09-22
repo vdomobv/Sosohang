@@ -46,15 +46,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 
-  title: {
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-
-  subtitle: {
-    fontSize: 16,
-  },
-
   carouselContainer: {
     flexDirection: "row",
     marginVertical: 10,

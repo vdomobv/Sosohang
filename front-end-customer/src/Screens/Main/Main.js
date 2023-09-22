@@ -1,3 +1,4 @@
+// components
 import {
   View,
   Image,
@@ -11,38 +12,42 @@ import {
 } from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
+import { Tooltip } from "@rneui/themed";
 
 import Category from "../../Components/Category/Category";
 import Line from "../../Components/Line/Line";
 import CarouselItem from "../../Components/CarouselItem/CarouselItem";
 import HashTag from "../../Components/HashTag/HashTag";
 import Tabs from "../../Components/Tabs/Tabs";
-import CategoryData from "../../Dummys/Main/CategoryData";
-import MainDummy from "../../Dummys/Main/MainDummy";
-import HashTagData from "../../Dummys/Main/HashTagData";
 import Carousel from "../../Components/Carousel/Carousel";
 import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
 import Loading from "../../Components/Loading/Loading";
+import CustomTooltip from "../../Components/CustomTooltips/CustomTooltips";
 
+// dummys
+import AlarmDummy from "../../Dummys/Main/AlarmDummy";
+import CategoryData from "../../Dummys/Main/CategoryData";
+import MainDummy from "../../Dummys/Main/MainDummy";
+import HashTagData from "../../Dummys/Main/HashTagData";
+
+// utils
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 
-import {
-  initializeCoords,
-  initializeLocation,
-  removeData,
-} from "../../Utils/Location";
+import { initializeCoords, initializeLocation } from "../../Utils/Location";
+import Alarm from "../../Components/Alarm/Alarm";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
 const hashTags = HashTagData;
+const alarmDummy = AlarmDummy;
 
 export default function Main({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
-
   const [waiting, setWaiting] = useState(true);
   const [coords, setCoords] = useState({});
   const [location, setLocation] = useState({});
+  const [openTooltip, setOpenTooltip] = useState(false);
   const isFocused = useIsFocused();
 
   const fetchLocation = async () => {
@@ -69,9 +74,11 @@ export default function Main({ navigation }) {
     search: "",
   };
 
-  updateSearch = (search) => {
+  const updateSearch = (search) => {
     this.setState({ search });
   };
+
+  const alarms = alarmDummy.map((data, index) => <Alarm key={index} data={data} />);
 
   return waiting ? (
     <Loading />
@@ -103,18 +110,14 @@ export default function Main({ navigation }) {
                   placeholderText={"원하는 상점을 검색해보세요."}
                 />
               </View>
-              <View style={[styles.alarm]}>
-                <Ionicons
-                  onPress={() => {
-                    // 테스트용으로 만들어둔 것입니당
-                    removeData("location");
-                    removeData("coords");
-                  }}
-                  name="notifications"
-                  color={"gold"}
-                  size={35}
-                />
-              </View>
+              <CustomTooltip
+                info={
+                  <Ionicons name="notifications" color={"gold"} size={35} />
+                }
+                contents={alarms}
+                openTooltip={openTooltip}
+                customStyles={styles.alarm}
+              />
             </View>
             <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
               <Text style={{ color: "white", textAlign: "center" }}>

@@ -8,6 +8,7 @@ import Main from "./src/Screens/Main/Main";
 import Cart from "./src/Screens/Cart/Cart";
 import MakeCard from "./src/Screens/MakeCard/MakeCard";
 import YouAndMe from "./src/Screens/YouAndMe/YouAndMe";
+import YouAndMeStory from "./src/Screens/YouAndMeStory/YouAndMeStory";
 import MyGift from "./src/Screens/MyGift/MyGift";
 import MyPage from "./src/Screens/MyPage/MyPage";
 import SignUp from "./src/Screens/SignUp/SignUp";
@@ -32,6 +33,7 @@ export default function App() {
         <Stack.Screen name="Cart" component={Cart} />
         <Stack.Screen name="MakeCard" component={MakeCard} />
         <Stack.Screen name="YouAndMe" component={YouAndMe} />
+        <Stack.Screen name="YouAndMeStory" component={YouAndMeStory} />
         <Stack.Screen name="MyGift" component={MyGift} />
         <Stack.Screen name="MyPage" component={MyPage} />
         <Stack.Screen name="SignUp" component={SignUp} />

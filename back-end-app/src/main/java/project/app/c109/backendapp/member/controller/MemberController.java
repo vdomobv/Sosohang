@@ -62,6 +62,41 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/register/phone-check")
+    public ResponseEntity<Map<String, String>> handlePhoneVerification(@RequestParam String memberPhone) {
+        String authCode = memberService.handlePhoneVerification(memberPhone);
+
+        Map<String, String> response = new HashMap<>();
+
+        if (authCode != null) {
+            response.put("status", "success");
+            response.put("authCode", authCode);  // 실제 서비스에서는 이 코드를 클라이언트에게 노출시키지 않아야 함
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.put("status", "error");
+            response.put("message", "Phone number already in use.");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("/register/verify-code")
+    public ResponseEntity<Map<String, String>> verifyAuthCode(@RequestParam String memberPhone,
+                                                              @RequestParam String authCode) {
+        boolean isVerified = memberService.verifyAuthCode(memberPhone, authCode);
+
+        Map<String, String> response = new HashMap<>();
+
+        if (isVerified) {
+            response.put("status", "success");
+            response.put("message", "The authentication code is valid.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.put("status", "error");
+            response.put("message", "The authentication code is invalid or expired.");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/login")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "로그인 성공",
@@ -89,6 +124,52 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("{\"error\": \"Invalid credentials.\"}");
         }
+    }
+
+    @PostMapping("/password/phone-check")
+    public ResponseEntity<Map<String, String>> handlePhoneCheckForPassword(@RequestParam String memberPhone) {
+        String authCode = memberService.handlePhoneVerificationForPasswordReset(memberPhone);
+        Map<String, String> response = new HashMap<>();
+
+        if (authCode != null) {
+            response.put("status", "success");
+            response.put("authCode", authCode); // 실제 서비스에서는 이 코드를 클라이언트에게 노출시키지 않아야 함
+            return new ResponseEntity<>(response, HttpStatus.CREATED); // 201
+        } else {
+            response.put("status", "error");
+            response.put("message", "The phone number is not registered.");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); // 400
+        }
+    }
+
+    @PostMapping("/password/verify-code")
+    public ResponseEntity<Map<String, String>> verifyAuthCodeForPasswordReset(@RequestParam String memberPhone,
+                                                                              @RequestParam String authCode) {
+        boolean isVerified = memberService.verifyAuthCode(memberPhone, authCode);
+
+        Map<String, String> response = new HashMap<>();
+
+        if (isVerified) {
+            response.put("status", "success");
+            response.put("message", "The authentication code is valid.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            response.put("status", "error");
+            response.put("message", "The authentication code is invalid or expired.");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/password/change")
+    public ResponseEntity<Map<String, String>> changePassword(@RequestParam String memberPhone,
+                                                              @RequestParam String newPassword) {
+        memberService.changePassword(memberPhone, newPassword);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Password has been successfully changed.");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     private ResponseEntity<?> handleValidationErrors(BindingResult result) {

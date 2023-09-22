@@ -25,14 +25,17 @@ export default function SignUp({ navigation }) {
         // 로그인 로직 작성
         axios
           .post("http://localhost:8080/api/v1/member/login", {
-            memberPhone: loginPhoneNumber,
-            memberPassword: loginPassword,
+              memberPhone: loginPhoneNumber,
+              memberPassword: loginPassword,
           })
           .then((response) => {
             // 로그인 성공 시 처리
-            Alert.alert("알림", response.data.message);
-            // 다른 화면으로 이동 또는 다른 작업 수행
-            console.log(response)
+            if (response.data.token) {
+              Alert.alert("알림", "로그인 성공!");
+              console.log("로그인 성공");
+            } else {
+              Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");
+            }
           })
           .catch((error) => {
             // 로그인 실패 시 처리
@@ -40,13 +43,11 @@ export default function SignUp({ navigation }) {
             console.log(error)
           });
       } else {
-        // 비밀번호가 조건에 맞지 않을 경우 경고창 표시
         Alert.alert(
           "알림", "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
         );
       }
     } else {
-      // 전화번호가 11자리가 아닐 경우 경고창 표시
       Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
     }
   };
@@ -85,11 +86,9 @@ export default function SignUp({ navigation }) {
   };
 
   const handleSignUp = () => {
-    // 전화번호가 11자리인지 확인
     if (phoneNumber.length === 11) {
       // 인증 완료했는지 확인
       if (authCode === showInput) {
-        // 비밀번호가 조건에 맞는지 확인
         if (
           password.match(/^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/)
         ) {
@@ -102,32 +101,34 @@ export default function SignUp({ navigation }) {
                 // 회원가입 로직 작성
                 axios
                   .post("http://localhost:8080/api/v1/member/register", {
-                    memberNickname: nickname,
-                    memberPhone: phoneNumber,
-                    memberPassword: confirmPassword,
+                      memberNickname: nickname,
+                      memberPhone: phoneNumber,
+                      memberPassword: confirmPassword,
                   })
                   .then((response) => {
                     // 회원가입 성공 시 처리
-                    Alert.alert("알림", response.data.message);
-                    // 로그인 화면으로 이동 또는 다른 작업 수행
+                    if (response.data.success) {
+                      Alert.alert("알림", response.data.message);
+                    } else {
+                      Alert.alert("알림", response.data.message);
+                      // Alert.alert("알림", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
+                    }
                   })
                   .catch((error) => {
                     // 회원가입 실패 시 처리
                     Alert.alert("알림", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
+                    console.log(error);
                   });
               } else {
                 Alert.alert("알림", "비밀번호가 일치하지 않습니다.");
               }
             } else {
-              // 닉네임 길이가 2글자 미만 또는 10글자를 초과할 경우 경고창 표시
               Alert.alert("알림", "닉네임은 2~10글자를 입력해 주세요.");
             }
           } else {
-            // confirmPassword가 비어있을 경우 경고창 표시
             Alert.alert("알림", "비밀번호를 한 번 더 입력해 주세요.");
           }
         } else {
-          // 비밀번호가 조건에 맞지 않을 경우 경고창 표시
           Alert.alert(
             "알림",
             "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
@@ -211,7 +212,7 @@ export default function SignUp({ navigation }) {
           value={phoneNumber}
         />
         <TouchableOpacity
-          style={[styles.minibutton]}
+          style={[styles.miniButton]}
           onPress={handleAuth}
         >
           <Text style={[styles.buttonText]}>
@@ -232,7 +233,7 @@ export default function SignUp({ navigation }) {
             value={authCode}
           />
           <TouchableOpacity
-            style={[styles.minibutton]}
+            style={[styles.miniButton]}
             onPress={handleAuthCode}
           >
             <Text style={[styles.buttonText]}>

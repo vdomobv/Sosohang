@@ -172,7 +172,7 @@ export default function MakeCard({ route, navigation }) {
             </View>
           </View>
 
-          <View style={styles.cardimage}>
+          <View style={styles.cardImage}>
             <Image
               source={require('assets/images/greencard.png')}
               style={{ width: '95%', height: 550, }}

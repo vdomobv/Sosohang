@@ -1,58 +1,18 @@
-package project.app.c109.backendapp.sosoticon.domain.entity;
+package project.app.c109.backendapp.sosoticon.domain.dto.request;
 
-import javax.persistence.*;
+// 이 클래스는 클라이언트에서 모바일 쿠폰 관련 정보를 전송할 때 사용되는 DTO입니다.
+public class SosoticonRequestDTO {
 
-@Entity // 이 클래스는 JPA의 엔터티 클래스입니다. DB 테이블과 매핑됩니다.
-@Table(name = "sosoticon") // 해당 엔터티는 "sosoticon" 테이블과 매핑됩니다.
-public class Sosoticon {
-
-    @Id // 기본 키(PK) 필드입니다.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID는 자동으로 증가합니다.
-    @Column(name = "sosoticon_seq") // 이 필드는 "sosoticon_seq" 컬럼과 매핑됩니다.
-    private Long sosoticonSeq;
-
-    @Column(name = "member_seq") // 이 필드는 "member_seq" 컬럼과 매핑됩니다.
     private Long memberSeq;
-
-    @Column(name = "category_seq") // 이 필드는 "category_seq" 컬럼과 매핑됩니다.
     private Long categorySeq;
-
-    @Column(name = "order_id")
     private Long orderId;
-
-    @Column(name = "sosoticon_taker")
     private String sosoticonTaker;
-
-    @Column(name = "sosoticon_text")
     private String sosoticonText;
-
-    @Column(name = "sosoticon_audio")
     private String sosoticonAudio;
-
-    @Column(name = "sosoticon_image")
     private String sosoticonImage;
-
-    @Column(name = "sosoticon_code")
     private String sosoticonCode;
-
-    @Column(name = "sosoticon_status")
     private Integer sosoticonStatus;
-
-    @Column(name = "sosoticon_value")
     private Integer sosoticonValue;
-
-    // Default constructor
-    public Sosoticon() {}
-
-    // Getter and Setter methods
-
-    public Long getSosoticonSeq() {
-        return sosoticonSeq;
-    }
-
-    public void setSosoticonSeq(Long sosoticonSeq) {
-        this.sosoticonSeq = sosoticonSeq;
-    }
 
     public Long getMemberSeq() {
         return memberSeq;

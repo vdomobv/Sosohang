@@ -36,6 +36,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
 import Alarm from "../../Components/Alarm/Alarm";
+import Title from "../../Components/Title/Title";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -78,7 +79,17 @@ export default function Main({ navigation }) {
     this.setState({ search });
   };
 
-  const alarms = alarmDummy.map((data, index) => <Alarm key={index} data={data} />);
+  const alarms = alarmDummy.map((data, index) => (
+    <Alarm key={index} data={data} />
+  ));
+
+  const category = categoryData.map((data, index) => {
+    return <Category key={index} props={data} />;
+  });
+
+  const carouselDummy = dummydata.map((data) => {
+    return <CarouselItem key={data.name} props={data} />;
+  });
 
   return waiting ? (
     <Loading />
@@ -116,19 +127,12 @@ export default function Main({ navigation }) {
                 }
                 contents={alarms}
                 openTooltip={openTooltip}
-                customStyles={styles.alarm}
               />
             </View>
             <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
-              <Text style={{ color: "white", textAlign: "center" }}>
-                배너 광고 자리입니다.
-              </Text>
+              <Title title={"배너 광고 자리입니다."} />
             </View>
-            <View style={[styles.categories]}>
-              {categoryData.map((data) => {
-                return <Category key={data.name} props={data} />;
-              })}
-            </View>
+            <View style={[styles.categories]}>{category}</View>
             <Line />
             <View style={[styles.section]}>
               <View>
@@ -148,9 +152,7 @@ export default function Main({ navigation }) {
                 showsHorizontalScrollIndicator={false}
                 style={[styles.carouselContainer]}
               >
-                {dummydata.map((data) => {
-                  return <CarouselItem key={data.name} props={data} />;
-                })}
+                {carouselDummy}
               </ScrollView>
             </View>
 
@@ -161,16 +163,7 @@ export default function Main({ navigation }) {
                   선물 받을 친구의 취향으로 골라보세요! 😘
                 </Text>
               </View>
-              <Carousel
-                content={hashTags.map((data) => {
-                  return <HashTag key={data.name} props={data} />;
-                })}
-              />
-              <Carousel
-                content={dummydata.map((data) => {
-                  return <CarouselItem key={data.name} props={data} />;
-                })}
-              />
+              <Carousel content={carouselDummy} />
               <Line />
             </View>
 

@@ -18,8 +18,8 @@ public class QRCodeUtil {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix bitMatrix = qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, 200, 200);
 
-            String username = System.getProperty("wisdomx2"); // Windows에서 사용자 이름 가져오기(임시로 경로를 바탕화면으로 하였음)
-            Path path = FileSystems.getDefault().getPath("C:\\Users\\" + username + "\\Desktop\\QRCode.png");
+            String userHome = System.getProperty("user.home");  // 사용자 홈 디렉터리 가져오기
+            Path path = FileSystems.getDefault().getPath(userHome + "\\Desktop\\QRCode.png");
             MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
             return "QRCode.png";
@@ -27,7 +27,6 @@ public class QRCodeUtil {
             throw new RuntimeException("Failed to generate QR code", e);
         }
     }
-
     public static String generateUUID() {
         return UUID.randomUUID().toString();
     }

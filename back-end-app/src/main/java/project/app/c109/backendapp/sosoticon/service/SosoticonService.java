@@ -16,7 +16,7 @@ public class SosoticonService {
     @Autowired
     private SosoticonRepository sosoticonRepository;
 
-    @Transactional
+    @Transactional // 트랜잭션 관리
     public Sosoticon createSosoticon(SosoticonRequestDTO requestDTO) {
         Sosoticon sosoticon = new Sosoticon();
 
@@ -39,17 +39,20 @@ public class SosoticonService {
     }
 
 
+    // sosoticonCode를 이용하여 Sosoticon 엔터티를 조회하는 메소드
     public Sosoticon retrieveSosoticon(String sosoticonCode) {
         return sosoticonRepository.findBySosoticonCode(sosoticonCode)
                 .orElseThrow(() -> new RuntimeException("Sosoticon not found with code: " + sosoticonCode));
     }
 
-    @Transactional
+    @Transactional // 트랜잭션 관리
     public Sosoticon updateSosoticonValue(String sosoticonCode, int newValue) {
         Sosoticon existingSosoticon = retrieveSosoticon(sosoticonCode);
         existingSosoticon.setSosoticonValue(newValue);
         return sosoticonRepository.save(existingSosoticon);
     }
+
+    // Sosoticon 엔터티를 SosoticonResponseDTO로 변환하는 메소드
     private SosoticonResponseDTO convertEntityToDto(Sosoticon sosoticon) {
         SosoticonResponseDTO responseDTO = new SosoticonResponseDTO();
         responseDTO.setSosoticonSeq(sosoticon.getSosoticonSeq());

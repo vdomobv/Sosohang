@@ -1,5 +1,6 @@
 package project.app.c109.backendapp.sosoticon.domain.dto.request;
 
+// 이 클래스는 클라이언트에서 모바일 쿠폰 관련 정보를 전송할 때 사용되는 DTO입니다.
 public class SosoticonRequestDTO {
 
     private Long memberSeq;

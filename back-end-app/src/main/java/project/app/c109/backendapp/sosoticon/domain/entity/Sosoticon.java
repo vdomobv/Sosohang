@@ -2,19 +2,19 @@ package project.app.c109.backendapp.sosoticon.domain.entity;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "sosoticon")
+@Entity // 이 클래스는 JPA의 엔터티 클래스입니다. DB 테이블과 매핑됩니다.
+@Table(name = "sosoticon") // 해당 엔터티는 "sosoticon" 테이블과 매핑됩니다.
 public class Sosoticon {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sosoticon_seq")
+    @Id // 기본 키(PK) 필드입니다.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID는 자동으로 증가합니다.
+    @Column(name = "sosoticon_seq") // 이 필드는 "sosoticon_seq" 컬럼과 매핑됩니다.
     private Long sosoticonSeq;
 
-    @Column(name = "member_seq")
+    @Column(name = "member_seq") // 이 필드는 "member_seq" 컬럼과 매핑됩니다.
     private Long memberSeq;
 
-    @Column(name = "category_seq")
+    @Column(name = "category_seq") // 이 필드는 "category_seq" 컬럼과 매핑됩니다.
     private Long categorySeq;
 
     @Column(name = "order_id")

@@ -9,18 +9,18 @@ import project.app.c109.backendapp.sosoticon.domain.dto.response.SosoticonRespon
 import project.app.c109.backendapp.sosoticon.service.SosoticonService;
 
 @RestController
-@RequestMapping("/sosoticon")
+@RequestMapping("/sosoticon") // 라우팅 경로 설정
 public class SosoticonController {
 
-    private final SosoticonService sosoticonService;
+    private final SosoticonService sosoticonService; // 의존성 주입
 
     public SosoticonController(SosoticonService sosoticonService) {
         this.sosoticonService = sosoticonService;
     }
 
-    @PostMapping("/generateQR")
+    @PostMapping("/generateQR") // POST 요청으로 QR코드 생성
     public SosoticonResponseDTO generateQRCode(@RequestBody SosoticonRequestDTO request) throws Exception {
-        return sosoticonService.generateQRCode(request);
+        return sosoticonService.generateQRCode(request); // 서비스 레이어로 이동
 
     }
 }

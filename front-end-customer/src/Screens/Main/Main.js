@@ -32,13 +32,13 @@ export default function Main({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
 
   const [waiting, setWaiting] = useState(true);
-  const [coords, SetCoords] = useState({});
+  const [coords, setCoords] = useState({});
   const [location, setLocation] = useState({});
 
   useEffect(() => {
     const fetchLocation = async () => {
       const resultCoords = await initializeCoords();
-      SetCoords(resultCoords);
+      setCoords(resultCoords);
 
       const resultLocation = await initializeLocation(resultCoords.latitude, resultCoords.longitude);
       setLocation(resultLocation);

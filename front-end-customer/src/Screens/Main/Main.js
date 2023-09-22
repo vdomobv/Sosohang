@@ -94,10 +94,11 @@ export default function Main({ navigation }) {
                   }}
                   name="location-sharp"
                   color={"#BFBFBF"}
-                  size={40}
+                  size={30}
                 />
+                <Text style={styles.subtitle}>{location}</Text>
               </View>
-              <View style={{ flex: 6 }}>
+              <View style={styles.searchbar}>
                 <CustomSearchBar
                   placeholderText={"원하는 상점을 검색해보세요."}
                 />
@@ -111,7 +112,7 @@ export default function Main({ navigation }) {
                   }}
                   name="notifications"
                   color={"gold"}
-                  size={40}
+                  size={35}
                 />
               </View>
             </View>

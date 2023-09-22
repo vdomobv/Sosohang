@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   
-  minibutton: {
+  miniButton: {
     width: '20%',
     borderRadius: 5,
     padding: 11,

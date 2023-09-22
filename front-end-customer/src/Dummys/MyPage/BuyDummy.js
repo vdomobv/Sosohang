@@ -11,7 +11,7 @@ const BuyDummy = [
     count: 2,
   },
   {
-    to: "이코딩",
+    to: "박코딩",
     name: "돌문어 솥밥",
     shopname: "아뜨뜨",
     price: 14000,
@@ -22,7 +22,7 @@ const BuyDummy = [
     count: 1,
   },
   {
-    to: "이코딩",
+    to: "양코딩",
     name: "돌문어 솥밥",
     shopname: "아뜨뜨",
     price: 14000,
@@ -33,7 +33,7 @@ const BuyDummy = [
     count: 1,
   },
   {
-    to: "이코딩",
+    to: "위코딩",
     name: "돌문어 솥밥",
     shopname: "아뜨뜨",
     price: 14000,
@@ -44,7 +44,7 @@ const BuyDummy = [
     count: 1,
   },
   {
-    to: "이코딩",
+    to: "김코딩",
     name: "돌문어 솥밥",
     shopname: "아뜨뜨",
     price: 14000,
@@ -55,7 +55,7 @@ const BuyDummy = [
     count: 1,
   },
   {
-    to: "이코딩",
+    to: "서코딩",
     name: "돌문어 솥밥",
     shopname: "아뜨뜨",
     price: 14000,

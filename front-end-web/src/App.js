@@ -7,7 +7,6 @@ import NotFound from "./pages/NotFound"
 import Main from "./pages/Main"
 import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
-import ManageProduct from "./pages/ManageProduct"
 import ProductManage from "./pages/ProductManage"
 
 const router = createBrowserRouter([
@@ -15,7 +14,6 @@ const router = createBrowserRouter([
   { path: "/", element: <Main /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp />},
-  { path: "/manageProduct", element: <ManageProduct />},
   { path: "/productManage", element: <ProductManage />}
 ])
 

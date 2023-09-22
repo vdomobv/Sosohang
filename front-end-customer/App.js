@@ -1,8 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-
+// App.js
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import { useState, useEffect } from "react";
 
 import Main from "./src/Screens/Main/Main";
 import Cart from "./src/Screens/Cart/Cart";
@@ -23,7 +24,9 @@ import PurchaseHistory from "./src/Screens/PurchaseHistory/PurchaseHistory";
 const Stack = createStackNavigator();
 
 export default function App() {
+
   return (
+
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Main"
@@ -46,7 +49,7 @@ export default function App() {
         <Stack.Screen name="PurchaseHistory" component={PurchaseHistory} />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
 
 const styles = StyleSheet.create({

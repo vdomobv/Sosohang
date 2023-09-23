@@ -1,7 +1,9 @@
 import styles from "./styles";
-import { useEffect, useState } from "react";
 import { View, Text, Image, ScrollView, Animated, Touchable, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+import { useEffect, useState } from "react"; 
+import { useIsFocused } from '@react-navigation/native';
 
 import Title from "../../Components/Title/Title";
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";
@@ -31,11 +33,7 @@ export default function Shop({ navigation }) {
     const [scrollY, setScrollY] = useState(0);
     const [showButton, setShowButton] = useState(false);
     const [selectedProducts, setSelectedProducts] = useState([]);
-
-    // 주문하기 이동
-    useEffect(() => {
-        navigation.navigate('MakeCard', { selectedProducts });
-    }, [selectedProducts]);
+    const [shouldNavigate, setShouldNavigate] = useState(false);
 
     // 상품 목록
     const productList = ProductDummy.map((data, index) => {
@@ -93,8 +91,17 @@ export default function Shop({ navigation }) {
             });
 
             setSelectedProducts(newSelectedProducts);
+            setShouldNavigate(true);
         }
     }
+
+    // 페이지 이동
+    useEffect(() => {
+        if (shouldNavigate) {
+            navigation.navigate('MakeCard', { selectedProducts });
+            setShouldNavigate(false);
+        }
+    }, [shouldNavigate]);
 
     // 버튼 스크롤 시 표시
     useEffect(() => {

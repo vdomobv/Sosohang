@@ -20,6 +20,7 @@ import StampList from "./src/Screens/StampList/StampList";
 import Stamp from "./src/Screens/Stamp/Stamp";
 import Dibs from "./src/Screens/Dibs/Dibs";
 import PurchaseHistory from "./src/Screens/PurchaseHistory/PurchaseHistory";
+import Shop from "./src/Screens/Shop/Shop";
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,7 @@ export default function App() {
         <Stack.Screen name="Stamp" component={Stamp} />
         <Stack.Screen name="Dibs" component={Dibs} />
         <Stack.Screen name="PurchaseHistory" component={PurchaseHistory} />
+        <Stack.Screen name="Shop" component={Shop} />
       </Stack.Navigator>
     </NavigationContainer>
   )

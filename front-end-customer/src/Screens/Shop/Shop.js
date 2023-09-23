@@ -8,6 +8,7 @@ import SectionTitle from "../../Components/SectionTitle/SectionTitle";
 import Line from "../../Components/Line/Line";
 import ProductDummy from "../../Dummys/Shop/ProductDummy";
 import Product from "../../Components/Product/Product";
+import { useEffect, useState } from "react";
 
 const shopDummy = ShopDummy;
 const productDummy = ProductDummy;
@@ -21,6 +22,19 @@ const Info = ({ logo, data }) => {
 }
 
 export default function Shop({ navigation }) {
+    const [checkedProducts, setCheckedProducts] = useState(ProductDummy.map(() => false));
+    const [productsAmount, setProductsAmount] = useState(ProductDummy.map(() => 1))
+    const [selectedProducts, setSelectedProducts] = useState(new Set());
+
+    // // 수량 변화 확인
+    // useEffect(() => {
+    // }, [productsAmount])
+
+    // useEffect(()=> {
+    //     console.log(checkedProducts)
+    // },[checkedProducts])
+
+
     return <ScrollView style={styles.container}>
         <Title title={shopDummy.shopName} />
         <Image source={shopDummy.imageUrl} style={styles.image} />
@@ -47,7 +61,18 @@ export default function Shop({ navigation }) {
             <SectionTitle content={'이때 아니면 못 사는 이벤트 선물! 🔔'} />
             {
                 productDummy.map((data, index) => {
-                    <Product data={data} key={index} />
+                    return <Product checked={checkedProducts[index]}
+                        onCheckChange={(checked) => {
+                            const newCheckedProducts = [...checkedProducts]
+                            newCheckedProducts[index] = checked;
+                            setCheckedProducts(newCheckedProducts)
+                        }}
+                        onAmountChange={(value) => {
+                            const newProductsAmount = [...productsAmount]
+                            newProductsAmount[index] = value
+                            setProductsAmount(newProductsAmount)
+                        }}
+                        data={data} amount={productsAmount[index]} key={index} />
                 })
             }
         </View>

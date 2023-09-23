@@ -38,7 +38,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
 import Alarm from "../../Components/Alarm/Alarm";
 import Title from "../../Components/Title/Title";
-import SectionSubTitle from "../../Components/SectionSubtitle/SectionSubtitle";
+import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;

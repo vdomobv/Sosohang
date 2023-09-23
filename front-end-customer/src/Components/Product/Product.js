@@ -1,17 +1,41 @@
 import styles from "./styles";
-import { Text } from "react-native";
+import { View } from "react-native";
 
-import SqureImage from "../SquareImage/SqureImage"
+import SquareImage from "../SquareImage/SquareImage"
 import SectionTitle from "../SectionTitle/SectionTitle";
+import Checkbox from "expo-checkbox";
+import { useEffect, useState } from "react";
+import Amount from "../Amount/Amount";
 
-export default function Product({ data }) {
+export default function Product({ data, checked, amount, onCheckChange, onAmountChange }) {
+    const [isChecked, setIsChecked] = useState(checked);
+    const [productAmount, setproductAmount] = useState(amount);
+
+    useEffect(() => {
+        onAmountChange(productAmount);
+    }, [productAmount])
+
+    useEffect(() => {
+        onCheckChange(isChecked);
+    }, [isChecked])
+
     return (
         <View style={styles.container}>
-            <SqureImage imageSrc={data.imageSrc} />
-            <View>
-                <Text style={styles.title}>{title}</Text>
+            <Checkbox style={styles.checkbox}
+                value={isChecked}
+                onValueChange={() => {
+                    setIsChecked(!isChecked);
+                    onCheckChange(isChecked);
+                }} />
+            <SquareImage imageSrc={data.imageSrc} />
+            <View style={styles.content}>
                 <SectionTitle content={data.productName} />
-                <SectionTitle content={data.productPrice} customStyles={{ color: '#FF4646' }} />
+                <SectionTitle content={`${data.productPrice}원`} customStyles={{ color: '#FF4646' }} />
+                <View style={styles.amount}>
+                    <Amount onCheckChange={(productAmount) => {
+                        setproductAmount(productAmount);
+                    }} productAmount={productAmount} />
+                </View>
             </View>
         </View>
     );

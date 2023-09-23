@@ -150,7 +150,7 @@ export default function Shop({ navigation }) {
         </ScrollView>
         {showButton &&
             <View style={styles.button} >
-                <CustomButton content={'선물하기'}
+                <CustomButton content={<Text style={styles.text}>선물하기</Text>}
                     pressFuction={orderProducts} />
             </View>
         }

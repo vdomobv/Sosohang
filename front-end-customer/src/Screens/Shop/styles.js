@@ -27,6 +27,19 @@ const styles = StyleSheet.create({
   content: {
     marginHorizontal: 15,
     marginVertical: 10,
+  },
+
+  button: {
+    height: 50,
+    position: 'absolute',
+    width: '95%',
+    bottom: 0,
+    marginVertical: 10,
+    alignSelf: 'center',
+  },
+
+  blank : {
+    height : 60
   }
 
 });

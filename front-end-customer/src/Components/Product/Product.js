@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 
 import SquareImage from "../SquareImage/SquareImage"
 import SectionTitle from "../SectionTitle/SectionTitle";
@@ -27,10 +27,11 @@ export default function Product({ data, checked, amount, onCheckChange, onAmount
                     setIsChecked(!isChecked);
                     onCheckChange(isChecked);
                 }} />
-            <SquareImage imageSrc={data.imageSrc} />
+            <SquareImage imageSrc={data.image} />
             <View style={styles.content}>
-                <SectionTitle content={data.productName} />
-                <SectionTitle content={`${data.productPrice}원`} customStyles={{ color: '#FF4646' }} />
+                <SectionTitle content={data.name} />
+                {data.productSale ? <Text style={styles.prevPrice}>{`${data.price}원`}</Text> : null}
+                <SectionTitle content={`${data.productSale ? (1-data.productSale) * data.price : data.price}원`} customStyles={{ color: '#FF4646' }} />
                 <View style={styles.amount}>
                     <Amount onCheckChange={(productAmount) => {
                         setproductAmount(productAmount);

@@ -21,6 +21,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor : '#E9EEE8',
         borderWidth : 0.5
+    },
+
+    prevPrice : {
+        color : '#575761',
+        textDecorationLine: 'line-through'
     }
 })
 

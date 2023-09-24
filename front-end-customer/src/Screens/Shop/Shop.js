@@ -78,14 +78,14 @@ export default function Shop({ navigation }) {
 
             ProductDummy.forEach((data, index) => {
                 if (checkedProducts[index]) {
-                    const temp = { ...data, amount: productsAmount[index], shopname: shopDummy.name };
+                    const temp = { ...data, count: productsAmount[index], shopName: shopDummy.shopName };
                     newSelectedProducts.push(temp);
                 }
             });
 
             SaleProductDummy.forEach((data, index) => {
                 if (checkedSaleProducts[index]) {
-                    const temp = { ...data, amount: saleProductAmount[index], shopName: SaleProductDummy.name, };
+                    const temp = { ...data, count: saleProductAmount[index], shopName: shopDummy.shopName, };
                     newSelectedProducts.push(temp);
                 }
             });

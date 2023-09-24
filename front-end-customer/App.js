@@ -22,6 +22,7 @@ import Dibs from "./src/Screens/Dibs/Dibs";
 import PurchaseHistory from "./src/Screens/PurchaseHistory/PurchaseHistory";
 import Shop from "./src/Screens/Shop/Shop";
 import WaitingPayment from "./src/Screens/WaitingPayment/WaitingPayment"
+import Payment from "./src/Screens/Payment/Payment"
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,7 @@ export default function App() {
         <Stack.Screen name="PurchaseHistory" component={PurchaseHistory} />
         <Stack.Screen name="Shop" component={Shop} />
         <Stack.Screen name="WaitingPayment" component={WaitingPayment} />
+        <Stack.Screen name="Payment" component={Payment} />
       </Stack.Navigator>
     </NavigationContainer>
   )

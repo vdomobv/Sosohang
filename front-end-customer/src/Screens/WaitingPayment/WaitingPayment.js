@@ -12,14 +12,14 @@ export default function WaitingPayment({ navigation, route }) {
     const groupedName = Object.keys(productList);
     const data = {
         pg: "tosspayments",
-    pay_method: "card",
-    merchant_uid: "test_lmxisn7n",
-    name: "선물꾸러미",
-    amount: 42000,
-    currency: "KRW",
-    language: "ko",
-    buyer_tel: "010-1234-6789",
-    app_scheme : "front-end-customer"
+        pay_method: "card",
+        merchant_uid: "test_lmxisn7n",
+        name: "선물꾸러미",
+        amount: totalPrice,
+        currency: "KRW",
+        language: "ko",
+        buyer_tel: "010-1234-6789",
+        app_scheme: "front-end-customer"
     }
 
     useState(() => {

@@ -14,6 +14,12 @@ const CartDummy = [
         price: 10000,
         image: require("assets/images/bread.png"),
       },
+      {
+        name: "테스트",
+        count: 1,
+        price: 1,
+        image: require("assets/images/bread.png"),
+      },
     ],
   },
   {

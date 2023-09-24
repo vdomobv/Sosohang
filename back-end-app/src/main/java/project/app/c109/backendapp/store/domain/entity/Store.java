@@ -1,10 +1,15 @@
-package project.web.c109.backendweb.store.domain.entity;
+package project.app.c109.backendapp.store.domain.entity;
 
-import javax.persistence.*;
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter

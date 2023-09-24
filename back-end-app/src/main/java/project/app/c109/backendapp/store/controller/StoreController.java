@@ -1,18 +1,22 @@
-package project.web.c109.backendweb.store.controller;
+package project.app.c109.backendapp.store.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import project.web.c109.backendweb.store.domain.dto.request.StoreRequestDTO;
-import project.web.c109.backendweb.store.domain.dto.response.StoreResponseDTO;
-import project.web.c109.backendweb.store.domain.entity.Store;
-import project.web.c109.backendweb.store.service.StoreService;
-import java.util.List;
-import java.time.LocalDateTime;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import project.app.c109.backendapp.store.domain.dto.request.StoreRequestDTO;
+import project.app.c109.backendapp.store.domain.dto.response.StoreResponseDTO;
+import project.app.c109.backendapp.store.domain.entity.Store;
+import project.app.c109.backendapp.store.service.StoreService;
 
 @RestController
 @RequestMapping("/api/store")

@@ -1,20 +1,24 @@
-package project.web.c109.backendweb.store.domain.dto.response;
+package project.app.c109.backendapp.store.domain.dto.request;
 
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
-public class StoreResponseDTO {
+public class StoreRequestDTO {
 
-	private Integer storeSeq;
-
+	@NotNull
 	private Integer categorySeq;
 
+	@NotBlank
+	private String storePassword;
+
+	@NotBlank
 	private String storeName;
 
+	@NotBlank
 	private String storeId;
 
 	private String storeLocation;
@@ -25,6 +29,7 @@ public class StoreResponseDTO {
 
 	private String storeParkinglot;
 
+	@NotBlank
 	private String registrationNumber;
 
 	private String storeWorkhour;
@@ -35,5 +40,4 @@ public class StoreResponseDTO {
 
 	private String storeUrl;
 
-	private Date addedDate;
 }

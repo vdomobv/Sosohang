@@ -23,6 +23,7 @@ import Carousel from "../../Components/Carousel/Carousel";
 import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
 import Loading from "../../Components/Loading/Loading";
 import CustomTooltip from "../../Components/CustomTooltips/CustomTooltips";
+import SectionTitle from "../../Components/SectionTitle/SectionTitle";
 
 // dummys
 import AlarmDummy from "../../Dummys/Main/AlarmDummy";
@@ -37,6 +38,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
 import Alarm from "../../Components/Alarm/Alarm";
 import Title from "../../Components/Title/Title";
+import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -84,11 +86,24 @@ export default function Main({ navigation }) {
   ));
 
   const category = categoryData.map((data, index) => {
-    return <Category key={index} props={data} />;
+    return <Category key={index} props={data}
+      onPress={() => {
+        navigation.navigate('Shop')
+      }} />;
   });
 
+  const hashTagItems = hashTags.map((data, index) => {
+    return <HashTag key={index} props={data} />
+  })
+
   const carouselDummy = dummydata.map((data) => {
-    return <CarouselItem key={data.name} props={data} />;
+    return <CarouselItem
+      navigation={navigation}
+      onPressFunction={() => {
+        console.log('carouselItem')
+        navigation.navigate('Shop')
+      }}
+      key={data.name} props={data} />;
   });
 
   return waiting ? (
@@ -136,39 +151,23 @@ export default function Main({ navigation }) {
             <Line />
             <View style={[styles.section]}>
               <View>
-                <Text style={[styles.title]}>
-                  새로운 곳을 경험해보는 것은 어때요?
-                  <Image
-                    source={require("assets/images/new.png")}
-                    style={{ height: 30, width: 30 }}
-                  />
-                </Text>
-                <Text style={[styles.subtitle]}>
-                  친구에게 새로운 곳에 가볼 경험을 선물해주세요.
-                </Text>
+                <SectionTitle content={"새로운 곳을 경험해보는 것은 어때요? 🆕"} />
+                <SectionSubTitle content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."} />
               </View>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                style={[styles.carouselContainer]}
-              >
-                {carouselDummy}
-              </ScrollView>
+              <Carousel content={carouselDummy} />
             </View>
 
             <Line />
             <View style={[styles.section]}>
-              <View>
-                <Text style={[styles.title]}>
-                  선물 받을 친구의 취향으로 골라보세요! 😘
-                </Text>
-              </View>
+
+              <SectionTitle content={"선물 받을 친구의 취향으로 골라보세요! 😘"} />
+              <Carousel content={hashTagItems} />
               <Carousel content={carouselDummy} />
-              <Line />
             </View>
 
+            <Line />
             <View style={[styles.section]}>
-              <Text style={[styles.title]}>소소행이 뭐에요? 🧐</Text>
+              <SectionTitle content={"소소행이 뭐에요? 🧐"} />
               <View style={[styles.intro]}>
                 <Image
                   style={styles.imageContainer}

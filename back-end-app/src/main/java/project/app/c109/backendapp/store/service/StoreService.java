@@ -1,12 +1,11 @@
-package project.web.c109.backendweb.store.service;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import project.web.c109.backendweb.store.domain.entity.Store;
-import project.web.c109.backendweb.store.repository.StoreRepository;
+package project.app.c109.backendapp.store.service;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import project.app.c109.backendapp.store.domain.entity.Store;
+import project.app.c109.backendapp.store.repository.StoreRepository;
 
 @Service
 public class StoreService {

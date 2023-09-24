@@ -1,5 +1,6 @@
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import { View, } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
@@ -8,33 +9,25 @@ export default function Tabs({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Ionicons size={40} name="basket" onPress={() => {
-        if (route != "Cart") {
-          navigation.navigate("Cart")
-        }
-      }} />
-      <Ionicons size={40} name="people" onPress={() => {
-        if (route != "YouAndMe") {
-          navigation.navigate("YouAndMe")
-        }
-      }} />
-      <Ionicons size={40} name="home"
+      {/* 로그인 된 상태면 "lock-open" */}
+      <Ionicons size={45} name="lock-closed" 
         onPress={() => {
-          if (route != "Main") {
-            navigation.navigate("Main")
+          if (route != "LogIn") {
+            navigation.navigate("LogIn")
+        }
+      }} />
+      
+      <Ionicons size={40} name="qr-code-outline" onPress={() => {
+        if (route != "QrReader") {
+          navigation.navigate("QrReader")
+        }
+      }} />
+      <FontAwesome5Icon size={40} name="stamp"
+        onPress={() => {
+          if (route != "Stamp") {
+            navigation.navigate("Stamp")
           }
         }} />
-      <Ionicons size={40} name="gift"
-        onPress={() => {
-          if (route != "MyGift") {
-            navigation.navigate("MyGift")
-          }
-        }} />
-      <Ionicons size={40} name="person" onPress={() => {
-        if (route != "MyPage") {
-          navigation.navigate("MyPage")
-        }
-      }} />
     </View>
   );
 }

@@ -33,10 +33,10 @@ export default function Tabs({ navigation }) {
         }
       }} />
       <FontAwesome5Icon size={40} name="stamp"
-        color={activeTab === "Stamp" ? "#46C27D" : "black"}
+        color={activeTab === "AddStamp" ? "#46C27D" : "black"}
         onPress={() => {
-          if (route != "Stamp") {
-            navigation.navigate("Stamp")
+          if (route != "AddStamp") {
+            navigation.navigate("AddStamp")
           }
         }} />
     </View>

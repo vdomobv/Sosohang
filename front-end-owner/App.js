@@ -5,11 +5,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { useState, useEffect } from "react";
 
-import Main from "./src/Screens/Main/Main";
-import SignUp from "./src/Screens/SignUp/SignUp";
 import LogIn from "./src/Screens/LogIn/LogIn";
 import QrReader from "./src/Screens/QrReader/QrReader";
-import Stamp from "./src/Screens/Stamp/Stamp";
+import AddStamp from "./src/Screens/AddStamp/AddStamp";
 
 const Stack = createStackNavigator();
 
@@ -18,15 +16,14 @@ export default function App() {
   return (
 
     <NavigationContainer>
+      {/* 초기 화면 설정 */}
       <Stack.Navigator
-        initialRouteName="Main"
+        initialRouteName="LogIn"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="Main" component={Main} />
-        <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="LogIn" component={LogIn} />
         <Stack.Screen name="QrReader" component={QrReader} />
-        <Stack.Screen name="Stamp" component={Stamp} />
+        <Stack.Screen name="AddStamp" component={AddStamp} />
       </Stack.Navigator>
     </NavigationContainer>
   )

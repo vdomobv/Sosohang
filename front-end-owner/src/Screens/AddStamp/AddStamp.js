@@ -7,7 +7,7 @@ import Title from "../../Components/Title/Title";
 import Loading from "../../Components/Loading/Loading";
 import Tabs from "../../Components/Tabs/Tabs";
 
-export default function Main({ navigation }) {
+export default function AddStamp({ navigation }) {
   const [waiting, setWaiting] = useState(false);
 
   // const fetchLocation = async () => {
@@ -27,7 +27,7 @@ export default function Main({ navigation }) {
   ) : (
     <>
       <View style={styles.container}>
-        <Title title={"사장님 앱이에옹"} />
+        <Title title={"소복소복 도장"} />
       </View>
       <Tabs navigation={navigation} />
     </>

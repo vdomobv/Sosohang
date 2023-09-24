@@ -7,7 +7,7 @@ import Title from "../../Components/Title/Title";
 import Loading from "../../Components/Loading/Loading";
 import Tabs from "../../Components/Tabs/Tabs";
 
-export default function Stamp({ navigation }) {
+export default function AddStamp({ navigation }) {
   const [waiting, setWaiting] = useState(false);
 
   // const fetchLocation = async () => {

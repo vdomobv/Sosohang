@@ -9,7 +9,7 @@ import Main from "./src/Screens/Main/Main";
 import SignUp from "./src/Screens/SignUp/SignUp";
 import LogIn from "./src/Screens/LogIn/LogIn";
 import QrReader from "./src/Screens/QrReader/QrReader";
-import Stamp from "./src/Screens/Stamp/Stamp";
+import AddStamp from "./src/Screens/AddStamp/AddStamp";
 
 const Stack = createStackNavigator();
 
@@ -26,7 +26,7 @@ export default function App() {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="LogIn" component={LogIn} />
         <Stack.Screen name="QrReader" component={QrReader} />
-        <Stack.Screen name="Stamp" component={Stamp} />
+        <Stack.Screen name="AddStamp" component={AddStamp} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface SosoticonRepository extends JpaRepository<Sosoticon, Long> {
     // sosoticonCode로 Sosoticon 엔터티를 조회하는 메소드. 결과가 없다면 Optional.empty() 반환.
     Optional<Sosoticon> findBySosoticonCode(String sosoticonCode);
+
 }

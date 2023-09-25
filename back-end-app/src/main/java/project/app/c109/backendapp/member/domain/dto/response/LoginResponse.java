@@ -11,7 +11,7 @@ public class LoginResponse {
         this.member = member;
     }
 
-    // 게터와 세터
+//     게터와 세터
     public String getToken() {
         return token;
     }

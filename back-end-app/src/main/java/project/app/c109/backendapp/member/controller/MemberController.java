@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,7 +17,6 @@ import project.app.c109.backendapp.member.domain.dto.request.RegisterRequest;
 import project.app.c109.backendapp.member.domain.dto.response.LoginResponse;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.service.MemberService;
-
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final MemberService memberService;
+    private final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
@@ -49,13 +51,16 @@ public class MemberController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest, BindingResult result) {
         if (result.hasErrors()) {
+            logger.info("Validation errors: {}", result.getAllErrors());
             return handleValidationErrors(result);
         }
 
         try {
             Member member = memberService.register(registerRequest);
+            logger.info("Member registered successfully: {}", member);
             return ResponseEntity.status(HttpStatus.CREATED).body(member); // 201 Created for resource creation
         } catch (EntityExistsException ex) {
+            logger.warn("Phone number already in use.");
             // 회원 가입 실패 처리 409 상태 코드 반환
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("{\"error\": \"Phone number already in use.\"}");
@@ -64,17 +69,21 @@ public class MemberController {
 
     @PostMapping("/register/phone-check")
     public ResponseEntity<Map<String, String>> handlePhoneVerification(@RequestParam String memberPhone) {
+        logger.info("Received a phone verification request for memberPhone: {}", memberPhone);
+
         String authCode = memberService.handlePhoneVerification(memberPhone);
 
         Map<String, String> response = new HashMap<>();
 
         if (authCode != null) {
             response.put("status", "success");
-            response.put("authCode", authCode);  // 실제 서비스에서는 이 코드를 클라이언트에게 노출시키지 않아야 함
+            response.put("authCode", authCode);
+            logger.info("Phone verification successful for memberPhone: {}", memberPhone);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.put("status", "error");
             response.put("message", "Phone number already in use.");
+            logger.warn("Phone number already in use for memberPhone: {}", memberPhone);
             return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
     }
@@ -82,6 +91,8 @@ public class MemberController {
     @PostMapping("/register/verify-code")
     public ResponseEntity<Map<String, String>> verifyAuthCode(@RequestParam String memberPhone,
                                                               @RequestParam String authCode) {
+        logger.info("Received verification of authCode {} for memberPhone: {}", authCode, memberPhone);
+
         boolean isVerified = memberService.verifyAuthCode(memberPhone, authCode);
 
         Map<String, String> response = new HashMap<>();
@@ -89,10 +100,12 @@ public class MemberController {
         if (isVerified) {
             response.put("status", "success");
             response.put("message", "The authentication code is valid.");
+            logger.info("Authentication code verified successfully for memberPhone: {}", memberPhone);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.put("status", "error");
             response.put("message", "The authentication code is invalid or expired.");
+            logger.warn("Authentication code verification failed for memberPhone: {}", memberPhone);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
@@ -110,16 +123,20 @@ public class MemberController {
     })
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
         if (result.hasErrors()) {
+            logger.info("Validation errors: {}", result.getAllErrors());
             return handleValidationErrors(result);
         }
         try {
             LoginResponse response = memberService.login(loginRequest);
+            logger.info("Member logged in successfully: {}", response.getMember());
             return ResponseEntity.ok(response);
         } catch (EntityNotFoundException ex) {
+            logger.warn("Member not found.");
             // 사용자를 찾지 못한 경우 404 상태 코드 반환
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("{\"error\": \"Member not found.\"}");
         } catch (BadCredentialsException ex) {
+            logger.warn("Invalid credentials.");
             // 로그인 실패 처리 401 상태 코드 반환
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("{\"error\": \"Invalid credentials.\"}");
@@ -128,16 +145,20 @@ public class MemberController {
 
     @PostMapping("/password/phone-check")
     public ResponseEntity<Map<String, String>> handlePhoneCheckForPassword(@RequestParam String memberPhone) {
+        logger.info("Received a phone check request for memberPhone: {}", memberPhone);
+
         String authCode = memberService.handlePhoneVerificationForPasswordReset(memberPhone);
         Map<String, String> response = new HashMap<>();
 
         if (authCode != null) {
             response.put("status", "success");
-            response.put("authCode", authCode); // 실제 서비스에서는 이 코드를 클라이언트에게 노출시키지 않아야 함
+            response.put("authCode", authCode);
+            logger.info("Phone verification successful for password reset for memberPhone: {}", memberPhone);
             return new ResponseEntity<>(response, HttpStatus.CREATED); // 201
         } else {
             response.put("status", "error");
             response.put("message", "The phone number is not registered.");
+            logger.warn("Phone number not registered for password reset for memberPhone: {}", memberPhone);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); // 400
         }
     }
@@ -145,6 +166,8 @@ public class MemberController {
     @PostMapping("/password/verify-code")
     public ResponseEntity<Map<String, String>> verifyAuthCodeForPasswordReset(@RequestParam String memberPhone,
                                                                               @RequestParam String authCode) {
+        logger.info("Received verification of authCode {} for password reset for memberPhone: {}", authCode, memberPhone);
+
         boolean isVerified = memberService.verifyAuthCode(memberPhone, authCode);
 
         Map<String, String> response = new HashMap<>();
@@ -152,10 +175,12 @@ public class MemberController {
         if (isVerified) {
             response.put("status", "success");
             response.put("message", "The authentication code is valid.");
+            logger.info("Authentication code verified successfully for password reset for memberPhone: {}", memberPhone);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.put("status", "error");
             response.put("message", "The authentication code is invalid or expired.");
+            logger.warn("Authentication code verification failed for password reset for memberPhone: {}", memberPhone);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
@@ -163,11 +188,14 @@ public class MemberController {
     @PostMapping("/password/change")
     public ResponseEntity<Map<String, String>> changePassword(@RequestParam String memberPhone,
                                                               @RequestParam String newPassword) {
+        logger.info("Received a request to change password for memberPhone: {}", memberPhone);
+
         memberService.changePassword(memberPhone, newPassword);
 
         Map<String, String> response = new HashMap<>();
         response.put("status", "success");
         response.put("message", "Password has been successfully changed.");
+        logger.info("Password changed successfully for memberPhone: {}", memberPhone);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -179,11 +207,14 @@ public class MemberController {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.toList());
         response.put("errors", errorMessages);
+        logger.info("Validation errors: {}", errorMessages);
         return ResponseEntity.badRequest().body(response);
     }
 
     @GetMapping("/jwt_test")
     public ResponseEntity<String> testEndpoint() {
+        logger.info("Received a request to test JWT endpoint");
         return ResponseEntity.ok("토큰이 있는 사용자");
     }
 }
+

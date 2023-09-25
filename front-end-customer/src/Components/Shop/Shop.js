@@ -1,13 +1,13 @@
 import styles from "./styles";
 import { View, Text, Image } from "react-native";
 
-import SqureImage from "../SquareImage/SqureImage";
+import SquareImage from "../SquareImage/SquareImage";
 import SubTitle from "../SubTitle/SubTitle";
 
 export default function Shop({ data }) {
   return (
     <View style={styles.container}>
-      <SqureImage imageSrc={data.image} />
+      <SquareImage imageSrc={data.image} />
       <View style={styles.section}>
         <View style={styles.content}>
           <View style={styles.texts}>

@@ -172,9 +172,9 @@ export default function MakeCard({ route, navigation }) {
             </View>
           </View>
 
-          <View style={styles.cardimage}>
+          <View style={styles.cardImage}>
             <Image
-              source={require('assets/images/greencard.png')} // 이미지 파일의 경로
+              source={require('assets/images/greencard.png')}
               style={{ width: '95%', height: 550, }}
             />
 
@@ -185,7 +185,6 @@ export default function MakeCard({ route, navigation }) {
                 style={{ position: 'absolute', width: 330, height: 200 }}
               />
             </View>
-
             <TextInput
               style={[styles.innerBox, styles.innerInput]}
               placeholder="메시지를 입력하세요."
@@ -194,7 +193,6 @@ export default function MakeCard({ route, navigation }) {
               maxLength={100} // 최대 글자 수 제한
               multiline={true} // 여러 줄 입력 가능하도록 설정
             />
-
             <Text style={{ position: 'absolute', bottom: 110 }}>
               ({message.length}/100자)
             </Text>

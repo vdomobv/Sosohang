@@ -6,16 +6,18 @@ import { useEffect, useState } from "react";
 
 
 export default function WaitingPayment({ navigation, route }) {
-    console.log('route check : ', route.params)
     const [paymentResult, setPaymentResult] = useState(route.params.result);
     const totalPrice = route.params.totalPrice;
     const productList = route.params.groupedProducts;
+    const to = route.params.to;
+//   console.log('name : ',to)
+
     const groupedName = Object.keys(productList);
     const data = {
         pg: "tosspayments",
         pay_method: "card",
         merchant_uid: `test_${new Date().getTime()}`,
-        name: `${groupedName.join(", ")}선물꾸러미`,
+        name: `${groupedName.join(", ")}`,
         amount: totalPrice,
         currency: "KRW",
         language: "ko",
@@ -23,9 +25,10 @@ export default function WaitingPayment({ navigation, route }) {
         app_scheme: "front-end-customer"
     }
 
-    useState(() => {
+    useEffect(() => {
         if (!paymentResult) {
-            navigation.navigate('Payment', { data })
+            console.log('befor navigate', productList);
+            navigation.navigate('Payment', { data, productList, to })
         }
     }, [paymentResult])
 
@@ -34,7 +37,7 @@ export default function WaitingPayment({ navigation, route }) {
             <Image source={require('assets/images/giftbox.gif')} />
         </View>
         <View style={styles.button}>
-            <CustomButton pressFuction={navigation.navigate('Payment', {data})} customStyles={{ justifyContent: 'center' }} content={<Text style={styles.text}>결제하기</Text>} />
+            <CustomButton pressFuction={navigation.navigate('Payment', {data, to})} customStyles={{ justifyContent: 'center' }} content={<Text style={styles.text}>결제하기</Text>} />
         </View>
     </View>;
 }

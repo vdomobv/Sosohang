@@ -8,11 +8,19 @@ import { useEffect, useState } from "react";
 export default function Payment({ navigation, route }) {
   const userCode = EXPO_PG_USER_CODE;
   const data = route.params.data;
+  const productList = route.params.productList;
+  const to = route.params.to;
   const [paymentResult, setPaymentResult] = useState();
+  const [gotoResult, setGoToResult] = useState(false);
 
   useEffect(() => {
-    if (paymentResult) {
-      navigation.navigate("PaymentResult", { data, paymentResult });
+    if (gotoResult) {
+      navigation.navigate("PaymentResult", {
+        paymentData: data,
+        paymentResult,
+        data: productList,
+        to : to,
+      });
     }
   }, [paymentResult]);
 
@@ -23,7 +31,9 @@ export default function Payment({ navigation, route }) {
         loading={<Loading />}
         data={data}
         callback={(response) => {
-          console.log(response);
+          console.log("response : ", response);
+          console.log("data : ", productList);
+          setGoToResult(true);
           setPaymentResult(response);
         }}
       />

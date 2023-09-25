@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function AddProductModal({ show, onHide, onAddProduct }) {
+function ModalProductAdd({ show, onHide, onAddProduct }) {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productDcrate, setProductDcrate] = useState('');
@@ -84,4 +84,4 @@ function AddProductModal({ show, onHide, onAddProduct }) {
   );
 }
 
-export default AddProductModal;
+export default ModalProductAdd;

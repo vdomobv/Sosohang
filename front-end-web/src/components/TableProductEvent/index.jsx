@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import AddProductModal from '../ProductModalAdd';
-// import EditProductModal from '../ProductModalEdit';
+import AddProductModal from '../ModalProdctAdd';
+// import EditProductModal from '../ModalProdctEdit';
 
-function EventProductTable() {
+function TableProductEvent() {
   const [data, setData] = useState([]);
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -77,4 +77,4 @@ function EventProductTable() {
   );
 }
 
-export default EventProductTable;
+export default TableProductEvent;

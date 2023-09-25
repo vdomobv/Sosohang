@@ -1,5 +1,5 @@
 import React from 'react';
-import StoreChartSales from '../../components/StoreChartAccumulate';
+import StoreChartSales from '../../components/ChartStoreSales';
 
 function  StoreManage() {
   const salesData = {

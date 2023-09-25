@@ -75,7 +75,7 @@ export default function CartShop({
                   setCheckedProducts(newCheckedProducts);
                 }}
                 product={d}
-                shopname ={data.name}
+                shopName ={data.name}
                 setSelectedProducts={setSelectedProducts}
               />
             );

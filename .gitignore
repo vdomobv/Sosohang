@@ -4,6 +4,8 @@ HELP.md
 !*/gradle/wrapper/gradle-wrapper.jar
 !*/**/src/main/**/build/
 !*/**/src/test/**/build/
+.vscode
+./back-end-web
 
 ### IntelliJ IDEA ###
 **/*.idea
@@ -13,3 +15,5 @@ HELP.md
 */out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+
+.vscode

@@ -1,6 +1,7 @@
 package project.app.c109.backendapp.sosoticon.domain.entity;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity // 이 클래스는 JPA의 엔터티 클래스입니다. DB 테이블과 매핑됩니다.
 @Table(name = "sosoticon") // 해당 엔터티는 "sosoticon" 테이블과 매핑됩니다.
@@ -42,7 +43,10 @@ public class Sosoticon {
     private Integer sosoticonValue;
 
     // Default constructor
-    public Sosoticon() {}
+    public Sosoticon() {
+        this.sosoticonCode = UUID.randomUUID().toString();
+        System.out.println("test : Sosoticon default constructor called!");
+    }
 
     // Getter and Setter methods
 

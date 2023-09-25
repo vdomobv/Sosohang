@@ -3,6 +3,7 @@ import { Form, Table, Image, Button } from "react-bootstrap";
 import ProductModalAdd from "../../components/ProductModalAdd";
 import ProductModalEdit from "../../components/ProductModalEdit";
 import ProductModalDelete from "../../components/ProductModalDelete";
+import axios from "axios"
 
 function ProductTableActive() {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -10,38 +11,18 @@ function ProductTableActive() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [products, setProducts] = useState([
-    {
-      productName: "제품 1",
-      productPrice: 1000,
-      productDcrate: 0.1,
-      productInfo: "제품 설명 1",
-      productExp: "90일",
-      productImage: "이미지 URL 1",
-      productCount: 50,
-      salesAmount: 10,
-    },
-    {
-      productName: "제품 2",
-      productPrice: 1500,
-      productDcrate: 0.15,
-      productInfo: "제품 설명 2",
-      productExp: "90일",
-      productImage: "이미지 URL 2",
-      productCount: 30,
-      salesAmount: 10,
-    },
-    {
-      productName: "제품 3",
-      productPrice: 2000,
-      productDcrate: 0.2,
-      productInfo: "제품 설명 3",
-      productExp: "30일",
-      productImage: "이미지 URL 3",
-      productCount: 20,
-      salesAmount: 10,
-    },
-  ]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/owners/products")
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        return console.error(err);
+      })
+   }, [])
 
   const handleAddProduct = (newProduct) => {
     setProducts([...products, newProduct]);
@@ -107,9 +88,8 @@ function ProductTableActive() {
             <th>제품 설명</th>
             <th>사용 기간</th>
             <th>이미지</th>
-            <th>최대 발행 수량</th>
+            <th>발행 수량</th>
             <th>판매 수량</th>
-            <th></th>
             <th></th>
           </tr>
         </thead>

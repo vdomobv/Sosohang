@@ -10,7 +10,7 @@ public class SosoticonRequestDTO {
     private String sosoticonText;
     private String sosoticonAudio;
     private String sosoticonImage;
-    private String sosoticonCode;
+//    private String sosoticonCode;
     private Integer sosoticonStatus;
     private Integer sosoticonValue;
 
@@ -70,13 +70,13 @@ public class SosoticonRequestDTO {
         this.sosoticonImage = sosoticonImage;
     }
 
-    public String getSosoticonCode() {
-        return sosoticonCode;
-    }
-
-    public void setSosoticonCode(String sosoticonCode) {
-        this.sosoticonCode = sosoticonCode;
-    }
+//    public String getSosoticonCode() {
+//        return sosoticonCode;
+//    }
+//
+//    public void setSosoticonCode(String sosoticonCode) {
+//        this.sosoticonCode = sosoticonCode;
+//    }
 
     public Integer getSosoticonStatus() {
         return sosoticonStatus;

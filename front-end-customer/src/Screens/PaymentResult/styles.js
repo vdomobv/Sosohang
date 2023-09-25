@@ -24,9 +24,10 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    height: "10%",
+    height: 80,
     marginHorizontal: 10,
   },
+  
 });
 
 export default styles;

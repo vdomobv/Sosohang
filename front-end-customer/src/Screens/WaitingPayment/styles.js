@@ -7,17 +7,20 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        height: "10%",
-        marginHorizontal: 10,
+        height: "8%",
+        width: "80%",
+        alignSelf : 'center',
+        marginTop : 80
     },
 
     image: {
-        marginVertical: 50
-    },
+        alignItems: "center",
+        marginTop : 250
+      },
 
     text: {
         fontWeight: 'bold',
-        fontSize: 30,
+        fontSize: 25,
         textAlignVertical: 'center',
         color: "white"
     }

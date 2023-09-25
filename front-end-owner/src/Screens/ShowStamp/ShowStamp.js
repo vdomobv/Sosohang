@@ -1,5 +1,5 @@
 // components
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, Image } from "react-native";
 import React, { useState } from 'react';
 import styles from "./styles";
 
@@ -33,6 +33,9 @@ export default function ShowStamp({ navigation }) {
       <View style={styles.container}>
         <Title title={"소복소복 도장"} />
         <View style={styles.subContainer}>
+          <Image style={styles.stampImage}
+            source={require('assets/images/stamp.png')}
+          />
           <Box
             content={
               <View style={styles.stampBox}>

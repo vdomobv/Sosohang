@@ -8,7 +8,16 @@ const styles = StyleSheet.create({
   },
 
   subContainer: {
-    marginTop: 60,
+
+  },
+
+  stampImage: {
+    marginStart: 'auto',
+    top: 45,
+    zIndex: 100,
+    width: 90,
+    height: 90,
+    marginRight: 10,
   },
 
   stampBox: {
@@ -43,7 +52,6 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
   },
 
-
   buttonContainer: {
     alignItems: "center",
     marginTop : 10,
@@ -53,9 +61,9 @@ const styles = StyleSheet.create({
     width: '80%',
     borderRadius: 5,
     padding: 12,
-    marginTop: 5,
+    marginTop: 12,
     backgroundColor: '#FFBF46',
-
+    elevation: 5
   },
 
   buttonText: {

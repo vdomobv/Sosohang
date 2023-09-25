@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 
   day: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  image: {
+  profileImage: {
     height: 55,
     width: 55,
     borderRadius: 100,
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 15,
   },
 
   time: {
@@ -72,14 +71,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 35,
     width: 250,
-    marginLeft: 95,
-    marginBottom: 10,
+    marginVertical: 10,
     padding: 5,
   },
 
-  cardimage: {
+  cardImage: {
     alignItems: 'center', // 가로 중앙 정렬
-    marginTop: 5,
+    marginBottom: 10,
   },
 
   innerBox: {
@@ -94,21 +92,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
+  messageText: {
+
+  },
+
   innerInput: { 
     top: 178, 
-    height: 130, 
+    height: 90, 
     textAlign: 'center', 
     fontSize: 18, 
     fontWeight: 'bold'
   },
 
-  input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    padding: 8,
-    paddingLeft: 15,
-  },
+  // input: {
+  //   borderWidth: 1,
+  //   borderColor: 'gray',
+  //   borderRadius: 5,
+  //   padding: 8,
+  //   paddingLeft: 15,
+  // },
   
 });
 

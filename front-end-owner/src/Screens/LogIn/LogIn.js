@@ -49,48 +49,48 @@ export default function LogIn({ navigation }) {
 
   return (
     <>
-    <View style={styles.container}>
-      <Title title={"사장님 로그인"} />
-    {/* <View style={styles.loginContainer}> */}
+      <View style={styles.container}>
+        <Title title={"사장님 로그인"} />
+        {/* <View style={styles.loginContainer}> */}
 
-<Text style={styles.info}>비밀번호 찾기는 웹사이트에서 가능합니다.</Text>
-<View style={{alignItems: 'center'}}>
-      <TextInput
-        style={styles.input}
-        placeholder="전화번호를 입력해 주세요."
-        keyboardType="numeric"
-        maxLength={11} // 최대 길이를 11로 설정
-        onChangeText={(text) => {
-          // 입력된 값이 숫자인지 확인
-          if (/^[0-9]*$/.test(text)) {
-            // 숫자인 경우에만 상태 업데이트
-            if (text.length <= 11) {
-              setLoginPhoneNumber(text);
-            }
-          } else {
-            // 숫자가 아닌 경우 경고창 표시
-            Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
-          }
-        }}
-        value={loginPhoneNumber}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="비밀번호를 입력해 주세요."
-        secureTextEntry
-        onChangeText={(text) => setLoginPassword(text)}
-        value={loginPassword}
-      />
-      <TouchableOpacity
-        style={[styles.button]}
-        onPress={handleLogIn}>
-        <Text style={[styles.buttonText]}>
-          로그인
-        </Text>
-      </TouchableOpacity>
+        <Text style={styles.info}>비밀번호 찾기는 웹사이트에서 가능합니다.</Text>
+        <View style={{ alignItems: 'center' }}>
+          <TextInput
+            style={styles.input}
+            placeholder="전화번호를 입력해 주세요."
+            keyboardType="numeric"
+            maxLength={11} // 최대 길이를 11로 설정
+            onChangeText={(text) => {
+              // 입력된 값이 숫자인지 확인
+              if (/^[0-9]*$/.test(text)) {
+                // 숫자인 경우에만 상태 업데이트
+                if (text.length <= 11) {
+                  setLoginPhoneNumber(text);
+                }
+              } else {
+                // 숫자가 아닌 경우 경고창 표시
+                Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
+              }
+            }}
+            value={loginPhoneNumber}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="비밀번호를 입력해 주세요."
+            secureTextEntry
+            onChangeText={(text) => setLoginPassword(text)}
+            value={loginPassword}
+          />
+          <TouchableOpacity
+            style={[styles.button]}
+            onPress={handleLogIn}>
+            <Text style={[styles.buttonText]}>
+              로그인
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-          <Tabs navigation={navigation} />
-          </>
+      <Tabs navigation={navigation} />
+    </>
   );
 }

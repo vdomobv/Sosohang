@@ -21,13 +21,14 @@ import Stamp from "./src/Screens/Stamp/Stamp";
 import Dibs from "./src/Screens/Dibs/Dibs";
 import PurchaseHistory from "./src/Screens/PurchaseHistory/PurchaseHistory";
 import Shop from "./src/Screens/Shop/Shop";
+import WaitingPayment from "./src/Screens/WaitingPayment/WaitingPayment";
+import Payment from "./src/Screens/Payment/Payment";
+import PaymentResult from "./src/Screens/PaymentResult/PaymentResult";
 
 const Stack = createStackNavigator();
 
 export default function App() {
-
   return (
-
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Main"
@@ -49,9 +50,12 @@ export default function App() {
         <Stack.Screen name="Dibs" component={Dibs} />
         <Stack.Screen name="PurchaseHistory" component={PurchaseHistory} />
         <Stack.Screen name="Shop" component={Shop} />
+        <Stack.Screen name="WaitingPayment" component={WaitingPayment} />
+        <Stack.Screen name="Payment" component={Payment} />
+        <Stack.Screen name="PaymentResult" component={PaymentResult} />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

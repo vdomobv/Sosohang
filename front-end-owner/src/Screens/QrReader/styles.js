@@ -4,24 +4,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
     marginTop: 25,
   },
-
+  
   qrContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // 주변 화면 어둡게
+  },
+  
+  qrText: {
+    color: 'white',
+    marginVertical: 10,
+  },
+
+  // qrBorder: {
+  //   borderWidth: 3,
+  //   borderColor: '#46C27D',
+  //   borderRadius: 10,
+  //   margin: 10,
+  // },
+
+  qr: {
+    width: 300,
+    height: 450,
   },
   
   scanAgain: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 15,
+    backgroundColor: '#46C27D',
+    padding: 12,
     borderRadius: 10,
-    alignSelf: 'center',
-    margin: 20,
+    margin: 10,
   },
+
   scanAgainText: {
     color: 'white',
     fontSize: 18,

@@ -82,7 +82,7 @@ export default function Cart({ navigation }) {
                       newCheckedItems[index] = checked;
                       setCheckedItems(newCheckedItems);
                     }}
-                    shopname={d.name}
+                    shopName={d.name}
                     setSelectedProducts={setSelectedProducts}
                   />
                 );

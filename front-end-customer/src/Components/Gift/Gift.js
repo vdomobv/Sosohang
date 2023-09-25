@@ -33,7 +33,7 @@ export default function Gift({ navigation, data }) {
         </View>
         {data.to ? (
           <View style={styles.buttons}>
-            {data.currentPrice == data.price ? (
+            {data.currentPrice == data.totalPrice ? (
               <CustomButton
                 pressFuction={() => {
                   setModalState(true);

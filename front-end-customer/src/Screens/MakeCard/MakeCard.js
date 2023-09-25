@@ -9,6 +9,7 @@ import CartProduct from "../../Components/CartProduct/CartProduct";
 
 export default function MakeCard({ route, navigation }) {
   const { selectedProducts, totalPrice } = route.params;
+  console.log(selectedProducts)
   const selectedProductsArray = Array.from(selectedProducts);
 
   const [selectedButton, setSelectedButton] = useState(null);
@@ -103,22 +104,22 @@ export default function MakeCard({ route, navigation }) {
 
   // 상품을 상점 이름을 기준으로 그룹화
   const groupedProducts = selectedProductsArray.reduce((groups, product) => {
-    const shopname = product.shopname;
-    if (!groups[shopname]) {
-      groups[shopname] = [];
+    const shopName = product.shopName;
+    if (!groups[shopName]) {
+      groups[shopName] = [];
     }
-    groups[shopname].push(product);
+    groups[shopName].push(product);
     return groups;
   }, {});
 
   // 그룹화된 상품을 렌더링
   const renderGroupedProducts = () => {
-    return Object.keys(groupedProducts).map((shopname) => {
-      const productsInShop = groupedProducts[shopname];
+    return Object.keys(groupedProducts).map((shopName) => {
+      const productsInShop = groupedProducts[shopName];
       return (
-        <View key={shopname}>
+        <View key={shopName}>
           <Text style={styles.shopName}>
-            {shopname} <Ionicons style={styles.shopIcon} name="home-outline" />
+            {shopName} <Ionicons style={styles.shopIcon} name="home-outline" />
           </Text>
           <View style={styles.box}>
             {productsInShop.map((product, index) => (
@@ -133,7 +134,7 @@ export default function MakeCard({ route, navigation }) {
                 setSelectedProducts={(newSelectedProducts) => {
                   // 선택한 상품을 업데이트하는 함수를 구현하세요.
                 }}
-                shopname={product.shopname}
+                shopName={product.shopName}
               />
             ))}
           </View>
@@ -255,6 +256,8 @@ export default function MakeCard({ route, navigation }) {
           </View>
           <TouchableOpacity
             style={styles.okay}
+            onPress={() => {
+              navigation.navigate('WaitingPayment', {groupedProducts, totalPrice, result : false, to:contactName})}}
           >
             <Text style={[styles.priceText, { color: "white" }]}>결제하기</Text>
           </TouchableOpacity>

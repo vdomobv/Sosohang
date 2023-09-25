@@ -12,7 +12,7 @@ export default function CartProduct({
   updateTotalPrice,
   totalPrice,
   setSelectedProducts,
-  shopname,
+  shopName,
 }) {
   const [isChecked, setIsChecked] = useState(productCheck);
   const [productCount, setProductCount] = useState(product.count);
@@ -22,7 +22,7 @@ export default function CartProduct({
   }, [productCheck]);
 
   useEffect(() => {
-    product["shopname"] = shopname;
+    product["shopName"] = shopName;
     if (isChecked) {
       setSelectedProducts((prevSet) => new Set([...prevSet, product]));
     } else {

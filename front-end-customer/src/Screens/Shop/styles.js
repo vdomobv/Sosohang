@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     height: 50,
     position: 'absolute',
     width: '95%',
+    height : '',
     bottom: 0,
     marginVertical: 10,
     alignSelf: 'center',
@@ -40,6 +41,12 @@ const styles = StyleSheet.create({
 
   blank : {
     height : 60
+  },
+
+  text : {
+    color : 'white',
+    fontWeight : 'bold',
+    fontSize : 30
   }
 
 });

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
+import ModalStoreRegNum from "../../components/ModalStoreRegNum";
 
 function InputStoreInfo() {
   const [storeName, setStoreName] = useState(""); // 상점 이름
@@ -8,6 +9,7 @@ function InputStoreInfo() {
   const [storeRegNum, setStoreRegNum] = useState(""); // 사업자 등록번호
   const [regNumWarnig, setRegNumWarning] = useState(""); // 사업자등록번호 유효성 검사 경고문구
   const [isValidRegNum, setIsValidRegNum] = useState(false); // 사업자등록번호 유효성 검사 결과
+  const [isOpenRegNum, setIsOpenRegNum] = useState(false); // 사업자등록번호 인증 모달창 여부
 
   // 사업자등록번호 형식 - 숫자 10자리
   const storeRegNumEx = /^[0-9]{10}$/;
@@ -23,6 +25,13 @@ function InputStoreInfo() {
     }
 
     setIsValidRegNum(isValidRegNum);
+  };
+
+  // 사업자등록번호 인증 모달 띄우기
+  const onChangeOpenRegNum = (e) => {
+    e.preventDefault(); // 새로고침 방지
+    setIsOpenRegNum(!isOpenRegNum);
+    console.log(isOpenRegNum)
   };
 
   const [mainAddress, setMainAddress] = useState(""); // 상점 주소
@@ -75,7 +84,9 @@ function InputStoreInfo() {
               setStoreRegNum(e.target.value);
             }}
           />
-          <Button id="button-addon2">인증하기</Button>
+          <Button id="button-addon2" onClick={onChangeOpenRegNum}>
+            인증하기
+          </Button>
         </InputGroup>
         <Form.Label className="waringMessage">{regNumWarnig}</Form.Label>
       </div>
@@ -115,7 +126,16 @@ function InputStoreInfo() {
         </Form.Select>
       </div>
       {isOpenPost ? (
-        <ModalStorePostcode onCompletePost={onCompletePost} />
+        <ModalStorePostcode
+          onCompletePost={onCompletePost}
+          setIsOpenPost={setIsOpenPost}
+        />
+      ) : null}
+      {isOpenRegNum ? (
+        <ModalStoreRegNum
+          regNum={storeRegNum}
+          setIsOpenRegNum={setIsOpenRegNum}
+        />
       ) : null}
     </div>
   );

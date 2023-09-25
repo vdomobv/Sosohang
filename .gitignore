@@ -5,6 +5,7 @@ HELP.md
 !*/**/src/main/**/build/
 !*/**/src/test/**/build/
 .vscode
+./back-end-web
 
 ### IntelliJ IDEA ###
 **/*.idea

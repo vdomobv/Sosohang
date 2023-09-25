@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import ToggleButton from "react-bootstrap/ToggleButton";
-import { Link, useNavigate } from "react-router-dom";
+import { Form, InputGroup, Button, ToggleButton } from "react-bootstrap";
 import Wrapper from "./styles";
 import Header from "../../components/Header";
-import DaumPostcode from "react-daum-postcode";
+import ModalStorePostcode from "../../components/ModalStorePostcode";
 
 function SignUp() {
   // 사업자등록번호 형식 - 숫자 10자리
@@ -141,28 +136,6 @@ function SignUp() {
     <div>
       <Header />
       <Wrapper>
-        {isOpenPost ? (
-          <div
-            className="modal show"
-            style={{ display: "block", position: "absolute" }}
-          >
-            <Modal.Dialog className="modalBox">
-              <Modal.Header
-                style={{ outline: "none" }}
-                closeButton
-                onClick={onChangeOpenPost}
-              >
-                우편번호 찾기
-              </Modal.Header>
-
-              <Modal.Body>
-                <div>
-                  <DaumPostcode onComplete={onCompletePost} />
-                </div>
-              </Modal.Body>
-            </Modal.Dialog>
-          </div>
-        ) : null}
         <form>
           <div className="container">
             <div className="essentialInputBox">
@@ -304,15 +277,13 @@ function SignUp() {
                   />
                   <InputGroup.Text
                     onClick={onChangeShowPassword}
-                    style={{ cursor: "pointer" }}
-                  >
+                    style={{ cursor: "pointer" }}>
                     <i
                       className={
                         showPassword
                           ? "fa-solid fa-eye"
                           : "fa-solid fa-eye-slash"
-                      }
-                    ></i>
+                      }></i>
                   </InputGroup.Text>
                 </InputGroup>
                 <Form.Label className="waringMessage">
@@ -333,15 +304,13 @@ function SignUp() {
                   />
                   <InputGroup.Text
                     onClick={onChangeShowConfirmPassword}
-                    style={{ cursor: "pointer" }}
-                  >
+                    style={{ cursor: "pointer" }}>
                     <i
                       className={
                         showConfirmPassword
                           ? "fa-solid fa-eye"
                           : "fa-solid fa-eye-slash"
-                      }
-                    ></i>
+                      }></i>
                   </InputGroup.Text>
                 </InputGroup>
                 <Form.Label className="waringMessage">
@@ -377,8 +346,7 @@ function SignUp() {
                   type="checkbox"
                   variant="outline-primary"
                   checked={existParkinglot}
-                  onChange={(e) => setExistParkinglot(e.currentTarget.checked)}
-                >
+                  onChange={(e) => setExistParkinglot(e.currentTarget.checked)}>
                   {existParkinglot ? "주차장 있음" : "주차장 없음"}
                 </ToggleButton>
                 <Form.Control
@@ -412,8 +380,7 @@ function SignUp() {
                       openFriday ||
                       openSaturday ||
                       openSunday
-                    }
-                  >
+                    }>
                     매 일
                   </ToggleButton>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -442,8 +409,7 @@ function SignUp() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    disabled={openEveryday}
-                  >
+                    disabled={openEveryday}>
                     월요일
                   </ToggleButton>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -472,8 +438,7 @@ function SignUp() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    disabled={openEveryday}
-                  >
+                    disabled={openEveryday}>
                     화요일
                   </ToggleButton>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -502,8 +467,7 @@ function SignUp() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    disabled={openEveryday}
-                  >
+                    disabled={openEveryday}>
                     수요일
                   </ToggleButton>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -525,8 +489,7 @@ function SignUp() {
                   display: "flex",
                   flexDirection: "row",
                   marginTop: "10px",
-                }}
-              >
+                }}>
                 <InputGroup style={{ width: "350px" }}>
                   <ToggleButton
                     id="open-thursday-toggle-check"
@@ -540,8 +503,7 @@ function SignUp() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    disabled={openEveryday}
-                  >
+                    disabled={openEveryday}>
                     목요일
                   </ToggleButton>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -570,8 +532,7 @@ function SignUp() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    disabled={openEveryday}
-                  >
+                    disabled={openEveryday}>
                     금요일
                   </ToggleButton>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -600,8 +561,7 @@ function SignUp() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    disabled={openEveryday}
-                  >
+                    disabled={openEveryday}>
                     토요일
                   </ToggleButton>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -630,8 +590,7 @@ function SignUp() {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    disabled={openEveryday}
-                  >
+                    disabled={openEveryday}>
                     일요일
                   </ToggleButton>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -651,14 +610,18 @@ function SignUp() {
             </div>
             <div>
               <Form.Label>상점 휴무일</Form.Label>
-              <div style={{ display: "flex", flexDirection: "row", alignContent:"space-evenly"}}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignContent: "space-evenly",
+                }}>
                 <ToggleButton
                   id="close-monday-toggle-check"
                   type="checkbox"
                   variant="outline-primary"
                   checked={closeMonday}
-                  onChange={(e) => setCloseMonday(e.currentTarget.checked)}
-                >
+                  onChange={(e) => setCloseMonday(e.currentTarget.checked)}>
                   월요일
                 </ToggleButton>
                 <ToggleButton
@@ -666,8 +629,7 @@ function SignUp() {
                   type="checkbox"
                   variant="outline-primary"
                   checked={closeTuesday}
-                  onChange={(e) => setCloseTuesday(e.currentTarget.checked)}
-                >
+                  onChange={(e) => setCloseTuesday(e.currentTarget.checked)}>
                   화요일
                 </ToggleButton>
                 <ToggleButton
@@ -675,8 +637,7 @@ function SignUp() {
                   type="checkbox"
                   variant="outline-primary"
                   checked={closeWendsday}
-                  onChange={(e) => setCloseWendsday(e.currentTarget.checked)}
-                >
+                  onChange={(e) => setCloseWendsday(e.currentTarget.checked)}>
                   수요일
                 </ToggleButton>
                 <ToggleButton
@@ -684,8 +645,7 @@ function SignUp() {
                   type="checkbox"
                   variant="outline-primary"
                   checked={closeThursday}
-                  onChange={(e) => setCloseThursday(e.currentTarget.checked)}
-                >
+                  onChange={(e) => setCloseThursday(e.currentTarget.checked)}>
                   목요일
                 </ToggleButton>
                 <ToggleButton
@@ -693,8 +653,7 @@ function SignUp() {
                   type="checkbox"
                   variant="outline-primary"
                   checked={closeFriday}
-                  onChange={(e) => setCloseFriday(e.currentTarget.checked)}
-                >
+                  onChange={(e) => setCloseFriday(e.currentTarget.checked)}>
                   금요일
                 </ToggleButton>
                 <ToggleButton
@@ -702,8 +661,7 @@ function SignUp() {
                   type="checkbox"
                   variant="outline-primary"
                   checked={closeSaturday}
-                  onChange={(e) => setCloseSaturday(e.currentTarget.checked)}
-                >
+                  onChange={(e) => setCloseSaturday(e.currentTarget.checked)}>
                   토요일
                 </ToggleButton>
                 <ToggleButton
@@ -711,19 +669,17 @@ function SignUp() {
                   type="checkbox"
                   variant="outline-primary"
                   checked={closeSunday}
-                  onChange={(e) => setCloseSunday(e.currentTarget.checked)}
-                >
+                  onChange={(e) => setCloseSunday(e.currentTarget.checked)}>
                   일요일
                 </ToggleButton>
-                <InputGroup style={{width:"350px"}}>
+                <InputGroup style={{ width: "350px" }}>
                   <ToggleButton
                     id="close-day-toggle-check"
                     type="checkbox"
                     variant="outline-primary"
                     checked={closeDay}
                     onChange={(e) => setCloseDay(e.currentTarget.checked)}
-                    style={{borderRadius:"5%"}}
-                  >
+                    style={{ borderRadius: "5%" }}>
                     기타
                   </ToggleButton>
                   <Form.Control
@@ -783,6 +739,9 @@ function SignUp() {
           </div>
         </form>
       </Wrapper>
+      {isOpenPost ? (
+        <ModalStorePostcode onCompletePost={onCompletePost} />
+      ) : null}
     </div>
   );
 }

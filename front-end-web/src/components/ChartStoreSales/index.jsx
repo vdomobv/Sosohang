@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart } from 'chart.js';
 
-function SalesChart({ salesData }) {
+function ChartStoreSales({ salesData }) {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -68,4 +68,4 @@ function SalesChart({ salesData }) {
   return <canvas ref={chartRef} />;
 }
 
-export default SalesChart;
+export default ChartStoreSales;

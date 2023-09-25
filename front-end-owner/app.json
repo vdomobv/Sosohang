@@ -4,11 +4,11 @@
     "slug": "front-end-owner",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/soso_logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/soso_logo.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
@@ -16,7 +16,6 @@
       "supportsTablet": true
     },
     "android": {
-
       "config": {
         "googleMaps": {
           "apiKey": ""
@@ -24,7 +23,7 @@
       },
       "package": "com.sosohang.sosohang",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/soso_logo.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [

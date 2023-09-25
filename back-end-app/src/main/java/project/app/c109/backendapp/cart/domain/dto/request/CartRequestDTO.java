@@ -1,37 +1,12 @@
-package project.app.c109.backendapp.cart.domain.entity;
+package project.app.c109.backendapp.cart.domain.dto.request;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "cart")
-public class Cart {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_seq")
-    private Long cartSeq;
-
-    @Column(name = "member_seq")
+public class CartRequestDTO {
     private Long memberSeq;
-
-    @Column(name = "product_seq")
     private Long productSeq;
-
-    @Column(name = "store_seq")
     private Long storeSeq;
-
-    @Column(name = "quantity")
     private Integer quantity;
 
     // Getter and Setter methods
-
-    public Long getCartSeq() {
-        return cartSeq;
-    }
-
-    public void setCartSeq(Long cartSeq) {
-        this.cartSeq = cartSeq;
-    }
 
     public Long getMemberSeq() {
         return memberSeq;

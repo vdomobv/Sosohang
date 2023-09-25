@@ -86,9 +86,9 @@ export default function Main({ navigation }) {
   ));
 
   const category = categoryData.map((data, index) => {
-    return <Category key={index} props={data}
-      onPress={() => {
-        navigation.navigate('Shop')
+    return <Category key={index} props={data} 
+      PressFunction={() => {
+        navigation.navigate('List', { category : data.name})
       }} />;
   });
 

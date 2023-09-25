@@ -7,9 +7,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  subtitle: {
-    alignSelf: "center",
-    margin: 10,
+  subContainer: {
+    marginTop: 60,
   },
 
   stampBox: {
@@ -22,32 +21,28 @@ const styles = StyleSheet.create({
     width: "99%",
     paddingVertical: 30,
   },
-
-  stampCount: {
-    fontSize: 34,
-    fontWeight: "bold",
-    color: "#FFBF46",
+ 
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
-  stampTotal: {
-    fontSize: 28,
-    color: "#818181",
+  text: {
+    fontSize: 23,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 
-  stampImage: {
-    margin: 20,
+  textInput: {
+    backgroundColor: '#E9EEE8',
+    borderRadius: 30,
+    padding: 12,
+    marginHorizontal: 10,
+    fontSize: 23,
+    fontWeight: 'bold',
+    paddingLeft: 30,
   },
 
-  infoText: {
-    fontSize: 16,
-    color: "#818181",
-    marginLeft : 15,
-    marginVertical : 5,
-  },
-
-  info: {
-    marginVertical : 5,
-  },
 
   buttonContainer: {
     alignItems: "center",

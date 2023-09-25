@@ -25,13 +25,22 @@ export default function Tabs({ navigation }) {
           }
         }} />
 
-      <Ionicons size={40} name="qr-code-outline" 
+      <Ionicons size={40} name="qr-code-outline"
         color={activeTab === "QrReader" ? "#46C27D" : "black"}
         onPress={() => {
-        if (route != "QrReader") {
-          navigation.navigate("QrReader")
-        }
-      }} />
+          if (route != "QrReader") {
+            navigation.navigate("QrReader")
+          }
+        }} />
+
+      <FontAwesome5Icon size={40} name="credit-card"
+        color={activeTab === "InputPayment" ? "#46C27D" : "black"}
+        onPress={() => {
+          if (route != "InputPayment") {
+            navigation.navigate("InputPayment")
+          }
+        }} />
+
       <FontAwesome5Icon size={40} name="stamp"
         color={activeTab === "AddStamp" ? "#46C27D" : "black"}
         onPress={() => {

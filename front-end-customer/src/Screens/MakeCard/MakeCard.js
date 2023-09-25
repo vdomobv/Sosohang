@@ -227,7 +227,7 @@ export default function MakeCard({ route, navigation }) {
                 style={[styles.input, { width: 220, marginLeft: 10 }]}
                 placeholder="전화번호"
                 keyboardType="numeric"
-                maxLength={11}
+                maxLength={13}
                 value={contactPhoneNumber}
                 onChangeText={(text) => {
                   setContactPhoneNumber(text); // 전화번호 입력 시 상태 업데이트

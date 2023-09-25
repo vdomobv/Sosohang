@@ -16,7 +16,7 @@ const CartDummy = [
       },
       {
         name: "테스트",
-        count: 1,
+        count: 100,
         price: 1,
         image: require("assets/images/bread.png"),
       },

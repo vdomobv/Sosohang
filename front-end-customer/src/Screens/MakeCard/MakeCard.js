@@ -256,7 +256,7 @@ export default function MakeCard({ route, navigation }) {
           </View>
           <TouchableOpacity
             style={styles.okay}
-            onPress={() => {navigation.navigate('WaitingPayment', {groupedProducts, totalPrice})}}
+            onPress={() => {navigation.navigate('WaitingPayment', {groupedProducts, totalPrice, result : false})}}
           >
             <Text style={[styles.priceText, { color: "white" }]}>결제하기</Text>
           </TouchableOpacity>

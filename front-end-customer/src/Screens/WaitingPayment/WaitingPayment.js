@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 
 export default function WaitingPayment({ navigation, route }) {
+    console.log('route check : ', route.params)
     const [paymentResult, setPaymentResult] = useState(route.params.result);
     const totalPrice = route.params.totalPrice;
     const productList = route.params.groupedProducts;
@@ -13,8 +14,8 @@ export default function WaitingPayment({ navigation, route }) {
     const data = {
         pg: "tosspayments",
         pay_method: "card",
-        merchant_uid: "test_lmxisn7n",
-        name: "선물꾸러미",
+        merchant_uid: `test_${new Date().getTime()}`,
+        name: `${groupedName.join(", ")}선물꾸러미`,
         amount: totalPrice,
         currency: "KRW",
         language: "ko",
@@ -33,7 +34,7 @@ export default function WaitingPayment({ navigation, route }) {
             <Image source={require('assets/images/giftbox.gif')} />
         </View>
         <View style={styles.button}>
-            <CustomButton customStyles={{ justifyContent: 'center' }} content={<Text style={styles.text}>결제 완료</Text>} />
+            <CustomButton pressFuction={navigation.navigate('Payment', {data})} customStyles={{ justifyContent: 'center' }} content={<Text style={styles.text}>결제하기</Text>} />
         </View>
     </View>;
 }

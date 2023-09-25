@@ -6,17 +6,6 @@ import ProductModalDelete from "../../components/ProductModalDelete";
 import axios from "axios"
 
 function ProductTableActive() {
- useEffect(() => {
-  axios
-    .get("http://localhost:8080/api/owners/products")
-    .then((res) => {
-      console.log(res.data)
-    })
-    .catch(() => {
-      console.error();
-    })
- })
-
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -26,14 +15,14 @@ function ProductTableActive() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/owners/products")
-      .then(() => {
-        // console.log(res.data);
+      .get("/api/owners/products")
+      .then((res) => {
+        setProducts(res.data);
       })
       .catch((err) => {
         return console.error(err);
-      });
-  })
+      })
+   }, [])
 
   const handleAddProduct = (newProduct) => {
     setProducts([...products, newProduct]);
@@ -99,9 +88,8 @@ function ProductTableActive() {
             <th>제품 설명</th>
             <th>사용 기간</th>
             <th>이미지</th>
-            <th>최대 발행 수량</th>
+            <th>발행 수량</th>
             <th>판매 수량</th>
-            <th></th>
             <th></th>
           </tr>
         </thead>

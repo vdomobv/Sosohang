@@ -10,7 +10,7 @@ export default function WaitingPayment({ navigation, route }) {
   const totalPrice = route.params.totalPrice;
   const productList = route.params.groupedProducts;
   const to = route.params.to;
-  //   console.log('name : ',to)
+  const result = route.params.result;
 
   const groupedName = Object.keys(productList);
   const data = {
@@ -27,8 +27,10 @@ export default function WaitingPayment({ navigation, route }) {
 
   useEffect(() => {
     if (!paymentResult) {
-      console.log("befor navigate", productList);
+      console.log("before navigate", productList);
       navigation.navigate("Payment", { data, productList, to });
+    } else {
+      navigation.goback();
     }
   }, [paymentResult]);
 

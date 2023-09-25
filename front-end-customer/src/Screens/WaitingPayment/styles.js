@@ -7,10 +7,11 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        height: "8%",
+        height: "9%",
         width: "80%",
         alignSelf : 'center',
-        marginTop : 80
+        marginTop : 80,
+        textAlignVertical : 'center',
     },
 
     image: {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 
     text: {
         fontWeight: 'bold',
-        fontSize: 25,
+        fontSize: 24,
         textAlignVertical: 'center',
         color: "white"
     }

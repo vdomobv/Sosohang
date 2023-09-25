@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ProductTableActive from "../../components/ProductTableActivie"
 
-function ProductManage() {
-  
+function ProductManage() {  
 
   return (
     <div>

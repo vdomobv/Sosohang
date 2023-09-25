@@ -68,7 +68,7 @@ export default function QrReader({ navigation }) {
       alertTitle={`잔액 확인`}
       alertText={`현재 잔액 : ${scannedData?.type} 원\n상품 금액: ${scannedData?.data} 원`}
       // alertText={`바코드 유형: ${scannedData?.type}\n바코드 데이터: ${scannedData?.data}`}
-      targetScreen="AddStamp"
+      targetScreen="InputPayment"
        />
       </View>
       <Tabs navigation={navigation} />

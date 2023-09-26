@@ -68,7 +68,26 @@ const styles = StyleSheet.create({
     fontSize: 20, 
     fontWeight: 'bold', 
     textAlign: 'center', 
-  }
+  },
+
+  stampModalContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  stampCountText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+
+  stampButtons: {
+    flexDirection: 'row',
+  },
+  
+  stampButton: {
+    fontSize: 24,
+    marginHorizontal: 10,
+  },
 });
 
 export default styles;

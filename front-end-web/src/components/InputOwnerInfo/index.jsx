@@ -2,28 +2,6 @@ import React, { useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 
 function InputOwnerInfo() {
-  const [storeId, setStoreId] = useState(""); // 상점ID
-  const [idWarning, setIdWarning] = useState(""); // 상점ID 유효성 검사 경고문구
-  const [isValidId, setIsValidId] = useState(false); // 상점ID 유효성 검사 결과
-
-  // 상점ID 형식 - 영어 소문자, 숫자로 이루어진 5~15글자
-  const storeIdRegEx = /^[a-z0-9]{5,15}$/;
-
-  // 상점ID 유효성 검사
-  const idCheck = (id) => {
-    const isValidId = storeIdRegEx.test(id);
-
-    if (!isValidId && id !== "") {
-      setIdWarning(
-        "소문자, 숫자 중 하나이상을 사용하여 5~15자리로 설정해 주세요"
-      );
-    } else {
-      setIdWarning("");
-    }
-
-    setIsValidId(isValidId);
-  };
-
   const [storePassword, setStorePassword] = useState(""); // 상점비밀번호
   const [passwordWarning, setPasswordWarning] = useState(""); // 상점비밀번호 유효성 검사 경고문구
   const [comfirmPasswordWarning, setComfirmPasswordWarning] = useState(""); // 상점비밀번호 확인 유효성 검사 경고문구
@@ -72,27 +50,7 @@ function InputOwnerInfo() {
 
   return (
     <div>
-      <h4>사장님 정보</h4>
-      <div style={{ height: "70px" }}>
-        <Form.Label>아이디*</Form.Label>
-        <InputGroup>
-          <Form.Control
-            placeholder="아이디"
-            aria-label="상점아이디를 입력해주세요."
-            maxLength={15}
-            onChange={(e) => {
-              const idExp = /[^a-z0-9]/g;
-              if (idExp.test(e.target.value)) {
-                e.target.value = e.target.value.replace(idExp, "");
-              }
-              idCheck(e.target.value);
-              setStoreId(e.target.value);
-            }}
-          />
-          <Button id="button-addon2">중복확인</Button>
-        </InputGroup>
-        <Form.Label className="waringMessage">{idWarning}</Form.Label>
-      </div>
+      <h4>사장님 정보</h4>      
       <div>
         <Form.Label>휴대전화번호*</Form.Label>
         <InputGroup>

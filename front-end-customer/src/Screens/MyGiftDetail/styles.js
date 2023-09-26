@@ -7,6 +7,10 @@ const styles = StyleSheet.create({
     marginTop : 25,
   },
 
+  subContainer: {
+    alignItems: 'center',
+  },
+
   title: {
     fontSize: 21,
     marginTop: 10,

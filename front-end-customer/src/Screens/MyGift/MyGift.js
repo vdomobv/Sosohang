@@ -7,13 +7,11 @@ import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import Gift from "../../Components/Gift/Gift";
 
 import MyGiftDummy from "../../Dummys/MyGift/MyGiftDummy";
-// const dummy = MyGiftDummy;
 
 export default function MyGift({ navigation }) {
 
   const handleGiftClick = (giftData) => {
-    // Gift 컴포넌트를 클릭했을 때 호출될 함수
-    navigation.navigate("MyGiftDetail", { giftData }); // MyGiftDetail로 이동하고 giftData 전달
+    navigation.navigate("MyGiftDetail", { giftData }); 
   };
 
   const gifts = MyGiftDummy.map((d, index) => {

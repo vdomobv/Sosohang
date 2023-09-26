@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import project.app.c109.backendapp.config.security.jwt.JwtAuthenticationFilter;
-import project.app.c109.backendapp.config.security.jwt.JwtAuthorizationFilter;
+
 import project.app.c109.backendapp.config.security.jwt.JwtUtils;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -35,8 +35,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-
-                                .antMatchers("/api-docs/**", "/swagger-ui/**","/api/**", "/sosohang-app.html").permitAll()
+                                .antMatchers("/api/v1/**", "/api-docs/**", "/swagger-ui/**", "/sosohang-app.html").permitAll()
                                 .antMatchers("/api/admin/**").hasRole("ADMIN")
 //                                .antMatchers("/api/v1/member/test").authenticated() // 토큰이 있는 사용자만 접근 가능한 엔드포인트
                                 .anyRequest().authenticated()
@@ -55,8 +54,6 @@ public class SecurityConfig {
         // JwtAuthenticationFilter를 사용자 정의 필터로 추가
         http.addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
-        // JwtAuthorizationFilter를 사용자 정의 필터로 추가
-        http.addFilterBefore(new JwtAuthorizationFilter(jwtUtils), JwtAuthenticationFilter.class);
 
         return http.build();
     }

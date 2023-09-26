@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
   // },
 
   qr: {
-    width: 300,
-    height: 450,
+    width: 400,
+    height: 350,
   },
   
   scanAgain: {

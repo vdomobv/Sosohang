@@ -69,6 +69,27 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
+
+  serachResult : {
+    width : '100%',
+    height : 430,
+    zIndex : 100,
+  },
+
+  searchList: {
+    height : 50,
+    justifyContent : 'center',
+    borderBlockColor : 'black',
+    borderBottomWidth : 1,
+    marginHorizontal : 20,
+    paddingLeft : 30
+  },
+
+  searchText : {
+    fontSize : 18,
+  }
+
+  
 });
 
 export default styles;

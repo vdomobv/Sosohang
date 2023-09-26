@@ -1,5 +1,5 @@
 // components
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styles from "./styles";
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -62,14 +62,28 @@ export default function QrReader({ navigation }) {
             </View>
           )}
         </View>
-      <ModalCustom 
-      visible={modalVisible}
-      onClose={() => setModalVisible(false)}
-      alertTitle={`잔액 확인`}
-      alertText={`현재 잔액 : ${scannedData?.type} 원\n상품 금액: ${scannedData?.data} 원`}
-      // alertText={`바코드 유형: ${scannedData?.type}\n바코드 데이터: ${scannedData?.data}`}
-      targetScreen="InputPayment"
-       />
+
+        {/* 사용 중이라면 */}
+        <ModalCustom
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          alertTitle={`잔액 확인`}
+          alertText={`현재 잔액 : ${scannedData?.type} 원\n상품 금액: ${scannedData?.data} 원`}
+          // alertText={`바코드 유형: ${scannedData?.type}\n바코드 데이터: ${scannedData?.data}`}
+          targetScreen="InputPayment"
+        />
+
+        {/* 사용 완료용 모달 */}
+        {/* <ModalCustom
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          alertTitle={"사용 완료"}
+          alertText={`2023.09.13 에\n사용되었어요.`}
+          // ${사용일자}
+          // alertText={`${scannedData?.type}에\n사용되었어요.`}
+          targetScreen="InputPayment"
+        /> */}
+
       </View>
       <Tabs navigation={navigation} />
     </>

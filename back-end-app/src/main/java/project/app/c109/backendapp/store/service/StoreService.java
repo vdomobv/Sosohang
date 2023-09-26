@@ -1,6 +1,8 @@
 package project.app.c109.backendapp.store.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import project.app.c109.backendapp.storekeyword.domain.entity.StoreKeyword;
 import project.app.c109.backendapp.storekeyword.repository.StoreKeywordRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.nio.file.attribute.UserPrincipal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class StoreService {
 	}
 
 	@Transactional
-	public Store registerStore(StoreRegisterRequest request) {
+	public void registerStore(StoreRegisterRequest request) {
 		// 요청에서 받아온 categorySeq로 카테고리 조회
 		Category category = categoryRepository.findById(request.getCategorySeq())
 				.orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + request.getCategorySeq()));
@@ -47,7 +50,6 @@ public class StoreService {
 				.category(category) // 카테고리를 할당
 				.storePassword(passwordEncoder.encode(request.getStorePassword()))
 				.storeName(request.getStoreName())
-				.storeId(request.getStoreId())
 				.storeLocation(request.getStoreLocation())
 				.storeTell(request.getStoreTell())
 				.ownerTell(request.getOwnerTell())
@@ -79,8 +81,8 @@ public class StoreService {
 			}
 			storeKeywordRepository.saveAll(storeKeywords);
 		}
-		return newStore;
 	}
+
 	public List<Store> getAllStores() {
 		return storeRepository.findAll();
 	}
@@ -111,5 +113,10 @@ public class StoreService {
 
 		return keywords;
 	}
+
+	public Store findStoreByRegistrationNumber(String registrationNumber) {
+		return storeRepository.findStoreByRegistrationNumber(registrationNumber);
+	}
+
 }
 

@@ -20,9 +20,6 @@ public class StoreRegisterRequest {
 	@NotBlank
 	private String storeName;
 
-	@NotBlank
-	private String storeId;
-
 	private String storeLocation;
 
 	private String storeTell;

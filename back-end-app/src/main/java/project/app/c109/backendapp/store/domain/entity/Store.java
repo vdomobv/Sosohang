@@ -29,9 +29,6 @@ public class Store {
 	@Column(name = "store_name")
 	private String storeName;
 
-	@Column(name = "store_id")
-	private String storeId;
-
 	@Column(name = "store_location")
 	private String storeLocation;
 
@@ -44,7 +41,7 @@ public class Store {
 	@Column(name = "store_parkinglot")
 	private String storeParkinglot;
 
-	@Column(name = "registration_number")
+	@Column(name = "registration_number", unique = true)
 	private String registrationNumber;
 
 	@Column(name = "store_workhour")

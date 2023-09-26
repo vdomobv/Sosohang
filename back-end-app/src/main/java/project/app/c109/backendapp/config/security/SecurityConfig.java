@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import project.app.c109.backendapp.config.security.jwt.JwtAuthenticationFilter;
-import project.app.c109.backendapp.config.security.jwt.JwtAuthorizationFilter;
+
 import project.app.c109.backendapp.config.security.jwt.JwtUtils;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -54,8 +54,6 @@ public class SecurityConfig {
         // JwtAuthenticationFilter를 사용자 정의 필터로 추가
         http.addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
-        // JwtAuthorizationFilter를 사용자 정의 필터로 추가
-        http.addFilterBefore(new JwtAuthorizationFilter(jwtUtils), JwtAuthenticationFilter.class);
 
         return http.build();
     }

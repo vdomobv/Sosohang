@@ -1,11 +1,11 @@
 import styles from "./styles";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 
 
-export default function Category({props}) {
+export default function Category({props, PressFunction}) {
   
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={PressFunction} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
@@ -13,6 +13,6 @@ export default function Category({props}) {
         />
       </View>
       <Text>{props.name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }

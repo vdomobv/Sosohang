@@ -1,37 +1,19 @@
-package project.app.c109.backendapp.cart.domain.entity;
+package project.app.c109.backendapp.cart.domain.dto.request;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "cart")
-public class Cart {
+public class CartRequestDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_seq")
-    private Long cartSeq;
-
-    @Column(name = "member_seq", nullable = false)
+    @NotNull
     private Long memberSeq;
-
-    @Column(name = "product_seq", nullable = false)
+    @NotNull
     private Long productSeq;
-
-    @Column(name = "store_seq", nullable = false)
+    @NotNull
     private Long storeSeq;
-
-    @Column(name = "quantity", nullable = false)
+    @NotNull
     private Integer quantity;
 
     // Getter and Setter methods
-
-    public Long getCartSeq() {
-        return cartSeq;
-    }
-
-    public void setCartSeq(Long cartSeq) {
-        this.cartSeq = cartSeq;
-    }
 
     public Long getMemberSeq() {
         return memberSeq;

@@ -6,7 +6,7 @@ import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import Gift from "../../Components/Gift/Gift";
 
-export default function PurchageHistory({ navigation, route }) {
+export default function PurchaseHistory({ navigation, route }) {
   const buyList = route.params.buy || {};
   // console.log(buyList);
   return (

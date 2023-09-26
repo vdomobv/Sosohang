@@ -5,9 +5,11 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List; // 추가
+
 @Getter
 @Setter
-public class StoreRequestDTO {
+public class StoreRegisterRequest {
 
 	@NotNull
 	private Integer categorySeq;
@@ -17,9 +19,6 @@ public class StoreRequestDTO {
 
 	@NotBlank
 	private String storeName;
-
-	@NotBlank
-	private String storeId;
 
 	private String storeLocation;
 
@@ -40,4 +39,5 @@ public class StoreRequestDTO {
 
 	private String storeUrl;
 
+	private List<Integer> selectedKeywordSeqList;
 }

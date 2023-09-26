@@ -9,10 +9,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  TouchableOpacity,
+  BackHandler
 } from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
-import { Tooltip } from "@rneui/themed";
 
 import Category from "../../Components/Category/Category";
 import Line from "../../Components/Line/Line";
@@ -24,6 +25,9 @@ import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
 import Loading from "../../Components/Loading/Loading";
 import CustomTooltip from "../../Components/CustomTooltips/CustomTooltips";
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";
+import Alarm from "../../Components/Alarm/Alarm";
+import Title from "../../Components/Title/Title";
+import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 // dummys
 import AlarmDummy from "../../Dummys/Main/AlarmDummy";
@@ -34,11 +38,9 @@ import HashTagData from "../../Dummys/Main/HashTagData";
 // utils
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-
+import axios from "axios";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
-import Alarm from "../../Components/Alarm/Alarm";
-import Title from "../../Components/Title/Title";
-import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
+import SearchItem from "../../Components/SearchItem/SearchItem";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -52,6 +54,10 @@ export default function Main({ navigation }) {
   const [location, setLocation] = useState({});
   const [openTooltip, setOpenTooltip] = useState(false);
   const isFocused = useIsFocused();
+  const [storeData, setStoreData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searchState, setSearchState] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
 
   const fetchLocation = async () => {
     const resultCoords = await initializeCoords();
@@ -70,15 +76,66 @@ export default function Main({ navigation }) {
   }, [isFocused]);
 
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios.get(
+          "http://j9c109.p.ssafy.io:8081/api/store"
+        );
+        setStoreData(response.data);
+      } catch (error) {
+        console.error("Error fetching store data:", error);
+      }
+    };
+
+    getData();
     fetchLocation();
   }, []);
 
-  state = {
-    search: "",
+  useEffect(() => {
+    if (search) {
+      setSearchState(true);
+    } else {
+      setSearchState(false);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        cancelSearchState();
+      }
+    );
+  
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+  
+
+  const updateSearch = (data) => {
+    setSearch(data);
+    // console.log(search);
+    updateSearchResult(data);
   };
 
-  const updateSearch = (search) => {
-    this.setState({ search });
+  const updateSearchState = () => {
+    setSearchState(true);
+  };
+
+  const cancelSearchState = () => {
+    setSearchState(false);
+    setSearchResult([]);
+    setSearch("");
+  };
+
+  const updateSearchResult = (currentSearch) => {
+    let result = storeData
+      .filter((data) => data.storeName.includes(currentSearch) === true)
+      .slice(0, 10);
+    setSearchResult(result);
+    // console.log("검색결과");
+    // console.log(searchResult);
   };
 
   const alarms = alarmDummy.map((data, index) => (
@@ -86,24 +143,33 @@ export default function Main({ navigation }) {
   ));
 
   const category = categoryData.map((data, index) => {
-    return <Category key={index} props={data}
-      onPress={() => {
-        navigation.navigate('Shop')
-      }} />;
+    return (
+      <Category
+        key={index}
+        props={data}
+        PressFunction={() => {
+          navigation.navigate("List", { category: data.name });
+        }}
+      />
+    );
   });
 
   const hashTagItems = hashTags.map((data, index) => {
-    return <HashTag key={index} props={data} />
-  })
+    return <HashTag key={index} props={data} />;
+  });
 
   const carouselDummy = dummydata.map((data) => {
-    return <CarouselItem
-      navigation={navigation}
-      onPressFunction={() => {
-        console.log('carouselItem')
-        navigation.navigate('Shop')
-      }}
-      key={data.name} props={data} />;
+    return (
+      <CarouselItem
+        navigation={navigation}
+        onPressFunction={() => {
+          console.log("carouselItem");
+          navigation.navigate("Shop");
+        }}
+        key={data.name}
+        props={data}
+      />
+    );
   });
 
   return waiting ? (
@@ -116,6 +182,7 @@ export default function Main({ navigation }) {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView
+            keyboardShouldPersistTaps="handled"
             style={styles.scrollViewContainer}
             showsVerticalScrollIndicator={false}
           >
@@ -133,7 +200,11 @@ export default function Main({ navigation }) {
               </View>
               <View style={styles.searchbar}>
                 <CustomSearchBar
+                  updateSearch={updateSearch}
+                  cancelSearchState={cancelSearchState}
+                  updateSearchState={updateSearchState}
                   placeholderText={"원하는 상점을 검색해보세요."}
+                  search={search}
                 />
               </View>
               <CustomTooltip
@@ -144,6 +215,24 @@ export default function Main({ navigation }) {
                 openTooltip={openTooltip}
               />
             </View>
+            {searchState && (
+              // true
+              <View style={styles.serachResult}>
+                {searchResult.map((data) => {
+                  const id = data.shopId;
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("Shop", { id });
+                      }}
+                      style={styles.searchList}
+                    >
+                      <Text>{data.storeName}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            )}
             <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
               <Title title={"배너 광고 자리입니다."} />
             </View>
@@ -151,16 +240,21 @@ export default function Main({ navigation }) {
             <Line />
             <View style={[styles.section]}>
               <View>
-                <SectionTitle content={"새로운 곳을 경험해보는 것은 어때요? 🆕"} />
-                <SectionSubTitle content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."} />
+                <SectionTitle
+                  content={"새로운 곳을 경험해보는 것은 어때요? 🆕"}
+                />
+                <SectionSubTitle
+                  content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."}
+                />
               </View>
               <Carousel content={carouselDummy} />
             </View>
 
             <Line />
             <View style={[styles.section]}>
-
-              <SectionTitle content={"선물 받을 친구의 취향으로 골라보세요! 😘"} />
+              <SectionTitle
+                content={"선물 받을 친구의 취향으로 골라보세요! 😘"}
+              />
               <Carousel content={hashTagItems} />
               <Carousel content={carouselDummy} />
             </View>

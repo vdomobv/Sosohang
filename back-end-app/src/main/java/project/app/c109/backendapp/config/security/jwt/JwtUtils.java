@@ -39,6 +39,20 @@ public class JwtUtils {
                 .compact();
     }
 
+    public String generateStoreToken(String registrationNumber) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + (long) jwtConfig.getStoreTokenExpiration() * 1000);
+
+        Claims claims = Jwts.claims().setSubject(registrationNumber);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
     public boolean validateToken(String token) {
         String tokenWithoutBearer = token.replace("Bearer ", ""); // "Bearer " 제거
         try {
@@ -65,18 +79,18 @@ public class JwtUtils {
         }
     }
 
-    public List<String> getRolesFromToken(String token) {
-        if (validateToken(token)) {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-            return (List<String>) claims.get("roles");
-        } else {
-            return null; // 유효하지 않은 토큰일 경우 null 반환 또는 예외 처리
-        }
-    }
+//    public List<String> getRolesFromToken(String token) {
+//        if (validateToken(token)) {
+//            Claims claims = Jwts.parserBuilder()
+//                    .setSigningKey(key)
+//                    .build()
+//                    .parseClaimsJws(token)
+//                    .getBody();
+//            return (List<String>) claims.get("roles");
+//        } else {
+//            return null; // 유효하지 않은 토큰일 경우 null 반환 또는 예외 처리
+//        }
+//    }
 
     public String extractJwtTokenFromRequest(HttpServletRequest request) {
         String headerValue = request.getHeader("Authorization");

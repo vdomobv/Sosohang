@@ -35,10 +35,7 @@ public class Stamp {
     @JoinColumn(name = "member_seq")
     private Member member;
 
-    @Column(name = "store_seq") // Integer 형식의 외래키
-    private Integer storeSeq;
-
-//    @ManyToOne
-//    @JoinColumn(name = "store_seq")
-//    private Store store;
+    @ManyToOne
+    @JoinColumn(name = "store_seq")
+    private Store store;
 }

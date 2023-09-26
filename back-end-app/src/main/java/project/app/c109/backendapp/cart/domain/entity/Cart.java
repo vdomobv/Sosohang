@@ -11,16 +11,16 @@ public class Cart {
     @Column(name = "cart_seq")
     private Long cartSeq;
 
-    @Column(name = "member_seq")
+    @Column(name = "member_seq", nullable = false)
     private Long memberSeq;
 
-    @Column(name = "product_seq")
+    @Column(name = "product_seq", nullable = false)
     private Long productSeq;
 
-    @Column(name = "store_seq")
+    @Column(name = "store_seq", nullable = false)
     private Long storeSeq;
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
     // Getter and Setter methods

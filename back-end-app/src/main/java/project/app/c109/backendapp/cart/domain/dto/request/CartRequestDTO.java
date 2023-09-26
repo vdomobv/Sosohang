@@ -1,9 +1,16 @@
 package project.app.c109.backendapp.cart.domain.dto.request;
 
+import javax.validation.constraints.NotNull;
+
 public class CartRequestDTO {
+
+    @NotNull
     private Long memberSeq;
+    @NotNull
     private Long productSeq;
+    @NotNull
     private Long storeSeq;
+    @NotNull
     private Integer quantity;
 
     // Getter and Setter methods

@@ -25,18 +25,19 @@ public class CartServiceImpl implements CartService {
         return mapToCartResponseDTO(cart);  // 엔터티를 다시 DTO로 매핑하고 반환
     }
 
-    // 기존 카트를 업데이트하는 메서드
+    // 카트를 수정하는 메서드
     @Override
     public CartResponseDTO updateCart(Long cartId, CartRequestDTO request) {
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
         if (optionalCart.isPresent()) {
             Cart cart = optionalCart.get();
-            mapFromRequestToCart(request, cart);  // 새로운 값으로 카트 엔터티 업데이트
+            cart.setQuantity(request.getQuantity());  // 수량만 업데이트
             cart = cartRepository.save(cart);  // 업데이트된 카트 저장
             return mapToCartResponseDTO(cart);  // 엔터티를 다시 DTO로 매핑하고 반환
         }
         throw new RuntimeException("Cart not found");
     }
+
 
     // 카트를 삭제하는 메서드
     @Override
@@ -72,13 +73,5 @@ public class CartServiceImpl implements CartService {
         cart.setStoreSeq(request.getStoreSeq());
         cart.setQuantity(request.getQuantity());
         return cart;
-    }
-
-    // CartRequestDTO의 필드를 기존 Cart 엔터티로 매핑하는 유틸리티
-    private void mapFromRequestToCart(CartRequestDTO request, Cart cart) {
-        cart.setMemberSeq(request.getMemberSeq());
-        cart.setProductSeq(request.getProductSeq());
-        cart.setStoreSeq(request.getStoreSeq());
-        cart.setQuantity(request.getQuantity());
     }
 }

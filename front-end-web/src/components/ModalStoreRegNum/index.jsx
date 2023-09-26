@@ -3,7 +3,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import axios from "axios";
 
 function ModalStoreRegNum(props) {
-  const { regNum, setIsOpenRegNum, setVerifiedRegNum } = props;
+  const { regNum, setIsOpenRegNum, setIsVerifiedRegNum } = props;
   const [openDate, setOpenDate] = useState("");
   const [ownerName, setOwnerName] = useState("");
 
@@ -24,11 +24,11 @@ function ModalStoreRegNum(props) {
       .then((res) => {
         if(res.data.data[0].valid === "01") {
           alert("인증되었습니다.");
-          setVerifiedRegNum(true);
+          setIsVerifiedRegNum(true);
           setIsOpenRegNum(false);
         } else {
           alert("입력하신 정보가 잘못되었습니다.");
-          setVerifiedRegNum(false);
+          setIsVerifiedRegNum(false);
         }
       })
       .catch((err) => {

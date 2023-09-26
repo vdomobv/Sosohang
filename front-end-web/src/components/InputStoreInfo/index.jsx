@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 import ModalStoreRegNum from "../../components/ModalStoreRegNum";
 
-function InputStoreInfo() {
+function InputStoreInfo({ onChange }) {
+  const [confirmStoreInfo, setConfirmStoreInfo] = useState(false); // StoreInfo 유효성여부
+
   const [storeName, setStoreName] = useState(""); // 상점 이름
 
   const [storeRegNum, setStoreRegNum] = useState(""); // 사업자 등록번호
   const [regNumWarnig, setRegNumWarning] = useState(""); // 사업자등록번호 유효성 검사 경고문구
   const [isValidRegNum, setIsValidRegNum] = useState(false); // 사업자등록번호 유효성 검사 결과
   const [isOpenRegNum, setIsOpenRegNum] = useState(false); // 사업자등록번호 인증 모달창 여부
-  const [verifiedRegNum, setVerifiedRegNum] = useState(false); // 사업자 등록번호 인증여부
+  const [isVerifiedRegNum, setIsVerifiedRegNum] = useState(false); // 사업자 등록번호 인증여부
 
   // 사업자등록번호 형식 - 숫자 10자리
   const storeRegNumEx = /^[0-9]{10}$/;
@@ -31,7 +33,8 @@ function InputStoreInfo() {
 
   // 사업자등록번호 인증 모달 띄우기
   const onChangeOpenRegNum = (e) => {
-    e.preventDefault(); // 새로고침 방지
+    // e.preventDefault(); // 새로고침 방지
+    console.log(storeRegNum);
     axios
       .post(
         "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=ULFR0UF6ByTGjclsNKrqQLC0L3GItE%2FRZev%2FKQ%2FE5A0YMnGuDqdYpi00CYrvWXVPxz8hxJq4h9M92hUvCUAKhQ%3D%3D",
@@ -40,10 +43,13 @@ function InputStoreInfo() {
         }
       )
       .then((res) => {
-        if (res.data.data[0].b_stt_cd === "01" || res.data.data[0].b_stt_cd === "02") {
+        if (
+          res.data.data[0].b_stt_cd === "01" ||
+          res.data.data[0].b_stt_cd === "02"
+        ) {
           setIsOpenRegNum(!isOpenRegNum);
         } else {
-          alert("존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요.")
+          alert("존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요.");
         }
       })
       .catch((err) => {
@@ -51,7 +57,8 @@ function InputStoreInfo() {
       });
   };
 
-  const [mainAddress, setMainAddress] = useState(""); // 상점 주소
+  const [storeAddress, setStoreAddres] = useState(""); // 상점 전체 주소
+  const [mainAddress, setMainAddress] = useState(""); // 상점 대표 주소
   const [extraAddress, setExtraAddress] = useState(""); // 상점 상세 주소
   const [isOpenPost, setIsOpenPost] = useState(false); //  주소 검색창 열렸는지
 
@@ -65,9 +72,39 @@ function InputStoreInfo() {
   const onCompletePost = (data) => {
     setMainAddress(data.address);
     setExtraAddress(data.buildingName);
+    setStoreAddres(data.address + data.buildingName);
     setIsOpenPost(false);
   };
-  
+
+  const [storeCategory, setStoreCategory] = useState(""); // 상점 카테고리
+
+  useEffect(() => {
+    if (
+      storeName !== "" &&
+      storeRegNum !== "" &&
+      storeAddress !== "" &&
+      storeCategory !== "" &&
+      isVerifiedRegNum
+    ) {
+      setConfirmStoreInfo(true);
+    }
+    onChange({
+      storeName,
+      storeRegNum,
+      storeAddress,
+      storeCategory,
+      confirmStoreInfo,
+    });
+  }, [
+    storeName,
+    storeRegNum,
+    storeAddress,
+    storeCategory,
+    confirmStoreInfo,
+    isVerifiedRegNum,
+    onChange,
+  ]);
+
   return (
     <div>
       <h4>상점 정보</h4>
@@ -99,7 +136,10 @@ function InputStoreInfo() {
               setStoreRegNum(e.target.value);
             }}
           />
-          <Button id="regNum-button-addon2" onClick={onChangeOpenRegNum} disabled={!isValidRegNum}>
+          <Button
+            id="regNum-button-addon2"
+            onClick={onChangeOpenRegNum}
+            disabled={!isValidRegNum}>
             인증하기
           </Button>
         </InputGroup>
@@ -126,6 +166,7 @@ function InputStoreInfo() {
             value={extraAddress}
             onChange={(e) => {
               setExtraAddress(e.target.value);
+              setStoreAddres(mainAddress + e.target.value);
             }}
           />
         </InputGroup>
@@ -133,7 +174,9 @@ function InputStoreInfo() {
 
       <div>
         <Form.Label>상점 카테고리*</Form.Label>
-        <Form.Select aria-label="상점 카테고리를 선택해 주세요.">
+        <Form.Select
+          aria-label="상점 카테고리를 선택해 주세요."
+          onChange={(e) => setStoreCategory(e.target.value)}>
           <option>상점카테고리</option>
           <option value="1">One</option>
           <option value="2">two</option>
@@ -150,7 +193,7 @@ function InputStoreInfo() {
         <ModalStoreRegNum
           regNum={storeRegNum}
           setIsOpenRegNum={setIsOpenRegNum}
-          setVerifiedRegNum={setVerifiedRegNum}
+          setIsVerifiedRegNum={setIsVerifiedRegNum}
         />
       ) : null}
     </div>

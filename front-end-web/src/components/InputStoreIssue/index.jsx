@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Form, InputGroup, ToggleButton } from "react-bootstrap";
 
+function InputStoreIssue({ onChange }) {
+  const [storeCallNum, setStoreCallNum] = useState(""); // 상점 전화번호
 
-function InputStoreIssue() {
   const [existParkinglot, setExistParkinglot] = useState(false); // 주차장여부
+  const [storeParkinglot, setStoreParkinglot] = useState(""); // 주차장설명
 
+  const [storeOpenHour, setStoreOpenHour] = useState(""); // 영업일
   const [openEveryday, setOpenEveryday] = useState(false); // 영업일 - 매일
   const [openMonday, setOpenMonday] = useState(false); // 영업일 - 월요일
   const [openTuesday, setOpenTuesday] = useState(false); // 영업일 - 화요일
@@ -38,6 +41,7 @@ function InputStoreIssue() {
               if (numExp.test(e.target.value)) {
                 e.target.value = e.target.value.replace(numExp, "");
               }
+              setStoreCallNum(e.target.value);
             }}
           />
         </InputGroup>
@@ -57,6 +61,13 @@ function InputStoreIssue() {
             placeholder="주차장에 대한 부가정보를 입력해주세요"
             aria-label="주차장에 대한 부가정보를 입력해주세요"
             disabled={!existParkinglot}
+            onChange={(e) => {
+              if(existParkinglot) {
+                setStoreParkinglot(e.target.value);
+              } else {
+                setStoreParkinglot("");
+              }
+            }}
           />
         </InputGroup>
       </div>

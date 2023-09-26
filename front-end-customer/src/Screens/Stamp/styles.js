@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
 
   subtitle: {
     alignSelf: "center",
-    margin: 20,
+    marginTop: 20,
+    marginBottom: 10,
   },
 
   stampBox: {

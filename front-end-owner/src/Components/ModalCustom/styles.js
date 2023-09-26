@@ -22,14 +22,6 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  button: {
-    borderRadius: 10,
-    padding: 10,
-    marginHorizontal: 70,
-    elevation: 2,
-    backgroundColor: '#46C27D',
-  },
-
   closeButton: {
     marginStart: 'auto'
   },
@@ -48,10 +40,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
+  button: {
+    borderRadius: 5,
+    padding: 10,
+    marginHorizontal: 70,
+    elevation: 2,
+    backgroundColor: '#46C27D',
+  },
+
   buttonText: {
     color: 'white',
+    fontSize: 17,
     fontWeight: 'bold',
     textAlign: 'center',
+    paddingHorizontal: 50,
   },
 
 });

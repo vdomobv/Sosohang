@@ -13,20 +13,17 @@ export default function ShowStamp({ navigation }) {
   const [stampPhoneNumber, setStampPhoneNumber] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleLogIn = () => {
+  const handleShowStamp = () => {
     if (stampPhoneNumber.length === 11) {
-      // 회원 정보가 있다면? 해당 회원의 해당 상점 스탬프 정보 가져오기
 
+      // 회원 정보가 있다면? 해당 회원의 해당 상점 스탬프 정보 가져오기
+      setModalVisible(true);
     } else {
       // 회원 정보가 없다면? 재입력
 
       Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
     }
   };
-
-  const handleShowStamp = () => {
-    setModalVisible(true);
-  }
 
   return (
     <>
@@ -67,7 +64,8 @@ export default function ShowStamp({ navigation }) {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.button]}
-            onPress={handleShowStamp}>
+            onPress={handleShowStamp}
+            >
             <Text style={[styles.buttonText]}>
               회원 정보 조회
             </Text>
@@ -77,7 +75,7 @@ export default function ShowStamp({ navigation }) {
         <ModalCustom
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
-          alertTitle={'회원 확인'}
+          alertTitle={'회원 정보 확인'}
           alertText={'OO님이신가요?'}
           // alertText={`${scannedData?.data} 님이 맞습니까?`}
           targetScreen="AddStamp"

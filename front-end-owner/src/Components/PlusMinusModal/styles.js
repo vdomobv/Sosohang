@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: '80%',
   },
 
   closeButton: {
@@ -28,36 +27,49 @@ const styles = StyleSheet.create({
   },
 
   modalText: {
-    marginBottom: 15,
+    marginBottom: 18,
     textAlign: 'center',
-    marginVertical: 10,
   },
 
   alertTitle: {
     fontWeight: 'bold',
     fontSize: 22,
   },
+
+  numberContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   
   alertText: {
-    fontSize: 20,
-    paddingVertical: 10,
+    fontSize: 34,
+    fontWeight: "bold",
+    color: "#FFBF46",
+  },
+
+  icons: {
+    color: 'gray',
+    fontSize: 35,
+    marginHorizontal: 10,
   },
 
   button: {
     borderRadius: 5,
     padding: 10,
     marginHorizontal: 70,
+    marginTop: 10,
     elevation: 2,
     backgroundColor: '#46C27D',
-    marginTop: 5,
   },
 
   buttonText: {
     color: 'white',
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 40,
   },
 
 });

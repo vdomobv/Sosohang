@@ -32,30 +32,26 @@ export default function Tabs({ navigation }) {
             navigation.navigate("QrReader")
           }
         }} />
-
       <FontAwesome5Icon size={40} name="credit-card"
-        color={activeTab === "InputPayment" ? "#46C27D" : "black"}
+        color={(activeTab === "InputPayment" || activeTab === "DonePayment") ? "#46C27D" : "black"}
         onPress={() => {
-          if (route != "InputPayment") {
-            navigation.navigate("InputPayment")
+          if (route !== "InputPayment") {
+            navigation.navigate("InputPayment");
           }
-        }} />
+        }}
+      />
 
       <FontAwesome5Icon size={40} name="stamp"
-        color={activeTab === "ShowStamp" ? "#46C27D" : "black"}
+        color={(activeTab === "ShowStamp" || activeTab === "AddStamp") ? "#46C27D" : "black"}
         onPress={() => {
-          if (route != "ShowStamp") {
-            navigation.navigate("ShowStamp")
+          if (route !== "ShowStamp") {
+            navigation.navigate("ShowStamp");
           }
-        }} />
+        }}
+      />
 
-      <FontAwesome5Icon size={40} name="stamp"
-        color={activeTab === "AddStamp" ? "#46C27D" : "black"}
-        onPress={() => {
-          if (route != "AddStamp") {
-            navigation.navigate("AddStamp")
-          }
-        }} />
+
+
     </View>
   );
 }

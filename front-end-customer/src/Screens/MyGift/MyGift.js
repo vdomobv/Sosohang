@@ -8,27 +8,59 @@ import Gift from "../../Components/Gift/Gift";
 
 import MyGiftDummy from "../../Dummys/MyGift/MyGiftDummy";
 
+import SubTitle from "../../Components/SubTitle/SubTitle";
+import { useState } from "react";
+const dummy = MyGiftDummy;
+
 export default function MyGift({ navigation }) {
+  const [activatedTab, setActivatedTab] = useState(true)
+
+  const usableGifts = dummy.filter((d) => d.price > 0 === true).map((d, index) => {
+    return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} />;
+  });
+  const unusableGifts = dummy.filter((d) => d.price == 0 === true).map((d, index) => {
+    return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} />;
+  })
 
   const handleGiftClick = (giftData) => {
     navigation.navigate("MyGiftDetail", { giftData }); 
   };
 
-  const gifts = MyGiftDummy.map((d, index) => {
-    return (
-      <TouchableOpacity key={index} onPress={() => handleGiftClick(d)}>
-        <Gift data={d} />
-      </TouchableOpacity>
-    );
-  });
+  // const gifts = MyGiftDummy.map((d, index) => {
+  //   return (
+  //     <TouchableOpacity key={index} onPress={() => handleGiftClick(d)}>
+  //       <Gift data={d} />
+  //     </TouchableOpacity>
+  //   );
+  // });
 
-  return (
-    <>
-      <View style={styles.container}>
-        <Title title={"받은 선물함"}></Title>
-        <ScrollBox content={gifts}/>
+return (
+  <>
+    <View style={styles.container}>
+      <Title title={"받은 선물함"}></Title>
+      <View style={styles.giftTabs}>
+        <TouchableOpacity onPress={() => {
+          if (!activatedTab) {
+            setActivatedTab(!activatedTab)
+          }
+        }} style={[activatedTab ? styles.tab : styles.deactivated]}>
+          <SubTitle subTitle={'사용가능'} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          if (activatedTab) {
+            setActivatedTab(!activatedTab)
+          }
+        }} style={[!activatedTab ? styles.tab : styles.deactivated]}>
+          <SubTitle subTitle={'사용완료'} />
+        </TouchableOpacity>
       </View>
-      <Tabs navigation={navigation} />
-    </>
-  );
+      <View style={styles.tabPage}>
+        <ScrollBox content={
+          activatedTab ? usableGifts : unusableGifts
+        } />
+      </View>
+    </View>
+    <Tabs navigation={navigation} />
+  </>
+);
 }

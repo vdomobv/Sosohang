@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-function ProductModalDelete(props) {
+function ModalProdctDelete(props) {
   const { show, onHide, products, onDeleteProduct } = props;
 
   const handleDelete = () => {
@@ -34,4 +34,4 @@ function ProductModalDelete(props) {
   );
 }
 
-export default ProductModalDelete;
+export default ModalProdctDelete;

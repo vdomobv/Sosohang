@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-function ProductModalEdit({ show, onHide, product, onEditProduct }) {
+function ModalProdctEdit({ show, onHide, product, onEditProduct }) {
   const [editedProduct, setEditedProduct] = useState({});
 
   useEffect(() => {
@@ -9,7 +9,6 @@ function ProductModalEdit({ show, onHide, product, onEditProduct }) {
   }, [product, show]);
 
   const handleInputChange = (e) => {
-    console.log(e.target.value);
     const { name, value } = e.target;
     setEditedProduct({ ...editedProduct, [name]: value });
   };
@@ -122,4 +121,4 @@ function ProductModalEdit({ show, onHide, product, onEditProduct }) {
   );
 }
 
-export default ProductModalEdit;
+export default ModalProdctEdit;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table, Image, Button } from "react-bootstrap";
-import ProductModalAdd from "../../components/ProductModalAdd";
-import ProductModalEdit from "../../components/ProductModalEdit";
-import ProductModalDelete from "../../components/ProductModalDelete";
+import ModalProdctAdd from "../ModalProdctAdd";
+import ModalProdctEdit from "../ModalProdctEdit";
+import ModalProdctDelete from "../ModalProdctDelete";
 import axios from "axios"
 
-function ProductTableActive() {
+function TableProductActive() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -41,7 +41,6 @@ function ProductTableActive() {
   };
 
   const handleToggleSelect = (product) => {
-    console.log(product);
     const isSelected = selectedProducts.includes(product);
     if (isSelected) {
       setSelectedProducts(selectedProducts.filter((p) => p !== product));
@@ -63,14 +62,9 @@ function ProductTableActive() {
     setSelectedProducts([]); // 선택한 항목 초기화
   };
 
-  const printData = () => {
-    console.log(products);
-  };
-
   return (
     <div>
       <Button onClick={() => setShowAddModal(true)}>제품 추가</Button>
-      <Button onClick={printData}>제품 정보보기</Button>
       <Button
         variant="danger"
         onClick={() => openDeleteModal(selectedProducts)}
@@ -124,18 +118,18 @@ function ProductTableActive() {
           ))}
         </tbody>
       </Table>
-      <ProductModalAdd
+      <ModalProdctAdd
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
         onAddProduct={handleAddProduct}
       />
-      <ProductModalEdit
+      <ModalProdctEdit
         show={showEditModal}
         onHide={() => setShowEditModal(false)}
         product={selectedProduct}
         onEditProduct={handleEditProduct}
       />
-      <ProductModalDelete
+      <ModalProdctDelete
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
         products={selectedProducts}
@@ -145,4 +139,4 @@ function ProductTableActive() {
   );
 }
 
-export default ProductTableActive;
+export default TableProductActive;

@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 
   serachResult : {
     width : '100%',
-    height : 300,
+    height : 430,
     zIndex : 100,
   },
 

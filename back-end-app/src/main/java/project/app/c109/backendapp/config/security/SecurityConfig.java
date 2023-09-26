@@ -35,8 +35,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-
-                                .antMatchers("/api-docs/**", "/swagger-ui/**", "/sosohang-app.html").permitAll()
+                                .antMatchers("/api/v1/**", "/api-docs/**", "/swagger-ui/**", "/sosohang-app.html").permitAll()
                                 .antMatchers("/api/admin/**").hasRole("ADMIN")
 //                                .antMatchers("/api/v1/member/test").authenticated() // 토큰이 있는 사용자만 접근 가능한 엔드포인트
                                 .anyRequest().authenticated()

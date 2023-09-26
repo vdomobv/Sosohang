@@ -41,7 +41,6 @@ function TableProductActive() {
   };
 
   const handleToggleSelect = (product) => {
-    console.log(product);
     const isSelected = selectedProducts.includes(product);
     if (isSelected) {
       setSelectedProducts(selectedProducts.filter((p) => p !== product));
@@ -63,14 +62,9 @@ function TableProductActive() {
     setSelectedProducts([]); // 선택한 항목 초기화
   };
 
-  const printData = () => {
-    console.log(products);
-  };
-
   return (
     <div>
       <Button onClick={() => setShowAddModal(true)}>제품 추가</Button>
-      <Button onClick={printData}>제품 정보보기</Button>
       <Button
         variant="danger"
         onClick={() => openDeleteModal(selectedProducts)}

@@ -28,15 +28,10 @@ function TableProductEvent() {
     setData(newData);
   };
 
-  const printData = () => {
-    console.log(data);
-  };
-
   return (
     <div>
       <h1>표</h1>
       <Button onClick={() => setShowAddProductModal(true)}>데이터 추가</Button>
-      <Button onClick={printData}>데이터 출력</Button>
 
       <ModalProductAdd show={showAddProductModal} onHide={() => setShowAddProductModal(false)} onClick={handleAdd} />
 

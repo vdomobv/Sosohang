@@ -9,7 +9,6 @@ function ModalProdctEdit({ show, onHide, product, onEditProduct }) {
   }, [product, show]);
 
   const handleInputChange = (e) => {
-    console.log(e.target.value);
     const { name, value } = e.target;
     setEditedProduct({ ...editedProduct, [name]: value });
   };

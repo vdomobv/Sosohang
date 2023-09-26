@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
-import AddProductModal from '../ProductModalAdd';
-// import EditProductModal from '../ProductModalEdit';
+import ModalProductAdd from '../ModalProdctAdd';
+// import EditProductModal from '../ModalProdctEdit';
 
-function EventProductTable() {
+function TableProductEvent() {
   const [data, setData] = useState([]);
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -28,17 +28,12 @@ function EventProductTable() {
     setData(newData);
   };
 
-  const printData = () => {
-    console.log(data);
-  };
-
   return (
     <div>
       <h1>표</h1>
       <Button onClick={() => setShowAddProductModal(true)}>데이터 추가</Button>
-      <Button onClick={printData}>데이터 출력</Button>
 
-      <AddProductModal show={showAddProductModal} onHide={() => setShowAddProductModal(false)} onClick={handleAdd} />
+      <ModalProductAdd show={showAddProductModal} onHide={() => setShowAddProductModal(false)} onClick={handleAdd} />
 
       {/* <EditProductModal
         show={showEditModal}
@@ -77,4 +72,4 @@ function EventProductTable() {
   );
 }
 
-export default EventProductTable;
+export default TableProductEvent;

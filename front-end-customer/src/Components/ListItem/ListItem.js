@@ -5,7 +5,7 @@ import SubTitle from "../SubTitle/SubTitle";
 import SectionTitle from "../SectionTitle/SectionTitle";
 
 export default function ShopListItem({ navigation, data, PressFunction }) {
-  console.log(data);
+  // console.log(data);
   return (
     <TouchableOpacity onPress={PressFunction} style={styles.container}>
       <SquareImage imageSrc={data.imageUrl} />

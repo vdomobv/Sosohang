@@ -3,7 +3,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import axios from "axios";
 
 function ModalStoreRegNum(props) {
-  const { regNum, setIsOpenRegNum } = props;
+  const { regNum, setIsOpenRegNum, setVerifiedRegNum } = props;
   const [openDate, setOpenDate] = useState("");
   const [ownerName, setOwnerName] = useState("");
 
@@ -22,22 +22,18 @@ function ModalStoreRegNum(props) {
         }
       )
       .then((res) => {
-        // if(res.data.data[0].valid === "02") {
-        //   console.log("존재하지 않는 사업자입니다. 입력하신정보를 확인하세요");
-        // } else {
-        //   if(res.data.data[0].status.end_dt !== "") {
-        //     console.log("폐업한 사업자입니다.")
-        //   }
-        // }
-        console.log(res.data);
+        if(res.data.data[0].valid === "01") {
+          alert("인증되었습니다.");
+          setVerifiedRegNum(true);
+          setIsOpenRegNum(false);
+        } else {
+          alert("입력하신 정보가 잘못되었습니다.");
+          setVerifiedRegNum(false);
+        }
       })
       .catch((err) => {
         console.log(err);
       });
-
-
-    // console.log(regNum, openDate, ownerName);
-    // setIsOpenRegNum(false);
   };
 
   return (
@@ -49,7 +45,7 @@ function ModalStoreRegNum(props) {
           <Modal.Title>사업자 등록 조회</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <div>
             <Form.Control
               type="date"
               placeholder="개업일자"
@@ -59,7 +55,7 @@ function ModalStoreRegNum(props) {
               placeholder="대표자명"
               onChange={(e) => setOwnerName(e.target.value)}
             />
-          </Form>
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={confirmRegNum}>

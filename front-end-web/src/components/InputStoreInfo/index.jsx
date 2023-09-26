@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
+import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 import ModalStoreRegNum from "../../components/ModalStoreRegNum";
 
@@ -10,6 +11,7 @@ function InputStoreInfo() {
   const [regNumWarnig, setRegNumWarning] = useState(""); // 사업자등록번호 유효성 검사 경고문구
   const [isValidRegNum, setIsValidRegNum] = useState(false); // 사업자등록번호 유효성 검사 결과
   const [isOpenRegNum, setIsOpenRegNum] = useState(false); // 사업자등록번호 인증 모달창 여부
+  const [verifiedRegNum, setVerifiedRegNum] = useState(false); // 사업자 등록번호 인증여부
 
   // 사업자등록번호 형식 - 숫자 10자리
   const storeRegNumEx = /^[0-9]{10}$/;
@@ -30,8 +32,23 @@ function InputStoreInfo() {
   // 사업자등록번호 인증 모달 띄우기
   const onChangeOpenRegNum = (e) => {
     e.preventDefault(); // 새로고침 방지
-    setIsOpenRegNum(!isOpenRegNum);
-    console.log(isOpenRegNum)
+    axios
+      .post(
+        "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=ULFR0UF6ByTGjclsNKrqQLC0L3GItE%2FRZev%2FKQ%2FE5A0YMnGuDqdYpi00CYrvWXVPxz8hxJq4h9M92hUvCUAKhQ%3D%3D",
+        {
+          b_no: [storeRegNum],
+        }
+      )
+      .then((res) => {
+        if (res.data.data[0].b_stt_cd === "01" || res.data.data[0].b_stt_cd === "02") {
+          setIsOpenRegNum(!isOpenRegNum);
+        } else {
+          alert("존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요.")
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const [mainAddress, setMainAddress] = useState(""); // 상점 주소
@@ -49,10 +66,8 @@ function InputStoreInfo() {
     setMainAddress(data.address);
     setExtraAddress(data.buildingName);
     setIsOpenPost(false);
-
-    console.log(data);
   };
-
+  
   return (
     <div>
       <h4>상점 정보</h4>
@@ -84,7 +99,7 @@ function InputStoreInfo() {
               setStoreRegNum(e.target.value);
             }}
           />
-          <Button id="button-addon2" onClick={onChangeOpenRegNum}>
+          <Button id="regNum-button-addon2" onClick={onChangeOpenRegNum} disabled={!isValidRegNum}>
             인증하기
           </Button>
         </InputGroup>
@@ -100,7 +115,7 @@ function InputStoreInfo() {
             readOnly={true}
             value={mainAddress}
           />
-          <Button id="button-addon2" onClick={onChangeOpenPost}>
+          <Button id="postcode-button-addon2" onClick={onChangeOpenPost}>
             검색하기
           </Button>
         </InputGroup>
@@ -135,6 +150,7 @@ function InputStoreInfo() {
         <ModalStoreRegNum
           regNum={storeRegNum}
           setIsOpenRegNum={setIsOpenRegNum}
+          setVerifiedRegNum={setVerifiedRegNum}
         />
       ) : null}
     </div>

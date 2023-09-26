@@ -6,8 +6,12 @@ import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.repository.MemberRepository;
 import project.app.c109.backendapp.stamp.domain.entity.Stamp;
 import project.app.c109.backendapp.stamp.repository.StampRepository;
+import project.app.c109.backendapp.store.domain.entity.Store;
+import project.app.c109.backendapp.store.repository.StoreRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class StampService {
@@ -15,10 +19,12 @@ public class StampService {
     private final MemberRepository memberRepository;
     private final StampRepository stampRepository;
 
+    private final StoreRepository storeRepository;
     @Autowired
-    public StampService(MemberRepository memberRepository, StampRepository stampRepository) {
+    public StampService(MemberRepository memberRepository, StampRepository stampRepository, StoreRepository storeRepository) {
         this.memberRepository = memberRepository;
         this.stampRepository = stampRepository;
+        this.storeRepository = storeRepository;
     }
 
     public boolean memberExists(String memberPhone) {
@@ -29,13 +35,16 @@ public class StampService {
         Member member = memberRepository.findByMemberPhone(memberPhone)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
+        Store store = storeRepository.findByStoreSeq(storeSeq)
+                .orElseThrow(() -> new IllegalArgumentException("Store not found"));
+
         // storeSeq를 받아서 스탬프 엔터티 생성
         LocalDateTime now = LocalDateTime.now();
         Stamp stamp = Stamp.builder()
                 .member(member)
                 .stampStatus(0)
                 .stampAddedDate(now)
-                .storeSeq(storeSeq) // storeSeq 설정
+                .store(store)
                 .build();
 
         stampRepository.save(stamp);
@@ -49,6 +58,13 @@ public class StampService {
         stamp.setStampStatus(1);
         stamp.setStampUsedDate(now);
         stampRepository.save(stamp);
+    }
+
+    public List<Stamp> getStampByMember(Integer memberId) {
+        Member member = memberRepository.findByMemberSeq(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Invalid credentials."));
+
+        return stampRepository.findByMember(member);
     }
 }
 

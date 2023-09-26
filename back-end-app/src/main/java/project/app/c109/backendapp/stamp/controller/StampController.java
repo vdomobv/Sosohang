@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.app.c109.backendapp.stamp.domain.entity.Stamp;
 import project.app.c109.backendapp.stamp.service.StampService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stamp")
@@ -57,5 +60,10 @@ public class StampController {
             logger.error("Error while using stamp for stampSeq: {}", stampSeq, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/{memberId}")
+    public List<Stamp> getStampByMember(@PathVariable Integer memberId) {
+        return stampService.getStampByMember(memberId);
     }
 }

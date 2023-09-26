@@ -30,14 +30,14 @@ export default function Stamp({ route, navigation }) {
           <Box
             content={
               <>
-                <Text style={styles.infoText}>
-                  * 소복소복 10개 적립 시, 해당 상점 쿠폰 발행
+                <Text style={[styles.infoText, { marginTop: 15 }]}>
+                  ◾ 소복소복 10개 적립 시, 해당 상점 쿠폰 발행
                 </Text>
                 <Text style={styles.infoText}>
-                  * 적립 기준은 상점마다 상이할 수 있습니다.
+                  ◾ 적립 기준은 상점마다 상이할 수 있습니다.
                 </Text>
-                <Text style={styles.infoText}>
-                  * 타 상점과 함께 사용 불가합니다.
+                <Text style={[styles.infoText, { marginBottom: 15 }]}>
+                  ◾ 타 상점과 함께 사용 불가합니다.
                 </Text>
               </>
             }

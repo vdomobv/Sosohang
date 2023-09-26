@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
 
   subtitle: {
     alignSelf: "center",
-    margin: 20,
+    marginTop: 20,
+    marginBottom: 10,
   },
 
   stampBox: {
@@ -41,7 +42,8 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 16,
     color: "#818181",
-    marginLeft : 10
+    marginLeft : 15,
+    marginVertical : 5,
   },
 
   info: {

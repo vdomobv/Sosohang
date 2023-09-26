@@ -7,9 +7,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  subtitle: {
-    alignSelf: "center",
-    margin: 10,
+  subContainer: {
+
+  },
+
+  stampImage: {
+    marginStart: 'auto',
+    top: 45,
+    zIndex: 100,
+    width: 90,
+    height: 90,
+    marginRight: 10,
   },
 
   stampBox: {
@@ -22,31 +30,26 @@ const styles = StyleSheet.create({
     width: "99%",
     paddingVertical: 30,
   },
-
-  stampCount: {
-    fontSize: 34,
-    fontWeight: "bold",
-    color: "#FFBF46",
+ 
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
-  stampTotal: {
-    fontSize: 28,
-    color: "#818181",
+  text: {
+    fontSize: 23,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 
-  stampImage: {
-    margin: 20,
-  },
-
-  infoText: {
-    fontSize: 16,
-    color: "#818181",
-    marginLeft : 15,
-    marginVertical : 5,
-  },
-
-  info: {
-    marginVertical : 5,
+  textInput: {
+    backgroundColor: '#E9EEE8',
+    borderRadius: 30,
+    padding: 12,
+    marginHorizontal: 10,
+    fontSize: 23,
+    fontWeight: 'bold',
+    paddingLeft: 30,
   },
 
   buttonContainer: {
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
     width: '80%',
     borderRadius: 5,
     padding: 12,
-    marginTop: 5,
+    marginTop: 12,
     backgroundColor: '#FFBF46',
     elevation: 5
   },

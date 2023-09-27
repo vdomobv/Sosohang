@@ -3,13 +3,20 @@ package project.app.c109.backendapp.sosoticon.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.app.c109.backendapp.member.repository.MemberRepository;
 import project.app.c109.backendapp.sosoticon.domain.dto.request.SosoticonRequestDTO;
 import project.app.c109.backendapp.sosoticon.domain.dto.response.SosoticonResponseDTO;
 import project.app.c109.backendapp.sosoticon.domain.entity.Sosoticon;
 import project.app.c109.backendapp.sosoticon.repository.SosoticonRepository;
+import project.app.c109.backendapp.member.domain.entity.Member;
+import project.app.c109.backendapp.member.repository.MemberRepository;
+import project.app.c109.backendapp.store.domain.entity.Store;
+import project.app.c109.backendapp.store.repository.StoreRepository;
+
 import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +25,12 @@ public class SosoticonService {
 
     @Autowired
     private SosoticonRepository sosoticonRepository;
+
+    @Autowired
+    private MemberRepository memberRepository; // 멤버 엔터티에 접근하기 위한 레포지토리
+
+    @Autowired
+    private StoreRepository storeRepository; // 상점 엔터티에 접근하기 위한 레포지토리
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -43,14 +56,21 @@ public class SosoticonService {
             qrData.put("message", requestDTO.getSosoticonText());
             String jsonData = objectMapper.writeValueAsString(qrData);
 
-            String generatedQRCodePath = qrCodeUtil.generateQRCode(jsonData); // QR 코드 생성
+            String generatedQRCodePath = qrCodeUtil.generateQRCode(jsonData, uuid); // QR 코드 생성
             sosoticon.setSosoticonCode(uuid); // UUID를 DB에 저장
 
 
-            sosoticon.setMemberSeq(requestDTO.getMemberSeq());
-            sosoticon.setCategorySeq(requestDTO.getCategorySeq());
+            Member memberEntity = memberRepository.findById(requestDTO.getMemberSeq())
+                    .orElseThrow(() -> new RuntimeException("Member not found with ID: " + requestDTO.getMemberSeq()));
+            sosoticon.setMember(memberEntity);
+
+
             sosoticon.setOrderId(requestDTO.getOrderId());
-            sosoticon.setStoreSeq(requestDTO.getStoreSeq());
+
+
+            Store storeEntity = storeRepository.findById(requestDTO.getStoreSeq())
+                    .orElseThrow(() -> new RuntimeException("Store not found with ID: " + requestDTO.getStoreSeq()));
+            sosoticon.setStore(storeEntity);
 
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());

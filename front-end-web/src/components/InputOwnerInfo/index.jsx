@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 
-function InputOwnerInfo() {
+function InputOwnerInfo({ onChange }) {
+  const [confirmOwnerInfo, setConfirmOwnerInfo] = useState(false); // ownerInfo 유효성여부
+
   const [storePassword, setStorePassword] = useState(""); // 상점비밀번호
   const [passwordWarning, setPasswordWarning] = useState(""); // 상점비밀번호 유효성 검사 경고문구
   const [comfirmPasswordWarning, setComfirmPasswordWarning] = useState(""); // 상점비밀번호 확인 유효성 검사 경고문구
@@ -48,9 +50,35 @@ function InputOwnerInfo() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  const [storePhoneNum, setStorePhoneNum] = useState(""); // 휴대전화번호
+  const [verifiedNum, setVerifiedNum] = useState(""); // 인증번호
+  const [isVerifiedNum, setIsVerifiedNum] = useState(false); // 인증번호 인증 여부
+
+  const sendVerifiedNum = () => {
+    // 인증번호 요청
+    console.log("인증번호 요청");
+  };
+
+  const verifieNumCheck = () => {
+    // 인증번호 확인
+    console.log("인증번호 확인");
+  };
+
+  useEffect(() => {
+    if (
+      storePassword !== "" &&
+      isValidPassword &&
+      storePassword === confirmPassword &&
+      isVerifiedNum
+    ) {
+      setConfirmOwnerInfo(true);
+    }
+    onChange({ storePassword, storePhoneNum, confirmOwnerInfo });
+  }, [storePassword, storePhoneNum, confirmOwnerInfo, onChange]);
+
   return (
     <div>
-      <h4>사장님 정보</h4>      
+      <h4>사장님 정보</h4>
       <div>
         <Form.Label>휴대전화번호*</Form.Label>
         <InputGroup>
@@ -63,9 +91,12 @@ function InputOwnerInfo() {
               if (numExp.test(e.target.value)) {
                 e.target.value = e.target.value.replace(numExp, "");
               }
+              setStorePhoneNum(e.target.value);
             }}
           />
-          <Button id="button-addon2">전송하기</Button>
+          <Button id="phone-button-addon2" onClick={sendVerifiedNum}>
+            전송하기
+          </Button>
         </InputGroup>
         <InputGroup style={{ marginTop: "15px" }}>
           <InputGroup.Text>인증번호</InputGroup.Text>
@@ -78,9 +109,12 @@ function InputOwnerInfo() {
               if (numExp.test(e.target.value)) {
                 e.target.value = e.target.value.replace(numExp, "");
               }
+              setVerifiedNum(e.target.value);
             }}
           />
-          <Button id="button-addon2">인증하기</Button>
+          <Button id="verified-button-addon2" onClick={verifieNumCheck}>
+            인증하기
+          </Button>
         </InputGroup>
       </div>
       <div style={{ height: "70px" }}>

@@ -42,4 +42,8 @@ public class StoreRegisterRequest {
 	private List<Integer> selectedKeywordSeqList;
 
 	private String storeImage;
+
+	private Double storeLatitude;
+
+	private Double storeLongitude;
 }

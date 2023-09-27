@@ -70,6 +70,9 @@ public class StoreService {
 				.storeExtraInfo(request.getStoreExtraInfo())
 				.storeUrl(request.getStoreUrl())
 				.addedDate(LocalDateTime.now())
+				.storeImage(request.getStoreImage())
+				.storeLongitude(request.getStoreLongitude())
+				.storeLatitude(request.getStoreLatitude())
 				.build();
 
 		newStore = storeRepository.save(newStore);
@@ -116,7 +119,6 @@ public class StoreService {
 	public List<Keyword> getKeywordsByStoreId(Integer storeId) {
 		List<StoreKeyword> storeKeywords = storeKeywordRepository.findByStoreStoreSeq(storeId);
 
-		// StoreKeyword 엔티티에서 키워드만 추출합니다.
 		List<Keyword> keywords = storeKeywords.stream()
 				.map(StoreKeyword::getKeyword)
 				.collect(Collectors.toList());
@@ -140,6 +142,16 @@ public class StoreService {
 			return false;
 		}
 		return storedAuthCode.equals(inputAuthCode);
+	}
+
+	public List<Store> getNearStores(Double latitude, Double longitude) {
+		// 3km 반경 계산을 위한 위/경도 범위 계산
+		double minLat = latitude - 0.027;
+		double maxLat = latitude + 0.027;
+		double minLon = longitude - 0.027;
+		double maxLon = longitude + 0.027;
+
+		return storeRepository.findByStoreLatitudeBetweenAndStoreLongitudeBetween(minLat, maxLat, minLon, maxLon);
 	}
 }
 

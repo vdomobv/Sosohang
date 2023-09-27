@@ -21,6 +21,9 @@ public class Sosoticon {
     @Column(name = "order_id")
     private Long orderId;
 
+    @Column(name = "store_seq", nullable = false)
+    private Long storeSeq;
+
     @Column(name = "sosoticon_taker")
     private String sosoticonTaker;
 
@@ -41,6 +44,12 @@ public class Sosoticon {
 
     @Column(name = "sosoticon_value")
     private Integer sosoticonValue;
+
+    @Column(name = "sosoticon_price")
+    private Integer sosoticonPrice;
+
+    @Column(name = "qr_image_url")
+    private String qrImageUrl;
 
     // Default constructor
     public Sosoticon() {
@@ -81,6 +90,15 @@ public class Sosoticon {
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
+
+    public Long getStoreSeq() {
+        return storeSeq;
+    }
+
+    public void setStoreSeq(Long storeSeq) {
+        this.storeSeq = storeSeq;
+    }
+
 
     public String getSosoticonTaker() {
         return sosoticonTaker;
@@ -134,7 +152,28 @@ public class Sosoticon {
         return sosoticonValue;
     }
 
+
+    public Integer getSosoticonPrice() {
+        return sosoticonPrice;
+    }
+
+    // sosoticonValue를 처음 설정할 때 그 값을 sosoticonPrice에도 저장
     public void setSosoticonValue(Integer sosoticonValue) {
+        if(this.sosoticonPrice == null) { // 초기값이 아직 설정되지 않았다면
+            this.sosoticonPrice = sosoticonValue; // 초기값을 설정
+        }
         this.sosoticonValue = sosoticonValue;
+    }
+
+    public void setSosoticonPrice(Integer sosoticonPrice) {
+        this.sosoticonPrice = sosoticonPrice;
+    }
+
+    public String getQrImageUrl() {
+        return qrImageUrl;
+    }
+
+    public void setQrImageUrl(String qrImageUrl) {
+        this.qrImageUrl = qrImageUrl;
     }
 }

@@ -12,7 +12,7 @@ function SignUp() {
   const [ownerInfo, setOwnerInfo] = useState({});
   const [storeIssue, setStoreIssue] = useState({});
 
-  const handleSignup =  async() => {
+  const handleSignup =  async() => {    
     if(!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
       return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.")
     }
@@ -26,8 +26,8 @@ function SignUp() {
         storePassword: ownerInfo.storePassword,
         storeTell: storeIssue.storeCallNum,
         storeParkinglot: storeIssue.storeParkinglot,
-        storeWorkhour: storeIssue.storeOpenHour,
-        storeHoliday: storeIssue.storeCloseDay,
+        storeWorkhour: storeIssue.storeWorkDay,
+        storeHoliday: storeIssue.storeHoliday,
         storeUrl: storeIssue.storeUrl,
         storeExtraInfo: storeIssue.storeExtraInfo,
         selectedKeywordSeqList: storeIssue.storeKeywords,

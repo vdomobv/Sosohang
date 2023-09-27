@@ -34,7 +34,6 @@ function InputStoreInfo({ onChange }) {
   // 사업자등록번호 인증 모달 띄우기
   const onChangeOpenRegNum = (e) => {
     // e.preventDefault(); // 새로고침 방지
-    console.log(storeRegNum);
     axios
       .post(
         "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=ULFR0UF6ByTGjclsNKrqQLC0L3GItE%2FRZev%2FKQ%2FE5A0YMnGuDqdYpi00CYrvWXVPxz8hxJq4h9M92hUvCUAKhQ%3D%3D",
@@ -49,11 +48,11 @@ function InputStoreInfo({ onChange }) {
         ) {
           setIsOpenRegNum(!isOpenRegNum);
         } else {
-          alert("존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요.");
+          return alert("존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요.");
         }
       })
       .catch((err) => {
-        console.log(err);
+        return console.log(err);
       });
   };
 

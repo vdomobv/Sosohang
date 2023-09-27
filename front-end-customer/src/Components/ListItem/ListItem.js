@@ -4,15 +4,15 @@ import SquareImage from "../SquareImage/SquareImage";
 import SubTitle from "../SubTitle/SubTitle";
 import SectionTitle from "../SectionTitle/SectionTitle";
 
-export default function ShopListItem({ navigation, data, PressFunction }) {
+export default function ListItem({ navigation, data, PressFunction }) {
   // console.log(data);
   return (
     <TouchableOpacity onPress={PressFunction} style={styles.container}>
-      <SquareImage imageSrc={data.imageUrl} />
+      <SquareImage imageSrc={require('assets/images/bread.png')} />
       <View style={styles.content}>
-        <SubTitle subTitle={data.shopName} />
-        <Text>{data.keywords.map(d => {return '#'+d+"   "})}</Text>
-        <SectionTitle content={data.address}/>
+        <SubTitle subTitle={data.storeName} />
+        <Text>{"#임시   #해시태그   #입니다."}</Text>
+        <SectionTitle content={data.storeLocation}/>
       </View>
     </TouchableOpacity>
   );

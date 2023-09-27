@@ -31,25 +31,25 @@ public class StampService {
         return memberRepository.existsByMemberPhone(memberPhone);
     }
 
-    public void earnStamp(Integer storeSeq, String memberPhone) {
+    public void earnStamp(Integer storeSeq, String memberPhone, Integer stampCount) {
         Member member = memberRepository.findByMemberPhone(memberPhone)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
         Store store = storeRepository.findByStoreSeq(storeSeq)
                 .orElseThrow(() -> new IllegalArgumentException("Store not found"));
 
-        // storeSeq를 받아서 스탬프 엔터티 생성
-        LocalDateTime now = LocalDateTime.now();
-        Stamp stamp = Stamp.builder()
-                .member(member)
-                .stampStatus(0)
-                .stampAddedDate(now)
-                .store(store)
-                .build();
+        for (int i = 0; i < stampCount; i++) {
+            LocalDateTime now = LocalDateTime.now();
+            Stamp stamp = Stamp.builder()
+                    .member(member)
+                    .stampStatus(0)
+                    .stampAddedDate(now)
+                    .store(store)
+                    .build();
 
-        stampRepository.save(stamp);
+            stampRepository.save(stamp);
+        }
     }
-
     public void useStamp(Integer stampSeq) {
         Stamp stamp = stampRepository.findById(stampSeq)
                 .orElseThrow(() -> new IllegalArgumentException("Stamp not found"));

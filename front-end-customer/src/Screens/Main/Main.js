@@ -40,7 +40,6 @@ import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
-import SearchItem from "../../Components/SearchItem/SearchItem";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -145,7 +144,7 @@ export default function Main({ navigation }) {
         key={index}
         props={data}
         PressFunction={() => {
-          navigation.navigate("List", { category: data.name });
+          navigation.navigate("List", { category: data.name, categorySeq: data.categorySeq });
         }}
       />
     );
@@ -251,11 +250,12 @@ export default function Main({ navigation }) {
                   <Text style={styles.text}>간편한 홍보를</Text>
                 </View>
               </View>
-              <Button
-                title="회원가입"
-                onPress={() => navigation.navigate("SignUp")}
-              />
             </View>
+            <Button
+              title="회원가입"
+              onPress={() => navigation.navigate("SignUp")}
+            />
+
             {/* <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
               <Title title={"배너 광고 자리입니다."} />
             </View> */}
@@ -281,8 +281,6 @@ export default function Main({ navigation }) {
               <Carousel content={hashTagItems} />
               <Carousel content={carouselDummy} />
             </View>
-
-            <Line />
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

@@ -16,8 +16,6 @@ public interface StampRepository extends JpaRepository<Stamp, Integer> {
 
     List<Stamp> findByMemberAndStampStatus(Member member, Integer stampStatus);
 
-//    List<Stamp> findByMemberAndStore(Member member, Store store);
-
     List<Stamp> findByStampAddedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
 }

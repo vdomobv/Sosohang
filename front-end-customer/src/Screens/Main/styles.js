@@ -65,14 +65,15 @@ const styles = StyleSheet.create({
   },
 
   intro: {
-    marginVertical: 25,
+    marginTop: 20,
+    marginBottom : 15,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
 
   serachResult : {
     width : '100%',
-    height : 300,
+    height : 430,
     zIndex : 100,
   },
 

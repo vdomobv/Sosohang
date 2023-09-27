@@ -24,15 +24,14 @@ export default function SignUp({ navigation }) {
       ) {
         // 로그인 로직 작성
         axios
-          .post("http://localhost:8080/api/v1/member/login", {
-              memberPhone: loginPhoneNumber,
-              memberPassword: loginPassword,
+          .post("http://j9c109.p.ssafy.io:8081/api/v1/member/login", {
+            memberPhone: loginPhoneNumber,
+            memberPassword: loginPassword,
           })
           .then((response) => {
             // 로그인 성공 시 처리
             if (response.data.token) {
               Alert.alert("알림", "로그인 성공!");
-              console.log("로그인 성공");
             } else {
               Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");
             }
@@ -60,12 +59,29 @@ export default function SignUp({ navigation }) {
   // 인증 버튼 핸들러
   const handleAuth = () => {
     if (phoneNumber.length === 11) {
-      // 인증 번호 발송 로직 작성
 
+      // 회원인지 판단, 비회원이라면 진행 (회원이라면? -> 로그인하도록)
 
-      // 인증 번호 발송 후, input 창(인증 번호 입력 창)을 표시하도록 상태 업데이트
-      setShowInput(true);
-      // 인증 번호를 발송하도록 구현
+      axios
+        .post(`http://j9c109.p.ssafy.io:8081/api/v1/member/register/phone-check?memberPhone=${phoneNumber}`, {
+        })
+        .then((response) => {
+          if (response.data.status = "success") {
+            Alert.alert("알림", "인증 성공!");
+            setShowInput(true); // 인증 성공 시 인증번호 입력 창을 표시
+            setAuthCode(response.data.authCode); // 요놈을 문자로 보냄
+            // Alert.alert("알림", "인증 번호를 발송했습니다.");
+          } else {
+            // 다른 상황에 대한 처리
+            Alert.alert("인증 실패", "인증에 실패하였습니다. 다시 시도해 주세요.");
+          }
+        })
+        .catch((error) => {
+          // 인증 실패 시 처리
+          Alert.alert("알림", "이미 가입된 전화번호입니다.");
+          // Alert.alert("오류", "다시 시도해 주세요.");
+          console.log(error);
+        });
     } else {
       Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
     }
@@ -73,13 +89,25 @@ export default function SignUp({ navigation }) {
 
   // 인증 확인 버튼 핸들러
   const handleAuthCode = () => {
-    if (authCode.length === 5) {
-      // 인증 확인 로직 작성
-      if (authCode === showInput) {
-        Alert.alert("알림", "인증이 완료되었습니다.");
-      } else {
-        Alert.alert("알림", "인증 번호가 올바르지 않습니다.");
-      }
+    if (authCode.length === 6) {
+      axios
+        .post(`http://j9c109.p.ssafy.io:8081/api/v1/member/register/verify-code?memberPhone=${phoneNumber}&authCode=${authCode}`, {
+        })
+        .then((response) => {
+          console.log(response)
+          // 인증 확인 성공 시 처리
+          if (response.data.status === "success") {
+            Alert.alert("알림", "인증이 완료되었습니다.");
+          } else {
+            // 인증 실패 처리
+            Alert.alert("알림", "인증 번호가 올바르지 않습니다.");
+          }
+        })
+        .catch((error) => {
+          // 인증 실패 시 처리
+          Alert.alert("오류", "다시 시도해 주세요.");
+          console.log(error);
+        });
     } else {
       Alert.alert("알림", "인증 번호를 바르게 입력해 주세요.");
     }
@@ -87,8 +115,8 @@ export default function SignUp({ navigation }) {
 
   const handleSignUp = () => {
     if (phoneNumber.length === 11) {
-      // 인증 완료했는지 확인
-      if (authCode === showInput) {
+      // 인증 완료했는지 확인, showInput 상태가 true인 경우
+      if (showInput) {
         if (
           password.match(/^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/)
         ) {
@@ -100,23 +128,24 @@ export default function SignUp({ navigation }) {
               if (password === confirmPassword) {
                 // 회원가입 로직 작성
                 axios
-                  .post("http://localhost:8080/api/v1/member/register", {
-                      memberNickname: nickname,
-                      memberPhone: phoneNumber,
-                      memberPassword: confirmPassword,
+                  .post("http://j9c109.p.ssafy.io:8081/api/v1/member/register", {
+                    memberNickname: nickname,
+                    memberPhone: phoneNumber,
+                    memberPassword: confirmPassword,
                   })
                   .then((response) => {
                     // 회원가입 성공 시 처리
-                    if (response.data.success) {
-                      Alert.alert("알림", response.data.message);
+                    if (response) {
+                      Alert.alert("알림", "회원가입 성공!");
+                      console.log(response)
+
                     } else {
-                      Alert.alert("알림", response.data.message);
-                      // Alert.alert("알림", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
+                      Alert.alert("알림", "다시 시도해 주세요.");
+                      console.log(response)
                     }
                   })
                   .catch((error) => {
-                    // 회원가입 실패 시 처리
-                    Alert.alert("알림", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
+                    Alert.alert("에러 발생", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
                     console.log(error);
                   });
               } else {
@@ -130,8 +159,7 @@ export default function SignUp({ navigation }) {
           }
         } else {
           Alert.alert(
-            "알림",
-            "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
+            "알림", "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
           );
         }
       } else {
@@ -142,7 +170,6 @@ export default function SignUp({ navigation }) {
       // 전화번호가 11자리가 아닐 경우 경고창 표시
       Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
     }
-
   };
 
   return (
@@ -226,9 +253,9 @@ export default function SignUp({ navigation }) {
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TextInput
             style={[styles.input, { width: '57%' }]}
-            placeholder="인증 번호 5자를 입력해 주세요."
+            placeholder="인증 번호 6자를 입력해 주세요."
             keyboardType="numeric"
-            maxLength={5} // 5자리로 설정
+            maxLength={6} // 5자리로 설정
             onChangeText={(text) => setAuthCode(text)}
             value={authCode}
           />

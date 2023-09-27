@@ -10,7 +10,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableOpacity,
-  BackHandler
+  BackHandler,
 } from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
@@ -40,7 +40,6 @@ import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
-import SearchItem from "../../Components/SearchItem/SearchItem";
 
 const categoryData = CategoryData;
 const dummydata = MainDummy;
@@ -79,7 +78,7 @@ export default function Main({ navigation }) {
     const getData = async () => {
       try {
         const response = await axios.get(
-          "http://j9c109.p.ssafy.io:8081/api/store"
+          "http://j9c109.p.ssafy.io:8081/api/v1/store"
         );
         setStoreData(response.data);
       } catch (error) {
@@ -101,17 +100,16 @@ export default function Main({ navigation }) {
 
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       () => {
         cancelSearchState();
       }
     );
-  
+
     return () => {
       keyboardDidHideListener.remove();
     };
   }, []);
-  
 
   const updateSearch = (data) => {
     setSearch(data);
@@ -134,8 +132,6 @@ export default function Main({ navigation }) {
       .filter((data) => data.storeName.includes(currentSearch) === true)
       .slice(0, 10);
     setSearchResult(result);
-    // console.log("검색결과");
-    // console.log(searchResult);
   };
 
   const alarms = alarmDummy.map((data, index) => (
@@ -163,7 +159,6 @@ export default function Main({ navigation }) {
       <CarouselItem
         navigation={navigation}
         onPressFunction={() => {
-          console.log("carouselItem");
           navigation.navigate("Shop");
         }}
         key={data.name}
@@ -215,17 +210,17 @@ export default function Main({ navigation }) {
                 openTooltip={openTooltip}
               />
             </View>
+
             {searchState && (
-              // true
               <View style={styles.serachResult}>
                 {searchResult.map((data) => {
-                  const id = data.shopId;
                   return (
                     <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("Shop", { id });
-                      }}
-                      style={styles.searchList}
+                    key={data.storeSeq}
+                    onPress={() => {
+                      navigation.navigate("Shop", { data });
+                    }}
+                    style={styles.searchList}
                     >
                       <Text>{data.storeName}</Text>
                     </TouchableOpacity>
@@ -233,33 +228,7 @@ export default function Main({ navigation }) {
                 })}
               </View>
             )}
-            <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
-              <Title title={"배너 광고 자리입니다."} />
-            </View>
-            <View style={[styles.categories]}>{category}</View>
-            <Line />
-            <View style={[styles.section]}>
-              <View>
-                <SectionTitle
-                  content={"새로운 곳을 경험해보는 것은 어때요? 🆕"}
-                />
-                <SectionSubTitle
-                  content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."}
-                />
-              </View>
-              <Carousel content={carouselDummy} />
-            </View>
 
-            <Line />
-            <View style={[styles.section]}>
-              <SectionTitle
-                content={"선물 받을 친구의 취향으로 골라보세요! 😘"}
-              />
-              <Carousel content={hashTagItems} />
-              <Carousel content={carouselDummy} />
-            </View>
-
-            <Line />
             <View style={[styles.section]}>
               <SectionTitle content={"소소행이 뭐에요? 🧐"} />
               <View style={[styles.intro]}>
@@ -281,10 +250,36 @@ export default function Main({ navigation }) {
                   <Text style={styles.text}>간편한 홍보를</Text>
                 </View>
               </View>
+            </View>
               <Button
                 title="회원가입"
                 onPress={() => navigation.navigate("SignUp")}
               />
+
+            {/* <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
+              <Title title={"배너 광고 자리입니다."} />
+            </View> */}
+            <View style={[styles.categories]}>{category}</View>
+            <Line />
+            <View style={[styles.section]}>
+              <View>
+                <SectionTitle
+                  content={"새로운 곳을 경험해보는 것은 어때요? 🆕"}
+                />
+                <SectionSubTitle
+                  content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."}
+                />
+              </View>
+              <Carousel content={carouselDummy} />
+            </View>
+
+            <Line />
+            <View style={[styles.section]}>
+              <SectionTitle
+                content={"선물 받을 친구의 취향으로 골라보세요! 😘"}
+              />
+              <Carousel content={hashTagItems} />
+              <Carousel content={carouselDummy} />
             </View>
           </ScrollView>
         </TouchableWithoutFeedback>

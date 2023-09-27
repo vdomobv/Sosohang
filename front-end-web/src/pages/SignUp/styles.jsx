@@ -8,15 +8,19 @@ form {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  margin-top: 50px;
+  /* margin-bottom: 50px; */
+
 }
 
 /* 필수정보 입력란 CSS */
 .container {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: stretch;
   height: 500px;
+
 }
 
 /* 상점정보, 사장님정보 입력란 CSS */

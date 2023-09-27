@@ -6,15 +6,28 @@ import styles from "./styles";
 import Title from "../../Components/Title/Title";
 import SubTitle from "../../Components/SubTitle/SubTitle";
 import Box from "../../Components/Box/Box";
-import ModalCustom from "../../Components/ModalCustom/ModalCustom";
+import PlusMinusModal from "../../Components/PlusMinusModal/PlusMinusModal";
 import Tabs from "../../Components/Tabs/Tabs";
 
 export default function AddStamp({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [stampCount, setStampCount] = useState(1);
 
   const handleStamp = () => {
     setModalVisible(true);
   }
+
+  const incrementStampCount = () => {
+    if (stampCount < 10) {
+      setStampCount(stampCount + 1);
+    }
+  };
+
+  const decrementStampCount = () => {
+    if (stampCount > 0) {
+      setStampCount(stampCount - 1);
+    }
+  };
 
   return (
     <>
@@ -29,13 +42,13 @@ export default function AddStamp({ navigation }) {
             <View style={styles.stampBox}>
               <SubTitle subTitle={"현재 적립 소복소복"} customStyles={{ color: "#FFBF46" }} />
               <Text style={styles.stampCount}>
+                {/* 현재 스탬프 */}
                 {/* {stamp.stamp} */}
                 <Text style={styles.stampTotal}>/10</Text>
               </Text>
               <Image style={styles.stampImage}
                 source={require('assets/images/stamp3.png')}
               />
-              {/* <Image style={styles.stampImage} source={image} /> */}
             </View>
           }
         />
@@ -66,15 +79,16 @@ export default function AddStamp({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <ModalCustom
+        <PlusMinusModal
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
           alertTitle={`도장 적립`}
-          // 모달 내 -+ 버튼
-
-          // alertText={`현재 잔액 : ${scannedData?.type} 원\n상품 금액: ${scannedData?.data} 원`}
+          stampCount={stampCount}
+          onIncrement={incrementStampCount}
+          onDecrement={decrementStampCount}
           targetScreen="AddStamp"
         />
+ 
       </View>
       <Tabs navigation={navigation} />
     </>

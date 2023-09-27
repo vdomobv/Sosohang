@@ -1,38 +1,29 @@
 import styles from "./styles";
+import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 
-import Tabs from "../../Components/Tabs/Tabs";
 import Title from "../../Components/Title/Title";
+import SubTitle from "../../Components/SubTitle/SubTitle";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import Gift from "../../Components/Gift/Gift";
+import Tabs from "../../Components/Tabs/Tabs";
 
 import MyGiftDummy from "../../Dummys/MyGift/MyGiftDummy";
-
-import SubTitle from "../../Components/SubTitle/SubTitle";
-import { useState } from "react";
 const dummy = MyGiftDummy;
 
 export default function MyGift({ navigation }) {
   const [activatedTab, setActivatedTab] = useState(true)
 
+  const handleGiftClick = (giftData) => {
+    navigation.navigate("MyGiftDetail", { giftData }); 
+  };
+  
   const usableGifts = dummy.filter((d) => d.price > 0 === true).map((d, index) => {
     return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} />;
   });
   const unusableGifts = dummy.filter((d) => d.price == 0 === true).map((d, index) => {
     return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} />;
   })
-
-  const handleGiftClick = (giftData) => {
-    navigation.navigate("MyGiftDetail", { giftData }); 
-  };
-
-  // const gifts = MyGiftDummy.map((d, index) => {
-  //   return (
-  //     <TouchableOpacity key={index} onPress={() => handleGiftClick(d)}>
-  //       <Gift data={d} />
-  //     </TouchableOpacity>
-  //   );
-  // });
 
 return (
   <>

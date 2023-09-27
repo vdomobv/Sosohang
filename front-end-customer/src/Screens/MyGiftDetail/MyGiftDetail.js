@@ -9,7 +9,7 @@ import Gift from "../../Components/Gift/Gift";
 import GiftCardBackground from "../../Components/GiftCardBackground/GiftCardBackground";
 
 export default function MyGiftDetail({ route, navigation }) {
-  const giftData = route.params.giftData;
+  const { giftData } = route.params;
 
   const content = {
     cardImage: "박스 1 카드이미지",
@@ -22,13 +22,12 @@ export default function MyGiftDetail({ route, navigation }) {
         <Title title={"받은 선물함"}></Title>
         <ScrollBox
           content={
-            <View>
+            <>
             <Gift data={giftData} />
             <View style={styles.subContainer}>
               <GiftCardBackground content={content}/>
             </View>
-            </View>
-
+            </>
           }
         />
       </View>

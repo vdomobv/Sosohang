@@ -3,7 +3,6 @@ import { View, Text, Image, ScrollView, Animated, Touchable, TouchableOpacity, A
 import { Ionicons } from "@expo/vector-icons";
 
 import { useEffect, useState } from "react"; 
-import { useIsFocused } from '@react-navigation/native';
 
 import Title from "../../Components/Title/Title";
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";

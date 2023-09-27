@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import project.app.c109.backendapp.ex.ErrorResponse;
+import project.app.c109.backendapp.member.domain.dto.response.AuthResponse;
 import project.app.c109.backendapp.member.domain.dto.request.MemberLoginRequest;
 import project.app.c109.backendapp.member.domain.dto.request.MemberRegisterRequest;
 import project.app.c109.backendapp.member.domain.dto.response.LoginResponse;
@@ -38,12 +38,11 @@ public class MemberController {
 
     @PostMapping("/register")
     @Operation(summary = "회원가입")
-    public ResponseEntity<?> register(@Valid @RequestBody MemberRegisterRequest memberRegisterRequest, BindingResult result) {
+    public ResponseEntity<Member> register(@Valid @RequestBody MemberRegisterRequest memberRegisterRequest, BindingResult result) {
         if (result.hasErrors()) {
             logger.info("회원가입 유효성 검사 에러 : {}", result.getAllErrors());
-            ErrorResponse errorResponse = new ErrorResponse(400, "유효성 검사 오류");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(errorResponse);
+                    .body(null);
         }
         try {
             Member member = memberService.register(memberRegisterRequest);
@@ -51,47 +50,41 @@ public class MemberController {
             return ResponseEntity.ok(member);
         } catch (EntityExistsException ex) {
             logger.info("가입된 번호입니다.");
-            ErrorResponse errorResponse = new ErrorResponse(409, "가입된 회원");
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(errorResponse);
+                    .body(null); // 실패 시 Member 객체를 null로 반환
         }
     }
 
-
     @PostMapping("/register/phone-check")
-    public ResponseEntity<Map<String, String>> handlePhoneVerification(@RequestParam String memberPhone) {
+    public ResponseEntity<AuthResponse> handlePhoneVerification(@RequestParam String memberPhone) {
         logger.info("Received a phone verification request for memberPhone: {}", memberPhone);
         String authCode = memberService.handlePhoneVerification(memberPhone);
-        Map<String, String> response = new HashMap<>();
+
         if (authCode != null) {
-            response.put("status", "success");
-            response.put("authCode", authCode);
+            AuthResponse response = new AuthResponse("success", authCode);
             logger.info("Phone verification successful for memberPhone: {}", memberPhone);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return ResponseEntity.ok(response);
         } else {
-            response.put("status", "error");
-            response.put("message", "Phone number already in use.");
+            AuthResponse response = new AuthResponse("error", "Phone number already in use.");
             logger.warn("Phone number already in use for memberPhone: {}", memberPhone);
-            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
     }
 
     @PostMapping("/register/verify-code")
-    public ResponseEntity<Map<String, String>> verifyAuthCode(@RequestParam String memberPhone,
+    public ResponseEntity<AuthResponse> verifyAuthCode(@RequestParam String memberPhone,
                                                               @RequestParam String authCode) {
         logger.info("Received verification of authCode {} for memberPhone: {}", authCode, memberPhone);
         boolean isVerified = memberService.verifyAuthCode(memberPhone, authCode);
-        Map<String, String> response = new HashMap<>();
+
         if (isVerified) {
-            response.put("status", "success");
-            response.put("message", "The authentication code is valid.");
+            AuthResponse response = new AuthResponse("success", "The authentication code is valid.");
             logger.info("Authentication code verified successfully for memberPhone: {}", memberPhone);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return ResponseEntity.ok(response);
         } else {
-            response.put("status", "error");
-            response.put("message", "The authentication code is invalid or expired.");
+            AuthResponse response = new AuthResponse("error", "The authentication code is invalid or expired.");
             logger.warn("Authentication code verification failed for memberPhone: {}", memberPhone);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 

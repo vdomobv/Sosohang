@@ -22,10 +22,8 @@ export default function GiftCardBackground({ content }) {
       {/* 메시지 박스 */}
       <View style={[
         styles.innerBox, {
-          marginTop: '64%', 
-          height: '8%',
-          // marginTop: 240,
-          // height: 110,
+          marginTop: '64%', height: '8%',
+          // marginTop: 240, height: 110,
           backgroundColor: '#F8F2CA',
 
         }]}>

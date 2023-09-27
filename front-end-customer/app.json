@@ -1,5 +1,10 @@
 {
   "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "f1801781-9cb8-4ea5-a341-4fcd34742946"
+      }
+    },
     "name": "front-end-customer",
     "slug": "front-end-customer",
     "version": "1.0.0",

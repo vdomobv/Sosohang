@@ -6,7 +6,7 @@ import SubTitle from "../SubTitle/SubTitle";
 import { useState } from "react";
 
 export default function Shop({ data, PressFunction }) {
-  const [dibState, setDibState] = useState(false);
+  const [dibState, setDibState] = useState(data.dibSeq ? true : false);
 
   return (
     <View style={styles.container}>

@@ -40,7 +40,7 @@ export default function MyPage({ navigation }) {
         );
         setDibData(response.data);
         console.log(Array.isArray(response.data));
-        console.log(response.data[0].store);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching store data:", error);
       }
@@ -100,7 +100,7 @@ export default function MyPage({ navigation }) {
             />
             <Text
               onPress={() => {
-                navigation.navigate("Dibs", { dibs: dibsDummy });
+                navigation.navigate("Dibs", { dibs: dibData });
               }}
             >
               상세보기 ＞{" "}

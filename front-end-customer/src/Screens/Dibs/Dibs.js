@@ -24,7 +24,7 @@ export default function Dibs({ route, navigation }) {
         })} />
       </View>
       <ScrollBox content={dibs.map((d, index) => {
-        return (<Shop key={index} data={d} />)
+        return (<Shop key={index} data={d.store} />)
       })} />
     </View>
 

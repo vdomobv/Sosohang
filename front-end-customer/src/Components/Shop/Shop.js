@@ -5,7 +5,7 @@ import SquareImage from "../SquareImage/SquareImage";
 import SubTitle from "../SubTitle/SubTitle";
 import { useState } from "react";
 
-export default function Shop({ data }) {
+export default function Shop({ data, PressFunction }) {
   const [dibState, setDibState] = useState(false);
 
   return (
@@ -32,7 +32,9 @@ export default function Shop({ data }) {
             />
           </TouchableOpacity>
         </View>
-        <Text style={styles.more}>상세보기 ＞</Text>
+        <Text onPress={PressFunction} style={styles.more}>
+          상세보기 ＞
+        </Text>
       </View>
     </View>
   );

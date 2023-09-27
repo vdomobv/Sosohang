@@ -11,10 +11,10 @@ public interface ProductService {
     ProductResponseDTO addProduct(ProductRequestDTO request);
 
     // 상품을 수정하고 결과 DTO를 반환하는 메소드
-    ProductResponseDTO updateProduct(Long productId, ProductRequestDTO request);
+    ProductResponseDTO updateProduct(Integer productId, ProductRequestDTO request);
 
     // 상품을 삭제하는 메소드 (반환값 없음)
-    void deleteProduct(Long productId);
+    void deleteProduct(Integer productId);
 
     // 모든 상품을 조회하고 결과 DTO 리스트를 반환하는 메소드
     List<ProductResponseDTO> getAllProducts();

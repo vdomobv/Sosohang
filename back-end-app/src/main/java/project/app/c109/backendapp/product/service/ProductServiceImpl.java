@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 상품 수정 구현
     @Override
-    public ProductResponseDTO updateProduct(Long productId, ProductRequestDTO request) {
+    public ProductResponseDTO updateProduct(Integer productId, ProductRequestDTO request) {
         // DB에서 상품을 찾아옴
         Optional<Product> optionalProduct = productRepository.findById(productId);
         // 상품이 있으면
@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 
     // 상품 삭제 구현
     @Override
-    public void deleteProduct(Long productId) {
+    public void deleteProduct(Integer productId) {
         // DB에서 해당 상품 삭제
         productRepository.deleteById(productId);
     }

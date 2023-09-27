@@ -14,7 +14,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // 데이터베이스에서의 컬럼 이름
     @Column(name = "product_seq")
-    private Long id;
+    private Integer id;
 
     // 상품명, null을 허용하지 않고 길이는 최대 50
     @Column(name = "product_name", nullable = false, length = 50)
@@ -49,11 +49,11 @@ public class Product {
     private Integer salesAmount;
 
     // 기본 생성자, getter, setter, etc...
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

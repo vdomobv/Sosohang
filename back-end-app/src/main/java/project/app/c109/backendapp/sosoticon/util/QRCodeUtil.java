@@ -17,13 +17,12 @@ public class QRCodeUtil {
     @Autowired
     private S3UploadService s3UploadService;
 
-    public String generateQRCode(String data) throws Exception {
+    public String generateQRCode(String data, String uuid) throws Exception { // UUID 파라미터 추가
         try {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
 
-            String uuid = generateUUID();
-            String fileName = "QRCode_" + uuid + ".png";
+            String fileName = "QRCode_" + uuid + ".png";  // 이미 받은 UUID 사용
             String userHome = System.getProperty("user.home");
             Path path = FileSystems.getDefault().getPath(userHome + "\\Desktop\\" + fileName);
 

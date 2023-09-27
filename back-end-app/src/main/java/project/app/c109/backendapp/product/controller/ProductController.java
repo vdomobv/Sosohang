@@ -33,7 +33,7 @@ public class ProductController {
 
     // 상품 수정 메소드. PUT 요청을 처리
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long productId,
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Integer productId,
                                                             @RequestBody ProductRequestDTO request) {
         // 서비스 레이어의 updateProduct 메소드 호출 후 결과를 response에 저장
         ProductResponseDTO response = productService.updateProduct(productId, request);
@@ -43,7 +43,7 @@ public class ProductController {
 
     // 상품 삭제 메소드. DELETE 요청을 처리
     @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Integer productId) {
         // 서비스 레이어의 deleteProduct 메소드 호출
         productService.deleteProduct(productId);
         // HTTP 204 No Content 상태로 응답 (삭제 성공)

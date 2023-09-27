@@ -21,7 +21,7 @@ public class DibController {
         this.dibService = dibService;
     }
 
-    @GetMapping("{memberSeq}")
+    @GetMapping("/{memberSeq}")
     public ResponseEntity<List<Dib>> getDibsByMemberSeq(@PathVariable Integer memberSeq) {
         try {
             List<Dib> dibs = dibService.getDibsByMember(memberSeq);

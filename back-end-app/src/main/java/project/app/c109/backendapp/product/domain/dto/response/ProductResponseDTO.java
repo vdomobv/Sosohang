@@ -2,7 +2,7 @@ package project.app.c109.backendapp.product.domain.dto.response;
 
 public class ProductResponseDTO {
 
-    private Long id;
+    private Integer id;
     private String productName;
     private Integer productPrice;
     private Integer productDcrate;
@@ -14,11 +14,11 @@ public class ProductResponseDTO {
 
     // Getter와 Setter 메서드들...
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

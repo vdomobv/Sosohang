@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 21,
-    marginBottom: 10,
+    fontSize: 24,
+    marginBottom: 15,
     fontWeight: 'bold', 
   },
 
@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
   },
   
   miniButton: {
-    width: '20%',
     borderRadius: 5,
     padding: 11,
+    paddingHorizontal: 25,
     backgroundColor: '#46C27D',
-    marginLeft: 5
+    marginLeft: 8
   },
 
   button: {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   horizontalLine: {
     borderBottomWidth: 1, // 선 두께
     borderColor: 'gray',
-    marginVertical: 13, // 위아래 여백 조정
+    marginVertical: 35, // 위아래 여백 조정
     borderStyle: 'solid',
     borderleftWidth: 330, // 좌측 여백
     borderRightWidth: 330, // 우측 여백

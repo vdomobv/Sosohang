@@ -15,6 +15,7 @@ export default function MyGiftDetail({ route, navigation }) {
   const content = {
     cardImage: giftData.cardImage,
     cardMessage: giftData.message,
+    cardQr: giftData.qrImage,
   };
 
   return (

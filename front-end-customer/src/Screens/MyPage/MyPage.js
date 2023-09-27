@@ -14,16 +14,46 @@ import StampAfter from "../../Components/StampAfter/StampAfter";
 import userDummy from "../../Dummys/MyPage/UserDummy";
 import dibsDummy from "../../Dummys/MyPage/DibsDummy";
 import buyDummy from "../../Dummys/MyPage/BuyDummy";
+import axios from 'axios'
+import { useEffect, useState } from "react";
+
 
 const user = userDummy;
 
 export default function MyPage({ navigation }) {
-  const dibs = dibsDummy.map((data, index) => {
-    return <CarouselItem key={index} props={data} />;
-  });
+  // const dibs = dibsDummy.map((data, index) => {
+  //   return <CarouselItem key={index} props={data} />;
+  // });
 
   const buy = buyDummy.map((data, index) => {
     return <Gift navigation={navigation} key={index} data={data} />;
+  });
+
+  const [dibData, setDibData] = useState([]);
+  const tempUser = 1;
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios.get(
+          `http://j9c109.p.ssafy.io:8081/api/v1/dib/${tempUser}`
+        );
+        setDibData(response.data);
+        console.log(Array.isArray(response.data));
+        console.log(response.data[0].store);
+      } catch (error) {
+        console.error("Error fetching store data:", error);
+      }
+    };
+
+    getData();
+  }, []);
+
+  const dibs = dibData.map((data, index) => {
+    return <CarouselItem key={index} props={data.store}
+    onPressFunction={() => {
+      navigation.navigate('Shop', { data : data.store })
+    }}/>;
   });
   return (
     <>

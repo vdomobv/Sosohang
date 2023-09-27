@@ -65,4 +65,10 @@ public class Store {
 
 	@Column( name = "store_image")
 	private String storeImage;
+
+	@Column(name = "store_latitude")
+	private Double storeLatitude; // 위도
+
+	@Column(name = "store_longitude")
+	private Double storeLongitude; // 경도
 }

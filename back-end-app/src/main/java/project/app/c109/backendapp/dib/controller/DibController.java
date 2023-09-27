@@ -12,7 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/dib")
+@RequestMapping("/api/v1/dib")
 public class DibController {
 
     private final DibService dibService;

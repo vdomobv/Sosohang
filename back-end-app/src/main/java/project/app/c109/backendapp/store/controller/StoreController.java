@@ -180,5 +180,11 @@ public class StoreController {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
 	}
 
+	@GetMapping("/nearby")
+	public ResponseEntity<List<Store>> getNearStores (@RequestParam Double latitude, @RequestParam Double longitude) {
+		List<Store> stores = storeService.getNearStores(latitude, longitude);
+		return ResponseEntity.ok(stores);
+	}
+
 
 }

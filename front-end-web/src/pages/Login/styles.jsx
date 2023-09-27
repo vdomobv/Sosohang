@@ -2,18 +2,23 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
 display: flex;
-height: 100vh;
 
-.loginBox {
-    width: 50vh;
-    height : 50vh;
-    box-shadow: 3px 3px 10px 1px lightgrey;
-    padding-top : 10%;
-    padding-bottom : 10%;
-    border-radius : 10%;
-    align-content : center;
-
-}
+.login {
+    background-color: rgba(255, 255, 255, 0.5); 
+    padding: 20px;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    right: 30%; 
+    transform: translate(50%, -50%);
+    font-family: 'Pretendard-Regular';
+  }
+  
+@media screen and (max-width: 1020px) {
+    .login {
+      right: 50%;
+    }
+  }
 `;
 
 export default Wrapper;

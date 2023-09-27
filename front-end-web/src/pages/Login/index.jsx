@@ -8,7 +8,7 @@ function Login() {
     <>
       <Header />
       <Wrapper>
-        <div className="loginBox">
+        <div className="login">
           <InputLogin />
         </div>
       </Wrapper>

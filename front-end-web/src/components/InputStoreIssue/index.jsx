@@ -1,10 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, InputGroup, ToggleButton } from "react-bootstrap";
 
+function InputStoreIssue({ onChange }) {
+  const [storeCallNum, setStoreCallNum] = useState(""); // 상점 전화번호
 
-function InputStoreIssue() {
   const [existParkinglot, setExistParkinglot] = useState(false); // 주차장여부
+  const [storeParkinglot, setStoreParkinglot] = useState(""); // 주차장설명
 
+  const [storeWorkDay, setStoreWorkDay] = useState(""); // 영업일 문자열
+  const [storeOpenHour, setStoreOpenHour] = useState([
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+  ]); // 영업일
   const [openEveryday, setOpenEveryday] = useState(false); // 영업일 - 매일
   const [openMonday, setOpenMonday] = useState(false); // 영업일 - 월요일
   const [openTuesday, setOpenTuesday] = useState(false); // 영업일 - 화요일
@@ -14,6 +27,29 @@ function InputStoreIssue() {
   const [openSaturday, setOpenSaturday] = useState(false); // 영업일 - 토요일
   const [openSunday, setOpenSunday] = useState(false); // 영업일 - 일요일
 
+  useEffect(() => {
+    let temp = "";
+    setStoreWorkDay(temp);
+    storeOpenHour.forEach((ele) => {
+      if (ele[0] !== "") {
+        temp = temp + ele[0] + ": " + ele[1] + " ~ " + ele[2] + " / ";
+        setStoreWorkDay(temp);
+      }
+    });
+  }, [storeOpenHour]);
+
+  const [storeHoliday, setStoreHoliday] = useState(""); // 휴무일 문자열
+  const [storeCloseDay, setStoreCloseDay] = useState([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]); // 휴무일
   const [closeMonday, setCloseMonday] = useState(false); // 휴무일 - 월요일
   const [closeTuesday, setCloseTuesday] = useState(false); // 휴무일 - 화요일
   const [closeWendsday, setCloseWendsday] = useState(false); // 휴무일 - 수요일
@@ -23,6 +59,40 @@ function InputStoreIssue() {
   const [closeSunday, setCloseSunday] = useState(false); // 휴무일 - 일요일
   const [closeDay, setCloseDay] = useState(false); // 휴무일 - 기타
 
+  useEffect(() => {
+    let temp = "";
+    setStoreHoliday(temp);
+    storeCloseDay.forEach((ele) => {
+      if (ele !== "") {
+        temp = temp + " " + ele;
+        setStoreHoliday(temp);
+      }
+    });
+  }, [storeCloseDay]);
+
+  const [storeUrl, setStoreUrl] = useState(""); // 상점홈페이지
+
+  const [storeExtraInfo, setStoreExtraInfo] = useState(""); // 상점상세설명
+
+  useEffect(() => {
+    onChange({
+      storeCallNum,
+      storeParkinglot,
+      storeWorkDay,
+      storeHoliday,
+      storeUrl,
+      storeExtraInfo,
+    });
+  }, [
+    storeCallNum,
+    storeParkinglot,
+    storeWorkDay,
+    storeHoliday,
+    storeUrl,
+    storeExtraInfo,
+    onChange,
+  ]);
+
   return (
     <div className="optionalInputBox">
       <h4>부가 정보</h4>
@@ -31,13 +101,14 @@ function InputStoreIssue() {
         <InputGroup>
           <Form.Control
             placeholder="상점 전화번호"
-            aria-label="상점 전화번호르 입력해주세요"
+            aria-label="상점 전화번호를 입력해주세요"
             maxLength={50}
             onChange={(e) => {
               const numExp = /[^0-9]/g;
               if (numExp.test(e.target.value)) {
                 e.target.value = e.target.value.replace(numExp, "");
               }
+              setStoreCallNum(e.target.value);
             }}
           />
         </InputGroup>
@@ -57,6 +128,13 @@ function InputStoreIssue() {
             placeholder="주차장에 대한 부가정보를 입력해주세요"
             aria-label="주차장에 대한 부가정보를 입력해주세요"
             disabled={!existParkinglot}
+            onChange={(e) => {
+              if (existParkinglot) {
+                setStoreParkinglot(e.target.value);
+              } else {
+                setStoreParkinglot("");
+              }
+            }}
           />
         </InputGroup>
       </div>
@@ -69,7 +147,18 @@ function InputStoreIssue() {
               type="checkbox"
               variant="outline-primary"
               checked={openEveryday}
-              onChange={(e) => setOpenEveryday(e.currentTarget.checked)}
+              onChange={(e) => {
+                setOpenEveryday(e.currentTarget.checked);
+                if (e.currentTarget.checked) {
+                  let temp = [...storeOpenHour];
+                  temp[0][0] = "매일";
+                  setStoreOpenHour(temp);
+                } else {
+                  let temp = [...storeOpenHour];
+                  temp[0][0] = "";
+                  setStoreOpenHour(temp);
+                }
+              }}
               style={{
                 width: "75px",
                 display: "flex",
@@ -92,11 +181,21 @@ function InputStoreIssue() {
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openEveryday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[0][1] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openEveryday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[0][2] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
             </div>
           </InputGroup>
@@ -106,7 +205,18 @@ function InputStoreIssue() {
               type="checkbox"
               variant="outline-primary"
               checked={openMonday}
-              onChange={(e) => setOpenMonday(e.currentTarget.checked)}
+              onChange={(e) => {
+                setOpenMonday(e.currentTarget.checked);
+                if (e.currentTarget.checked) {
+                  let temp = [...storeOpenHour];
+                  temp[1][0] = "월요일";
+                  setStoreOpenHour(temp);
+                } else {
+                  let temp = [...storeOpenHour];
+                  temp[1][0] = "";
+                  setStoreOpenHour(temp);
+                }
+              }}
               style={{
                 width: "75px",
                 display: "flex",
@@ -121,11 +231,21 @@ function InputStoreIssue() {
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openMonday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[1][1] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openMonday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[1][2] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
             </div>
           </InputGroup>
@@ -135,7 +255,18 @@ function InputStoreIssue() {
               type="checkbox"
               variant="outline-primary"
               checked={openTuesday}
-              onChange={(e) => setOpenTuesday(e.currentTarget.checked)}
+              onChange={(e) => {
+                setOpenTuesday(e.currentTarget.checked);
+                if (e.currentTarget.checked) {
+                  let temp = [...storeOpenHour];
+                  temp[2][0] = "화요일";
+                  setStoreOpenHour(temp);
+                } else {
+                  let temp = [...storeOpenHour];
+                  temp[2][0] = "";
+                  setStoreOpenHour(temp);
+                }
+              }}
               style={{
                 width: "75px",
                 display: "flex",
@@ -150,11 +281,21 @@ function InputStoreIssue() {
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openTuesday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[2][1] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openTuesday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[2][2] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
             </div>
           </InputGroup>
@@ -164,7 +305,18 @@ function InputStoreIssue() {
               type="checkbox"
               variant="outline-primary"
               checked={openWendsday}
-              onChange={(e) => setOpenWendsday(e.currentTarget.checked)}
+              onChange={(e) => {
+                setOpenWendsday(e.currentTarget.checked);
+                if (e.currentTarget.checked) {
+                  let temp = [...storeOpenHour];
+                  temp[3][0] = "수요일";
+                  setStoreOpenHour(temp);
+                } else {
+                  let temp = [...storeOpenHour];
+                  temp[3][0] = "";
+                  setStoreOpenHour(temp);
+                }
+              }}
               style={{
                 width: "75px",
                 display: "flex",
@@ -179,11 +331,21 @@ function InputStoreIssue() {
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openWendsday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[3][1] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openWendsday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[3][2] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
             </div>
           </InputGroup>
@@ -200,7 +362,18 @@ function InputStoreIssue() {
               type="checkbox"
               variant="outline-primary"
               checked={openThursday}
-              onChange={(e) => setOpenThursday(e.currentTarget.checked)}
+              onChange={(e) => {
+                setOpenThursday(e.currentTarget.checked);
+                if (e.currentTarget.checked) {
+                  let temp = [...storeOpenHour];
+                  temp[4][0] = "목요일";
+                  setStoreOpenHour(temp);
+                } else {
+                  let temp = [...storeOpenHour];
+                  temp[4][0] = "";
+                  setStoreOpenHour(temp);
+                }
+              }}
               style={{
                 width: "75px",
                 display: "flex",
@@ -215,11 +388,21 @@ function InputStoreIssue() {
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openThursday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[4][1] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openThursday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[4][2] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
             </div>
           </InputGroup>
@@ -229,7 +412,18 @@ function InputStoreIssue() {
               type="checkbox"
               variant="outline-primary"
               checked={openFriday}
-              onChange={(e) => setOpenFriday(e.currentTarget.checked)}
+              onChange={(e) => {
+                setOpenFriday(e.currentTarget.checked);
+                if (e.currentTarget.checked) {
+                  let temp = [...storeOpenHour];
+                  temp[5][0] = "금요일";
+                  setStoreOpenHour(temp);
+                } else {
+                  let temp = [...storeOpenHour];
+                  temp[5][0] = "";
+                  setStoreOpenHour(temp);
+                }
+              }}
               style={{
                 width: "75px",
                 display: "flex",
@@ -244,11 +438,21 @@ function InputStoreIssue() {
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openFriday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[5][1] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openFriday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[5][2] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
             </div>
           </InputGroup>
@@ -258,7 +462,18 @@ function InputStoreIssue() {
               type="checkbox"
               variant="outline-primary"
               checked={openSaturday}
-              onChange={(e) => setOpenSaturday(e.currentTarget.checked)}
+              onChange={(e) => {
+                setOpenSaturday(e.currentTarget.checked);
+                if (e.currentTarget.checked) {
+                  let temp = [...storeOpenHour];
+                  temp[6][0] = "토요일";
+                  setStoreOpenHour(temp);
+                } else {
+                  let temp = [...storeOpenHour];
+                  temp[6][0] = "";
+                  setStoreOpenHour(temp);
+                }
+              }}
               style={{
                 width: "75px",
                 display: "flex",
@@ -273,11 +488,21 @@ function InputStoreIssue() {
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openSaturday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[6][1] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openSaturday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[6][2] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
             </div>
           </InputGroup>
@@ -287,7 +512,18 @@ function InputStoreIssue() {
               type="checkbox"
               variant="outline-primary"
               checked={openSunday}
-              onChange={(e) => setOpenSunday(e.currentTarget.checked)}
+              onChange={(e) => {
+                setOpenSunday(e.currentTarget.checked);
+                if (e.currentTarget.checked) {
+                  let temp = [...storeOpenHour];
+                  temp[7][0] = "일요일";
+                  setStoreOpenHour(temp);
+                } else {
+                  let temp = [...storeOpenHour];
+                  temp[7][0] = "";
+                  setStoreOpenHour(temp);
+                }
+              }}
               style={{
                 width: "75px",
                 display: "flex",
@@ -302,11 +538,21 @@ function InputStoreIssue() {
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openSunday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[7][1] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
                 disabled={!openSunday}
+                onBlur={(e) => {
+                  let temp = [...storeOpenHour];
+                  temp[7][2] = e.target.value;
+                  setStoreOpenHour(temp);
+                }}
               />
             </div>
           </InputGroup>
@@ -320,12 +566,33 @@ function InputStoreIssue() {
             flexDirection: "row",
             alignContent: "space-evenly",
           }}>
+          <Form.Control
+            placeholder="주기"
+            aria-label="휴무주기에 대한 정보를 입력해주세요"
+            style={{ width: "100px" }}
+            onChange={(e) => {
+              let temp = [...storeCloseDay];
+              temp[0] = e.target.value;
+              setStoreCloseDay(temp);
+            }}
+          />
           <ToggleButton
             id="close-monday-toggle-check"
             type="checkbox"
             variant="outline-primary"
             checked={closeMonday}
-            onChange={(e) => setCloseMonday(e.currentTarget.checked)}>
+            onChange={(e) => {
+              setCloseMonday(e.currentTarget.checked);
+              if (e.currentTarget.checked) {
+                let temp = [...storeCloseDay];
+                temp[1] = "월요일";
+                setStoreCloseDay(temp);
+              } else {
+                let temp = [...storeCloseDay];
+                temp[1] = "";
+                setStoreCloseDay(temp);
+              }
+            }}>
             월요일
           </ToggleButton>
           <ToggleButton
@@ -333,7 +600,18 @@ function InputStoreIssue() {
             type="checkbox"
             variant="outline-primary"
             checked={closeTuesday}
-            onChange={(e) => setCloseTuesday(e.currentTarget.checked)}>
+            onChange={(e) => {
+              setCloseTuesday(e.currentTarget.checked);
+              if (e.currentTarget.checked) {
+                let temp = [...storeCloseDay];
+                temp[2] = "화요일";
+                setStoreCloseDay(temp);
+              } else {
+                let temp = [...storeCloseDay];
+                temp[2] = "";
+                setStoreCloseDay(temp);
+              }
+            }}>
             화요일
           </ToggleButton>
           <ToggleButton
@@ -341,7 +619,18 @@ function InputStoreIssue() {
             type="checkbox"
             variant="outline-primary"
             checked={closeWendsday}
-            onChange={(e) => setCloseWendsday(e.currentTarget.checked)}>
+            onChange={(e) => {
+              setCloseWendsday(e.currentTarget.checked);
+              if (e.currentTarget.checked) {
+                let temp = [...storeCloseDay];
+                temp[3] = "수요일";
+                setStoreCloseDay(temp);
+              } else {
+                let temp = [...storeCloseDay];
+                temp[3] = "";
+                setStoreCloseDay(temp);
+              }
+            }}>
             수요일
           </ToggleButton>
           <ToggleButton
@@ -349,7 +638,18 @@ function InputStoreIssue() {
             type="checkbox"
             variant="outline-primary"
             checked={closeThursday}
-            onChange={(e) => setCloseThursday(e.currentTarget.checked)}>
+            onChange={(e) => {
+              setCloseThursday(e.currentTarget.checked);
+              if (e.currentTarget.checked) {
+                let temp = [...storeCloseDay];
+                temp[4] = "목요일";
+                setStoreCloseDay(temp);
+              } else {
+                let temp = [...storeCloseDay];
+                temp[4] = "";
+                setStoreCloseDay(temp);
+              }
+            }}>
             목요일
           </ToggleButton>
           <ToggleButton
@@ -357,7 +657,18 @@ function InputStoreIssue() {
             type="checkbox"
             variant="outline-primary"
             checked={closeFriday}
-            onChange={(e) => setCloseFriday(e.currentTarget.checked)}>
+            onChange={(e) => {
+              setCloseFriday(e.currentTarget.checked);
+              if (e.currentTarget.checked) {
+                let temp = [...storeCloseDay];
+                temp[5] = "금요일";
+                setStoreCloseDay(temp);
+              } else {
+                let temp = [...storeCloseDay];
+                temp[5] = "";
+                setStoreCloseDay(temp);
+              }
+            }}>
             금요일
           </ToggleButton>
           <ToggleButton
@@ -365,7 +676,18 @@ function InputStoreIssue() {
             type="checkbox"
             variant="outline-primary"
             checked={closeSaturday}
-            onChange={(e) => setCloseSaturday(e.currentTarget.checked)}>
+            onChange={(e) => {
+              setCloseSaturday(e.currentTarget.checked);
+              if (e.currentTarget.checked) {
+                let temp = [...storeCloseDay];
+                temp[6] = "토요일";
+                setStoreCloseDay(temp);
+              } else {
+                let temp = [...storeCloseDay];
+                temp[6] = "";
+                setStoreCloseDay(temp);
+              }
+            }}>
             토요일
           </ToggleButton>
           <ToggleButton
@@ -373,7 +695,18 @@ function InputStoreIssue() {
             type="checkbox"
             variant="outline-primary"
             checked={closeSunday}
-            onChange={(e) => setCloseSunday(e.currentTarget.checked)}>
+            onChange={(e) => {
+              setCloseSunday(e.currentTarget.checked);
+              if (e.currentTarget.checked) {
+                let temp = [...storeCloseDay];
+                temp[7] = "일요일";
+                setStoreCloseDay(temp);
+              } else {
+                let temp = [...storeCloseDay];
+                temp[7] = "";
+                setStoreCloseDay(temp);
+              }
+            }}>
             일요일
           </ToggleButton>
           <InputGroup style={{ width: "350px" }}>
@@ -390,6 +723,17 @@ function InputStoreIssue() {
               placeholder="휴무일에 대한 정보를 입력해주세요"
               aria-label="휴무일에 대한 정보를 입력해주세요"
               disabled={!closeDay}
+              onChange={(e) => {
+                if (closeDay) {
+                  let temp = [...storeCloseDay];
+                  temp[8] = e.target.value;
+                  setStoreCloseDay(temp);
+                } else {
+                  let temp = [...storeCloseDay];
+                  temp[8] = "";
+                  setStoreCloseDay(temp);
+                }
+              }}
             />
           </InputGroup>
         </div>
@@ -400,30 +744,22 @@ function InputStoreIssue() {
           <Form.Control
             placeholder="상점 홈페이지"
             aria-label="상점 홈페이지를 입력하세요."
+            onChange={(e) => setStoreUrl(e.target.value)}
           />
         </InputGroup>
       </div>
       <div>
         <Form.Label>상점 설명</Form.Label>
         <InputGroup>
-          <Form.Control placeholder="짱큰거 필요" aria-label="storeInfo" />
+          <Form.Control
+            placeholder="짱큰거 필요"
+            aria-label="storeInfo"
+            onChange={(e) => setStoreExtraInfo(e.target.value)}
+          />
         </InputGroup>
       </div>
       <div>
         <Form.Label>상점 키워드</Form.Label>
-        <button style={{ color: "red", marginLeft: "30px" }}>수박</button>
-        <button style={{ color: "orange", marginLeft: "30px" }}>딸기</button>
-        <button style={{ color: "yellow", marginLeft: "30px" }}>커피</button>
-        <button style={{ color: "green", marginLeft: "30px" }}>망고</button>
-        <button style={{ color: "blue", marginLeft: "30px" }}>라떼</button>
-        <button style={{ color: "indigo", marginLeft: "30px" }}>튀김</button>
-        <button style={{ color: "purple", marginLeft: "30px" }}>치킨</button>
-        <br></br>
-        <button style={{ marginLeft: 3 }}>내</button>
-        <button>이름은</button>
-        <button>정빈</button>
-        <button>탐정</button>
-        <button>이죠</button>
       </div>
     </div>
   );

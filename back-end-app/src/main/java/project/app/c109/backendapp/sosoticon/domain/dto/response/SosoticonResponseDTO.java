@@ -5,8 +5,16 @@ public class SosoticonResponseDTO {
     private Long sosoticonSeq;
     private String sosoticonCode;
     private Integer sosoticonValue;
+
+    private Integer sosoticonPrice;
+
     private Integer sosoticonStatus;
     private String message;
+
+    private String qrImageUrl;
+
+
+
 
     public Long getSosoticonSeq() {
         return sosoticonSeq;
@@ -15,6 +23,7 @@ public class SosoticonResponseDTO {
     public void setSosoticonSeq(Long sosoticonSeq) {
         this.sosoticonSeq = sosoticonSeq;
     }
+
 
     public String getSosoticonCode() {
         return sosoticonCode;
@@ -30,6 +39,15 @@ public class SosoticonResponseDTO {
 
     public void setSosoticonValue(Integer sosoticonValue) {
         this.sosoticonValue = sosoticonValue;
+    }
+
+
+    public Integer getSosoticonPrice() {
+        return sosoticonPrice;
+    }
+
+    public void setSosoticonPrice(Integer sosoticonPrice) {
+        this.sosoticonPrice = sosoticonPrice;
     }
 
     public Integer getSosoticonStatus() {
@@ -48,6 +66,12 @@ public class SosoticonResponseDTO {
         this.message = message;
     }
 
+    public String getQrImageUrl() {
+        return qrImageUrl;
+    }
 
+    public void setQrImageUrl(String qrImageUrl) {
+        this.qrImageUrl = qrImageUrl;
+    }
 }
 

@@ -6,21 +6,22 @@ import Box from "../../Components/Box/Box";
 import SubTitle from "../../Components/SubTitle/SubTitle";
 
 export default function Stamp({ route, navigation }) {
-  const stamp = route.params.stamp;
+  const storeName = route.params.storeName;
+  const stampCount = route.params.stampCount;
   const image = route.params.image;
   return (
     <>
       <View style={styles.container}>
         <Title title={"소복소복 도장"} />
         <View style={styles.subtitle}>
-          <Title title={stamp.shopname} />
+          <Title title={storeName} />
         </View>
         <Box
           content={
             <View style={styles.stampBox}>
               <SubTitle subTitle={"현재 적립 소복소복"} customStyles={{ color: "#FFBF46" }} />
               <Text style={styles.stampCount}>
-                {stamp.stamp} <Text style={styles.stampTotal}>/10</Text>
+                {stampCount} <Text style={styles.stampTotal}>/10</Text>
               </Text>
               <Image style={styles.stampImage} source={image} />
             </View>

@@ -7,6 +7,10 @@ const styles = StyleSheet.create({
     paddingTop : 5,
     backgroundColor : "white",
   },
+
+  subContainer: {
+    alignItems : 'center',
+  }
 });
 
 export default styles

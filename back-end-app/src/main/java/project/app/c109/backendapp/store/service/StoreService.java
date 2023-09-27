@@ -1,6 +1,7 @@
 package project.app.c109.backendapp.store.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,11 +17,13 @@ import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.storekeyword.domain.entity.StoreKeyword;
 import project.app.c109.backendapp.storekeyword.repository.StoreKeywordRepository;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.nio.file.attribute.UserPrincipal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,13 +33,16 @@ public class StoreService {
 	private final StoreKeywordRepository storeKeywordRepository;
 	private final CategoryRepository categoryRepository;
 	private final PasswordEncoder passwordEncoder;
+	private StringRedisTemplate stringRedisTemplate;
+
 	@Autowired
-	public StoreService(StoreRepository storeRepository, CategoryRepository categoryRepository, KeywordRepository keywordRepository, StoreKeywordRepository storeKeywordRepository, PasswordEncoder passwordEncoder) {
+	public StoreService(StoreRepository storeRepository, CategoryRepository categoryRepository, KeywordRepository keywordRepository, StoreKeywordRepository storeKeywordRepository, PasswordEncoder passwordEncoder, StringRedisTemplate stringRedisTemplate) {
 		this.storeRepository = storeRepository;
 		this.keywordRepository = keywordRepository;
 		this.storeKeywordRepository = storeKeywordRepository;
 		this.categoryRepository = categoryRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.stringRedisTemplate = stringRedisTemplate;
 	}
 
 	@Transactional
@@ -44,6 +50,10 @@ public class StoreService {
 		// 요청에서 받아온 categorySeq로 카테고리 조회
 		Category category = categoryRepository.findById(request.getCategorySeq())
 				.orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + request.getCategorySeq()));
+
+		if (storeRepository.findStoreByRegistrationNumber(request.getRegistrationNumber()) != null) {
+			throw new EntityExistsException();
+		}
 
 		// Store 엔터티를 빌더 패턴을 사용하여 생성
 		Store newStore = Store.builder()
@@ -60,7 +70,6 @@ public class StoreService {
 				.storeExtraInfo(request.getStoreExtraInfo())
 				.storeUrl(request.getStoreUrl())
 				.addedDate(LocalDateTime.now())
-				.storeRole("STORE")
 				.build();
 
 		newStore = storeRepository.save(newStore);
@@ -81,6 +90,7 @@ public class StoreService {
 			}
 			storeKeywordRepository.saveAll(storeKeywords);
 		}
+
 	}
 
 	public List<Store> getAllStores() {
@@ -106,7 +116,6 @@ public class StoreService {
 	public List<Keyword> getKeywordsByStoreId(Integer storeId) {
 		List<StoreKeyword> storeKeywords = storeKeywordRepository.findByStoreStoreSeq(storeId);
 
-		// StoreKeyword 엔티티에서 키워드만 추출합니다.
 		List<Keyword> keywords = storeKeywords.stream()
 				.map(StoreKeyword::getKeyword)
 				.collect(Collectors.toList());
@@ -118,5 +127,18 @@ public class StoreService {
 		return storeRepository.findStoreByRegistrationNumber(registrationNumber);
 	}
 
+	public String handlePhoneVerification(String phoneNumber) {
+		String authCode = String.format("%06d", (int)(Math.random() * 1000000));
+		stringRedisTemplate.opsForValue().set(phoneNumber, authCode, 3, TimeUnit.MINUTES);
+		return authCode;
+	}
+
+	public boolean verifyAuthCode(String ownerPhone, String inputAuthCode) {
+		String storedAuthCode = stringRedisTemplate.opsForValue().get(ownerPhone);
+		if(storedAuthCode == null) {
+			return false;
+		}
+		return storedAuthCode.equals(inputAuthCode);
+	}
 }
 

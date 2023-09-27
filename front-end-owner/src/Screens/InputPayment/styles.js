@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    // justifyContent: 'center',
     marginTop: 25,
   },
 
@@ -24,6 +23,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9EEE8',
     borderRadius: 30,
     padding: 12,
+    paddingRight: 25,
+    textAlign: 'right',
     marginHorizontal: 10,
     fontSize: 23,
     fontWeight: 'bold',

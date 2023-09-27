@@ -4,25 +4,25 @@ const SaleProductDummy =
             shopId: 1234,
             productId: 2345,
             productSale: .05,
-            name: '오리지널초코칩쿠키',
+            name: 'original_chocochip_cookie',
             price: 3500,
-            image: require('assets/dummyimages/오리지널초코칩쿠키.jpg')
+            image: require('assets/dummyimages/original_chocochip_cookie.jpg')
         },
         {
             shopId: 1234,
             productId: 2346,
             productSale: .05,
-            name: '소금초코휘낭시에',
+            name: 'salt_choco_financier',
             price: 2800,
-            image: require('assets/dummyimages/소금초코휘낭시에.jpg')
+            image: require('assets/dummyimages/salt_choco_financier.jpg')
         },
         {
             shopId: 1234,
             productId: 2347,
             productSale: .05,
-            name: '빅토리아케이크',
+            name: 'victoria_cake',
             price: 6500,
-            image: require('assets/dummyimages/빅토리아케이크.jpg')
+            image: require('assets/dummyimages/victoria_cake.jpg')
         }
 
     ]

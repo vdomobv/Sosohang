@@ -22,24 +22,36 @@ public class SosoticonService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    // QRCodeUtil 빈 주입
+    @Autowired
+    private QRCodeUtil qrCodeUtil;
+
     @Transactional
     public Sosoticon createSosoticon(SosoticonRequestDTO requestDTO) {
         try {
             Sosoticon sosoticon = new Sosoticon();
 
-            String uuid = QRCodeUtil.generateUUID(); // UUID 생성
+            String uuid = qrCodeUtil.generateUUID(); // UUID 생성
+
+            // qr이미지 주소값저장
+            String qrImageUrl = "https://sosoticon.s3.ap-northeast-2.amazonaws.com/QRCode_" + uuid + ".png";
+            sosoticon.setQrImageUrl(qrImageUrl);
+
             Map<String, String> qrData = new HashMap<>();
             qrData.put("uuid", uuid);
             qrData.put("taker", requestDTO.getSosoticonTaker());
             qrData.put("message", requestDTO.getSosoticonText());
             String jsonData = objectMapper.writeValueAsString(qrData);
 
-            String generatedQRCodePath = QRCodeUtil.generateQRCode(jsonData); // QR 코드 생성
+            String generatedQRCodePath = qrCodeUtil.generateQRCode(jsonData); // QR 코드 생성
             sosoticon.setSosoticonCode(uuid); // UUID를 DB에 저장
+
 
             sosoticon.setMemberSeq(requestDTO.getMemberSeq());
             sosoticon.setCategorySeq(requestDTO.getCategorySeq());
             sosoticon.setOrderId(requestDTO.getOrderId());
+            sosoticon.setStoreSeq(requestDTO.getStoreSeq());
+
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
             sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
@@ -74,6 +86,8 @@ public class SosoticonService {
         responseDTO.setSosoticonCode(sosoticon.getSosoticonCode());
         responseDTO.setSosoticonStatus(sosoticon.getSosoticonStatus());
         responseDTO.setSosoticonValue(sosoticon.getSosoticonValue());
+        responseDTO.setSosoticonPrice(sosoticon.getSosoticonPrice());
+        responseDTO.setQrImageUrl(sosoticon.getQrImageUrl());
         responseDTO.setMessage("QR Code generated successfully");
         return responseDTO;
     }

@@ -1,7 +1,7 @@
 # 기본 이미지로 OpenJDK 11을 사용
 FROM openjdk:11-jre-slim
-
-COPY /.env /app/.env
+WORKDIR /app
+COPY .env /app/.env
 # JAR 파일을 컨테이너에 복사
 
 COPY build/libs/back-end-app-0.0.1-SNAPSHOT.jar /app/back-end-app-0.0.1-SNAPSHOT.jar

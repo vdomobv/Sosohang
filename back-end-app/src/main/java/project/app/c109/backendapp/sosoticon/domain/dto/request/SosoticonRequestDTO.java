@@ -6,6 +6,7 @@ public class SosoticonRequestDTO {
     private Long memberSeq;
     private Long categorySeq;
     private Long orderId;
+    private Long storeSeq;
     private String sosoticonTaker;
     private String sosoticonText;
     private String sosoticonAudio;
@@ -37,6 +38,10 @@ public class SosoticonRequestDTO {
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
+
+    public Long getStoreSeq() { return storeSeq;}
+
+    public void setStoreSeq(Long storeSeq) { this.storeSeq = storeSeq;}
 
     public String getSosoticonTaker() {
         return sosoticonTaker;
@@ -93,4 +98,5 @@ public class SosoticonRequestDTO {
     public void setSosoticonValue(Integer sosoticonValue) {
         this.sosoticonValue = sosoticonValue;
     }
+
 }

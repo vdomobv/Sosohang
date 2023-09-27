@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
+import Wrapper from "./styles";
 
 function InputLogin() {
   const [storeId, setStoreId] = useState(""); // 상점ID
@@ -12,10 +13,14 @@ function InputLogin() {
   };
 
   return (
-    <div>
-      <InputGroup>
-        <Form.Label>아이디</Form.Label>
-        <Form.Control
+    <Wrapper>
+      <InputGroup style={{ height: "45px" }}>
+        <div style={{margin : "10px"}}>
+          <Form.Label>아이디</Form.Label>
+        </div>
+        <Form.Control 
+        style={{borderRadius : "10px", height : "40px", width : "30px"}}
+        className="control"
           placeholder="아이디"
           aria-label="아이디를 입력하세요"
           maxLength={15}
@@ -30,7 +35,7 @@ function InputLogin() {
       </InputGroup>
       <InputGroup>
         <Form.Label>비밀번호</Form.Label>
-        <Form.Control
+        <Form.Control className="control"
           type={showPassword ? "text" : "password"}
           placeholder="비밀번호"
           aria-label="비밀번호를 입력하세요"
@@ -50,7 +55,7 @@ function InputLogin() {
         </InputGroup.Text>
       </InputGroup>
       <Button>로그인</Button>
-    </div>
+    </Wrapper>
   );
 }
 

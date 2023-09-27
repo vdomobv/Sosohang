@@ -40,4 +40,6 @@ public class StoreRegisterRequest {
 	private String storeUrl;
 
 	private List<Integer> selectedKeywordSeqList;
+
+	private String storeImage;
 }

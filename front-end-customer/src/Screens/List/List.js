@@ -4,8 +4,8 @@ import { ScrollView, Text, View } from "react-native";
 import shopListDummy from "../../Dummys/Shop/ShopListDummy";
 
 import Title from "../../Components/Title/Title";
-import ListItem from "../../Components/ListItem/ListItem";
-import Loading from "../../Components/Loading/Loading";
+import Shop from "../../Components/Shop/Shop";
+import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -34,9 +34,9 @@ export default function List({ navigation, route }) {
 
   const shops = storeData.map((d, index) => {
     return (
-      <ListItem
+      <Shop
         PressFunction={() => {
-          navigation.navigate("Shop");
+          navigation.navigate("Shop", { d });
         }}
         key={index}
         data={d}
@@ -47,7 +47,7 @@ export default function List({ navigation, route }) {
   return (
     <View style={styles.container}>
       <Title title={category} />
-      <ScrollView>{shops}</ScrollView>
+      <ScrollBox content={shops} />
     </View>
   );
 }

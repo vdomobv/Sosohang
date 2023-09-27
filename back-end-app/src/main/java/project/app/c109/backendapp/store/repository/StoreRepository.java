@@ -12,5 +12,6 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
     List<Store> findByCategory_CategorySeq(Integer categoryId);
     Optional<Store> findByStoreSeq(Integer storeSeq);
     Store findStoreByRegistrationNumber(String registrationNumber);
+    boolean existsByRegistrationNumber(String registrationNumber);
 
 }

@@ -6,7 +6,7 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import SubTitle from "../SubTitle/SubTitle";
 
-export default function Gift({ data, onPress }) {
+export default function Gift({ data, onPress, navigation }) {
   const [modalState, setModalState] = useState(false);
 
   return (

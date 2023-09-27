@@ -16,25 +16,28 @@ const stampImages = {
   10: require("assets/images/stamp10.png"),
 };
 
-export default function Coupon({ navigation, data }) {
-  const stamp = data;
-
+export default function Coupon({ navigation, data, storeName }) {
+  const stampCount = data.length;
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
-        navigation.navigate("Stamp", { stamp: stamp, image: stampImages[data.stamp] });
+        navigation.navigate("Stamp", {
+          storeName: storeName,
+          stampCount: stampCount,
+          image: stampImages[stampCount],
+        });
       }}
     >
       <View style={styles.header}>
-        <SubTitle customStyles={{margin : 10}} subTitle={data.shopname} />
+        <SubTitle customStyles={{ margin: 10 }} subTitle={storeName} />
         <Text style={styles.count}>
-          {data.stamp}
+          {data.length}
           <Text style={styles.total}> /10</Text>
         </Text>
       </View>
 
-      <Image style={styles.image} source={stampImages[data.stamp]} />
+      <Image style={styles.image} source={stampImages[stampCount]} />
     </TouchableOpacity>
   );
 }

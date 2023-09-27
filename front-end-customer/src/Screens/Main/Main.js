@@ -144,7 +144,7 @@ export default function Main({ navigation }) {
         key={index}
         props={data}
         PressFunction={() => {
-          navigation.navigate("List", { category: data.name });
+          navigation.navigate("List", { category: data.name, categorySeq: data.categorySeq });
         }}
       />
     );
@@ -216,11 +216,11 @@ export default function Main({ navigation }) {
                 {searchResult.map((data) => {
                   return (
                     <TouchableOpacity
-                    key={data.storeSeq}
-                    onPress={() => {
-                      navigation.navigate("Shop", { data });
-                    }}
-                    style={styles.searchList}
+                      key={data.storeSeq}
+                      onPress={() => {
+                        navigation.navigate("Shop", { data });
+                      }}
+                      style={styles.searchList}
                     >
                       <Text>{data.storeName}</Text>
                     </TouchableOpacity>
@@ -251,10 +251,10 @@ export default function Main({ navigation }) {
                 </View>
               </View>
             </View>
-              <Button
-                title="회원가입"
-                onPress={() => navigation.navigate("SignUp")}
-              />
+            <Button
+              title="회원가입"
+              onPress={() => navigation.navigate("SignUp")}
+            />
 
             {/* <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
               <Title title={"배너 광고 자리입니다."} />

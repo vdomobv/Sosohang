@@ -9,9 +9,7 @@ const styles = StyleSheet.create({
 
   shops: {
     flex: 1,
-  }
-
-
+  },
 });
 
 export default styles;

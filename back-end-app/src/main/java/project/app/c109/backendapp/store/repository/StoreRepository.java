@@ -14,4 +14,6 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
     Store findStoreByRegistrationNumber(String registrationNumber);
     boolean existsByRegistrationNumber(String registrationNumber);
 
+    List<Store> findByStoreLatitudeBetweenAndStoreLongitudeBetween(Double minLat, Double maxLat, Double minLon, Double maxLon);
+
 }

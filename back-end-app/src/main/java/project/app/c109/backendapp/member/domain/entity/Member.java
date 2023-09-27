@@ -1,15 +1,15 @@
 package project.app.c109.backendapp.member.domain.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // 생성자를 직접 호출하지 못하도록 변경
-@Table(name = "member")
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "member")
 public class Member {
 
     @Id
@@ -20,14 +20,13 @@ public class Member {
     @Column(length = 50)
     private String memberNickname;
 
-    @Setter
+    @JsonIgnore
     @Column(length = 200)
     private String memberPassword;
 
     @Column(length = 50, unique = true)
     private String memberPhone;
 
-    @Enumerated(EnumType.STRING)
-    private MemberRole memberRole;
-
+    @Column
+    private String memberRole;
 }

@@ -1,9 +1,6 @@
 package project.app.c109.backendapp.member.controller;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import project.app.c109.backendapp.member.domain.dto.request.LoginRequest;
-import project.app.c109.backendapp.member.domain.dto.request.RegisterRequest;
+import project.app.c109.backendapp.ex.ErrorResponse;
+import project.app.c109.backendapp.member.domain.dto.request.MemberLoginRequest;
+import project.app.c109.backendapp.member.domain.dto.request.MemberRegisterRequest;
 import project.app.c109.backendapp.member.domain.dto.response.LoginResponse;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.service.MemberService;
@@ -38,43 +36,33 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "회원가입 성공",
-                    content = {@Content(schema = @Schema(example = "{'member':{memberSeq, memberNickname, memberPassword, memberPhone, memberRole}}"))}),
-            @ApiResponse(responseCode = "400", description = "요청 오류",
-                    content = {@Content(schema = @Schema(example = "error : Bad Request."))}),
-            @ApiResponse(responseCode = "409", description = "사용자 중복",
-                    content = {@Content(schema = @Schema(example = "error : Phone number already in use."))}),
-            @ApiResponse(responseCode = "500", description = "서버 오류",
-                    content = {@Content(schema = @Schema(example = "error : Internal Server Error."))})
-    })
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest, BindingResult result) {
+    @Operation(summary = "회원가입")
+    public ResponseEntity<?> register(@Valid @RequestBody MemberRegisterRequest memberRegisterRequest, BindingResult result) {
         if (result.hasErrors()) {
-            logger.info("Validation errors: {}", result.getAllErrors());
-            return handleValidationErrors(result);
+            logger.info("회원가입 유효성 검사 에러 : {}", result.getAllErrors());
+            ErrorResponse errorResponse = new ErrorResponse(400, "유효성 검사 오류");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(errorResponse);
         }
-
         try {
-            Member member = memberService.register(registerRequest);
-            logger.info("Member registered successfully: {}", member);
-            return ResponseEntity.status(HttpStatus.CREATED).body(member); // 201 Created for resource creation
+            Member member = memberService.register(memberRegisterRequest);
+            logger.info("회원가입 성공 : {}", member);
+            return ResponseEntity.ok(member);
         } catch (EntityExistsException ex) {
-            logger.warn("Phone number already in use.");
-            // 회원 가입 실패 처리 409 상태 코드 반환
+            logger.info("가입된 번호입니다.");
+            ErrorResponse errorResponse = new ErrorResponse(409, "가입된 회원");
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("{\"error\": \"Phone number already in use.\"}");
+                    .body(errorResponse);
         }
     }
+
 
     @PostMapping("/register/phone-check")
     public ResponseEntity<Map<String, String>> handlePhoneVerification(@RequestParam String memberPhone) {
         logger.info("Received a phone verification request for memberPhone: {}", memberPhone);
-
         String authCode = memberService.handlePhoneVerification(memberPhone);
-
         Map<String, String> response = new HashMap<>();
-
         if (authCode != null) {
             response.put("status", "success");
             response.put("authCode", authCode);
@@ -92,11 +80,8 @@ public class MemberController {
     public ResponseEntity<Map<String, String>> verifyAuthCode(@RequestParam String memberPhone,
                                                               @RequestParam String authCode) {
         logger.info("Received verification of authCode {} for memberPhone: {}", authCode, memberPhone);
-
         boolean isVerified = memberService.verifyAuthCode(memberPhone, authCode);
-
         Map<String, String> response = new HashMap<>();
-
         if (isVerified) {
             response.put("status", "success");
             response.put("message", "The authentication code is valid.");
@@ -111,23 +96,13 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "로그인 성공",
-                    content = {@Content(schema = @Schema(example = "{'token':{token_info}, 'member':{memberSeq, memberNickname, memberPassword, memberPhone, memberRole}}"))}),
-            @ApiResponse(responseCode = "401", description = "인증 실패",
-                    content = {@Content(schema = @Schema(example = "error : Invalid credentials."))}),
-            @ApiResponse(responseCode = "404", description = "사용자 없음",
-                    content = {@Content(schema = @Schema(example = "error : Member not found."))}),
-            @ApiResponse(responseCode = "500", description = "서버 오류",
-                    content = {@Content(schema = @Schema(example = "error : Internal Server Error."))})
-    })
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
+    public ResponseEntity<?> login(@Valid @RequestBody MemberLoginRequest memberLoginRequest, BindingResult result) {
         if (result.hasErrors()) {
             logger.info("Validation errors: {}", result.getAllErrors());
             return handleValidationErrors(result);
         }
         try {
-            LoginResponse response = memberService.login(loginRequest);
+            LoginResponse response = memberService.login(memberLoginRequest);
             logger.info("Member logged in successfully: {}", response.getMember());
             return ResponseEntity.ok(response);
         } catch (EntityNotFoundException ex) {
@@ -215,6 +190,17 @@ public class MemberController {
     public ResponseEntity<String> testEndpoint() {
         logger.info("Received a request to test JWT endpoint");
         return ResponseEntity.ok("토큰이 있는 사용자");
+    }
+
+    @GetMapping("/{memberPhone}")
+    public ResponseEntity<?> getMemberByMemberPhone(@RequestParam String memberPhone) {
+        Member member = memberService.getMemberByMemberPhone(memberPhone);
+
+        if (member != null ) {
+            return ResponseEntity.ok(member);
+        } else {
+            return ResponseEntity.badRequest().body("member not found");
+        }
     }
 }
 

@@ -3,6 +3,7 @@ package project.app.c109.backendapp.store.domain.entity;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import project.app.c109.backendapp.category.domain.entity.Category;
 
@@ -23,6 +24,7 @@ public class Store {
 	@JoinColumn(name = "category_seq", referencedColumnName = "category_seq")
 	private Category category;
 
+	@JsonIgnore
 	@Column(name = "store_password")
 	private String storePassword;
 
@@ -35,12 +37,14 @@ public class Store {
 	@Column(name = "store_tell")
 	private String storeTell;
 
+	@JsonIgnore
 	@Column(name = "owner_tell")
 	private String ownerTell;
 
 	@Column(name = "store_parkinglot")
 	private String storeParkinglot;
 
+	@JsonIgnore
 	@Column(name = "registration_number", unique = true)
 	private String registrationNumber;
 
@@ -59,6 +63,6 @@ public class Store {
 	@Column(name = "added_date")
 	private LocalDateTime addedDate;
 
-	@Column(name = "store_role")
-	private String storeRole;
+	@Column( name = "store_image")
+	private String storeImage;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import StoreChartSales from '../../components/StoreChartAccumulate';
+import ChartStoreSales from '../../components/ChartStoreSales';
 
 function  StoreManage() {
   const salesData = {
@@ -10,7 +10,7 @@ function  StoreManage() {
   return (
     <div>
       <h1>상점관리페이지</h1>
-      <StoreChartSales salesData={salesData} />
+      <ChartStoreSales salesData={salesData} />
     </div>
   );
 }

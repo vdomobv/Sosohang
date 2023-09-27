@@ -3,7 +3,6 @@ import { View, Text, Image, ScrollView, Animated, Touchable, TouchableOpacity, A
 import { Ionicons } from "@expo/vector-icons";
 
 import { useEffect, useState } from "react"; 
-import { useIsFocused } from '@react-navigation/native';
 
 import Title from "../../Components/Title/Title";
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";
@@ -25,7 +24,8 @@ const Info = ({ logo, data }) => {
     )
 }
 
-export default function Shop({ navigation }) {
+export default function Shop({ navigation, route }) {
+    const storeData = route.params.data;
     const [checkedProducts, setCheckedProducts] = useState(ProductDummy.map(() => false));
     const [productsAmount, setProductsAmount] = useState(ProductDummy.map(() => 1))
     const [checkedSaleProducts, setCheckedSaleProducts] = useState(SaleProductDummy.map(() => false))
@@ -116,11 +116,11 @@ export default function Shop({ navigation }) {
         <ScrollView onScroll={(e) => {
             setScrollY(e.nativeEvent.contentOffset.y)
         }} showsVerticalScrollIndicator={false} style={styles.container}>
-            <Title title={ShopDummy.shopName} />
+            <Title title={storeData.storeName} />
             <Image source={ShopDummy.imageUrl} style={styles.image} />
             <View style={styles.content}>
                 <View style={styles.head}>
-                    <SectionTitle content={ShopDummy.category} />
+                    <SectionTitle content={storeData.category.categoryName} />
                     <View style={styles.keywords}>
                         {ShopDummy.keywords.map((keyword, index) => {
                             return <Text key={index} style={{ marginHorizontal: 3 }}># {keyword}</Text>
@@ -128,11 +128,13 @@ export default function Shop({ navigation }) {
                     </View>
                 </View>
                 <View style={styles.body}>
-                    <Info logo={<Ionicons color={'#575761'} name="map-outline" size={20} />} data={ShopDummy.address || "준비중이에요 :)"} />
-                    <Info logo={<Ionicons color={'#575761'} name="call-outline" size={20} />} data={ShopDummy.phone || "준비중이에요 :)"} />
-                    <Info logo={<Ionicons color={'#575761'} name="time-outline" size={20} />} data={ShopDummy.workHours || "준비중이에요 :)"} />
-                    <Info logo={<Ionicons color={'#575761'} name="home-outline" size={20} />} data={ShopDummy.homepage || "준비중이에요 :)"} />
-                    <Info logo={<Ionicons color={'#575761'} name="chatbox-ellipses-outline" size={20} />} data={ShopDummy.extraInfo || "준비중이에요 :)"} />
+                    <Info logo={<Ionicons color={'#575761'} name="map-outline" size={20} />} data={storeData.storeLocation || "준비중이에요 :)"} />
+                    <Info logo={<Ionicons color={'#575761'} name="call-outline" size={20} />} data={storeData.storeTell || "준비중이에요 :)"} />
+                    <Info logo={<Ionicons color={'#575761'} name="calendar-outline" size={20} />} data={storeData.storeHoliday || "준비중이에요 :)"} />
+                    <Info logo={<Ionicons color={'#575761'} name="time-outline" size={20} />} data={storeData.storeWorkhour || "준비중이에요 :)"} />
+                    <Info logo={<Ionicons color={'#575761'} name="home-outline" size={20} />} data={storeData.storeUrl || "준비중이에요 :)"} />
+                    <Info logo={<Ionicons color={'#575761'} name="car-outline" size={20} />} data={storeData.storeParkinglot || "준비중이에요 :)"} />
+                    <Info logo={<Ionicons color={'#575761'} name="chatbox-ellipses-outline" size={20} />} data={storeData.storeExtraInfo || "준비중이에요 :)"} />
                 </View>
 
             </View>

@@ -50,13 +50,13 @@ export default function MakeCard({ route, navigation }) {
         // 해당 버튼에 따라 이미지 업데이트
         switch (button) {
           case "생일":
-            setSelectedImage(require('assets/images/Bday2.png'));
+            setSelectedImage(require('assets/images/bday.png'));
             break;
           case "감사":
-            setSelectedImage(require('assets/images/Thx2.png'));
+            setSelectedImage(require('assets/images/thx.png'));
             break;
           case "응원":
-            setSelectedImage(require('assets/images/Cheerup2.png'));
+            setSelectedImage(require('assets/images/cheerup.png'));
             break;
           default:
             setSelectedImage(null); // 다른 버튼인 경우 이미지 초기화

@@ -1,68 +1,184 @@
 package project.app.c109.backendapp.store.controller;
 
-
-import io.swagger.v3.oas.annotations.Operation;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.validation.Valid;
+import io.swagger.v3.oas.annotations.headers.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import project.app.c109.backendapp.store.domain.dto.request.StoreRequestDTO;
-import project.app.c109.backendapp.store.domain.dto.response.StoreResponseDTO;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import project.app.c109.backendapp.ex.ErrorResponse;
+import project.app.c109.backendapp.keyword.domain.entity.Keyword;
+import project.app.c109.backendapp.config.security.jwt.JwtUtils;
+import project.app.c109.backendapp.store.domain.dto.request.StoreLoginRequest;
+import project.app.c109.backendapp.store.domain.dto.request.StoreRegisterRequest;
 import project.app.c109.backendapp.store.domain.entity.Store;
+import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.store.service.StoreService;
+import project.app.c109.backendapp.storekeyword.service.StoreKeywordService;
+
+
+import javax.persistence.EntityExistsException;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/store")
+@RequestMapping("/api/v1/store")
 public class StoreController {
 
+	private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
+
+	private final StoreService storeService;
+
+	private final StoreKeywordService storeKeywordService;
+
+	private final JwtUtils jwtUtils;
+
+	private final PasswordEncoder passwordEncoder;
+
+	private final StoreRepository storeRepository;
+
 	@Autowired
-	private StoreService storeService;
-
-	@Operation(summary = "모든 상점 정보 조회")
-	@GetMapping
-	public ResponseEntity<List<Store>> getAllStores() {
-		return ResponseEntity.ok(storeService.findAll());
+	public StoreController(StoreService storeService, StoreKeywordService storeKeywordService, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, StoreRepository storeRepository) {
+		this.storeKeywordService = storeKeywordService;
+		this.storeService = storeService;
+		this.jwtUtils = jwtUtils;
+		this.passwordEncoder = passwordEncoder;
+		this.storeRepository = storeRepository;
 	}
 
-	@Operation(summary = "특정 상점 정보 조회")
-	@GetMapping("/{storeSeq}")
-	public ResponseEntity<Store> getStore(@PathVariable Integer storeSeq) {
-		return storeService.findById(storeSeq)
-			.map(ResponseEntity::ok)
-			.orElse(ResponseEntity.notFound().build());
+	@PostMapping("/register")
+	public ResponseEntity<?> registerStore(@RequestBody StoreRegisterRequest request) {
+		try {
+			storeService.registerStore(request);
+			return ResponseEntity.ok("Store registered successfully");
+		} catch (EntityExistsException ex) {
+			ErrorResponse errorResponse = new ErrorResponse(409, "가입된 회원");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+		}
 	}
 
-	@Operation(summary = "새로운 상점 정보 생성")
-	@PostMapping
-	public ResponseEntity<StoreResponseDTO> createStore(
-		@Valid @RequestBody StoreRequestDTO storeRequestDTO) {
+	@PostMapping("/duplicated")
+	public ResponseEntity<?> checkDuplication(@RequestBody String registrationNumber) {
+		boolean isDuplicated = storeRepository.existsByRegistrationNumber(registrationNumber);
 
-		Store store = new Store();
-
-		store.setStoreId(storeRequestDTO.getStoreId());
-		store.setCategorySeq(storeRequestDTO.getCategorySeq());
-		store.setStorePassword(storeRequestDTO.getStorePassword());
-		store.setStoreName(storeRequestDTO.getStoreName());
-		store.setStoreId(storeRequestDTO.getStoreId());
-		store.setStoreLocation(storeRequestDTO.getStoreLocation());
-		store.setStoreParkinglot(storeRequestDTO.getStoreParkinglot());
-		store.setRegistrationNumber(storeRequestDTO.getRegistrationNumber());
-		store.setStoreWorkhour(storeRequestDTO.getStoreWorkhour());
-		store.setStoreHoliday(storeRequestDTO.getStoreHoliday());
-		store.setStoreExtraInfo(storeRequestDTO.getStoreExtraInfo());
-		store.setStoreUrl(storeRequestDTO.getStoreUrl());
-		store.setStoreTell(storeRequestDTO.getStoreTell());
-		store.setOwnerTell(storeRequestDTO.getOwnerTell());
-		store.setAddedDate(LocalDateTime.now());
-		storeService.save(store);
-
-		return ResponseEntity.status(201).build();
+		if (isDuplicated) {
+			// 중복된 스토어가 존재하면 클라이언트에게 중복된 회원임을 알려줍니다.
+			ErrorResponse errorResponse = new ErrorResponse(409, "가입된 회원");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+		} else {
+			// 중복되지 않은 경우 신규 회원임을 알려줍니다.
+			return ResponseEntity.ok("신규 회원입니다");
+		}
 	}
+
+	@PostMapping("/register/phone-check")
+	public ResponseEntity<Map<String, String>> handlePhoneVerification(@RequestParam String ownerPhone) {
+		String authCode = storeService.handlePhoneVerification(ownerPhone);
+		Map<String, String> response = new HashMap<>();
+		response.put("status", "success");
+		response.put("authCode", authCode);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@PostMapping("/register/verify-code")
+	public ResponseEntity<Map<String, String>> verifyAuthCode(@RequestParam String ownerPhone,
+															  @RequestParam String authCode) {
+		boolean isVerified = storeService.verifyAuthCode(ownerPhone, authCode);
+		Map<String, String> response = new HashMap<>();
+		if (isVerified) {
+			response.put("status", "success");
+			response.put("message", "The authentication code is valid.");
+			logger.info("Authentication code verified successfully for memberPhone: {}", ownerPhone);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.put("status", "error");
+			response.put("message", "The authentication code is invalid or expired.");
+			logger.warn("Authentication code verification failed for memberPhone: {}", ownerPhone);
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@GetMapping("")
+	public List<Store> getAllStores() {
+		return storeService.getAllStores();
+	}
+
+	@GetMapping("/{storeId}")
+	public ResponseEntity<Store> getStoreDetails(@PathVariable Integer storeId) {
+		Store store = storeService.getStoreDetails(storeId);
+		if (store != null) {
+			return ResponseEntity.ok(store);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping("/category/{categoryId}")
+	public List<Store> getStoresByCategory(@PathVariable Integer categoryId) {
+		return storeService.getStoresByCategory(categoryId);
+	}
+
+	@GetMapping("/keyword/{keywordId}")
+	public List<Store> getStoresByKeyword(@PathVariable Integer keywordId) {
+		return storeService.getStoresByKeyword(keywordId);
+	}
+
+	@GetMapping("/keywordlist/{storeId}")
+	public ResponseEntity<List<Keyword>> getStoreKeywords(@PathVariable Integer storeId) {
+		List<Keyword> keywords = storeKeywordService.getKeywordsByStoreId(storeId);
+		return ResponseEntity.ok(keywords);
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody StoreLoginRequest storeLoginRequest) throws AuthenticationException {
+		logger.info("Attempting store login for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
+
+		Store store = storeService.findStoreByRegistrationNumber(storeLoginRequest.getRegistrationNumber());
+
+		if (store != null && passwordEncoder.matches(storeLoginRequest.getStorePassword(), store.getStorePassword())) {
+			// 로그인 성공 시 JWT 토큰 생성하여 반환
+			String token = jwtUtils.generateStoreToken(storeLoginRequest.getRegistrationNumber());
+			logger.info("Store login successful for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
+			Map<String, String> response = new HashMap<>();
+			response.put("token", token);
+			return ResponseEntity.ok(response);
+		} else {
+			logger.error("Store login failed for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+
+	@PostMapping("/token_test")
+	public ResponseEntity<?> test(HttpServletRequest request) {
+		String jwtToken = request.getHeader("Authorization"); // Authorization 헤더에서 JWT 토큰을 추출
+		logger.info(jwtToken);
+		if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+			jwtToken = jwtToken.substring(7); // "Bearer " 부분을 제외한 토큰 추출
+			// JWT 토큰의 유효성 검사
+			if (jwtUtils.validateToken(jwtToken)) {
+				String registrationNumber = jwtUtils.getRegistrationNumberFromToken(jwtToken);
+				if (registrationNumber != null) {
+					Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
+					if (store != null) {
+						return ResponseEntity.ok(store);
+					} else {
+						return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Store not found");
+					}
+				} else {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JWT token");
+				}
+			}
+		}
+
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+	}
+
+
 }

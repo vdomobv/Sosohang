@@ -7,9 +7,9 @@ import Tabs from "../../Components/Tabs/Tabs";
 
 export default function InputPayment({ navigation }) {
 
-  // const handlePayment = function () {
-
-  // }
+  const handlePayment = function () {
+    navigation.navigate("DonePayment")
+  }
 
   return (
     <>
@@ -18,9 +18,10 @@ export default function InputPayment({ navigation }) {
 
         <View style={[styles.inputContainer, { marginTop: 50 }]}>
           <Text style={styles.text}>잔액</Text>
-          <TextInput 
+          <TextInput
             style={[styles.textInput, { width: 200 }]}
-            placeholder="QR data 받아오기"
+            keyboardType="numeric"
+            // placeholder="QR data 넣기"
           ></TextInput>
           <Text style={styles.text}>원</Text>
         </View>
@@ -28,13 +29,16 @@ export default function InputPayment({ navigation }) {
 
         <Text style={[styles.text, { marginTop: 50 }]}>결제 금액을 입력해 주세요!</Text>
         <View style={[styles.inputContainer, { marginTop: 10 }]}>
-          <TextInput style={[styles.textInput, { width: 240 }]}></TextInput>
+          <TextInput
+            style={[styles.textInput, { width: 240 }]}
+            keyboardType="numeric"
+          ></TextInput>
           <Text style={styles.text}>원</Text>
         </View>
 
         <TouchableOpacity
           style={styles.button}
-        // onPress={handlePayment}
+        onPress={handlePayment}
         >
           <Text style={styles.buttonText}>
             결제하기

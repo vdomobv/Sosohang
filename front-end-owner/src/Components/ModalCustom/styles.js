@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    width: '80%',
   },
 
   closeButton: {
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    marginVertical: 10,
   },
 
   alertTitle: {
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
   
   alertText: {
     fontSize: 20,
+    paddingVertical: 10,
   },
 
   button: {
@@ -46,6 +49,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 70,
     elevation: 2,
     backgroundColor: '#46C27D',
+    marginTop: 5,
   },
 
   buttonText: {
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     textAlign: 'center',
-    paddingHorizontal: 50,
+    paddingHorizontal: 10,
   },
 
 });

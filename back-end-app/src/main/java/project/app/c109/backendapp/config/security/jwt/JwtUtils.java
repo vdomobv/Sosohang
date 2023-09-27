@@ -3,6 +3,7 @@ package project.app.c109.backendapp.config.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,12 +25,25 @@ public class JwtUtils {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     }
 
-    public String generateToken(String memberPhone, List<String> roles) {
+    public String generateToken(String memberPhone) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + (long) jwtConfig.getTokenExpiration() * 1000);
 
         Claims claims = Jwts.claims().setSubject(memberPhone);
-        claims.put("roles", roles); // 역할 정보를 추가
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    public String generateStoreToken(String registrationNumber) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + (long) jwtConfig.getStoreTokenExpiration() * 1000);
+
+        Claims claims = Jwts.claims().setSubject(registrationNumber);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -65,16 +79,16 @@ public class JwtUtils {
         }
     }
 
-    public List<String> getRolesFromToken(String token) {
+    public String getRegistrationNumberFromToken(String token) {
         if (validateToken(token)) {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return (List<String>) claims.get("roles");
+            return claims.getSubject();
         } else {
-            return null; // 유효하지 않은 토큰일 경우 null 반환 또는 예외 처리
+            return null;
         }
     }
 

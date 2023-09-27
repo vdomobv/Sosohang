@@ -89,8 +89,8 @@ export default function MyPage({ navigation }) {
             />
             <Text
               onPress={() => {
-                navigation.navigate("PurchageHistory", {
-                  buy: PurchageHistory,
+                navigation.navigate("PurchaseHistory", {
+                  buy: buyDummy,
                 });
               }}
             >

@@ -116,7 +116,6 @@ public class StoreService {
 	public List<Keyword> getKeywordsByStoreId(Integer storeId) {
 		List<StoreKeyword> storeKeywords = storeKeywordRepository.findByStoreStoreSeq(storeId);
 
-		// StoreKeyword 엔티티에서 키워드만 추출합니다.
 		List<Keyword> keywords = storeKeywords.stream()
 				.map(StoreKeyword::getKeyword)
 				.collect(Collectors.toList());

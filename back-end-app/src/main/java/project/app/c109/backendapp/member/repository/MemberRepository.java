@@ -11,4 +11,5 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     Optional<Member> findByMemberPhone(String memberPhone);
     Optional<Member> findByMemberSeq(Integer memberSeq);
     boolean existsByMemberPhone(String memberPhone);
+    boolean existsByMemberSeq(Integer memberSeq);
 }

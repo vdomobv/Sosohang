@@ -2,7 +2,8 @@ package project.app.c109.backendapp.product.domain.dto.response;
 
 public class ProductResponseDTO {
 
-    private Integer id;
+    private Integer productSeq;
+    private Integer storeSeq;       // store의 ID를 저장하는 필드
     private String productName;
     private Integer productPrice;
     private Integer productDcrate;
@@ -14,13 +15,23 @@ public class ProductResponseDTO {
 
     // Getter와 Setter 메서드들...
 
-    public Integer getId() {
-        return id;
+    public Integer getProductSeq() {
+        return productSeq;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setProductSeq(Integer productSeq) {
+        this.productSeq = productSeq;
     }
+
+    // storeId와 categoryId의 getter와 setter 추가
+    public Integer getStoreSeq() {
+        return storeSeq;
+    }
+
+    public void setStoreSeq(Integer storeSeq) {
+        this.storeSeq = storeSeq;
+    }
+
 
     public String getProductName() {
         return productName;

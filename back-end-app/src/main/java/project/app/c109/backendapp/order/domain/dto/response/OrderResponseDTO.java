@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 @Data
 public class OrderResponseDTO {
     private Integer orderSeq;
-    private Integer categorySeq;
     private Integer storeSeq;
     private Integer memberSeq;
     private Integer productSeq;

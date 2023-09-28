@@ -2,16 +2,18 @@
 package project.app.c109.backendapp.order.domain.dto.request;
 
 import lombok.Data;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
 @Data
 public class OrderRequestDTO {
 
-    private Integer categorySeq;
     private Integer storeSeq;
     private Integer memberSeq;
     private Integer productSeq;
+    private List<ProductOrderDTO> products;
+    private List<StoreOrderDTO> storeOrders;
     private LocalDateTime orderDate;
     private Integer orderCount;
     private Integer orderPrice;

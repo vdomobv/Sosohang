@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import project.app.c109.backendapp.category.domain.entity.Category;
 
+@Data
 @Entity
-@Getter
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor

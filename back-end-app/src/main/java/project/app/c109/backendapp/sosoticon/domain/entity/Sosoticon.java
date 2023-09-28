@@ -3,6 +3,9 @@ package project.app.c109.backendapp.sosoticon.domain.entity;
 import javax.persistence.*;
 import java.util.UUID;
 
+import project.app.c109.backendapp.store.domain.entity.Store;
+import project.app.c109.backendapp.member.domain.entity.Member;
+
 @Entity // 이 클래스는 JPA의 엔터티 클래스입니다. DB 테이블과 매핑됩니다.
 @Table(name = "sosoticon") // 해당 엔터티는 "sosoticon" 테이블과 매핑됩니다.
 public class Sosoticon {
@@ -10,19 +13,19 @@ public class Sosoticon {
     @Id // 기본 키(PK) 필드입니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // ID는 자동으로 증가합니다.
     @Column(name = "sosoticon_seq") // 이 필드는 "sosoticon_seq" 컬럼과 매핑됩니다.
-    private Long sosoticonSeq;
+    private Integer sosoticonSeq;
 
-    @Column(name = "member_seq") // 이 필드는 "member_seq" 컬럼과 매핑됩니다.
-    private Long memberSeq;
-
-    @Column(name = "category_seq") // 이 필드는 "category_seq" 컬럼과 매핑됩니다.
-    private Long categorySeq;
+    @ManyToOne
+    @JoinColumn(name = "member_seq", referencedColumnName = "member_seq")
+    private Member member;
 
     @Column(name = "order_id")
-    private Long orderId;
+    private Integer orderId;
 
-    @Column(name = "store_seq", nullable = false)
-    private Long storeSeq;
+    @ManyToOne
+    @JoinColumn(name = "store_seq", referencedColumnName = "store_seq")
+    private Store store;
+
 
     @Column(name = "sosoticon_taker")
     private String sosoticonTaker;
@@ -59,44 +62,37 @@ public class Sosoticon {
 
     // Getter and Setter methods
 
-    public Long getSosoticonSeq() {
+    public Integer getSosoticonSeq() {
         return sosoticonSeq;
     }
 
-    public void setSosoticonSeq(Long sosoticonSeq) {
+    public void setSosoticonSeq(Integer sosoticonSeq) {
         this.sosoticonSeq = sosoticonSeq;
     }
 
-    public Long getMemberSeq() {
-        return memberSeq;
+
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberSeq(Long memberSeq) {
-        this.memberSeq = memberSeq;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
-    public Long getCategorySeq() {
-        return categorySeq;
+    public Store getStore() {
+        return store;
     }
 
-    public void setCategorySeq(Long categorySeq) {
-        this.categorySeq = categorySeq;
+    public void setStore(Store store) {
+        this.store = store;
     }
 
-    public Long getOrderId() {
+    public Integer getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(Integer orderId) {
         this.orderId = orderId;
-    }
-
-    public Long getStoreSeq() {
-        return storeSeq;
-    }
-
-    public void setStoreSeq(Long storeSeq) {
-        this.storeSeq = storeSeq;
     }
 
 

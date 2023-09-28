@@ -106,6 +106,10 @@ public class StoreService {
 		return storeRepository.findById(storeId).orElse(null);
 	}
 
+	public Store getStoreInfoDetails(Integer storeId) {
+		return storeRepository.findById(storeId).orElse(null);
+	}
+
 	public List<Store> getStoresByCategory(Integer categoryId) {
 		return storeRepository.findByCategory_CategorySeq(categoryId);
 	}

@@ -7,6 +7,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 
+  title: {
+    flex: 1, alignItems: 'center'
+  },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  dibButton : {
+    justifyContent : 'flex-end',
+  },
+
   image: {
     width: '100%',
     height: 250,
@@ -33,20 +46,20 @@ const styles = StyleSheet.create({
     height: 50,
     position: 'absolute',
     width: '95%',
-    height : '',
+    height: '',
     bottom: 0,
     marginVertical: 10,
     alignSelf: 'center',
   },
 
-  blank : {
-    height : 60
+  blank: {
+    height: 60
   },
 
-  text : {
-    color : 'white',
-    fontWeight : 'bold',
-    fontSize : 30
+  text: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 30
   }
 
 });

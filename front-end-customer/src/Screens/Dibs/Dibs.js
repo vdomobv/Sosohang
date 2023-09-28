@@ -36,7 +36,10 @@ export default function Dibs({ navigation }) {
         })} />
       </View>
       <ScrollBox content={dibData.map((d, index) => {
-        return (<Shop key={index} data={d.store} dibSeq={d.dibSeq} />)
+        return (<Shop key={index} data={d.store} dibSeq={d.dibSeq}
+          PressFunction={() => {
+            navigation.navigate('Shop', { data : d.store})
+        }}/>)
       })} />
     </View>
 

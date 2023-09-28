@@ -6,15 +6,16 @@ import Header from "../../components/Header";
 import InputStoreInfo from "../../components/InputStoreInfo";
 import InputOwnerInfo from "../../components/InputOwnerInfo";
 import InputStoreIssue from "../../components/InputStoreIssue";
+import FileUpload from "../../components/FileUpload";
 
 function SignUp() {
   const [storeInfo, setStoreInfo] = useState({});
   const [ownerInfo, setOwnerInfo] = useState({});
   const [storeIssue, setStoreIssue] = useState({});
 
-  const handleSignup =  async() => {    
-    if(!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
-      return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.")
+  const handleSignup = async () => {
+    if (!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
+      return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
     }
     try {
       const res = await axios.post("/api/v1/store/register", {
@@ -48,6 +49,7 @@ function SignUp() {
           </div>
           <div>
             <InputStoreIssue onChange={setStoreIssue} />
+            <FileUpload />
           </div>
           <Button onClick={handleSignup}>회원가입</Button>
         </form>

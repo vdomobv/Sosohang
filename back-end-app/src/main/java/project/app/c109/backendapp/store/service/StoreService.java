@@ -53,7 +53,7 @@ public class StoreService {
 		Category category = categoryRepository.findById(request.getCategorySeq())
 				.orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + request.getCategorySeq()));
 
-		if (storeRepository.findStoreByRegistrationNumber(request.getRegistrationNumber()) != null) {
+		if (storeRepository.existsByRegistrationNumber(request.getRegistrationNumber())) {
 			throw new EntityExistsException();
 		}
 

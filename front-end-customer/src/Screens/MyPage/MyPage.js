@@ -12,20 +12,16 @@ import Gift from "../../Components/Gift/Gift";
 import StampAfter from "../../Components/StampAfter/StampAfter";
 
 import userDummy from "../../Dummys/MyPage/UserDummy";
-import dibsDummy from "../../Dummys/MyPage/DibsDummy";
 import buyDummy from "../../Dummys/MyPage/BuyDummy";
-import axios from 'axios'
 import { useEffect, useState } from "react";
 
 import { getDibData } from "../../Utils/DibAPI";
+import Box from "../../Components/Box/Box";
+import SectionSubtitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 const user = userDummy;
 
 export default function MyPage({ navigation }) {
-  const buy = buyDummy.map((data, index) => {
-    return <Gift navigation={navigation} key={index} data={data} />;
-  });
-
   useEffect(() => {
     const fetchData = async () => {
       const result = await getDibData(tempUser);
@@ -38,12 +34,16 @@ export default function MyPage({ navigation }) {
   const [dibData, setDibData] = useState([]);
   const tempUser = 1;
 
-  const dibs = dibData.map((data, index) => {
-    console.log(data)
+  const dibs = dibData.length > 0 ? dibData.map((data, index) => {
     return <CarouselItem key={index} props={data.store}
       onPressFunction={() => {
         navigation.navigate('Shop', { data: data.store })
       }} />;
+  }) :
+    <Box customStyles={{ paddingHorizontal: 75, alignSelf: 'center' }} content={<SectionSubtitle content={"아직 찜한 상점이 없어요 :) "} />} />
+
+  const buy = buyDummy.map((data, index) => {
+    return <Gift navigation={navigation} key={index} data={data} />;
   });
   return (
     <>

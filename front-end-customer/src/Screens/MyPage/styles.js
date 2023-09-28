@@ -26,8 +26,6 @@ const styles = StyleSheet.create({
     height: 70,
   },
 
-  
-
   user: {
     marginLeft: 10,
   },

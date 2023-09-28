@@ -1,6 +1,9 @@
 package project.app.c109.backendapp.product.domain.entity;
 
 import javax.persistence.*;
+import project.app.c109.backendapp.store.domain.entity.Store;
+import project.app.c109.backendapp.category.domain.entity.Category;
+
 
 // JPA Entity 선언
 @Entity
@@ -14,7 +17,13 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // 데이터베이스에서의 컬럼 이름
     @Column(name = "product_seq")
-    private Integer id;
+    private Integer productSeq;
+
+    // Store 엔터티와의 관계 설정
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_seq")
+    private Store store;
+
 
     // 상품명, null을 허용하지 않고 길이는 최대 50
     @Column(name = "product_name", nullable = false, length = 50)
@@ -49,12 +58,21 @@ public class Product {
     private Integer salesAmount;
 
     // 기본 생성자, getter, setter, etc...
-    public Integer getId() {
-        return id;
+    public Integer getProductSeq() {
+        return productSeq;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setProductSeq(Integer productSeq) {
+        this.productSeq = productSeq;
+    }
+
+    // store와 category의 getter와 setter 추가
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     public String getProductName() {

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.app.c109.backendapp.member.repository.MemberRepository;
 import project.app.c109.backendapp.sosoticon.domain.dto.request.SosoticonRequestDTO;
+import project.app.c109.backendapp.sosoticon.domain.dto.request.SosoticonDeductRequestDTO;
+
 import project.app.c109.backendapp.sosoticon.domain.dto.response.SosoticonResponseDTO;
 import project.app.c109.backendapp.sosoticon.domain.entity.Sosoticon;
 import project.app.c109.backendapp.sosoticon.repository.SosoticonRepository;
@@ -156,4 +158,51 @@ public class SosoticonService {
 
         return existingSosoticon.getSosoticonValue();
     }
+
+    // 사용금액을 QR 코드를 스캔해서 입력 후 POST 요청을 받으면, 해당 금액을 price에서 차감하여 value에 저장하는 로직
+    public Sosoticon deductAmount(SosoticonDeductRequestDTO deductRequestDTO) {
+        // UUID 혹은 코드로 Sosoticon 찾기
+        Sosoticon existingSosoticon = sosoticonRepository.findBySosoticonCode(deductRequestDTO.getSosoticonCode())
+                .orElseThrow(() -> new RuntimeException("Sosoticon not found with code: " + deductRequestDTO.getSosoticonCode()));
+
+        int currentBalance = existingSosoticon.getSosoticonValue();
+        int amountToDeduct = deductRequestDTO.getAmount();
+
+
+
+        if (currentBalance < amountToDeduct) {
+            throw new RuntimeException("Insufficient balance for the provided Sosoticon.");
+        }
+
+        int updatedBalance = currentBalance - amountToDeduct;
+        existingSosoticon.setSosoticonValue(currentBalance - amountToDeduct); // 차감된 금액으로 업데이트
+        existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice() - amountToDeduct);
+
+        // 잔액이 0이거나 더 작으면
+        if (updatedBalance <= 0) {
+            existingSosoticon.setSosoticonStatus(2);  // 사용상태를 2:사용완료 로 바꾸기
+        }
+
+        return sosoticonRepository.save(existingSosoticon);
+    }
+//    @Transactional
+//    public SosoticonResponseDTO deductAmount(SosoticonDeductRequestDTO request) {
+//        Sosoticon existingSosoticon = sosoticonRepository.findBySosoticonCode(request.getSosoticonCode())
+//                .orElseThrow(() -> new RuntimeException("Sosoticon not found with code: " + request.getSosoticonCode()));
+//
+//        int currentBalance = existingSosoticon.getSosoticonValue();
+//
+//        // 잔액이 차감하려는 금액보다 적으면 예외 발생
+//        if (currentBalance < request.getDeductAmount()) {
+//            throw new RuntimeException("Insufficient balance.");
+//        }
+//
+//        // 잔액 차감
+//        existingSosoticon.setSosoticonValue(currentBalance - request.getDeductAmount());
+//        Sosoticon updatedSosoticon = sosoticonRepository.save(existingSosoticon);
+//
+//        // 변경된 정보를 DTO로 변환하여 반환
+//        return convertEntityToDto(updatedSosoticon);
+//    }
+
 }

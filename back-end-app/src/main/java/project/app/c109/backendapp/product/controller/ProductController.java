@@ -15,47 +15,39 @@ import java.util.stream.Collectors;
 // RESTful API 컨트롤러 선언
 @RestController
 // 이 컨트롤러가 처리할 기본 URL 경로
-@RequestMapping("/api/owners/products")
+@RequestMapping("/api/v1/{storeId}/products")
 public class ProductController {
 
     // ProductService를 자동 주입
     @Autowired
     private ProductService productService;
 
-    // 상품 추가 메소드. POST 요청을 처리
+
+    // 상점 내 상품 추가
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> addProduct(@RequestBody ProductRequestDTO request) {
-        // 서비스 레이어의 addProduct 메소드 호출 후 결과를 response에 저장
-        ProductResponseDTO response = productService.addProduct(request);
-        // 결과를 HTTP 200 OK 상태와 함께 반환
+    public ResponseEntity<ProductResponseDTO> addProduct(@PathVariable Integer storeId, @RequestBody ProductRequestDTO request) {
+        ProductResponseDTO response = productService.addProduct(storeId, request);
         return ResponseEntity.ok(response);
     }
 
-    // 상품 수정 메소드. PUT 요청을 처리
+    // 상점 내 상품 수정
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Integer productId,
-                                                            @RequestBody ProductRequestDTO request) {
-        // 서비스 레이어의 updateProduct 메소드 호출 후 결과를 response에 저장
-        ProductResponseDTO response = productService.updateProduct(productId, request);
-        // 결과를 HTTP 200 OK 상태와 함께 반환
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Integer storeId, @PathVariable Integer productId, @RequestBody ProductRequestDTO request) {
+        ProductResponseDTO response = productService.updateProduct(storeId, productId, request);
         return ResponseEntity.ok(response);
     }
 
-    // 상품 삭제 메소드. DELETE 요청을 처리
+    // 상점 내 상품 삭제
     @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Integer productId) {
-        // 서비스 레이어의 deleteProduct 메소드 호출
-        productService.deleteProduct(productId);
-        // HTTP 204 No Content 상태로 응답 (삭제 성공)
+    public ResponseEntity<Void> deleteProduct(@PathVariable Integer storeId, @PathVariable Integer productId) {
+        productService.deleteProduct(storeId, productId);
         return ResponseEntity.noContent().build();
     }
 
-    // 모든 상품 조회 메소드. GET 요청을 처리
+    // 상점 내 모든 상품 조회
     @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-        // 서비스 레이어의 getAllProducts 메소드 호출 후 결과를 productDTOs에 저장
-        List<ProductResponseDTO> productDTOs = productService.getAllProducts();
-        // 결과를 HTTP 200 OK 상태와 함께 반환
+    public ResponseEntity<List<ProductResponseDTO>> getAllProductsByStore(@PathVariable Integer storeId) {
+        List<ProductResponseDTO> productDTOs = productService.getAllProductsByStore(storeId);
         return ResponseEntity.ok(productDTOs);
     }
 }

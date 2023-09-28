@@ -41,10 +41,18 @@ export default function WaitingPayment({ navigation, route }) {
       </View>
       <View style={styles.button}>
         <CustomButton
-          pressFuction={navigation.navigate("Payment", { data, to })}
+          pressFuction={() => {
+            navigation.navigate("Payment", { data, to });
+          }}
           customStyles={{ justifyContent: "center" }}
           content={<Text style={styles.text}>결제하기</Text>}
         />
+      </View>
+      <View style={styles.info}>
+        <Text style={styles.infoText}>결제 중 취소하셨다면</Text>
+        <Text style={styles.infoText}>
+          위 버튼을 통해 다시 결제를 진행하실 수 있습니다.
+        </Text>
       </View>
     </View>
   );

@@ -6,7 +6,7 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import SubTitle from "../SubTitle/SubTitle";
 
-export default function Gift({ data, onPress, navigation }) {
+export default function Gift({ data, usable, onPress, navigation }) {
   const [modalState, setModalState] = useState(false);
 
   return (
@@ -32,6 +32,7 @@ export default function Gift({ data, onPress, navigation }) {
               </Text>
             </View>
           </View>
+
           {data.to ? (
             <View style={styles.buttons}>
               {data.currentPrice == data.totalPrice ? (
@@ -58,50 +59,61 @@ export default function Gift({ data, onPress, navigation }) {
                 }}
               />
             </View>
-          ) : undefined}
-        </View>
-      <CustomModal
-        modalState={modalState}
-        content={
-          <>
-            <Text style={styles.modalText}>
-              🚨 선물 취소 시, 선물 받은 친구에게 문자 및 알람이 전송됩니다.
-            </Text>
-            <Text style={styles.modalText}>
-              🚨 선물 전체 사용 및 분할 사용 시, 선물 취소는 더이상
-              불가능합니다.
-            </Text>
-            <Text style={styles.modalText}>
-              🚨 환불은 결제수단에 따라 환불 소요 기간이 약 2 ~ 3일 이상 소요될
-              수 있습니다.
-            </Text>
-            <View style={styles.checkText}>
-              <SubTitle
-                subTitle={"위 사항을 인지하였으며"}
-                customStyles={{
-                  textAlign: "center",
-                }}
-              />
-              <SubTitle
-                subTitle={"선물 취소를 진행하시겠습니까?"}
-                customStyles={{
-                  textAlign: "center",
-                }}
-              />
-            </View>
+          ) : (
             <View style={styles.buttons}>
-              <CustomButton
-                pressFuction={() => {
-                  setModalState(false);
-                }}
-                content={"돌아가기"}
-                customStyles={{ backgroundColor: "#FFBF46" }}
-              />
-              <CustomButton content={"취소확인"} />
+              {usable ? (
+                <CustomButton
+                  pressFuction={() => {
+                    console.log("연장하기 기능 구현 필요합니당.");
+                  }}
+                  content={"기간 연장하기"}
+                />
+              ) : undefined}
             </View>
-          </>
-        }
-      />
+          )}
+        </View>
+        <CustomModal
+          modalState={modalState}
+          content={
+            <>
+              <Text style={styles.modalText}>
+                🚨 선물 취소 시, 선물 받은 친구에게 문자 및 알람이 전송됩니다.
+              </Text>
+              <Text style={styles.modalText}>
+                🚨 선물 전체 사용 및 분할 사용 시, 선물 취소는 더이상
+                불가능합니다.
+              </Text>
+              <Text style={styles.modalText}>
+                🚨 환불은 결제수단에 따라 환불 소요 기간이 약 2 ~ 3일 이상
+                소요될 수 있습니다.
+              </Text>
+              <View style={styles.checkText}>
+                <SubTitle
+                  subTitle={"위 사항을 인지하였으며"}
+                  customStyles={{
+                    textAlign: "center",
+                  }}
+                />
+                <SubTitle
+                  subTitle={"선물 취소를 진행하시겠습니까?"}
+                  customStyles={{
+                    textAlign: "center",
+                  }}
+                />
+              </View>
+              <View style={styles.buttons}>
+                <CustomButton
+                  pressFuction={() => {
+                    setModalState(false);
+                  }}
+                  content={"돌아가기"}
+                  customStyles={{ backgroundColor: "#FFBF46" }}
+                />
+                <CustomButton content={"취소확인"} />
+              </View>
+            </>
+          }
+        />
       </TouchableOpacity>
     </>
   );

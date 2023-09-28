@@ -15,6 +15,7 @@ import SectionTitle from "../../Components/SectionTitle/SectionTitle";
 import Line from "../../Components/Line/Line";
 import Product from "../../Components/Product/Product";
 import CustomButton from "../../Components/CustomButton/CustomButton";
+import DibButton from "../../Components/DibButton/DibButton"
 
 import ShopDummy from "../../Dummys/Shop/ShopDummy";
 import ProductDummy from "../../Dummys/Shop/ProductDummy";
@@ -22,6 +23,7 @@ import SaleProductDummy from "../../Dummys/Shop/SaleProductDummy";
 import shopDummy from "../../Dummys/Shop/ShopDummy";
 
 import axios from "axios";
+import { getStoreDibData } from "../../Utils/DibAPI";
 
 const Info = ({ logo, data }) => {
   return (
@@ -33,8 +35,39 @@ const Info = ({ logo, data }) => {
 };
 
 export default function Shop({ navigation, route }) {
+  const tempUser = 1;
   const storeData = route.params.data;
+  const [dibState, setDibState] = useState();
+
+  useEffect(() => {
+    // 찜 상태 불러오기
+    const fetchData = async () => {
+      const result = await getStoreDibData(tempUser, storeData.storeSeq);
+      setDibState(result);
+    }; 
+    
+    fetchData();
+  }, [dibState])
+
+  useEffect(() => {
+    // 키워드 불러오기
+    const getKeywords = async () => {
+      try {
+        const response = await axios.get(
+          `http://j9c109.p.ssafy.io:8081/api/v1/store/keywordlist/${storeData.storeSeq}`
+        );
+        setKeywords(response.data);
+
+      } catch (error) {
+        console.error("Error fetching store data:", error);
+      }
+    };
+
+    getKeywords();
+  }, []);
+
   const [keywords, setKeywords] = useState([])
+
   const [checkedProducts, setCheckedProducts] = useState(
     ProductDummy.map(() => false)
   );
@@ -132,23 +165,6 @@ export default function Shop({ navigation, route }) {
     }
   };
 
-  useEffect(() => {
-    const getKeywords = async () => {
-        console.log(storeData);
-      try {
-        const response = await axios.get(
-          `http://j9c109.p.ssafy.io:8081/api/v1/store/keywordlist/${storeData.storeSeq}`
-        );
-        setKeywords(response.data);
-        
-      } catch (error) {
-        console.error("Error fetching store data:", error);
-      }
-    };
-
-    getKeywords();
-  }, []);
-
   // 페이지 이동
   useEffect(() => {
     if (shouldNavigate) {
@@ -175,7 +191,12 @@ export default function Shop({ navigation, route }) {
         showsVerticalScrollIndicator={false}
         style={styles.container}
       >
-        <Title title={storeData.storeName} />
+        <View style={styles.header}>
+          <View style={styles.title}>
+            <Title title={storeData.storeName} />
+          </View>
+          <DibButton userSeq={tempUser} storeSeq={storeData.storeSeq} dibState={dibState} setDibState={setDibState} />
+        </View>
         <Image source={ShopDummy.imageUrl} style={styles.image} />
         <View style={styles.content}>
           <View style={styles.head}>

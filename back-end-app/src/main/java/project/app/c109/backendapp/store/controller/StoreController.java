@@ -17,7 +17,7 @@ import project.app.c109.backendapp.config.security.jwt.JwtUtils;
 import project.app.c109.backendapp.store.domain.dto.request.StoreLoginRequest;
 import project.app.c109.backendapp.store.domain.dto.request.StoreRegisterRequest;
 import project.app.c109.backendapp.store.domain.dto.request.StoreUpdateRequest;
-import project.app.c109.backendapp.store.domain.dto.response.StoreLoginResponse;
+import project.app.c109.backendapp.store.domain.dto.response.StoreInfoResponse;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.store.service.StoreService;
@@ -26,7 +26,9 @@ import project.app.c109.backendapp.storekeyword.service.StoreKeywordService;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -150,11 +152,33 @@ public class StoreController {
 		}
 	}
 
-	@PutMapping("/update/{storeSeq}")
-	public ResponseEntity<Store> updateStoreInfo(@RequestBody StoreUpdateRequest storeUpdateRequest, @PathVariable Integer storeSeq) {
+	@PutMapping("/update")
+	public ResponseEntity<Map<String, String>> updateStoreInfo(@RequestBody StoreUpdateRequest storeUpdateRequest, @CookieValue(name = "jwtToken") String cookieValue) {
+		Integer storeSeq = 0;
+		
+		logger.info(cookieValue);
+		if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
+			cookieValue = cookieValue.substring(7); // "Bearer " 부분을 제외한 토큰 추출
+		}
+		// JWT 토큰의 유효성 검사
+		if (jwtUtils.validateToken(cookieValue)) {
+			String registrationNumber = jwtUtils.getRegistrationNumberFromToken(cookieValue);
+
+		if (registrationNumber != null) {
+			Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
+			if (store != null) {
+					storeSeq = store.getStoreSeq();
+				} 
+			} 
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}		
+		
 		try {
-			Store updateStore = storeService.updateStoreInfo(storeUpdateRequest, storeSeq);
-			return ResponseEntity.ok(updateStore);
+			storeService.updateStoreInfo(storeUpdateRequest, storeSeq);
+			Map<String, String> updateResponse = new HashMap<>();
+			updateResponse.put("isUpdate", "success");
+			return ResponseEntity.ok(updateResponse);
 		} catch (EntityNotFoundException e) {
 			// 상점이나 카테고리를 찾을 수 없는 경우 처리
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -193,7 +217,7 @@ public class StoreController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<StoreLoginResponse> login(@RequestBody StoreLoginRequest storeLoginRequest) throws AuthenticationException {
+	public ResponseEntity<Map<String, String>> login(@RequestBody StoreLoginRequest storeLoginRequest, HttpServletResponse response) throws AuthenticationException {
 		logger.info("Attempting store login for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
 
 		Store store = storeService.findStoreByRegistrationNumber(storeLoginRequest.getRegistrationNumber());
@@ -203,28 +227,37 @@ public class StoreController {
 			String token = jwtUtils.generateStoreToken(storeLoginRequest.getRegistrationNumber());
 			logger.info("Store login successful for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
 
-			// 토큰과 스토어 정보를 응답 객체에 담아 반환
-			StoreLoginResponse response = new StoreLoginResponse(token, store);
-			return ResponseEntity.ok(response);
+			// JWT 토큰을 쿠키에 저장
+			Cookie cookie = new Cookie("jwtToken", token);
+			cookie.setPath("/");
+			cookie.setMaxAge(3600); // Set the expiration time for the cookie (in seconds)
+
+			response.addCookie(cookie);
+
+			// 로그인 성공 응답
+			Map<String, String> loginResponse = new HashMap<>();
+			loginResponse.put("isLogin", "success");
+			return ResponseEntity.ok(loginResponse);
 		} else {
 			logger.error("Store login failed for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
 
-	@PostMapping("/token_test")
-	public ResponseEntity<?> test(HttpServletRequest request) {
-		String jwtToken = request.getHeader("Authorization"); // Authorization 헤더에서 JWT 토큰을 추출
-		logger.info(jwtToken);
-		if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
-			jwtToken = jwtToken.substring(7); // "Bearer " 부분을 제외한 토큰 추출
+	@GetMapping("/token_test")
+	public ResponseEntity<?> test(@CookieValue(name = "jwtToken") String cookieValue) {	
+		logger.info(cookieValue);
+		if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
+			cookieValue = cookieValue.substring(7); // "Bearer " 부분을 제외한 토큰 추출
+		}
 			// JWT 토큰의 유효성 검사
-			if (jwtUtils.validateToken(jwtToken)) {
-				String registrationNumber = jwtUtils.getRegistrationNumberFromToken(jwtToken);
+			if (jwtUtils.validateToken(cookieValue)) {
+
+				String registrationNumber = jwtUtils.getRegistrationNumberFromToken(cookieValue);
 				if (registrationNumber != null) {
 					Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
 					if (store != null) {
-						return ResponseEntity.ok(store);
+						return ResponseEntity.ok(store.getStoreSeq());
 					} else {
 						return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Store not found");
 					}
@@ -232,7 +265,7 @@ public class StoreController {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JWT token");
 				}
 			}
-		}
+		
 
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
 	}
@@ -243,5 +276,35 @@ public class StoreController {
 		return ResponseEntity.ok(stores);
 	}
 
+	@GetMapping("/info")
+	public ResponseEntity<StoreInfoResponse> getStoreInfoDetails( @CookieValue(name = "jwtToken") String cookieValue) {
+		Integer storeSeq = -1;
+		
+		logger.info(cookieValue);
+		if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
+			cookieValue = cookieValue.substring(7); // "Bearer " 부분을 제외한 토큰 추출
+		}
+		// JWT 토큰의 유효성 검사
+		if (jwtUtils.validateToken(cookieValue)) {
+			String registrationNumber = jwtUtils.getRegistrationNumberFromToken(cookieValue);
+
+		if (registrationNumber != null) {
+			Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
+			if (store != null) {
+					storeSeq = store.getStoreSeq();
+				} 
+			} 
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+		Store store = storeService.getStoreDetails(storeSeq);
+		StoreInfoResponse response =new StoreInfoResponse(store.getRegistrationNumber(), store);
+		if (store != null) {
+			return ResponseEntity.ok(response);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
 }

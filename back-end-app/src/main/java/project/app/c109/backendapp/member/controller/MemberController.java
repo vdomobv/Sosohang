@@ -15,6 +15,8 @@ import project.app.c109.backendapp.member.domain.dto.request.MemberRegisterReque
 import project.app.c109.backendapp.member.domain.dto.response.LoginResponse;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.service.MemberService;
+import project.app.c109.backendapp.store.domain.dto.request.StoreUpdateRequest;
+import project.app.c109.backendapp.store.domain.entity.Store;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -193,6 +195,16 @@ public class MemberController {
             return ResponseEntity.ok(member);
         } else {
             return ResponseEntity.badRequest().body("member not found");
+        }
+    }
+
+    @PutMapping("/update/{memberSeq}")
+    public ResponseEntity<Member> updateMemberInfo(@PathVariable Integer memberSeq, @RequestParam String newMemberNickname) {
+        try {
+            Member updatedMember = memberService.updateMemberInfo(memberSeq, newMemberNickname);
+            return ResponseEntity.ok(updatedMember);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }

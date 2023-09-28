@@ -16,6 +16,7 @@ import project.app.c109.backendapp.keyword.domain.entity.Keyword;
 import project.app.c109.backendapp.config.security.jwt.JwtUtils;
 import project.app.c109.backendapp.store.domain.dto.request.StoreLoginRequest;
 import project.app.c109.backendapp.store.domain.dto.request.StoreRegisterRequest;
+import project.app.c109.backendapp.store.domain.dto.request.StoreUpdateRequest;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.store.service.StoreService;
@@ -145,6 +146,17 @@ public class StoreController {
 			response.put("message", "The authentication code is invalid or expired.");
 			logger.warn("Authentication code verification failed for memberPhone: {}", ownerPhone);
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PutMapping("/update/{storeSeq}")
+	public ResponseEntity<Store> updateStoreInfo(@RequestBody StoreUpdateRequest storeUpdateRequest, @PathVariable Integer storeSeq) {
+		try {
+			Store updateStore = storeService.updateStoreInfo(storeUpdateRequest, storeSeq);
+			return ResponseEntity.ok(updateStore);
+		} catch (EntityNotFoundException e) {
+			// 상점이나 카테고리를 찾을 수 없는 경우 처리
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 

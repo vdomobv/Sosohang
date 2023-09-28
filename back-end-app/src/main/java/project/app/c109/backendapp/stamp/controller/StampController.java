@@ -48,20 +48,31 @@ public class StampController {
 
     @PostMapping("/use")
     public ResponseEntity<String> useStamp(
-            @RequestParam Integer stampSeq) {
+            @RequestParam String memberPhone,
+            @RequestParam Integer storeSeq,
+            @RequestParam Integer countForUse) {
         try {
             // 스탬프 사용 로직을 수행
-            stampService.useStamp(stampSeq);
-            logger.info("Stamp used successfully for stampSeq: {}", stampSeq);
+            stampService.useStamp(memberPhone, storeSeq, countForUse);
             return ResponseEntity.ok("Stamp used successfully.");
         } catch (Exception e) {
-            logger.error("Error while using stamp for stampSeq: {}", stampSeq, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 
-    @GetMapping("/{memberId}")
-    public List<Stamp> getStampByMember(@PathVariable Integer memberId) {
-        return stampService.getStampByMember(memberId);
+    @GetMapping("/member")
+    public List<Stamp> getStampByMember(@RequestParam Integer memberSeq) {
+        return stampService.getStampByMember(memberSeq);
     }
+
+    @GetMapping("/member/status")
+    public List<Stamp> getStampByMemberAndStampStatus(@RequestParam Integer memberSeq, @RequestParam Integer stampStatus) {
+        return stampService.getStampByMemberAndStampStatus(memberSeq, stampStatus);
+    }
+
+    @GetMapping("/{memberPhone}/{storeSeq}")
+    public List<Stamp> getStampByMemberAndStoreAndStampStatus(@PathVariable String memberPhone, @PathVariable Integer storeSeq, @RequestParam Integer stampStatus) {
+        return stampService.getStampByMemberAndStoreAndStampStatus(memberPhone, storeSeq, stampStatus);
+    }
+
 }

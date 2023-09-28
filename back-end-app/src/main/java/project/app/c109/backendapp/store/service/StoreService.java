@@ -53,7 +53,7 @@ public class StoreService {
 		Category category = categoryRepository.findById(request.getCategorySeq())
 				.orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + request.getCategorySeq()));
 
-		if (storeRepository.findStoreByRegistrationNumber(request.getRegistrationNumber()) != null) {
+		if (storeRepository.existsByRegistrationNumber(request.getRegistrationNumber())) {
 			throw new EntityExistsException();
 		}
 
@@ -225,7 +225,7 @@ public class StoreService {
 	}
 
 	public List<Store> getNearStores(Double latitude, Double longitude) {
-		// 3km 반경 계산을 위한 위/경도 범위 계산
+		// 1km 반경 계산을 위한 위/경도 범위 계산
 		double minLat = latitude - 0.009;
 		double maxLat = latitude + 0.009;
 		double minLon = longitude - 0.009;
@@ -233,5 +233,37 @@ public class StoreService {
 
 		return storeRepository.findByStoreLatitudeBetweenAndStoreLongitudeBetween(minLat, maxLat, minLon, maxLon);
 	}
+
+	public List<Store> getNearStoresByKeyword(Double latitude, Double longitude, Integer keywordSeq) {
+		// 1km 반경 계산을 위한 위/경도 범위 계산
+		double minLat = latitude - 0.009;
+		double maxLat = latitude + 0.009;
+		double minLon = longitude - 0.009;
+		double maxLon = longitude + 0.009;
+
+		// 주어진 키워드 시퀀스를 가지고 있는 스토어 키워드를 조회합니다.
+		List<StoreKeyword> storesByKeyword = storeKeywordRepository.findByKeyword_KeywordSeq(keywordSeq);
+
+		// 스토어 키워드에서 스토어만 추출합니다.
+		List<Store> stores = storesByKeyword.stream()
+				.map(StoreKeyword::getStore)
+				.collect(Collectors.toList());
+
+		// 반경 내의 스토어만 필터링합니다.
+		List<Store> nearStores = stores.stream()
+				.filter(store -> isStoreInRadius(store, minLat, maxLat, minLon, maxLon))
+				.collect(Collectors.toList());
+
+		return nearStores;
+	}
+
+	private boolean isStoreInRadius(Store store, double minLat, double maxLat, double minLon, double maxLon) {
+		double storeLat = store.getStoreLatitude();
+		double storeLon = store.getStoreLongitude();
+
+		return storeLat >= minLat && storeLat <= maxLat &&
+				storeLon >= minLon && storeLon <= maxLon;
+	}
+
 }
 

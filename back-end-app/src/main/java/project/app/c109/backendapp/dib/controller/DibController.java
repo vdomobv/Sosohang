@@ -43,9 +43,9 @@ public class DibController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addDib(@RequestParam Integer memberId, @RequestParam Integer storeId) {
+    public ResponseEntity<String> addDib(@RequestParam Integer memberSeq, @RequestParam Integer storeSeq) {
         try {
-            dibService.addDib(memberId, storeId);
+            dibService.addDib(memberSeq, storeSeq);
             return ResponseEntity.ok("Dib added successfully.");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found: " + e.getMessage());

@@ -11,6 +11,7 @@ import project.app.c109.backendapp.category.domain.entity.Category;
 import project.app.c109.backendapp.category.repository.CategoryRepository;
 import project.app.c109.backendapp.keyword.domain.entity.Keyword;
 import project.app.c109.backendapp.keyword.repository.KeywordRepository;
+import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.store.domain.dto.request.StoreRegisterRequest;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.store.repository.StoreRepository;
@@ -126,8 +127,10 @@ public class StoreService {
 		return keywords;
 	}
 
+
 	public Store findStoreByRegistrationNumber(String registrationNumber) {
-		return storeRepository.findStoreByRegistrationNumber(registrationNumber);
+		return storeRepository.findStoreByRegistrationNumber(registrationNumber)
+				.orElseThrow(() -> new EntityNotFoundException("등록된 상점을 찾을 수 없습니다."));
 	}
 
 	public String handlePhoneVerification(String phoneNumber) {
@@ -144,12 +147,18 @@ public class StoreService {
 		return storedAuthCode.equals(inputAuthCode);
 	}
 
+	public void changePassword(String registartionNumber, String newPassword) {
+		Store store = storeRepository.findStoreByRegistrationNumber(registartionNumber).get();
+		store.setStorePassword(passwordEncoder.encode(newPassword));
+		storeRepository.save(store);
+	}
+
 	public List<Store> getNearStores(Double latitude, Double longitude) {
 		// 3km 반경 계산을 위한 위/경도 범위 계산
-		double minLat = latitude - 0.027;
-		double maxLat = latitude + 0.027;
-		double minLon = longitude - 0.027;
-		double maxLon = longitude + 0.027;
+		double minLat = latitude - 0.009;
+		double maxLat = latitude + 0.009;
+		double minLon = longitude - 0.009;
+		double maxLon = longitude + 0.009;
 
 		return storeRepository.findByStoreLatitudeBetweenAndStoreLongitudeBetween(minLat, maxLat, minLon, maxLon);
 	}

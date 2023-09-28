@@ -4,12 +4,12 @@ import lombok.Data;
 import project.app.c109.backendapp.store.domain.entity.Store;
 
 @Data
-public class StoreLoginResponse {
-    private String token;
+public class StoreInfoResponse {
+    private String registartionNumber;
     private Store store;
 
-    public StoreLoginResponse(String token, Store store) {
-        this.token = token;
+    public StoreInfoResponse(String registartionNumber, Store store) {
+        this.registartionNumber = registartionNumber;
         this.store = store;
     }
 }

@@ -20,10 +20,10 @@ function InputLogin() {
         storePassword: storePassword,
       })
       .then((res) => {
-
+        console.log(res);
       })
       .catch((err) => {
-
+        console.log(err);
       });
   };
 
@@ -80,7 +80,7 @@ function InputLogin() {
               }></i>
           </InputGroup.Text>
         </InputGroup>
-        <Button className="button" style={{ backgroundColor: "green" }}>
+        <Button className="button" style={{ backgroundColor: "green" }} onClick={handelLogin}>
           로그인
         </Button>
       </div>

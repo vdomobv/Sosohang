@@ -8,4 +8,4 @@ RUN npm install
 
 COPY . .
 
-CMD [ "react-scripts", "start" ]
+RUN npm start

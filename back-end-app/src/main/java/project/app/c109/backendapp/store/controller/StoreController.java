@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import project.app.c109.backendapp.ex.ErrorResponse;
 import project.app.c109.backendapp.keyword.domain.entity.Keyword;
@@ -22,6 +23,7 @@ import project.app.c109.backendapp.storekeyword.service.StoreKeywordService;
 
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -87,7 +89,48 @@ public class StoreController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PostMapping("/register/verify-code")
+	@PostMapping("/password/phone-check")
+	public ResponseEntity<Map<String, String>> handlePhoneVerificationForPasswordChange(@RequestParam String registrationNumber, @RequestParam String ownerTell) {
+		try {
+			Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
+			String savedOwnerTell = store.getOwnerTell();
+
+			if (savedOwnerTell.equals(ownerTell)) {
+				String authCode = storeService.handlePhoneVerification(ownerTell);
+				Map<String, String> response = new HashMap<>();
+				response.put("status", "success");
+				response.put("authCode", authCode);
+				return new ResponseEntity<>(response, HttpStatus.OK);
+			} else {
+				Map<String, String> response = new HashMap<>();
+				response.put("status", "failure");
+				response.put("message", "등록된 휴대폰 번호와 일치하지 않습니다.");
+				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+			}
+		} catch (EntityNotFoundException e) {
+			Map<String, String> response = new HashMap<>();
+			response.put("status", "failure");
+			response.put("message", e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PostMapping("/password/change")
+	public ResponseEntity<Map<String, String>> changePassword(@RequestParam String registrationNumber,
+															  @RequestParam String newPassword) {
+		logger.info("Received a request to change password for registrationNumber: {}", registrationNumber);
+
+		storeService.changePassword(registrationNumber, newPassword);
+
+		Map<String, String> response = new HashMap<>();
+		response.put("status", "success");
+		response.put("message", "Password has been successfully changed.");
+		logger.info("Password changed successfully for registrationNumber: {}", registrationNumber);
+
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/verify-code")
 	public ResponseEntity<Map<String, String>> verifyAuthCode(@RequestParam String ownerPhone,
 															  @RequestParam String authCode) {
 		boolean isVerified = storeService.verifyAuthCode(ownerPhone, authCode);
@@ -178,6 +221,12 @@ public class StoreController {
 		}
 
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+	}
+
+	@GetMapping("/nearby")
+	public ResponseEntity<List<Store>> getNearStores (@RequestParam Double latitude, @RequestParam Double longitude) {
+		List<Store> stores = storeService.getNearStores(latitude, longitude);
+		return ResponseEntity.ok(stores);
 	}
 
 

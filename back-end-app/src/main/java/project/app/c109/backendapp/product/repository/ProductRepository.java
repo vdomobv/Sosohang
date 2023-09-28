@@ -3,7 +3,7 @@ package project.app.c109.backendapp.product.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import project.app.c109.backendapp.product.domain.entity.Product;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Integer> {
 }
 
 // JPA (Java Persistence API)를 사용하여 작성된 인터페이스

@@ -3,10 +3,9 @@ package project.app.c109.backendapp.sosoticon.domain.dto.request;
 // 이 클래스는 클라이언트에서 모바일 쿠폰 관련 정보를 전송할 때 사용되는 DTO입니다.
 public class SosoticonRequestDTO {
 
-    private Long memberSeq;
-    private Long categorySeq;
-    private Long orderId;
-    private Long storeSeq;
+    private Integer memberSeq;
+    private Integer orderId;
+    private Integer storeSeq;
     private String sosoticonTaker;
     private String sosoticonText;
     private String sosoticonAudio;
@@ -15,33 +14,26 @@ public class SosoticonRequestDTO {
     private Integer sosoticonStatus;
     private Integer sosoticonValue;
 
-    public Long getMemberSeq() {
+    public Integer getMemberSeq() {
         return memberSeq;
     }
 
-    public void setMemberSeq(Long memberSeq) {
+    public void setMemberSeq(Integer memberSeq) {
         this.memberSeq = memberSeq;
     }
 
-    public Long getCategorySeq() {
-        return categorySeq;
-    }
 
-    public void setCategorySeq(Long categorySeq) {
-        this.categorySeq = categorySeq;
-    }
-
-    public Long getOrderId() {
+    public Integer getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
 
-    public Long getStoreSeq() { return storeSeq;}
+    public Integer getStoreSeq() { return storeSeq;}
 
-    public void setStoreSeq(Long storeSeq) { this.storeSeq = storeSeq;}
+    public void setStoreSeq(Integer storeSeq) { this.storeSeq = storeSeq;}
 
     public String getSosoticonTaker() {
         return sosoticonTaker;

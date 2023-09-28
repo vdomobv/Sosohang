@@ -12,7 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/dib")
+@RequestMapping("/api/v1/dib")
 public class DibController {
 
     private final DibService dibService;
@@ -21,7 +21,7 @@ public class DibController {
         this.dibService = dibService;
     }
 
-    @GetMapping("{memberSeq}")
+    @GetMapping("/{memberSeq}")
     public ResponseEntity<List<Dib>> getDibsByMemberSeq(@PathVariable Integer memberSeq) {
         try {
             List<Dib> dibs = dibService.getDibsByMember(memberSeq);

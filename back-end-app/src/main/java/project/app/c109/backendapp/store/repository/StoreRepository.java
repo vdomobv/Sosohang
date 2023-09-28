@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Integer> {
     List<Store> findByCategory_CategorySeq(Integer categoryId);
     Optional<Store> findByStoreSeq(Integer storeSeq);
-    Store findStoreByRegistrationNumber(String registrationNumber);
+    Optional<Store> findStoreByRegistrationNumber(String registrationNumber);
     boolean existsByRegistrationNumber(String registrationNumber);
+
+    List<Store> findByStoreLatitudeBetweenAndStoreLongitudeBetween(Double minLat, Double maxLat, Double minLon, Double maxLon);
 
 }

@@ -6,7 +6,7 @@ const MyGiftDummy = [
     name: "도서 구매 2만원권",
     price: 20000,
     image: require("assets/images/bread.png"),
-    createdAt: "2023.09.09 18:37",
+    createdAt: "2023. 9. 9 AM 6:37:11",
   },
   {
     from: "양코딩",
@@ -15,7 +15,7 @@ const MyGiftDummy = [
     name: "강아지 용품",
     price: 10000,
     image: require("assets/images/bread.png"),
-    createdAt: "2023.09.09 18:37",
+    createdAt: "2023. 9. 28 PM 6:37:10",
   },
 ];
 

@@ -19,10 +19,10 @@ export default function MyGift({ navigation }) {
   };
   
   const usableGifts = dummy.filter((d) => d.price > 0 === true).map((d, index) => {
-    return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} />;
+    return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} usable={true} />;
   });
   const unusableGifts = dummy.filter((d) => d.price == 0 === true).map((d, index) => {
-    return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} />;
+    return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} usable={false}/>;
   })
 
 return (

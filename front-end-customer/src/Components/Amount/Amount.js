@@ -1,6 +1,5 @@
 import styles from "./styles";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import SectionSubTitle from '../SectionSubTitle/SectionSubTitle';
 import SectionTitle from "../SectionTitle/SectionTitle";

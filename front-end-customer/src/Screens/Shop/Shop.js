@@ -40,6 +40,8 @@ export default function Shop({ navigation, route }) {
   const storeData = route.params.data;
   const [dibState, setDibState] = useState();
   const [productData, setProductData] = useState([]);
+  const [product, setProduct] = useState([]);
+  const [saleProduct, setSaleProduct] = useState([]);
 
   useEffect(() => {
     // 찜 상태 불러오기
@@ -69,21 +71,27 @@ export default function Shop({ navigation, route }) {
       setProductData(await getProduct(storeData.storeSeq));
     };
     fetchData();
-    console.log('test : ', productData);
   }, []);
 
+  // 상품 데이터, 세일 상품 데이터 분리
+  useEffect(() => {
+    setProduct(productData.filter((data) => data.productDcrate === null))
+    setSaleProduct(productData.filter((data) => data.productDcrate !== null))
+  }, [productData])
+
+  // 상품 선택 배열, 상품 개수 배열 생성
+  useEffect(() => {
+    setCheckedProducts(product.map(() => false))
+    setProductsAmount(product.map(() => 1))
+    setCheckedSaleProducts(saleProduct.map(() => false))
+    setSaleProductAmount(saleProduct.map(() => 1))
+  }, [product])
+
   const [keywords, setKeywords] = useState([])
-
-  // 상품 데이터
-  const product = productData.filter((data) => data.productDcrate === null);
-  // 세일 상품 데이터
-  const saleProduct = productData.filter((data) => data.productDcrate !== null);
-
-  const [checkedProducts, setCheckedProducts] = useState(product.map(() => false))
-  const [productsAmount, setProductsAmount] = useState(product.map(() => 1));
-  const [checkedSaleProducts, setCheckedSaleProducts] = useState(saleProduct.map(() => false));
-  const [saleProductAmount, setSaleProductAmount] = useState(saleProduct.map(() => 1));
-
+  const [checkedProducts, setCheckedProducts] = useState([])
+  const [productsAmount, setProductsAmount] = useState([]);
+  const [checkedSaleProducts, setCheckedSaleProducts] = useState([]);
+  const [saleProductAmount, setSaleProductAmount] = useState([]);
   const [scrollY, setScrollY] = useState(0);
   const [showButton, setShowButton] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -99,19 +107,19 @@ export default function Shop({ navigation, route }) {
           newCheckedProducts[index] = checked;
           setCheckedProducts(newCheckedProducts);
         }}
+        amount={productsAmount[index]}
         onAmountChange={(value) => {
           const newProductsAmount = [...productsAmount];
           newProductsAmount[index] = value;
           setProductsAmount(newProductsAmount);
         }}
         data={data}
-        amount={productsAmount[index]}
         key={index}
       />
     );
   });
 
-  // // 할인 상품 목록
+  // 할인 상품 목록
   const saleProductList = saleProduct.map((data, index) => {
     return (
       <Product
@@ -133,8 +141,9 @@ export default function Shop({ navigation, route }) {
     );
   });
 
-  // // 주문할 상품
+  // 주문할 상품
   const orderProducts = () => {
+    // 상품 선택 여부 확인
     const t1 = checkedProducts.every((val) => val === false);
     const t2 = checkedSaleProducts.every((val) => val === false);
     if (t1 && t2) {
@@ -142,7 +151,7 @@ export default function Shop({ navigation, route }) {
     } else {
       let newSelectedProducts = [];
 
-      ProductDummy.forEach((data, index) => {
+      product.forEach((data, index) => {
         if (checkedProducts[index]) {
           const temp = {
             ...data,
@@ -153,7 +162,7 @@ export default function Shop({ navigation, route }) {
         }
       });
 
-      SaleProductDummy.forEach((data, index) => {
+      saleProduct.forEach((data, index) => {
         if (checkedSaleProducts[index]) {
           const temp = {
             ...data,
@@ -261,11 +270,15 @@ export default function Shop({ navigation, route }) {
           </View>
         </View>
         <Line />
-        <View style={styles.content}>
-          <SectionTitle content={"이때 아니면 못 사는 이벤트 선물! 🔔"} />
-          {saleProductList}
-        </View>
-        <Line />
+        {saleProduct.length > 0 ?
+          <>
+            <View style={styles.content}>
+              <SectionTitle content={"이때 아니면 못 사는 이벤트 선물! 🔔"} />
+              {saleProductList}
+            </View>
+            <Line />
+          </> : null
+        }
         <View style={styles.content}>
           <SectionTitle content={"선물 목록 🎁"} />
           {productList}

@@ -61,7 +61,7 @@ public class MemberService {
     public String handlePhoneVerification(String phoneNumber) {
         if(memberRepository.existsByMemberPhone(phoneNumber)) { return null; }
         String authCode = String.format("%06d", (int)(Math.random() * 1000000));
-        stringRedisTemplate.opsForValue().set(phoneNumber, authCode, 3, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(phoneNumber, authCode, 10, TimeUnit.SECONDS);
         return authCode;
     }
 
@@ -90,6 +90,14 @@ public class MemberService {
 
     public Member getMemberByMemberPhone(String memberPhone) {
         Member member = memberRepository.findByMemberPhone(memberPhone).get();
+        return member;
+    }
+
+    public Member updateMemberInfo(Integer memberSeq, String newMemberNickname) {
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                        .orElseThrow(()->new EntityNotFoundException());
+        member.setMemberNickname(newMemberNickname);
+        memberRepository.save(member);
         return member;
     }
 }

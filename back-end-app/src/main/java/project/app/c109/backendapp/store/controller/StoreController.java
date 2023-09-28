@@ -243,5 +243,11 @@ public class StoreController {
 		return ResponseEntity.ok(stores);
 	}
 
+	@GetMapping("/nearby/{keywordSeq}")
+	public ResponseEntity<List<Store>> getNearStores (@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam Integer keywordSeq) {
+		List<Store> stores = storeService.getNearStoresByKeyword(latitude, longitude, keywordSeq);
+		return ResponseEntity.ok(stores);
+	}
+
 
 }

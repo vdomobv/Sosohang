@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import Wrapper from "./styles";
 import Header from "../../components/Header";
-import InputStoreInfo from "../../components/InputStoreInfo";
+import EditStoreInfo from "../../components/EditStoreInfo";
 import InputOwnerInfo from "../../components/InputOwnerInfo";
 import InputStoreIssue from "../../components/InputStoreIssue";
 
@@ -30,9 +30,8 @@ function StoreInfo() {
       return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.")
     }
     try {
-      const res = await axios.post("/api/v1/store/register", {
+      const res = await axios.post("", {
         storeName: storeInfo.storeName,
-        registrationNumber: storeInfo.storeRegNum,
         storeLocation: storeInfo.storeAddress,
         categorySeq: storeInfo.storeCategory,
         ownerTell: ownerInfo.storePhoneNum,

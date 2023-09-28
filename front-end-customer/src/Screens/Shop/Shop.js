@@ -24,6 +24,7 @@ import shopDummy from "../../Dummys/Shop/ShopDummy";
 
 import axios from "axios";
 import { getStoreDibData } from "../../Utils/DibAPI";
+import { getProduct } from "../../Utils/ProductAPI";
 
 const Info = ({ logo, data }) => {
   return (
@@ -38,14 +39,14 @@ export default function Shop({ navigation, route }) {
   const tempUser = 1;
   const storeData = route.params.data;
   const [dibState, setDibState] = useState();
+  const [productData, setProductData] = useState([]);
 
   useEffect(() => {
     // 찜 상태 불러오기
     const fetchData = async () => {
       const result = await getStoreDibData(tempUser, storeData.storeSeq);
       setDibState(result);
-    }; 
-    
+    };
     fetchData();
   }, [dibState])
 
@@ -57,36 +58,39 @@ export default function Shop({ navigation, route }) {
           `http://j9c109.p.ssafy.io:8081/api/v1/store/keywordlist/${storeData.storeSeq}`
         );
         setKeywords(response.data);
-
       } catch (error) {
         console.error("Error fetching store data:", error);
       }
     };
-
     getKeywords();
+
+    // 상품 데이터 불러오기
+    const fetchData = async () => {
+      setProductData(await getProduct(storeData.storeSeq));
+    };
+    fetchData();
+    console.log('test : ', productData);
   }, []);
 
   const [keywords, setKeywords] = useState([])
 
-  const [checkedProducts, setCheckedProducts] = useState(
-    ProductDummy.map(() => false)
-  );
-  const [productsAmount, setProductsAmount] = useState(
-    ProductDummy.map(() => 1)
-  );
-  const [checkedSaleProducts, setCheckedSaleProducts] = useState(
-    SaleProductDummy.map(() => false)
-  );
-  const [saleProductAmount, setSaleProductAmount] = useState(
-    SaleProductDummy.map(() => 1)
-  );
+  // 상품 데이터
+  const product = productData.filter((data) => data.productDcrate === null);
+  // 세일 상품 데이터
+  const saleProduct = productData.filter((data) => data.productDcrate !== null);
+
+  const [checkedProducts, setCheckedProducts] = useState(product.map(() => false))
+  const [productsAmount, setProductsAmount] = useState(product.map(() => 1));
+  const [checkedSaleProducts, setCheckedSaleProducts] = useState(saleProduct.map(() => false));
+  const [saleProductAmount, setSaleProductAmount] = useState(saleProduct.map(() => 1));
+
   const [scrollY, setScrollY] = useState(0);
   const [showButton, setShowButton] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [shouldNavigate, setShouldNavigate] = useState(false);
 
   // 상품 목록
-  const productList = ProductDummy.map((data, index) => {
+  const productList = product.map((data, index) => {
     return (
       <Product
         checked={checkedProducts[index]}
@@ -107,8 +111,8 @@ export default function Shop({ navigation, route }) {
     );
   });
 
-  // 할인 상품 목록
-  const saleProductList = SaleProductDummy.map((data, index) => {
+  // // 할인 상품 목록
+  const saleProductList = saleProduct.map((data, index) => {
     return (
       <Product
         checked={checkedSaleProducts[index]}
@@ -129,7 +133,7 @@ export default function Shop({ navigation, route }) {
     );
   });
 
-  // 주문할 상품
+  // // 주문할 상품
   const orderProducts = () => {
     const t1 = checkedProducts.every((val) => val === false);
     const t2 = checkedSaleProducts.every((val) => val === false);
@@ -202,10 +206,10 @@ export default function Shop({ navigation, route }) {
           <View style={styles.head}>
             <SectionTitle content={storeData.category.categoryName} />
             <View style={styles.keywords}>
-              {ShopDummy.keywords.map((keyword, index) => {
+              {keywords.map((keyword, index) => {
                 return (
                   <Text key={index} style={{ marginHorizontal: 3 }}>
-                    # {keyword}
+                    #{keyword.keywordName}
                   </Text>
                 );
               })}

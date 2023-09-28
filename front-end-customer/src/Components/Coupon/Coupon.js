@@ -4,6 +4,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import SubTitle from "../SubTitle/SubTitle";
 
 const stampImages = {
+  0: require("assets/images/stamp10.png"),
   1: require("assets/images/stamp1.png"),
   2: require("assets/images/stamp2.png"),
   3: require("assets/images/stamp3.png"),
@@ -13,11 +14,11 @@ const stampImages = {
   7: require("assets/images/stamp7.png"),
   8: require("assets/images/stamp8.png"),
   9: require("assets/images/stamp9.png"),
-  10: require("assets/images/stamp10.png"),
 };
 
 export default function Coupon({ navigation, data, storeName }) {
-  const stampCount = data.length;
+  const stampCount = data.length % 10;
+  const stampPage = parseInt(data.length / 10);
   return (
     <TouchableOpacity
       style={styles.container}
@@ -25,6 +26,7 @@ export default function Coupon({ navigation, data, storeName }) {
         navigation.navigate("Stamp", {
           storeName: storeName,
           stampCount: stampCount,
+          stampPage: stampPage,
           image: stampImages[stampCount],
         });
       }}
@@ -32,8 +34,7 @@ export default function Coupon({ navigation, data, storeName }) {
       <View style={styles.header}>
         <SubTitle customStyles={{ margin: 10 }} subTitle={storeName} />
         <Text style={styles.count}>
-          {data.length}
-          <Text style={styles.total}> /10</Text>
+          {stampPage} 장
         </Text>
       </View>
 

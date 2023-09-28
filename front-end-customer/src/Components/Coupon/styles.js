@@ -15,14 +15,10 @@ const styles = StyleSheet.create({
   },
 
   count: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
     color: "#FFBF46",
     marginRight: 10,
-  },
-
-  total: {
-    fontSize: 26,
     color: "#AFAFAF",
   },
 

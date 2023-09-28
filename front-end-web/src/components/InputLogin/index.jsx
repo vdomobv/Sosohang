@@ -36,7 +36,7 @@ function InputLogin() {
           <Form.Control
             className="formControl"
             style={{ borderRadius: "10px", height: "40px" }}
-            placeholder="사업자등록번호"
+            // placeholder="사업자등록번호"
             aria-label="사업자등록번호를 입력하세요"
             maxLength={10}
             onChange={(e) => {
@@ -50,9 +50,6 @@ function InputLogin() {
         </InputGroup>
         <div className="labelGroup">
           <Form.Label className="label">비밀번호</Form.Label>
-          <a href="#" className="label">
-            비밀번호 찾기
-          </a>
         </div>
         <InputGroup className="inputGroup">
           <Form.Control
@@ -63,7 +60,7 @@ function InputLogin() {
               height: "40px",
             }}
             type={showPassword ? "text" : "password"}
-            placeholder="비밀번호"
+            // placeholder="비밀번호"
             aria-label="비밀번호를 입력하세요"
             autoComplete="off"
             maxLength={20}
@@ -80,6 +77,12 @@ function InputLogin() {
               }></i>
           </InputGroup.Text>
         </InputGroup>
+
+        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+          <a href="#" className="label" >
+            비밀번호 찾기
+          </a>
+        </div>
         <Button className="button" style={{ backgroundColor: "green" }} onClick={handelLogin}>
           로그인
         </Button>

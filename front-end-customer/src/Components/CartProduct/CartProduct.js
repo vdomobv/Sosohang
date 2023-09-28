@@ -51,15 +51,15 @@ export default function CartProduct({
         }}
         color={isChecked ? "#4630EB" : undefined}
       />
-      <Image style={{ flex: 2 }} source={product.image}></Image>
+      <Image style={{ flex: 2, marginRight: 10 }} source={product.image}></Image>
       <View style={{ flex: 4 }}>
-        <Text style={styles.textBold}>{product.name}</Text>
-        <Text>{product.price} 원</Text>
+        <Text style={[styles.textBold, { marginTop: 5 }]}>{product.name}</Text>
+        <Text style={styles.price}>{product.price} 원</Text>
 
         <View style={styles.counter}>
           <Ionicons
-            name="remove"
-            style={styles.minus}
+            name="remove-circle-outline"
+            style={styles.circleIcon}
             onPress={() => {
               if (productCount > 1) {
                 setProductCount(productCount - 1);
@@ -69,10 +69,10 @@ export default function CartProduct({
               }
             }}
           />
-          <Text>{productCount}</Text>
+          <Text style={styles.count}>{productCount}</Text>
           <Ionicons
-            name="add"
-            style={styles.plus}
+            name="add-circle-outline"
+            style={styles.circleIcon}
             onPress={() => {
               setProductCount(productCount + 1);
               if (isChecked) {
@@ -81,7 +81,7 @@ export default function CartProduct({
             }}
           />
         </View>
-        <Text style={[styles.textBold, { textAlign: "right" }]}>
+        <Text style={[styles.textBold, { textAlign: "right", marginRight: 10 }]}>
           {productCount * product.price} 원
         </Text>
       </View>

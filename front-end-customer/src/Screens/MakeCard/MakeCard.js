@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Contacts from 'expo-contacts';
 import { Ionicons } from "@expo/vector-icons";
 
-import CartProduct from "../../Components/CartProduct/CartProduct";
+import CartGift from "../../Components/CartGift/CartGift";
 
 export default function MakeCard({ route, navigation }) {
   const { selectedProducts, totalPrice } = route.params;
@@ -123,16 +123,15 @@ export default function MakeCard({ route, navigation }) {
           </Text>
           <View style={styles.box}>
             {productsInShop.map((product, index) => (
-              <CartProduct
+              <CartGift
                 key={index}
                 product={product}
-                productCheck={true}
                 updateTotalPrice={(priceChange) => {
-                  // 총 결제 금액을 업데이트하는 함수를 구현하세요.
+                  // 총 결제 금액을 업데이트하는 함수
                 }}
                 totalPrice={totalPrice}
                 setSelectedProducts={(newSelectedProducts) => {
-                  // 선택한 상품을 업데이트하는 함수를 구현하세요.
+                  // 선택한 상품을 업데이트하는 함수
                 }}
                 shopName={product.shopName}
               />

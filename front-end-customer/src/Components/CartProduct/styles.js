@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
     margin : 5,
     borderRadius : 10,
   },
+  
+  checkBox: {
+    height: 25,
+    width: 25,
+  },
 
   price: {
     fontSize : 15,

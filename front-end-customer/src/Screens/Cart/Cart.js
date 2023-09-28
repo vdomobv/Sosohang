@@ -42,7 +42,7 @@ export default function Cart({ navigation }) {
             <Text>
               {" "}
               <Checkbox
-                style={styles.checkbox}
+                style={styles.checkBox}
                 value={checkAll}
                 onValueChange={() => {
                   const newCheckAll = !checkAll;

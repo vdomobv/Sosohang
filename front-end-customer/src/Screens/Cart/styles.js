@@ -11,6 +11,11 @@ const styles = StyleSheet.create({
     flex: 4,
   },
 
+  checkBox: {
+    height: 25,
+    width: 25,
+  },
+
   listHead: {
     flex: 1,
     flexDirection: "row",

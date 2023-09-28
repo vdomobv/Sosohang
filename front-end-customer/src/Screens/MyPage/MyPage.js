@@ -14,16 +14,36 @@ import StampAfter from "../../Components/StampAfter/StampAfter";
 import userDummy from "../../Dummys/MyPage/UserDummy";
 import dibsDummy from "../../Dummys/MyPage/DibsDummy";
 import buyDummy from "../../Dummys/MyPage/BuyDummy";
+import axios from 'axios'
+import { useEffect, useState } from "react";
+
+import { getDibData } from "../../Utils/DibAPI";
 
 const user = userDummy;
 
 export default function MyPage({ navigation }) {
-  const dibs = dibsDummy.map((data, index) => {
-    return <CarouselItem key={index} props={data} />;
-  });
-
   const buy = buyDummy.map((data, index) => {
     return <Gift navigation={navigation} key={index} data={data} />;
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getDibData(tempUser);
+      setDibData(result);
+    };
+
+    fetchData();
+  }, [dibData]);
+
+  const [dibData, setDibData] = useState([]);
+  const tempUser = 1;
+
+  const dibs = dibData.map((data, index) => {
+    console.log(data)
+    return <CarouselItem key={index} props={data.store}
+      onPressFunction={() => {
+        navigation.navigate('Shop', { data: data.store })
+      }} />;
   });
   return (
     <>
@@ -70,7 +90,7 @@ export default function MyPage({ navigation }) {
             />
             <Text
               onPress={() => {
-                navigation.navigate("Dibs", { dibs: dibsDummy });
+                navigation.navigate("Dibs");
               }}
             >
               상세보기 ＞{" "}

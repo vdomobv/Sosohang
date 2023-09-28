@@ -7,6 +7,11 @@ const styles = StyleSheet.create({
     marginHorizontal : 20,
     marginVertical :10
   },
+  
+  checkBox: {
+    height: 25,
+    width: 25,
+  },
 
   shopName : {
     marginHorizontal : 10,

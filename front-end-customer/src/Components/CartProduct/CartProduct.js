@@ -37,6 +37,7 @@ export default function CartProduct({
   return (
     <View style={styles.container}>
       <Checkbox
+        style={styles.checkBox}
         totalPrice={totalPrice}
         value={isChecked}
         onValueChange={() => {

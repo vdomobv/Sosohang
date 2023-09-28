@@ -9,4 +9,5 @@ import java.util.List;
 public interface StoreKeywordRepository extends JpaRepository<StoreKeyword, Integer> {
     List<StoreKeyword> findByKeyword_KeywordSeq(Integer keywordSeq);
     List<StoreKeyword> findByStoreStoreSeq(Integer storeSeq);
+    void deleteByStore_StoreSeq(Integer storeSeq);
 }

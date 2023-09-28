@@ -2,7 +2,7 @@ package project.app.c109.backendapp.sosoticon.domain.dto.response;
 
 public class SosoticonResponseDTO {
 
-    private Long sosoticonSeq;
+    private Integer sosoticonSeq;
     private String sosoticonCode;
     private Integer sosoticonValue;
 
@@ -16,11 +16,11 @@ public class SosoticonResponseDTO {
 
 
 
-    public Long getSosoticonSeq() {
+    public Integer getSosoticonSeq() {
         return sosoticonSeq;
     }
 
-    public void setSosoticonSeq(Long sosoticonSeq) {
+    public void setSosoticonSeq(Integer sosoticonSeq) {
         this.sosoticonSeq = sosoticonSeq;
     }
 

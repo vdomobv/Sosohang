@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
     marginTop : 25,
   },
 
-  subContainer: {
-    alignItems: 'center',
+  scrollBoxContainer: {
+
   },
 
   title: {

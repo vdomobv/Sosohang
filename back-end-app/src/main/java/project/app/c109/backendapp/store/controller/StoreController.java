@@ -17,6 +17,7 @@ import project.app.c109.backendapp.config.security.jwt.JwtUtils;
 import project.app.c109.backendapp.store.domain.dto.request.StoreLoginRequest;
 import project.app.c109.backendapp.store.domain.dto.request.StoreRegisterRequest;
 import project.app.c109.backendapp.store.domain.dto.request.StoreUpdateRequest;
+import project.app.c109.backendapp.store.domain.dto.response.StoreLoginResponse;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.store.service.StoreService;
@@ -192,7 +193,7 @@ public class StoreController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody StoreLoginRequest storeLoginRequest) throws AuthenticationException {
+	public ResponseEntity<StoreLoginResponse> login(@RequestBody StoreLoginRequest storeLoginRequest) throws AuthenticationException {
 		logger.info("Attempting store login for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
 
 		Store store = storeService.findStoreByRegistrationNumber(storeLoginRequest.getRegistrationNumber());
@@ -201,8 +202,9 @@ public class StoreController {
 			// 로그인 성공 시 JWT 토큰 생성하여 반환
 			String token = jwtUtils.generateStoreToken(storeLoginRequest.getRegistrationNumber());
 			logger.info("Store login successful for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
-			Map<String, String> response = new HashMap<>();
-			response.put("token", token);
+
+			// 토큰과 스토어 정보를 응답 객체에 담아 반환
+			StoreLoginResponse response = new StoreLoginResponse(token, store);
 			return ResponseEntity.ok(response);
 		} else {
 			logger.error("Store login failed for registrationNumber: " + storeLoginRequest.getRegistrationNumber());

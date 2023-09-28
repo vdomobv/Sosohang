@@ -17,6 +17,7 @@ export default function Cart({ navigation }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedProducts, setSelectedProducts] = useState(new Set());
 
+
   useEffect(() => {
     setCheckedItems(dummy.map(() => checkAll));
   }, [checkAll]);
@@ -41,7 +42,7 @@ export default function Cart({ navigation }) {
             <Text>
               {" "}
               <Checkbox
-                style={styles.checkbox}
+                style={styles.checkBox}
                 value={checkAll}
                 onValueChange={() => {
                   const newCheckAll = !checkAll;
@@ -98,9 +99,11 @@ export default function Cart({ navigation }) {
           <TouchableOpacity
             style={styles.okay}
             onPress={() => {
-              if (selectedProducts.size) {
+              // selectedProducts를 배열로 변환하여 전달
+              const selectedProductsArray = Array.from(selectedProducts);
+              if (selectedProductsArray.length) {
                 navigation.navigate("MakeCard", {
-                  selectedProducts: selectedProducts,
+                  selectedProducts: selectedProductsArray,
                   totalPrice: totalPrice,
                 });
               } else {

@@ -11,7 +11,9 @@ import project.app.c109.backendapp.category.domain.entity.Category;
 import project.app.c109.backendapp.category.repository.CategoryRepository;
 import project.app.c109.backendapp.keyword.domain.entity.Keyword;
 import project.app.c109.backendapp.keyword.repository.KeywordRepository;
+import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.store.domain.dto.request.StoreRegisterRequest;
+import project.app.c109.backendapp.store.domain.dto.request.StoreUpdateRequest;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.storekeyword.domain.entity.StoreKeyword;
@@ -126,8 +128,10 @@ public class StoreService {
 		return keywords;
 	}
 
+
 	public Store findStoreByRegistrationNumber(String registrationNumber) {
-		return storeRepository.findStoreByRegistrationNumber(registrationNumber);
+		return storeRepository.findStoreByRegistrationNumber(registrationNumber)
+				.orElseThrow(() -> new EntityNotFoundException("등록된 상점을 찾을 수 없습니다."));
 	}
 
 	public String handlePhoneVerification(String phoneNumber) {
@@ -144,12 +148,88 @@ public class StoreService {
 		return storedAuthCode.equals(inputAuthCode);
 	}
 
+	public void changePassword(String registartionNumber, String newPassword) {
+		Store store = storeRepository.findStoreByRegistrationNumber(registartionNumber).get();
+		store.setStorePassword(passwordEncoder.encode(newPassword));
+		storeRepository.save(store);
+	}
+
+	@Transactional
+	public Store updateStoreInfo(StoreUpdateRequest storeUpdateRequest, Integer storeSeq) {
+		Store store = storeRepository.findByStoreSeq(storeSeq)
+				.orElseThrow(() -> new EntityNotFoundException("해당 상점을 찾을 수 없습니다."));
+
+		if (storeUpdateRequest.getCategorySeq() != null) {
+			Category category = categoryRepository.findById(storeUpdateRequest.getCategorySeq())
+					.orElseThrow(() -> new EntityNotFoundException("해당 카테고리를 찾을 수 없습니다."));
+			store.setCategory(category);
+		}
+		if (storeUpdateRequest.getStoreName() != null) {
+			store.setStoreName(storeUpdateRequest.getStoreName());
+		}
+		if (storeUpdateRequest.getStoreLocation() != null) {
+			store.setStoreLocation(storeUpdateRequest.getStoreLocation());
+		}
+		if (storeUpdateRequest.getStoreTell() != null) {
+			store.setStoreTell(storeUpdateRequest.getStoreTell());
+		}
+		if (storeUpdateRequest.getOwnerTell() != null) {
+			store.setOwnerTell(storeUpdateRequest.getOwnerTell());
+		}
+		if (storeUpdateRequest.getStoreParkinglot() != null) {
+			store.setStoreParkinglot(storeUpdateRequest.getStoreParkinglot());
+		}
+		if (storeUpdateRequest.getStoreWorkhour() != null) {
+			store.setStoreWorkhour(storeUpdateRequest.getStoreWorkhour());
+		}
+		if (storeUpdateRequest.getStoreHoliday() != null) {
+			store.setStoreHoliday(storeUpdateRequest.getStoreHoliday());
+		}
+		if (storeUpdateRequest.getStoreExtraInfo() != null) {
+			store.setStoreExtraInfo(storeUpdateRequest.getStoreExtraInfo());
+		}
+		if (storeUpdateRequest.getStoreUrl() != null) {
+			store.setStoreUrl(storeUpdateRequest.getStoreUrl());
+		}
+		if (storeUpdateRequest.getSelectedKeywordSeqList() != null && !storeUpdateRequest.getSelectedKeywordSeqList().isEmpty()) {
+			// 기존 상점에 연결된 모든 StoreKeyword 엔터티를 삭제합니다.
+			storeKeywordRepository.deleteByStore_StoreSeq(storeSeq);
+
+			// 클라이언트에서 새로 선택한 키워드를 추가합니다.
+			for (Integer keywordSeq : storeUpdateRequest.getSelectedKeywordSeqList()) {
+				// 카테고리에 해당하는 키워드인지 검증
+				Keyword keyword = keywordRepository.findByKeywordSeqAndCategory(keywordSeq, store.getCategory())
+						.orElseThrow(() -> new EntityNotFoundException("Keyword not found with id: " + keywordSeq + " for category " + store.getCategory().getCategorySeq()));
+
+				StoreKeyword storeKeyword = StoreKeyword.builder()
+						.store(store)
+						.keyword(keyword)
+						.build();
+
+				// 새로운 StoreKeyword 엔터티를 저장합니다.
+				storeKeywordRepository.save(storeKeyword);
+			}
+		}
+		if (storeUpdateRequest.getStoreImage() != null) {
+			store.setStoreImage(storeUpdateRequest.getStoreImage());
+		}
+		if (storeUpdateRequest.getStoreLatitude() != null) {
+			store.setStoreLatitude(storeUpdateRequest.getStoreLatitude());
+		}
+		if (storeUpdateRequest.getStoreLongitude() != null) {
+			store.setStoreLongitude(storeUpdateRequest.getStoreLongitude());
+		}
+
+		// 엔티티를 저장하면 업데이트가 됩니다.
+		return storeRepository.save(store);
+	}
+
 	public List<Store> getNearStores(Double latitude, Double longitude) {
 		// 3km 반경 계산을 위한 위/경도 범위 계산
-		double minLat = latitude - 0.027;
-		double maxLat = latitude + 0.027;
-		double minLon = longitude - 0.027;
-		double maxLon = longitude + 0.027;
+		double minLat = latitude - 0.009;
+		double maxLat = latitude + 0.009;
+		double minLon = longitude - 0.009;
+		double maxLon = longitude + 0.009;
 
 		return storeRepository.findByStoreLatitudeBetweenAndStoreLongitudeBetween(minLat, maxLat, minLon, maxLon);
 	}

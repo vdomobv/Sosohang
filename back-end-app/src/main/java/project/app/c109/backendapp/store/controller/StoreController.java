@@ -9,12 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import project.app.c109.backendapp.ex.ErrorResponse;
 import project.app.c109.backendapp.keyword.domain.entity.Keyword;
 import project.app.c109.backendapp.config.security.jwt.JwtUtils;
 import project.app.c109.backendapp.store.domain.dto.request.StoreLoginRequest;
 import project.app.c109.backendapp.store.domain.dto.request.StoreRegisterRequest;
+import project.app.c109.backendapp.store.domain.dto.request.StoreUpdateRequest;
+import project.app.c109.backendapp.store.domain.dto.response.StoreLoginResponse;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.store.service.StoreService;
@@ -22,6 +25,7 @@ import project.app.c109.backendapp.storekeyword.service.StoreKeywordService;
 
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -87,7 +91,48 @@ public class StoreController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PostMapping("/register/verify-code")
+	@PostMapping("/password/phone-check")
+	public ResponseEntity<Map<String, String>> handlePhoneVerificationForPasswordChange(@RequestParam String registrationNumber, @RequestParam String ownerTell) {
+		try {
+			Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
+			String savedOwnerTell = store.getOwnerTell();
+
+			if (savedOwnerTell.equals(ownerTell)) {
+				String authCode = storeService.handlePhoneVerification(ownerTell);
+				Map<String, String> response = new HashMap<>();
+				response.put("status", "success");
+				response.put("authCode", authCode);
+				return new ResponseEntity<>(response, HttpStatus.OK);
+			} else {
+				Map<String, String> response = new HashMap<>();
+				response.put("status", "failure");
+				response.put("message", "등록된 휴대폰 번호와 일치하지 않습니다.");
+				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+			}
+		} catch (EntityNotFoundException e) {
+			Map<String, String> response = new HashMap<>();
+			response.put("status", "failure");
+			response.put("message", e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PostMapping("/password/change")
+	public ResponseEntity<Map<String, String>> changePassword(@RequestParam String registrationNumber,
+															  @RequestParam String newPassword) {
+		logger.info("Received a request to change password for registrationNumber: {}", registrationNumber);
+
+		storeService.changePassword(registrationNumber, newPassword);
+
+		Map<String, String> response = new HashMap<>();
+		response.put("status", "success");
+		response.put("message", "Password has been successfully changed.");
+		logger.info("Password changed successfully for registrationNumber: {}", registrationNumber);
+
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/verify-code")
 	public ResponseEntity<Map<String, String>> verifyAuthCode(@RequestParam String ownerPhone,
 															  @RequestParam String authCode) {
 		boolean isVerified = storeService.verifyAuthCode(ownerPhone, authCode);
@@ -102,6 +147,17 @@ public class StoreController {
 			response.put("message", "The authentication code is invalid or expired.");
 			logger.warn("Authentication code verification failed for memberPhone: {}", ownerPhone);
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PutMapping("/update/{storeSeq}")
+	public ResponseEntity<Store> updateStoreInfo(@RequestBody StoreUpdateRequest storeUpdateRequest, @PathVariable Integer storeSeq) {
+		try {
+			Store updateStore = storeService.updateStoreInfo(storeUpdateRequest, storeSeq);
+			return ResponseEntity.ok(updateStore);
+		} catch (EntityNotFoundException e) {
+			// 상점이나 카테고리를 찾을 수 없는 경우 처리
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
@@ -137,7 +193,7 @@ public class StoreController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody StoreLoginRequest storeLoginRequest) throws AuthenticationException {
+	public ResponseEntity<StoreLoginResponse> login(@RequestBody StoreLoginRequest storeLoginRequest) throws AuthenticationException {
 		logger.info("Attempting store login for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
 
 		Store store = storeService.findStoreByRegistrationNumber(storeLoginRequest.getRegistrationNumber());
@@ -146,8 +202,9 @@ public class StoreController {
 			// 로그인 성공 시 JWT 토큰 생성하여 반환
 			String token = jwtUtils.generateStoreToken(storeLoginRequest.getRegistrationNumber());
 			logger.info("Store login successful for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
-			Map<String, String> response = new HashMap<>();
-			response.put("token", token);
+
+			// 토큰과 스토어 정보를 응답 객체에 담아 반환
+			StoreLoginResponse response = new StoreLoginResponse(token, store);
 			return ResponseEntity.ok(response);
 		} else {
 			logger.error("Store login failed for registrationNumber: " + storeLoginRequest.getRegistrationNumber());

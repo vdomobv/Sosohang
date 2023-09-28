@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "../../components/Header";
 import InputLogin from "../../components/InputLogin";
+import Wrapper from "./styles";
 
 function Login() {
   return (
-    <div>
+    <>
       <Header />
-      <InputLogin />
-    </div>
+      <Wrapper>
+        <div className="login">
+          <InputLogin />
+        </div>
+      </Wrapper>
+    </>
   );
 }
 

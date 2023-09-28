@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   more: {
     margin: 10,
     textAlign: 'right',
-    alignSelf: 'bottom',
+    // alignSelf: 'bottom',
   }
 });
 

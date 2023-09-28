@@ -35,6 +35,15 @@ public class DibService {
         return dibRepository.findByMemberMemberSeq(memberSeq);
     }
 
+    public List<Dib> getDibsByMemberAndStore (Integer memberSeq, Integer storeSeq) {
+        if (!memberRepository.existsByMemberSeq(memberSeq)) {
+            throw new EntityNotFoundException();
+        } else if (!storeRepository.existsByStoreSeq(storeSeq)) {
+            throw new EntityNotFoundException();
+        }
+        return dibRepository.findByMemberMemberSeqAndStoreStoreSeq(memberSeq, storeSeq);
+    }
+
     public Dib addDib(Integer memberSeq, Integer storeSeq) {
         // 멤버와 상점 엔터티를 조회
         Member member = memberRepository.findById(memberSeq)

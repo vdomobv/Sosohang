@@ -4,9 +4,12 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import SquareImage from "../SquareImage/SquareImage";
 import SubTitle from "../SubTitle/SubTitle";
 import { useState } from "react";
+import { addDib, removeDib } from "../../Utils/DibAPI";
 
-export default function Shop({ data, PressFunction }) {
-  const [dibState, setDibState] = useState(data.dibSeq ? true : false);
+export default function Shop({ data, PressFunction, dibSeq }) {
+  const [dibState, setDibState] = useState(dibSeq ? true : false);
+  const tempUser = 1;
+  
 
   return (
     <View style={styles.container}>
@@ -19,6 +22,11 @@ export default function Shop({ data, PressFunction }) {
           </View>
           <TouchableOpacity
             onPress={() => {
+              if (dibState) {
+                removeDib(tempUser, data.storeSeq);
+              } else {
+                addDib(tempUser, data.storeSeq);
+              }
               setDibState(!dibState);
             }}
           >

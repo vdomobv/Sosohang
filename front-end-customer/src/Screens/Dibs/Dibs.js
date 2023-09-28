@@ -8,12 +8,24 @@ import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import Shop from "../../Components/Shop/Shop";
 
 import CategoryData from "../../Dummys/Main/CategoryData";
+import { getDibData } from "../../Utils/DibAPI";
+import { useEffect, useState } from "react";
 
-
-export default function Dibs({ route, navigation }) {
-  const dibs = route.params.dibs || {};
-
+export default function Dibs({ navigation }) {
   const allCategory = [{ name: '전체' }, ...CategoryData];
+
+  const [dibData, setDibData] = useState([]);
+  const tempUser = 1;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getDibData(tempUser);
+      setDibData(result);
+    };
+
+    fetchData();
+  }, [dibData]);
+
 
   return (
     <View style={styles.container}>
@@ -23,8 +35,8 @@ export default function Dibs({ route, navigation }) {
           return <HashTag key={index} props={tag} />
         })} />
       </View>
-      <ScrollBox content={dibs.map((d, index) => {
-        return (<Shop key={index} data={d.store} />)
+      <ScrollBox content={dibData.map((d, index) => {
+        return (<Shop key={index} data={d.store} dibSeq={d.dibSeq} />)
       })} />
     </View>
 

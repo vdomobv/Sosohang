@@ -17,43 +17,33 @@ import buyDummy from "../../Dummys/MyPage/BuyDummy";
 import axios from 'axios'
 import { useEffect, useState } from "react";
 
+import { getDibData } from "../../Utils/DibAPI";
 
 const user = userDummy;
 
 export default function MyPage({ navigation }) {
-  // const dibs = dibsDummy.map((data, index) => {
-  //   return <CarouselItem key={index} props={data} />;
-  // });
-
   const buy = buyDummy.map((data, index) => {
     return <Gift navigation={navigation} key={index} data={data} />;
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getDibData(tempUser);
+      setDibData(result);
+    };
+
+    fetchData();
+  }, [dibData]);
+
   const [dibData, setDibData] = useState([]);
   const tempUser = 1;
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axios.get(
-          `http://j9c109.p.ssafy.io:8081/api/v1/dib/${tempUser}`
-        );
-        setDibData(response.data);
-        console.log(Array.isArray(response.data));
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching store data:", error);
-      }
-    };
-
-    getData();
-  }, []);
-
   const dibs = dibData.map((data, index) => {
+    console.log(data)
     return <CarouselItem key={index} props={data.store}
-    onPressFunction={() => {
-      navigation.navigate('Shop', { data : data.store })
-    }}/>;
+      onPressFunction={() => {
+        navigation.navigate('Shop', { data: data.store })
+      }} />;
   });
   return (
     <>
@@ -100,7 +90,7 @@ export default function MyPage({ navigation }) {
             />
             <Text
               onPress={() => {
-                navigation.navigate("Dibs", { dibs: dibData });
+                navigation.navigate("Dibs");
               }}
             >
               상세보기 ＞{" "}

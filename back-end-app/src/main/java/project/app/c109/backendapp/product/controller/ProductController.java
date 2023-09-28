@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 // RESTful API 컨트롤러 선언
 @RestController
 // 이 컨트롤러가 처리할 기본 URL 경로
-@RequestMapping("/api/stores/{storeId}/products")
+@RequestMapping("/api/v1/{storeId}/products")
 public class ProductController {
 
     // ProductService를 자동 주입

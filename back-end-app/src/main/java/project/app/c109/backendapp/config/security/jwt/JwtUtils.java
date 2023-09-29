@@ -39,11 +39,11 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String generateStoreToken(String registrationNumber) {
+    public String generateStoreToken(Integer storeSeq) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + (long) jwtConfig.getStoreTokenExpiration() * 1000);
 
-        Claims claims = Jwts.claims().setSubject(registrationNumber);
+        Claims claims = Jwts.claims().setSubject(storeSeq.toString());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -79,14 +79,14 @@ public class JwtUtils {
         }
     }
 
-    public String getRegistrationNumberFromToken(String token) {
+    public Integer getStoreSeqFromToken(String token) {
         if (validateToken(token)) {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return claims.getSubject();
+            return Integer.parseInt(claims.getSubject());
         } else {
             return null;
         }

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import axios from "axios";
 
 function ModalProdctEdit({ show, onHide, product, onEditProduct }) {
+  // console.log(product);
   const [editedProduct, setEditedProduct] = useState({});
 
   useEffect(() => {
@@ -96,15 +98,6 @@ function ModalProdctEdit({ show, onHide, product, onEditProduct }) {
               name="productCount"
               value={editedProduct?.productCount}
               onChange={handleInputChange}
-            />
-          </Form.Group>
-          <Form.Group controlId="salesAmount">
-            <Form.Label>사용수량</Form.Label>
-            <Form.Control
-              type="text"
-              name="productCount"
-              value={editedProduct?.productCount}
-              readOnly={true}
             />
           </Form.Group>
         </Form>

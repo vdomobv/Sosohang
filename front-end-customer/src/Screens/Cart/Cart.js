@@ -62,7 +62,6 @@ export default function Cart({ navigation }) {
     setCheckedShop(newCheckedShop);
     setCheckedProduct(newCheckedProduct);
 
-    console.log('check test: ', newCheckedShop);
   }, [groupedData]);
 
   // 전체 선택
@@ -84,10 +83,8 @@ export default function Cart({ navigation }) {
   };
 
   const renderGroupedProducts = () => {
-    console.log(groupedData)
     return Object.keys(groupedData).map((storeSeq) => {
       const storeCart = groupedData[storeSeq];
-      console.log('test : ', storeCart[0])
       return (
         <CartShop
           key={storeSeq}
@@ -96,7 +93,6 @@ export default function Cart({ navigation }) {
           checkedShop={checkedShop}
           checked={checkedShop[storeSeq]}
           checkedProduct={checkedProduct[storeSeq]}
-      
           // totalPrice={productPrice * storeCart.quantity}
           updateTotalPrice={updateTotalPrice}
           onCheckChange={(storeSeq, checked) => {
@@ -123,18 +119,19 @@ export default function Cart({ navigation }) {
                 style={styles.checkBox}
                 value={checkAll}
                 onValueChange={() => {
-                  const newCheckAll = !checkAll;
-                  setCheckAll(newCheckAll);
-                  if (newCheckAll) {
-                    const total = groupedData.reduce((acc, store) => {
-                      return (
-                        acc +
-                        store.products.reduce((storeAcc, product) => {
-                          return storeAcc + store.quantity * product.productPrice;
-                        }, 0)
-                      );
-                    }, 0);
-                    setTotalPrice(total);
+                  const newCheck = !checkAll;
+                  setCheckAll(newCheck);
+                  if (newCheck) {
+                    const totals = Object.keys(groupedData).map(key => {
+                      const productsInShop = groupedData[key];
+                      return productsInShop.reduce((acc, data) => {
+                        return acc + data.quantity * data.product.productPrice;
+                      }, 0);
+                    });
+
+                    // totals 배열의 합계를 계산하십시오.
+                    const grandTotal = totals.reduce((acc, curr) => acc + curr, 0);
+                    setTotalPrice(grandTotal);
                   } else {
                     setTotalPrice(0);
                   }

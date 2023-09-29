@@ -20,7 +20,7 @@ function ModalProductAdd({ show, onHide, onAddProduct }) {
       productExp,
       productImage,
       productCount: parseInt(productCount),
-      salesAmount: parseFloat(salesAmount),
+      salesAmount: 0,
     };
 
     onAddProduct(newProduct);
@@ -54,10 +54,17 @@ function ModalProductAdd({ show, onHide, onAddProduct }) {
             placeholder='상품 설명'
             onChange={(e) => setProductInfo(e.target.value)}
           />
-          <Form.Control 
-            placeholder='사용기간'
-            onChange={(e) => setProductExp(e.target.value)}
-          />
+          <Form.Group controlId="productExp">
+            <Form.Label>사용 기간</Form.Label>
+            <Form.Select
+              name="productExp"
+              onChange={(e) => setProductExp(e.target.value)}>
+              <option></option>
+              <option>30일</option>
+              <option>60일</option>
+              <option>90일</option>
+            </Form.Select>
+          </Form.Group>
           <Form.Control 
             placeholder='상품 이미지'
             onChange={(e) => setProductImage(e.target.value)}
@@ -65,10 +72,6 @@ function ModalProductAdd({ show, onHide, onAddProduct }) {
           <Form.Control 
             placeholder='최대 발행 수량'
             onChange={(e) => setProductCount(e.target.value)}
-          />
-          <Form.Control 
-            placeholder='판매 수량'
-            onChange={(e) => setSalesAmount(e.target.value)}
           />
         </Form>
       </Modal.Body>

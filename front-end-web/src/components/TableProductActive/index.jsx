@@ -15,7 +15,7 @@ function TableProductActive() {
 
   useEffect(() => {
     axios
-      .get("/api/owners/products")
+      .get("/api/v1/products")
       .then((res) => {
         setProducts(res.data);
       })

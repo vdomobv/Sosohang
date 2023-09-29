@@ -26,4 +26,9 @@ public class KeywordController {
         // 카테고리별 키워드 조회 서비스 호출
         return keywordService.getKeywordsByCategory(categoryId);
     }
+
+    @GetMapping("")
+    public List<Keyword> getAllKeywords() {
+        return keywordService.getAllKeywords();
+    }
 }

@@ -14,17 +14,17 @@ import * as ImagePicker from "expo-image-picker";
 import * as Contacts from "expo-contacts";
 import { Ionicons } from "@expo/vector-icons";
 
-import CartProduct from "../../Components/CartProduct/CartProduct";
+import CartGift from "../../Components/CartGift/CartGift";
 
 export default function MakeCard({ route, navigation }) {
   const { selectedProducts, totalPrice } = route.params;
-  console.log(selectedProducts);
+  console.log(selectedProducts)
   const selectedProductsArray = Array.from(selectedProducts);
 
   const [selectedButton, setSelectedButton] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null); // 선택된 이미지 상태 변수
-  const [message, setMessage] = useState(""); // 입력된 텍스트를 관리할 상태 변수
-  const [contacts, setContacts] = useState([]); // 연락처 데이터를 저장할 상태 변수 추가
+  const [selectedImage, setSelectedImage] = useState(null); // 선택된 카드 이미지
+  const [message, setMessage] = useState(""); // 입력된 텍스트를 관리
+  const [contacts, setContacts] = useState([]); // 연락처 데이터를 저장
   const [contactName, setContactName] = useState("");
   const [contactPhoneNumber, setContactPhoneNumber] = useState("");
 
@@ -137,16 +137,15 @@ export default function MakeCard({ route, navigation }) {
           </Text>
           <View style={styles.box}>
             {productsInShop.map((product, index) => (
-              <CartProduct
+              <CartGift
                 key={index}
                 product={product}
-                productCheck={true}
                 updateTotalPrice={(priceChange) => {
-                  // 총 결제 금액을 업데이트하는 함수를 구현하세요.
+                  // 총 결제 금액을 업데이트하는 함수
                 }}
                 totalPrice={totalPrice}
                 setSelectedProducts={(newSelectedProducts) => {
-                  // 선택한 상품을 업데이트하는 함수를 구현하세요.
+                  // 선택한 상품을 업데이트하는 함수
                 }}
                 shopName={product.shopName}
               />

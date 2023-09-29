@@ -4,12 +4,19 @@ const styles = StyleSheet.create({
   container: {
     flexDirection : "row",
     justifyContent : "space-evenly",
-    paddingTop : 5,
+    paddingVertical : 7,
     backgroundColor : "white",
+    borderColor : '#C6C2C2',
+    borderTopWidth : .5
   },
 
   subContainer: {
     alignItems : 'center',
+  },
+
+  name: {
+    fontSize : 13,
+    color : 'gray'
   }
 });
 

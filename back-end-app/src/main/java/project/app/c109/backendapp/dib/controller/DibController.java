@@ -3,6 +3,7 @@ package project.app.c109.backendapp.dib.controller;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import project.app.c109.backendapp.dib.domain.entity.Dib;
 import project.app.c109.backendapp.dib.service.DibService;
@@ -31,10 +32,20 @@ public class DibController {
         }
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addDib(@RequestParam Integer memberId, @RequestParam Integer storeId) {
+    @GetMapping("/{memberSeq}/{storeSeq}")
+    public ResponseEntity<List<Dib>> getDibsByMemberSeqAndStoreSeq(@PathVariable Integer memberSeq, @PathVariable Integer storeSeq) {
         try {
-            dibService.addDib(memberId, storeId);
+            List<Dib> dibs = dibService.getDibsByMemberAndStore(memberSeq, storeSeq);
+            return ResponseEntity.ok(dibs);
+        } catch (EntityExistsException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<String> addDib(@RequestParam Integer memberSeq, @RequestParam Integer storeSeq) {
+        try {
+            dibService.addDib(memberSeq, storeSeq);
             return ResponseEntity.ok("Dib added successfully.");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entity not found: " + e.getMessage());

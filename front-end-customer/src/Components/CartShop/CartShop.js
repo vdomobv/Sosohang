@@ -40,7 +40,7 @@ export default function CartShop({
       <View>
         <Text style={styles.shopName}>
           <Checkbox
-            style={styles.checkbox}
+            style={styles.checkBox}
             value={checked}
             onValueChange={() => {
               const newCheckedState = !shopChecked;

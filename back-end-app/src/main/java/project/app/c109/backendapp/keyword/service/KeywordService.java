@@ -21,4 +21,8 @@ public class KeywordService {
         // keywordRepository를 사용하여 데이터베이스에서 조회
         return keywordRepository.findByCategory_CategorySeq(categoryId);
     }
+
+    public List<Keyword> getAllKeywords() {
+        return keywordRepository.findAll();
+    }
 }

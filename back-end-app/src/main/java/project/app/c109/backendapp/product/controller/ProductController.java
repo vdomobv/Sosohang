@@ -113,7 +113,7 @@ public class ProductController {
 
     // 상점 내 모든 상품 조회
     @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> getAllProductsByStore(@CookieValue(name = "jwtToken") String cookieValue) {
+    public ResponseEntity<List<ProductResponseDTO>> getAllProductsByStoreForOwner(@CookieValue(name = "jwtToken") String cookieValue) {
         Integer storeSeq = -1;
 		
 		logger.info(cookieValue);
@@ -134,4 +134,12 @@ public class ProductController {
         List<ProductResponseDTO> productDTOs = productService.getAllProductsByStore(storeSeq);
         return ResponseEntity.ok(productDTOs);
     }
+
+		@GetMapping("/{storeId}")
+    public ResponseEntity<List<ProductResponseDTO>> getAllProductsByStore(@PathVariable Integer storeId) {
+			List<ProductResponseDTO> productDTOs = productService.getAllProductsByStore(storeId);
+
+			return ResponseEntity.ok(productDTOs);
+		}
+
 }

@@ -18,13 +18,11 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import DibButton from "../../Components/DibButton/DibButton"
 
 import ShopDummy from "../../Dummys/Shop/ShopDummy";
-import ProductDummy from "../../Dummys/Shop/ProductDummy";
-import SaleProductDummy from "../../Dummys/Shop/SaleProductDummy";
-import shopDummy from "../../Dummys/Shop/ShopDummy";
 
 import axios from "axios";
 import { getStoreDibData } from "../../Utils/DibAPI";
 import { getProduct } from "../../Utils/ProductAPI";
+import { getStoreData } from "../../Utils/StoreAPI";
 
 const Info = ({ logo, data }) => {
   return (
@@ -37,16 +35,15 @@ const Info = ({ logo, data }) => {
 
 export default function Shop({ navigation, route }) {
   const tempUser = 1;
-  const storeData = route.params.data;
-  
+  const storeSeq = route.params.storeSeq;
   const [dibState, setDibState] = useState();
   const [product, setProduct] = useState([]);
   const [saleProduct, setSaleProduct] = useState([]);
-  
+
   useEffect(() => {
     // 찜 상태 불러오기
     const fetchData = async () => {
-      const result = await getStoreDibData(tempUser, storeData.storeSeq);
+      const result = await getStoreDibData(tempUser, storeSeq);
       setDibState(result);
     };
     fetchData();
@@ -57,7 +54,7 @@ export default function Shop({ navigation, route }) {
     const getKeywords = async () => {
       try {
         const response = await axios.get(
-          `http://j9c109.p.ssafy.io:8081/api/v1/store/keywordlist/${storeData.storeSeq}`
+          `http://j9c109.p.ssafy.io:8081/api/v1/store/keywordlist/${storeSeq}`
         );
         setKeywords(response.data);
       } catch (error) {
@@ -66,21 +63,30 @@ export default function Shop({ navigation, route }) {
     };
     getKeywords();
 
-    // 상품 데이터 불러오기
+    // 상점, 상품 데이터 불러오기
     const fetchData = async () => {
-      const result = await getProduct(storeData.storeSeq);
+      console.log(storeSeq)
+      const storeResult = await getStoreData(storeSeq)
+      const result = await getProduct(storeSeq);
 
+      // 상품 데이터, 세일 상품 데이터 분리
       if (Array.isArray(result)) {
-         // 상품 데이터, 세일 상품 데이터 분리
         const regularProducts = result.filter(data => data.productDcrate === null);
         const saleProducts = result.filter(data => data.productDcrate !== null);
 
         setProduct(regularProducts);
         setSaleProduct(saleProducts);
       }
+
+      setStoreData(storeResult);
+      console.log('get check : ', storeResult)
+      console.log('set check : ', storeResult)
     };
+
     fetchData();
   }, []);
+
+  const [storeData, setStoreData] = useState();
 
   // 상품 선택 배열, 상품 개수 배열 생성
   useEffect(() => {

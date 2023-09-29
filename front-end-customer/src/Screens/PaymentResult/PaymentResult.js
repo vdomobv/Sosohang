@@ -1,4 +1,4 @@
-import { Image, View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import styles from "./styles";
 
 import CustomButton from "../../Components/CustomButton/CustomButton";
@@ -32,7 +32,7 @@ export default function PaymentResult({ navigation, route }) {
     
     return (
       <View style={{marginVertical : 5}}>
-        <Box key={storeSeq} content={<Gift data={productsInShop} key={storeSeq} />} />
+        <Box key={storeSeq} content={<Gift data={productsInShop} key={storeSeq} navigation={navigation} />} />
       </View>
     );
   });

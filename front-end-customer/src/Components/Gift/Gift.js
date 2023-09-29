@@ -55,7 +55,7 @@ export default function Gift({ data, usable, onPress, navigation }) {
                 navigation={navigation}
                 content={"재주문"}
                 pressFuction={() => {
-                  navigation.navigate("MakeCard", { selectedProducts: data });
+                  navigation.navigate("Shop", { storeSeq: data.storeSeq });
                 }}
               />
             </View>

@@ -3,7 +3,7 @@ import { Form, Table, Image, Button } from "react-bootstrap";
 import ModalProdctAdd from "../ModalProdctAdd";
 import ModalProdctEdit from "../ModalProdctEdit";
 import ModalProdctDelete from "../ModalProdctDelete";
-import axios from "axios"
+import axios from "axios";
 
 function TableProductActive() {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -21,11 +21,26 @@ function TableProductActive() {
       })
       .catch((err) => {
         return console.error(err);
-      })
-   }, [])
+      });
+  }, []);
 
   const handleAddProduct = (newProduct) => {
-    setProducts([...products, newProduct]);
+    axios
+      .post("/api/v1/products", {
+        storeSeq: newProduct.storeSeq,
+        productName: newProduct.productName,
+        productPrice: newProduct.productPrice,
+        productDcrate: newProduct.productDcrate,
+        productInfo: newProduct.productInfo,
+        productExp: newProduct.productExp,
+        productImage: newProduct.productImage,
+        productCount: newProduct.productCount,
+        salesAmount: newProduct.salesAmount,
+      })
+      .then(() => {
+        setProducts([...products, newProduct]);
+      })
+      .catch();
   };
 
   const openEditModal = (product) => {
@@ -34,10 +49,28 @@ function TableProductActive() {
   };
 
   const handleEditProduct = (editedProduct) => {
-    const updatedProducts = products.map((product) =>
-      product === selectedProduct ? editedProduct : product
-    );
-    setProducts(updatedProducts);
+    axios
+      .put(`/api/v1/products/${editedProduct.productSeq}`, {
+        storeSeq: editedProduct.storeSeq,
+        productName: editedProduct.productName,
+        productPrice: editedProduct.productPrice,
+        productDcrate: editedProduct.productDcrate,
+        productInfo: editedProduct.productInfo,
+        productExp: editedProduct.productExp,
+        productImage: editedProduct.productImage,
+        productCount: editedProduct.productCount,
+        salesAmount: editedProduct.salesAmount,
+        producSeq: editedProduct.producSeq,
+      })
+      .then(() => {
+        const updatedProducts = products.map((product) =>
+          product.productSeq === selectedProduct.productSeq
+            ? editedProduct
+            : product
+        );
+        setProducts(updatedProducts);
+      })
+      .catch();
   };
 
   const handleToggleSelect = (product) => {
@@ -55,6 +88,13 @@ function TableProductActive() {
   };
 
   const handleDeleteProduct = () => {
+    selectedProducts.forEach((ele) => {
+      axios
+        .delete(`/api/v1/products/${ele.productSeq}`)
+        .then(console.log(ele.productSeq))
+        .catch();
+    });
+
     const updatedProducts = products.filter(
       (product) => !selectedProducts.includes(product)
     );

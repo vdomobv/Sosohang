@@ -3,6 +3,12 @@ import styled from "styled-components";
 const Wrapper = styled.div`
 display: flex;
 
+
+.loginImage {
+  width: 300px;
+  transform: translate(100%, 80%);
+}
+
 .login {
     background-color: rgba(255, 255, 255, 0.5); 
     padding: 20px;

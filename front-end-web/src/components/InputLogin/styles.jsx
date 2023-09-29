@@ -11,28 +11,21 @@ display: flex;
 
 .title{
   font-weight : bold;
-  text-align : center;
+  text-align : left;
+  margin-bottom : 60px;
 }
   
   .container{
   box-shadow: 3px 3px 10px 1px lightgrey;
-  padding-top : 10%;
-  padding-bottom : 10%;
+  padding: 15%;
   border-radius : 10%;
   align-content : center;
   justify-content : center;
   align-content : center;
   }
 
-  .title {
-    width : 100%;
-  }
   .inputGroup {
     height: 45px;
-  }
-
-  .label{
-    margin: 10px
   }
 
   .formControl {
@@ -43,12 +36,19 @@ display: flex;
   .labelGroup{
     display: flex;
     justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  a.label {
+    text-decoration: none;
   }
 
   .button {
-    width: 475px;
+    width: 100%;
+    padding: 10px;
     border: none;
-    margin-top : 20px
+    margin-top : 12px;
+    background-color: #528DD9;
   }
 
 `;

@@ -1,15 +1,19 @@
 import React from "react";
-import Header from "../../components/Header";
+// import Header from "../../components/Header";
 import InputLogin from "../../components/InputLogin";
 import Wrapper from "./styles";
 
 function Login() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Wrapper>
-        <div className="login">
-          <InputLogin />
+        <div className="loginContainer">
+
+          <img src="/assets/web_login.png" alt="loginImage" className="loginImage" />
+          <div className="login">
+            <InputLogin />
+          </div>
         </div>
       </Wrapper>
     </>

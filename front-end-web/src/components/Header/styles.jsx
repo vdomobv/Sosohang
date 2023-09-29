@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  padding: 5px 10px;
+  padding: 8px 120px;
   background-color: white;
   box-shadow: 0 1px 7px -5px black;
   position : sticky;

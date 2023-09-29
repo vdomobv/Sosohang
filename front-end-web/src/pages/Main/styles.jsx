@@ -167,8 +167,8 @@ const Wrapper = styled.div`
 
   .arrow-container {
     position: absolute;
-    left: 50%;
-    top : 180%;
+    left: 45%;
+    top : 130%;
 }
 
 .down-arrow {

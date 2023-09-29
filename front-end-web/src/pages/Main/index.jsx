@@ -30,8 +30,8 @@ function Main() {
       <div className="img-container">
         <div className="text-overlay">
           <Fade cascade damping={0.2}>
-            <h2 className="text-overlay_h2" style={{ letterSpacing: '-2px' }}>소상공인에게 소소한 행운을</h2>
-            <h2 className="text-overlay_h2" style={{ letterSpacing: '-2.5px' }} >소중한 이에게 소담한 행복을</h2>
+            <h2 className="text-overlay_h2" style={{ letterSpacing: '-2.5px' }}>소상공인에게 소소한 행복을</h2>
+            <h2 className="text-overlay_h2" style={{ letterSpacing: '-2.5px' }} >소중한 분에게 소소한 행복을</h2>
             <br></br>
             <h3 className="text-overlay_h3">우리 동네 상점 '소소티콘'으로 선물하기</h3>
             <br />
@@ -39,7 +39,7 @@ function Main() {
               src="/assets/sosohang.png" alt=""></img>
             <div className="arrow-container">
               <img
-                src="/videos/down-arrow.png"
+                src="/assets/down_arrow.png"
                 alt=""
                 className="down-arrow"
                 onClick={scrollToSecondSlide}
@@ -70,11 +70,11 @@ function Main() {
                   <div className="message-container">
                     <div className="message-box2">
                       <p>
-                        동네 상점들도 선물할 수 있으면 좋겠다는 생각에서 시작하게 되었어요.
-                        <br></br> 
-                        그런데, 복잡한 수익구조 때문에 소상공인 분들은 모바일 쿠폰을 제작하기 힘들어요. 
-                        <br />
-                        인력도 부족한데다 금전적 어려움을 겪으시죠.
+                      동네 상점의 상품을 모바일 쿠폰으로 만들어 선물할 수 있는 서비스에요.
+                      <br />
+                      회원용은 선물을 구매할 수 있는 애플리케이션이 있고, 
+                      <br />
+                      사장님은 QR결제용 APP과 상품 등록 및 정산 관리용 Web이 있어요.
                       </p>
                     </div>
                   </div>
@@ -86,7 +86,7 @@ function Main() {
                 <div className="container">
                   <div className="message-container">
                     <div className="message-box">
-                      <p>기대효과로는 어떤게 있을까요?</p>
+                      <p>어떻게 시작하게 되었나요??</p>
                     </div>
                   </div>
                 </div>
@@ -99,18 +99,18 @@ function Main() {
                     <div className="message-box2">
                       <p>
                         {" "}
-
-                        소상공인분들의 홍보를 도울 수 있을 것이라 기대됩니다!
+                        복잡한 수익구조 때문에 소상공인 분들은 모바일 쿠폰을 제작하기 힘들어요.
                         <br />
-                        동네 상권도 활성화 될 것이라 예측하고 있어요.
-                        <br></br> 그래서 우리는 연장보육반
-                        영유아를 위한 동화 프로그램을 개발하기로 결심했어요!{" "}
+                        인력도 부족한데다 금전적 어려움을 겪으시죠.
+                        <br />
+                        소소행이 소상공인분들의 홍보를 도울 수 있을 것이라 기대됩니다!
+                        {" "}
                         <br></br>
                       </p>
                       <span
                         style={{
                           color: "#15E575",
-                          fontSize: "35px",
+                          fontSize: "30px",
                           fontWeight: "bold",
                         }}
                       >

@@ -13,7 +13,7 @@ function Header() {
           className="logo"
           src={process.env.PUBLIC_URL + '/assets/soso_logo_line.png'}
           alt="해당로고 클릭시 메인페이지로 이동합니다."
-          style={{  width: '120px', height: '50px' }}
+          style={{  width: '130px', height: '50px' }}
         />
       </Link>
       {auth ?

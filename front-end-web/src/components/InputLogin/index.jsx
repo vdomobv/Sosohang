@@ -30,7 +30,7 @@ function InputLogin() {
   return (
     <Wrapper>
       <div className="container">
-        <h2 className="title">로그인</h2>
+        <h3 className="title">로그인</h3>
         <Form.Label className="label">사업자등록번호</Form.Label>
         <InputGroup className="inputGroup">
           <Form.Control

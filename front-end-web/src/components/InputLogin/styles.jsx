@@ -11,7 +11,7 @@ display: flex;
 
 .title{
   font-weight : bold;
-  text-align : center;
+  text-align : left;
   margin-bottom : 60px;
 }
   
@@ -37,6 +37,10 @@ display: flex;
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
+  }
+  
+  a.label {
+    text-decoration: none;
   }
 
   .button {

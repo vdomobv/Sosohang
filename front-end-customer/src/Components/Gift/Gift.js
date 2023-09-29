@@ -8,7 +8,7 @@ import SubTitle from "../SubTitle/SubTitle";
 
 export default function Gift({ data, usable, onPress, navigation }) {
   const [modalState, setModalState] = useState(false);
-
+  console.log("gift data: ", data);
   return (
     <>
       <TouchableOpacity onPress={onPress}>
@@ -22,7 +22,7 @@ export default function Gift({ data, usable, onPress, navigation }) {
           <View style={styles.body}>
             <Image style={styles.image} source={data.image} />
             <View style={styles.contents}>
-              <Text style={styles.shopName}>{data.shopname}</Text>
+              <Text style={styles.shopName}>{data[0].storeName}</Text>
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
                 {data["from"]

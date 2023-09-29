@@ -10,8 +10,6 @@ export default function Payment({ navigation, route }) {
   const data = route.params.data;
   const productList = route.params.productList;
   const to = route.params.to;
-  const [paymentResult, setPaymentResult] = useState();
-  const [gotoResult, setGoToResult] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -33,8 +31,7 @@ export default function Payment({ navigation, route }) {
           } else {
             navigation.navigate("PaymentResult", {
               paymentData: data,
-              paymentResult,
-              data: productList,
+              productList: productList,
               to: to,
             });
           }

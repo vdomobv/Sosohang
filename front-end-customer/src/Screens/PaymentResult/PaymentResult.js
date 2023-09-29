@@ -8,26 +8,31 @@ import Gift from "../../Components/Gift/Gift";
 import Box from "../../Components/Box/Box";
 
 export default function PaymentResult({ navigation, route }) {
-  const paymentResult = route.params.paymentResult;
   const paymentData = route.params.paymentData;
-  const data = route.params.data;
+  const productList = route.params.productList;
   const to = route.params.to;
 
-  const gifts = Object.keys(data).map((shopName) => {
-    const productsInShop = data[shopName];
-    const newData = productsInShop[0];
-    newData.name = `${shopName}` + " 선물";
+  const gifts = Object.keys(productList).map((storeSeq) => {
+    const productsInShop = productList[storeSeq];
+    if (productsInShop.length == 1) {
+      productsInShop['name'] = productsInShop[0].productName;
+    } else if (productsInShop.length > 1){
+      productsInShop['name'] = productsInShop[0].storeName + '선물 꾸러미'
+    }
+
     const totalProductPrice = productsInShop.reduce((acc, product) => {
-      return acc + product.price * product.count;
+      return acc + product.productPrice * product.count;
     }, 0);
 
-    newData["to"] = to;
-    newData["totalPrice"] = totalProductPrice;
-    newData["currentPrice"] = totalProductPrice;
-    console.log("newDate: ", newData);
+    productsInShop["to"] = to;
+    productsInShop["totalPrice"] = totalProductPrice;
+    productsInShop["currentPrice"] = totalProductPrice;
+
+    console.log("newDate: ", productsInShop);
+    
     return (
       <View style={{marginVertical : 5}}>
-        <Box key={shopName} content={<Gift data={newData} key={shopName} />} />
+        <Box key={storeSeq} content={<Gift data={productsInShop} key={storeSeq} />} />
       </View>
     );
   });

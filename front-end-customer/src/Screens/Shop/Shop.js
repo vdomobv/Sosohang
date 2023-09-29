@@ -38,11 +38,11 @@ const Info = ({ logo, data }) => {
 export default function Shop({ navigation, route }) {
   const tempUser = 1;
   const storeData = route.params.data;
+  
   const [dibState, setDibState] = useState();
-  const [productData, setProductData] = useState([]);
   const [product, setProduct] = useState([]);
   const [saleProduct, setSaleProduct] = useState([]);
-
+  
   useEffect(() => {
     // 찜 상태 불러오기
     const fetchData = async () => {
@@ -68,16 +68,19 @@ export default function Shop({ navigation, route }) {
 
     // 상품 데이터 불러오기
     const fetchData = async () => {
-      setProductData(await getProduct(storeData.storeSeq));
+      const result = await getProduct(storeData.storeSeq);
+
+      if (Array.isArray(result)) {
+         // 상품 데이터, 세일 상품 데이터 분리
+        const regularProducts = result.filter(data => data.productDcrate === null);
+        const saleProducts = result.filter(data => data.productDcrate !== null);
+
+        setProduct(regularProducts);
+        setSaleProduct(saleProducts);
+      }
     };
     fetchData();
   }, []);
-
-  // 상품 데이터, 세일 상품 데이터 분리
-  useEffect(() => {
-    setProduct(productData.filter((data) => data.productDcrate === null))
-    setSaleProduct(productData.filter((data) => data.productDcrate !== null))
-  }, [productData])
 
   // 상품 선택 배열, 상품 개수 배열 생성
   useEffect(() => {
@@ -96,6 +99,7 @@ export default function Shop({ navigation, route }) {
   const [showButton, setShowButton] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [shouldNavigate, setShouldNavigate] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   // 상품 목록
   const productList = product.map((data, index) => {
@@ -153,10 +157,11 @@ export default function Shop({ navigation, route }) {
 
       product.forEach((data, index) => {
         if (checkedProducts[index]) {
+          setTotalPrice(totalPrice + productsAmount[index] * data.productPrice)
           const temp = {
             ...data,
             count: productsAmount[index],
-            shopName: shopDummy.shopName,
+            storeName: storeData.storeName
           };
           newSelectedProducts.push(temp);
         }
@@ -164,10 +169,11 @@ export default function Shop({ navigation, route }) {
 
       saleProduct.forEach((data, index) => {
         if (checkedSaleProducts[index]) {
+          setTotalPrice(totalPrice + saleProductAmount[index] * data.productPrice)
           const temp = {
             ...data,
             count: saleProductAmount[index],
-            shopName: shopDummy.shopName,
+            storeName: storeData.storeName,
           };
           newSelectedProducts.push(temp);
         }
@@ -181,7 +187,7 @@ export default function Shop({ navigation, route }) {
   // 페이지 이동
   useEffect(() => {
     if (shouldNavigate) {
-      navigation.navigate("MakeCard", { selectedProducts });
+      navigation.navigate("MakeCard", { selectedProducts, totalPrice });
       setShouldNavigate(false);
     }
   }, [shouldNavigate]);

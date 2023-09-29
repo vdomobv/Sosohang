@@ -18,8 +18,6 @@ import CartGift from "../../Components/CartGift/CartGift";
 
 export default function MakeCard({ route, navigation }) {
   const { selectedProducts, totalPrice } = route.params;
-  console.log(selectedProducts)
-  const selectedProductsArray = Array.from(selectedProducts);
 
   const [selectedButton, setSelectedButton] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null); // 선택된 카드 이미지
@@ -116,40 +114,46 @@ export default function MakeCard({ route, navigation }) {
     }
   };
 
-  // 상품을 상점 이름을 기준으로 그룹화
-  const groupedProducts = selectedProductsArray.reduce((groups, product) => {
-    const shopName = product.shopName;
-    if (!groups[shopName]) {
-      groups[shopName] = [];
+  // 상품을 storeSeq를 기준으로 그룹화
+  const groupedByStore = selectedProducts.reduce((acc, product) => {
+    const key = product.storeSeq;
+
+    if (!acc[key]) {
+      acc[key] = [];
     }
-    groups[shopName].push(product);
-    return groups;
+
+    acc[key].push(product);
+    return acc;
   }, {});
+  console.log(groupedByStore)
+
 
   // 그룹화된 상품을 렌더링
   const renderGroupedProducts = () => {
-    return Object.keys(groupedProducts).map((shopName) => {
-      const productsInShop = groupedProducts[shopName];
+    return Object.keys(groupedByStore).map((storeSeq) => {
+      const productsInShop = groupedByStore[storeSeq];
       return (
-        <View key={shopName}>
+        <View key={storeSeq}>
           <Text style={styles.shopName}>
-            {shopName} <Ionicons style={styles.shopIcon} name="home-outline" />
+            {productsInShop[0].storeName} <Ionicons style={styles.shopIcon} name="home-outline" />
           </Text>
           <View style={styles.box}>
-            {productsInShop.map((product, index) => (
-              <CartGift
-                key={index}
-                product={product}
-                updateTotalPrice={(priceChange) => {
-                  // 총 결제 금액을 업데이트하는 함수
-                }}
-                totalPrice={totalPrice}
-                setSelectedProducts={(newSelectedProducts) => {
-                  // 선택한 상품을 업데이트하는 함수
-                }}
-                shopName={product.shopName}
-              />
-            ))}
+            {productsInShop.map((product, index) => {
+              return (
+                <CartGift
+                  key={index}
+                  product={product}
+                  updateTotalPrice={(priceChange) => {
+                    // 총 결제 금액을 업데이트하는 함수
+                  }}
+                  totalPrice={totalPrice}
+                  setSelectedProducts={(newSelectedProducts) => {
+                    // 선택한 상품을 업데이트하는 함수
+                  }}
+                  shopName={product.storeName}
+                />
+              )
+            })}
           </View>
         </View>
       );
@@ -286,7 +290,7 @@ export default function MakeCard({ route, navigation }) {
                 Alert.alert("받는 사람을 선택해주세요.");
               } else {
                 navigation.navigate("WaitingPayment", {
-                  groupedProducts,
+                  groupedByStore,
                   totalPrice,
                   result: false,
                   to: contactName,

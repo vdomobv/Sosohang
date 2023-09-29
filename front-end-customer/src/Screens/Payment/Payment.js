@@ -21,6 +21,7 @@ export default function Payment({ navigation, route }) {
         data={data}
         callback={(response) => {
           if (response.error_code) {
+            console.log(response);
             console.log("error_code : ", response.error_code);
             navigation.goBack(); // error_code가 있을 때 이전 페이지로 돌아갑니다.
             Alert.alert("알림", "사용자가 결제를 취소하셨습니다.", [
@@ -30,14 +31,12 @@ export default function Payment({ navigation, route }) {
               },
             ]);
           } else {
-            if (gotoResult) {
-              navigation.navigate("PaymentResult", {
-                paymentData: data,
-                paymentResult,
-                data: productList,
-                to: to,
-              });
-            }
+            navigation.navigate("PaymentResult", {
+              paymentData: data,
+              paymentResult,
+              data: productList,
+              to: to,
+            });
           }
         }}
       />

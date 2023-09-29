@@ -6,6 +6,10 @@ import SectionTitle from "../SectionTitle/SectionTitle";
 
 export default function Amount({ productAmount, onCheckChange }) {
     const [amount, setAmount] = useState(productAmount);
+    
+    useEffect(() => {
+        setAmount(productAmount);
+    }, [productAmount])
 
     useEffect(() => {
         onCheckChange(amount);

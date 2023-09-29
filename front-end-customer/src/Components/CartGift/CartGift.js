@@ -6,12 +6,10 @@ import { View, Text, Image } from "react-native";
 export default function CartGift({
   product,
   setSelectedProducts,
-  shopName,
 }) {
   const [productCount, setProductCount] = useState(product.count);
 
   useEffect(() => {
-    product["shopName"] = shopName;
     setSelectedProducts((prevSet) => {
       const newSet = new Set(prevSet);
       newSet.delete(product);
@@ -22,17 +20,13 @@ export default function CartGift({
 
   return (
     <View style={styles.container}>
-
-      <Image style={{ flex: 2 }} source={product.image}></Image>
+      <Image style={{ flex: 2 }} source={product.productImage}></Image>
       <View style={{ flex: 4 }}>
-        <Text style={styles.textBold}>{product.name}</Text>
-        <Text>{product.price} 원</Text>
-        <View style={styles.counter}>
-          <Text>{productCount}</Text>
-          
-        </View>
+        <Text style={styles.textBold}>{product.productName}</Text>
+        <Text>{product.productPrice} 원</Text>
+        <Text>{productCount} 개</Text>
         <Text style={[styles.textBold, { textAlign: "right" }]}>
-          {productCount * product.price} 원
+          {productCount * product.productPrice} 원
         </Text>
       </View>
     </View>

@@ -11,28 +11,23 @@ export default function CartShop({
   data,
   checked,
   onCheckChange,
-  totalPrice,
   updateTotalPrice,
+  totalPrice,
   setSelectedProducts
 }) {
-  const [shopChecked, setShopChecked] = useState(checked);
-  const [checkedProducts, setCheckedProducts] = useState(
-    data.products.map(() => false)
-  );
+  // const [shopChecked, setShopChecked] = useState(checked);
+  // // const [selectedProducts, setSelectedProducts] = useState(new Set());
 
-  // const [selectedProducts, setSelectedProducts] = useState(new Set());
+  // useEffect(() => {
+  //   const allProductsChecked = checkedProducts.every((val) => val === true);
+  //   if (allProductsChecked) {
+  //     onCheckChange(true);
+  //   }
+  // }, [checkedProducts]);
 
-  useEffect(() => {
-    const allProductsChecked = checkedProducts.every((val) => val === true);
-    if (allProductsChecked) {
-      onCheckChange(true);
-    }
-  }, [checkedProducts]);
-
-  useEffect(() => {
-    setShopChecked(checked);
-    setCheckedProducts(data.products.map(() => checked));
-  }, [checked]);
+  // useEffect(() => {
+  //   setShopChecked(checked);
+  // }, [checked]);
 
 
   return (
@@ -42,41 +37,40 @@ export default function CartShop({
           <Checkbox
             style={styles.checkBox}
             value={checked}
-            onValueChange={() => {
-              const newCheckedState = !shopChecked;
-              setShopChecked(newCheckedState);
-              setCheckedProducts(data.products.map(() => newCheckedState));
-              onCheckChange(newCheckedState);
-              const shopTotalPrice = data.products.reduce(
-                (acc, curr) => acc + curr.count * curr.price,
-                0
-              );
-              if (newCheckedState) {
-                updateTotalPrice(shopTotalPrice);
-              } else {
-                updateTotalPrice(-shopTotalPrice);
-              }
-            }}
-            color={shopChecked ? "#4630EB" : undefined}
+          // onValueChange={() => {
+          //   const newCheckedState = !shopChecked;
+          //   setShopChecked(newCheckedState);
+          //   onCheckChange(newCheckedState);
+          //   const shopTotalPrice = data.products.reduce(
+          //     (acc, curr) => acc + curr.count * curr.price,
+          //     0
+          //   );
+          //   if (newCheckedState) {
+          //     updateTotalPrice(shopTotalPrice);
+          //   } else {
+          //     updateTotalPrice(-shopTotalPrice);
+          //   }
+          // }}
+          // color={shopChecked ? "#4630EB" : undefined}
           />{" "}
-          {data.name} <Ionicons style={styles.shopName} name="home-outline" />
+          {data[0].product.store.storeName} <Ionicons style={styles.shopName} name="home-outline" />
         </Text>
         <View style={styles.products}>
-          {data.products.map((d, index) => {
+          {data.map((d) => {
             return (
               <CartProduct
-                key={index}
-                totalPrice={totalPrice}
-                productCheck={checkedProducts[index]}
-                updateTotalPrice={updateTotalPrice}
-                onCheckChange={(productChecked) => {
-                  const newCheckedProducts = [...checkedProducts];
-                  newCheckedProducts[index] = productChecked;
-                  setCheckedProducts(newCheckedProducts);
-                }}
-                product={d}
-                shopName ={data.name}
-                setSelectedProducts={setSelectedProducts}
+                key={d.cartSeq}
+                data={d}
+
+              // totalPrice={totalPrice}
+              // checkedProduct={checkedProduct[key]}
+              // updateTotalPrice={updateTotalPrice}
+              // onCheckChange={(productChecked) => {
+              //   const newCheckedProducts = [...checkedProducts];
+              //   newCheckedProducts[index] = productChecked;
+              //   setCheckedProducts(newCheckedProducts);
+              // }}
+              // setSelectedProducts={setSelectedProducts}
               />
             );
           })}

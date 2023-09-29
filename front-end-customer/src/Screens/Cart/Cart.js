@@ -9,19 +9,68 @@ import Tabs from "../../Components/Tabs/Tabs";
 import CartShop from "../../Components/CartShop/CartShop";
 import Title from "../../Components/Title/Title";
 
+import { getCartData } from "../../Utils/CartAPI";
 const dummy = CartDummy;
 
 export default function Cart({ navigation }) {
+  const tempUser = 1;
   const [checkAll, setCheckAll] = useState(false);
+  const [checkedProduct, setCheckedProduct] = useState();
+  const [checkedShop, setCheckedShop] = useState();
   const [checkedItems, setCheckedItems] = useState(dummy.map(() => checkAll));
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedProducts, setSelectedProducts] = useState(new Set());
+  const [cartData, setCartData] = useState([])
+  const [groupedData, setGroupedData] = useState({})
 
+  // 장바구니 데이터 조회
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getCartData(tempUser);
+      // console.log(result);
+      setCartData(result);
+    };
 
+    fetchData();
+  }, []);
+
+  // 상점별로 그룹화
+  useEffect(() => {
+    if (Array.isArray(cartData)) {
+      const temp = cartData.reduce((acc, item) => {
+        const storeSeq = item.product.store.storeSeq;
+        if (!acc[storeSeq]) {
+          acc[storeSeq] = [];
+        }
+        acc[storeSeq].push(item);
+        return acc;
+      }, {});
+      setGroupedData(temp);
+    }
+  }, [cartData]);
+
+  // 체크 항목 생성
+  useEffect(() => {
+    const newCheckedShop = {};
+    const newCheckedProduct = {};
+
+    Object.keys(groupedData).forEach(key => {
+      newCheckedShop[key] = false;
+      newCheckedProduct[key] = groupedData[key].map(() => false);
+    });
+
+    setCheckedShop(newCheckedShop);
+    setCheckedProduct(newCheckedProduct);
+
+    console.log('check test: ', newCheckedShop);
+  }, [groupedData]);
+
+  // 전체 선택
   useEffect(() => {
     setCheckedItems(dummy.map(() => checkAll));
   }, [checkAll]);
 
+  // 모두 선택했을 때, 전체 선택도 체크되도록
   useEffect(() => {
     const allShopsChecked = checkedItems.every((val) => val === true);
     if (allShopsChecked) {
@@ -29,9 +78,38 @@ export default function Cart({ navigation }) {
     }
   }, [checkedItems]);
 
+  // 총 결제 금액 변경
   const updateTotalPrice = (priceChange) => {
     setTotalPrice((prevTotal) => prevTotal + priceChange);
   };
+
+  const renderGroupedProducts = () => {
+    console.log(groupedData)
+    return Object.keys(groupedData).map((storeSeq) => {
+      const storeCart = groupedData[storeSeq];
+      console.log('test : ', storeCart[0])
+      return (
+        <CartShop
+          key={storeSeq}
+          data={storeCart}
+
+          checkedShop={checkedShop}
+          checked={checkedShop[storeSeq]}
+          checkedProduct={checkedProduct[storeSeq]}
+      
+          // totalPrice={productPrice * storeCart.quantity}
+          updateTotalPrice={updateTotalPrice}
+          onCheckChange={(storeSeq, checked) => {
+            const newCheckedProduct = [...checkedProduct];
+            newCheckedProduct[storeSeq][cartSeq] = checked;
+            setCheckedProduct(newCheckedProduct);
+          }}
+          setSelectedProducts={setSelectedProducts}
+        />
+      )
+
+    })
+  }
 
   return (
     <>
@@ -48,11 +126,11 @@ export default function Cart({ navigation }) {
                   const newCheckAll = !checkAll;
                   setCheckAll(newCheckAll);
                   if (newCheckAll) {
-                    const total = dummy.reduce((acc, shop) => {
+                    const total = groupedData.reduce((acc, store) => {
                       return (
                         acc +
-                        shop.products.reduce((shopAcc, product) => {
-                          return shopAcc + product.count * product.price;
+                        store.products.reduce((storeAcc, product) => {
+                          return storeAcc + store.quantity * product.productPrice;
                         }, 0)
                       );
                     }, 0);
@@ -70,24 +148,8 @@ export default function Cart({ navigation }) {
 
           <View style={styles.listBody}>
             <ScrollView style={styles.scrollList}>
-              {dummy.map((d, index) => {
-                return (
-                  <CartShop
-                    totalPrice={totalPrice}
-                    key={index}
-                    checked={checkedItems[index]}
-                    data={d}
-                    updateTotalPrice={updateTotalPrice}
-                    onCheckChange={(checked) => {
-                      const newCheckedItems = [...checkedItems];
-                      newCheckedItems[index] = checked;
-                      setCheckedItems(newCheckedItems);
-                    }}
-                    shopName={d.name}
-                    setSelectedProducts={setSelectedProducts}
-                  />
-                );
-              })}
+              {renderGroupedProducts()}
+
             </ScrollView>
           </View>
         </View>

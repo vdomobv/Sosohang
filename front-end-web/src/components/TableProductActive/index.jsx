@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Table, Image, Button } from "react-bootstrap";
+import { Form, Table, Button } from "react-bootstrap";
 import ModalProdctAdd from "../ModalProdctAdd";
 import ModalProdctEdit from "../ModalProdctEdit";
 import ModalProdctDelete from "../ModalProdctDelete";

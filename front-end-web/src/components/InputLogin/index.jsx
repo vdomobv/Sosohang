@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { NavLink, Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Wrapper from "./styles";
 
 function InputLogin() {
-  const navigate = useNavigate();
-
   const [storeRegNum, setStoreRegNum] = useState(""); // 상점 사업자등록번호
   const [storePassword, setStorePassword] = useState(""); // 상점 비밀번호
   const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이는지 여부
@@ -23,9 +20,6 @@ function InputLogin() {
         storePassword: storePassword,
       })
       .then((res) => {
-        if(res.data.isLogin === "success") {
-          navigate("/productManage")
-        }
         console.log(res);
       })
       .catch((err) => {
@@ -36,18 +30,19 @@ function InputLogin() {
   return (
     <Wrapper>
       <div className="container">
-        <h1 className="title">로그인</h1>
+        <h2 className="title">로그인</h2>
         <Form.Label className="label">사업자등록번호</Form.Label>
         <InputGroup className="inputGroup">
           <Form.Control
             className="formControl"
             style={{ borderRadius: "10px", height: "40px" }}
-            // placeholder="사업자등록번호"
+            placeholder="10자리 숫자 입력"
             aria-label="사업자등록번호를 입력하세요"
             maxLength={10}
             onChange={(e) => {
               const regNumExp = /[^0-9]/g;
               if (regNumExp.test(e.target.value)) {
+                alert("사업자등록번호는 숫자로만 입력해주세요.");
                 e.target.value = e.target.value.replace(regNumExp, "");
               }
               setStoreRegNum(e.target.value);
@@ -89,7 +84,7 @@ function InputLogin() {
             비밀번호 찾기
           </a>
         </div>
-        <Button className="button" style={{ backgroundColor: "green" }} onClick={handelLogin}>
+        <Button className="button" onClick={handelLogin}>
           로그인
         </Button>
       </div>

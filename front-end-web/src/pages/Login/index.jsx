@@ -8,8 +8,12 @@ function Login() {
     <>
       {/* <Header /> */}
       <Wrapper>
-        <div className="login">
-          <InputLogin />
+        <div className="loginContainer">
+
+          <img src="/assets/web_login.png" alt="loginImage" className="loginImage" />
+          <div className="login">
+            <InputLogin />
+          </div>
         </div>
       </Wrapper>
     </>

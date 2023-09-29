@@ -12,29 +12,20 @@ display: flex;
 .title{
   font-weight : bold;
   text-align : center;
+  margin-bottom : 60px;
 }
   
   .container{
   box-shadow: 3px 3px 10px 1px lightgrey;
-  // padding-top : 10%;
   padding: 15%;
-  // padding-bottom : 10%;
   border-radius : 10%;
   align-content : center;
   justify-content : center;
   align-content : center;
   }
 
-  .title {
-    // width : 100%;
-    margin-bottom : 50px;
-  }
   .inputGroup {
     height: 45px;
-  }
-
-  .label{
-    margin: 5px
   }
 
   .formControl {
@@ -45,14 +36,15 @@ display: flex;
   .labelGroup{
     display: flex;
     justify-content: space-between;
+    margin-top: 15px;
   }
 
   .button {
-    // width: 475px;
     width: 100%;
     padding: 10px;
     border: none;
-    margin-top : 30px
+    margin-top : 12px;
+    background-color: #528DD9;
   }
 
 `;

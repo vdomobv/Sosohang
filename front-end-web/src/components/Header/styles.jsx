@@ -12,11 +12,6 @@ const Wrapper = styled.div`
   position : sticky;
   z-index: 999999;
 
-  .logo {
-    width: 150px;
-    margin: 8px;
-  }
-
   .links {
     display: flex;
     margin-right: 20px;

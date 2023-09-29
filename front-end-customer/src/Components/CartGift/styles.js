@@ -10,10 +10,18 @@ const styles = StyleSheet.create({
     borderRadius : 10,
   },
 
+  price: {
+    fontSize : 15,
+  },
+
   counter : {
     flexDirection : 'row',
     alignItems : 'flex-end',
     justifyContent : 'space-evenly',
+  },
+  
+  count: {
+    fontSize : 16,
   },
   
   textBold : {
@@ -21,7 +29,6 @@ const styles = StyleSheet.create({
     fontSize : 18,
   }
 
- 
 });
 
 export default styles

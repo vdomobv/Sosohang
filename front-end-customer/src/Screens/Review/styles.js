@@ -7,18 +7,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
 
-  scrollBoxContainer: {
-    padding: 20,
-  },
-
-  title: {
-    fontSize: 21,
-    marginTop: 10,
-    marginBottom: 25,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-
   reviewBox: {
     backgroundColor: "#fff",
     margin: 5,
@@ -30,36 +18,35 @@ const styles = StyleSheet.create({
 
   reviewInfo: {
     textAlign: "center",
-    fontSize: 20,
   },
 
   shopname: {
-    // backgroundColor: '#E6FEDA',
-    backgroundColor: '#46C27D',
+    backgroundColor: '#575761',
     height: 40,
     padding: 5,
     borderRadius: 30,
     margin: 10,
     marginHorizontal: 40,
-    marginVertical: 20
-    // elevation: 5, // Android shadow
+    marginVertical: 20,
+    elevation: 5, // Android shadow
   },
 
   shopnameText: {
     textAlign: 'center',
     fontSize: 20,
-    // fontWeight: 'bold',
     color: 'white'
   },
 
   reviewKeyword: {
     justifyContent: 'center',
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    
   },
-
+  
   keywordButton: {
-    // backgroundColor: '#E6FEDA', 
+    elevation: 2, // Android shadow
+    backgroundColor: '#fff',
     borderColor: '#46C27D',
     borderWidth: 1,
     padding: 8,
@@ -67,8 +54,31 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     margin: 5,
     marginHorizontal: 5,
-    fontSize: 16
+    fontSize: 17
   },
+
+  selectedKeywordButton: {
+    backgroundColor: '#E6FEDA', // 선택된 키워드의 배경색
+    borderColor: '#ffffff',
+    elevation: 2, // Android shadow
+
+  },
+
+  reviewButton: {
+    backgroundColor: '#46C27D',
+    marginTop: 20,
+    marginHorizontal: 50,
+    borderRadius: 5,
+    padding: 10,
+    paddingHorizontal: 20,
+    elevation: 5, // Android shadow
+  },
+
+  buttonText: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#fff',
+  }
 
 });
 

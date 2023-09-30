@@ -4,7 +4,7 @@ import { TouchableOpacity, Text } from "react-native";
 export default function CustomButton({
   navigation,
   content,
-  fontcolor = "black",
+  fontcolor = "white",
   customStyles,
   pressFuction,
   disabled,

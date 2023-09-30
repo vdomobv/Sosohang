@@ -11,6 +11,8 @@ import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.repository.MemberRepository;
 import project.app.c109.backendapp.product.domain.entity.Product;
 import project.app.c109.backendapp.product.repository.ProductRepository;
+import project.app.c109.backendapp.store.domain.entity.Store;
+import project.app.c109.backendapp.store.repository.StoreRepository;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -25,11 +27,15 @@ public class CartServiceImpl implements CartService {
 
     public final ProductRepository productRepository;
 
+    public final StoreRepository storeRepository;
+
+
     @Autowired
-    public CartServiceImpl (CartRepository cartRepository, MemberRepository memberRepository, ProductRepository productRepository) {
+    public CartServiceImpl (CartRepository cartRepository, MemberRepository memberRepository, ProductRepository productRepository, StoreRepository storeRepository) {
         this.cartRepository = cartRepository;
         this.memberRepository = memberRepository;
         this.productRepository = productRepository;
+        this.storeRepository = storeRepository;
     }
 
     @Override
@@ -40,7 +46,9 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findByProductSeq(request.getProductSeq())
                 .orElseThrow(() -> new EntityNotFoundException());
 
-        Cart cart = mapToCart(member, product, request.getQuantity());
+        Store store = product.getStore();
+
+        Cart cart = mapToCart(member, product, store, request.getQuantity());
         cart = cartRepository.save(cart);
         return mapToCartResponseDTO(cart);
     }
@@ -86,10 +94,11 @@ public class CartServiceImpl implements CartService {
         return dto;
     }
 
-    private Cart mapToCart(Member member, Product product, Integer quantity) {
+    private Cart mapToCart(Member member, Product product, Store store, Integer quantity) {
         Cart cart = Cart.builder()
                 .member(member)
                 .product(product)
+                .store(store)
                 .quantity(quantity)
                 .build();
         return cart;

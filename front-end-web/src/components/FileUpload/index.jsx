@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AWS from "aws-sdk";
 
-function FileUpload() {
+function FileUpload({ onChange }) {
   const [file, setFile] = useState(null);
 
   const handleFileChange = (e) => {
@@ -15,19 +15,22 @@ function FileUpload() {
       region: process.env.REACT_APP_AWS_REGION,
     });
 
+    const dateNow = Date.now();
+
     const s3 = new AWS.S3();
     const params = {
       Bucket: process.env.REACT_APP_BUCKET_NAME,
-      Key: file.name,
+      Key: dateNow + file.name,
       Body: file,
     };
-
-    console.log(process.env);
 
     try {
       await s3.upload(params).promise();
       console.log(params.Bucket);
       console.log("File uploaded to S3 successfully.");
+      onChange(
+        `https://sosoticon.s3.ap-northeast-2.amazonaws.com/${params.Key}`
+      );
     } catch (error) {
       console.error("Error uploading file to S3:", error);
     }

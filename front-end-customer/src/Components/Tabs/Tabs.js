@@ -53,7 +53,7 @@ export default function Tabs({ navigation }) {
             }
           }} />
         <Text style={styles.name}>선물함</Text>
-      </View>
+      </View>      
       <View style={styles.subContainer}>
         <Ionicons size={35} name="person"
           color={activeTab === "MyPage" ? "#46C27D" : "black"}

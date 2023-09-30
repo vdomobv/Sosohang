@@ -2,9 +2,16 @@ package project.app.c109.backendapp.review.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.app.c109.backendapp.keyword.domain.entity.Keyword;
+import project.app.c109.backendapp.keyword.repository.KeywordRepository;
 import project.app.c109.backendapp.review.domain.entity.Review;
 import project.app.c109.backendapp.review.repository.ReviewRepository;
+import project.app.c109.backendapp.reviewkeyword.entity.ReviewKeyword;
+import project.app.c109.backendapp.reviewkeyword.repository.ReviewKeywordRepository;
+import project.app.c109.backendapp.reviewkeyword.service.ReviewKeywordService;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,26 +21,41 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
+    private final ReviewKeywordRepository reviewKeywordRepository;
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, ReviewKeywordRepository reviewKeywordRepository) {
         this.reviewRepository = reviewRepository;
+        this.reviewKeywordRepository = reviewKeywordRepository;
     }
 
-    public void createReview(Integer storeSeq, List<Integer> selectedKeywordSeqList, Integer categorySeq) {
+    public void createReview(Integer storeSeq, List<Integer> selectedKeywordSeqList) {
         for (Integer keywordSeq : selectedKeywordSeqList) {
-            Review review = Review.builder()
-                    .storeSeq(storeSeq)
-                    .keywordSeq(keywordSeq)
-                    .categorySeq(categorySeq)
-                    .build();
-            reviewRepository.save(review);
+
+            ReviewKeyword reviewKeyword = reviewKeywordRepository.findByReviewKeywordSeq(keywordSeq)
+                    .orElseThrow(()-> new EntityNotFoundException());
+
+            boolean isAlready = reviewRepository.existsByStoreSeqAndReviewKeyword(storeSeq, reviewKeyword);
+
+            if (isAlready) {
+                Review review = reviewRepository.findByStoreSeqAndReviewKeyword(storeSeq, reviewKeyword);
+                //    public Review findByStoreSeqAndReviewKeywordReviewKeywordSeq(Integer storeSeq, Integer reviewKeywordSeq);
+                //    여기서 파라미터가 일치하지 않아서 자꾸 에러가 남. keywordSeq를 그대로 넣으면 안 되는 것이었다...흑...
+                review.setReviewKeywordCount(review.getReviewKeywordCount()+1);
+                reviewRepository.save(review);
+            } else {
+                Review review = Review.builder()
+                        .storeSeq(storeSeq)
+                        .reviewKeyword(reviewKeyword)
+                        .reviewKeywordCount(1)
+                        .build();
+                reviewRepository.save(review);
+            }
         }
     }
 
-    public Map<Integer, Long> getKeywordReviewCounts(Integer storeSeq) {
-        // 상점별 리뷰 목록을 가져와 키워드 별 리뷰 갯수를 계산합니다.
+    public List<Review> getReviewsByStoreSeqOrderByReviewKeywordCount(Integer storeSeq) {
         List<Review> reviews = reviewRepository.findByStoreSeq(storeSeq);
-        return reviews.stream()
-                .collect(Collectors.groupingBy(Review::getKeywordSeq, Collectors.counting()));
+        reviews.sort(Comparator.comparing(Review::getReviewKeywordCount).reversed());
+        return reviews;
     }
 }

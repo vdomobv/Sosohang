@@ -17,7 +17,7 @@ export default function MyGift({ navigation }) {
   const handleGiftClick = (giftData) => {
     navigation.navigate("MyGiftDetail", { giftData }); 
   };
-  
+
   const usableGifts = dummy.filter((d) => d.price > 0 === true).map((d, index) => {
     return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} usable={true} />;
   });

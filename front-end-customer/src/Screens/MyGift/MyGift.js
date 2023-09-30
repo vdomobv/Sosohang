@@ -15,7 +15,8 @@ export default function MyGift({ navigation }) {
   const [activatedTab, setActivatedTab] = useState(true)
 
   const handleGiftClick = (giftData) => {
-    navigation.navigate("MyGiftDetail", { giftData }); 
+    // navigation.navigate("MyGiftDetail", { giftData }); 
+    navigation.navigate("Review", { giftData }); 
   };
   
   const usableGifts = dummy.filter((d) => d.price > 0 === true).map((d, index) => {

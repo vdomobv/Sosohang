@@ -20,7 +20,7 @@ public class Product {
     private Integer productSeq;
 
     // Store 엔터티와의 관계 설정
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "store_seq")
     private Store store;
 

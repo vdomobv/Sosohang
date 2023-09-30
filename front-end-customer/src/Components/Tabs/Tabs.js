@@ -53,6 +53,16 @@ export default function Tabs({ navigation }) {
             }
           }} />
         <Text style={styles.name}>선물함</Text>
+      </View>      
+      <View style={styles.subContainer}>
+        <Ionicons size={35} name="pencil"
+          color={activeTab === "Review" ? "#46C27D" : "black"}
+          onPress={() => {
+            if (route != "Review") {
+              navigation.navigate("Review")
+            }
+          }} />
+        <Text style={styles.name}>사용후기</Text>
       </View>
       <View style={styles.subContainer}>
         <Ionicons size={35} name="person"

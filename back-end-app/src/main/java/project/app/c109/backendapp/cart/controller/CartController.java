@@ -5,43 +5,70 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.app.c109.backendapp.cart.domain.dto.request.CartRequestDTO;
 import project.app.c109.backendapp.cart.domain.dto.response.CartResponseDTO;
+import project.app.c109.backendapp.cart.domain.entity.Cart;
 import project.app.c109.backendapp.cart.service.CartService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-@RestController  // RESTful 웹 서비스 컨트롤러 선언
-@RequestMapping("/api/app/users/cart")  // 이 컨트롤러에 매핑될 기본 URL 경로
+
+
+
+@RestController
+@RequestMapping("/api/v1/cart")
 public class CartController {
 
-    @Autowired  // CartService를 자동 주입
-    private CartService cartService;
 
-    // 카트에 상품을 추가 (POST 요청)
+    private final CartService cartService;
+
+    @Autowired
+    public CartController (CartService cartService) {
+        this.cartService = cartService;
+    }
+
+    @PostMapping("/check-cart")
+    public boolean duplicatedItem(@RequestParam Integer memberSeq, @RequestParam Integer productSeq) {
+        return cartService.checkDuplicatedItem(memberSeq, productSeq);
+    }
+
     @PostMapping
     public ResponseEntity<CartResponseDTO> addCart(@RequestBody CartRequestDTO request) {
-        CartResponseDTO response = cartService.addCart(request);
-        return ResponseEntity.ok(response);
+        try {
+            boolean isDuplicated = cartService.checkDuplicatedItem(request.getMemberSeq(), request.getProductSeq());
+            if (isDuplicated) {
+                CartResponseDTO updatedResponse = cartService.updateCartItemQuantity(request);
+                return ResponseEntity.ok(updatedResponse);
+            } else {
+                CartResponseDTO response = cartService.addCart(request);
+                return ResponseEntity.ok(response);
+            }
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // 회원의 모든 카트 내용을 조회 (GET 요청)
-    @GetMapping
-    public ResponseEntity<List<CartResponseDTO>> getAllCarts() {
-        List<CartResponseDTO> cartDTOs = cartService.getAllCarts();
-        return ResponseEntity.ok(cartDTOs);
+    @PostMapping("/update")
+    public ResponseEntity<CartResponseDTO> updateCart(@RequestBody CartRequestDTO request) {
+        boolean isDuplicated = cartService.checkDuplicatedItem(request.getMemberSeq(), request.getProductSeq());
+
+        if (isDuplicated) {
+            CartResponseDTO updatedResponse = cartService.updateCartItemQuantity(request);
+            return ResponseEntity.ok(updatedResponse);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    // 카트에서 상품을 삭제 (DELETE 요청)
-    @DeleteMapping("/{cartItemId}")
-    public ResponseEntity<Void> deleteCart(@PathVariable Long cartItemId) {
-        cartService.deleteCart(cartItemId);
-        return ResponseEntity.noContent().build();  // 204 No Content 응답
+    @GetMapping("/{memberSeq}")
+    public ResponseEntity<List<Cart>> getAllCartsByMemberSeq(@PathVariable Integer memberSeq) {
+        List<Cart> carts = cartService.getAllCartsByMemberSeq(memberSeq);
+        return ResponseEntity.ok(carts);
     }
 
-    // 카트 정보를 수정 (PUT 요청)
-    @PutMapping("/{cartItemId}")
-    public ResponseEntity<CartResponseDTO> updateCart(@PathVariable Long cartItemId,
-                                                      @RequestBody CartRequestDTO request) {
-        CartResponseDTO response = cartService.updateCart(cartItemId, request);
-        return ResponseEntity.ok(response);
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteCartItem(@RequestParam Integer memberSeq, @RequestParam Integer productSeq) {
+        cartService.deleteCartItem(memberSeq, productSeq);
+        return ResponseEntity.noContent().build();
     }
+
 }

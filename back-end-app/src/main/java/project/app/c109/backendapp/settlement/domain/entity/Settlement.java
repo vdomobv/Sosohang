@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import project.app.c109.backendapp.store.domain.entity.Store;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,11 +26,12 @@ public class Settlement {
     private Integer settlementSeq;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "store_seq")
     private Store store;
 
     @Column(name = "settlement_added_date")
-    private LocalDate settlementAddedDate;
+    private LocalDateTime settlementAddedDate;
 
     @Column(name = "settlement_price")
     private Integer settlementPrice;

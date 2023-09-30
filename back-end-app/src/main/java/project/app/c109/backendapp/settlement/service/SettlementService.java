@@ -9,6 +9,7 @@ import project.app.c109.backendapp.store.repository.StoreRepository;
 
 import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class SettlementService {
         Store store = storeRepository.findByStoreSeq(storeSeq)
                 .orElseThrow(() -> new EntityExistsException());
 
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
 
         Settlement settlement = Settlement.builder()
                 .store(store)

@@ -1,13 +1,15 @@
 import styles from "./styles";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { useNavigation } from '@react-navigation/native';
 
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import SubTitle from "../SubTitle/SubTitle";
 
-export default function Gift({ data, usable, onPress, navigation }) {
+export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
+  const navigation = useNavigation();
 
   return (
     <>
@@ -68,7 +70,14 @@ export default function Gift({ data, usable, onPress, navigation }) {
                   }}
                   content={"기간 연장하기"}
                 />
-              ) : undefined}
+              ) : (
+                <CustomButton
+                  content={"후기 남기기"} 
+                  pressFuction={() => {
+                    navigation.navigate("Review", { giftData: data });
+                  }}
+                />
+              )}
             </View>
           )}
         </View>

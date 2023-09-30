@@ -27,8 +27,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     margin: 10,
     marginHorizontal: 40,
-    marginVertical: 20,
-    elevation: 5, // Android shadow
+    marginVertical: 30,
   },
 
   shopnameText: {
@@ -67,9 +66,9 @@ const styles = StyleSheet.create({
   reviewButton: {
     backgroundColor: '#46C27D',
     marginTop: 20,
-    marginHorizontal: 50,
+    marginHorizontal: 60,
     borderRadius: 5,
-    padding: 10,
+    padding: 8,
     paddingHorizontal: 20,
     elevation: 5, // Android shadow
   },
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     textAlign: 'center',
-    color: '#fff',
+    color: 'white',
   }
 
 });

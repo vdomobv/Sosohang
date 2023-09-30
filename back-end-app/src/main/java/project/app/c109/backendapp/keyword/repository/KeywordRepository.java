@@ -11,5 +11,8 @@ import java.util.Optional;
 @Repository
 public interface KeywordRepository extends JpaRepository<Keyword, Integer> {
     Optional<Keyword> findByKeywordSeqAndCategory(Integer keywordSeq, Category category);
+
+    Keyword findByKeywordSeq(Integer keywordSeq);
+
     List<Keyword> findByCategory_CategorySeq(Integer categoryId);
 }

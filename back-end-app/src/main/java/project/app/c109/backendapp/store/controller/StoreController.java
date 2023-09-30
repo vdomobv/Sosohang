@@ -241,31 +241,25 @@ public class StoreController {
 		}
 	}
 
-	// @GetMapping("/token_test")
-	// public ResponseEntity<?> test(@CookieValue(name = "jwtToken") String cookieValue) {	
-	// 	logger.info(cookieValue);
-	// 	if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
-	// 		cookieValue = cookieValue.substring(7); // "Bearer " 부분을 제외한 토큰 추출
-	// 	}
-	// 		// JWT 토큰의 유효성 검사
-	// 		if (jwtUtils.validateToken(cookieValue)) {
+	@GetMapping("/token_test")
+	public ResponseEntity<?> test(@CookieValue(name = "jwtToken") String cookieValue) {	
 
-	// 			String registrationNumber = jwtUtils.getRegistrationNumberFromToken(cookieValue);
-	// 			if (registrationNumber != null) {
-	// 				Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
-	// 				if (store != null) {
-	// 					return ResponseEntity.ok(store.getStoreSeq());
-	// 				} else {
-	// 					return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Store not found");
-	// 				}
-	// 			} else {
-	// 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JWT token");
-	// 			}
-	// 		}
-		
+		if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
+			cookieValue = cookieValue.substring(7); // "Bearer " 부분을 제외한 토큰 추출
+		}
+			// JWT 토큰의 유효성 검사
+		if (jwtUtils.validateToken(cookieValue)) {
+			Integer storeSeq = jwtUtils.getStoreSeqFromToken(cookieValue);
 
-	// 	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-	// }
+		if (storeSeq == null) {
+			return ResponseEntity.ok("noStore");
+			} 
+		return ResponseEntity.ok("true");
+
+		} else {
+			return ResponseEntity.ok("false");
+		}
+	}
 
 	@GetMapping("/nearby")
 	public ResponseEntity<List<Store>> getNearStores (@RequestParam Double latitude, @RequestParam Double longitude) {
@@ -281,7 +275,7 @@ public class StoreController {
 
 	@GetMapping("/info")
 	public ResponseEntity<StoreInfoResponse> getStoreInfoDetails( @CookieValue(name = "jwtToken") String cookieValue) {
-		Integer storeSeq = -1;
+		Integer storeSeq;
 		
 		logger.info(cookieValue);
 		if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
@@ -306,5 +300,18 @@ public class StoreController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
+
+	@GetMapping("/logout")
+		public ResponseEntity<String> logout(HttpServletResponse response) {
+    // 쿠키 삭제
+    Cookie cookie = new Cookie("jwtToken", null);
+    cookie.setPath("/");
+    cookie.setMaxAge(0); // 쿠키 만료 시간을 0으로 설정하여 삭제
+
+    response.addCookie(cookie);
+
+    // 로그아웃 응답
+    return ResponseEntity.ok("로그아웃");
+}
 
 }

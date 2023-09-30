@@ -6,8 +6,12 @@ import project.app.c109.backendapp.keyword.domain.entity.Keyword;
 import project.app.c109.backendapp.keyword.repository.KeywordRepository;
 import project.app.c109.backendapp.review.domain.entity.Review;
 import project.app.c109.backendapp.review.repository.ReviewRepository;
+import project.app.c109.backendapp.reviewkeyword.entity.ReviewKeyword;
+import project.app.c109.backendapp.reviewkeyword.repository.ReviewKeywordRepository;
+import project.app.c109.backendapp.reviewkeyword.service.ReviewKeywordService;
 
-import java.security.Key;
+import javax.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,53 +20,42 @@ import java.util.stream.Collectors;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final KeywordRepository keywordRepository;
+
+    private final ReviewKeywordRepository reviewKeywordRepository;
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, KeywordRepository keywordRepository) {
+    public ReviewService(ReviewRepository reviewRepository, ReviewKeywordRepository reviewKeywordRepository) {
         this.reviewRepository = reviewRepository;
-        this.keywordRepository = keywordRepository;
+        this.reviewKeywordRepository = reviewKeywordRepository;
     }
 
     public void createReview(Integer storeSeq, List<Integer> selectedKeywordSeqList) {
         for (Integer keywordSeq : selectedKeywordSeqList) {
-            Keyword keyword = keywordRepository.findByKeywordSeq(keywordSeq);
-            Review review = Review.builder()
-                    .storeSeq(storeSeq)
-                    .keyword(keyword)
-                    .build();
-            reviewRepository.save(review);
+
+            ReviewKeyword reviewKeyword = reviewKeywordRepository.findByReviewKeywordSeq(keywordSeq)
+                    .orElseThrow(()-> new EntityNotFoundException());
+
+            boolean isAlready = reviewRepository.existsByStoreSeqAndReviewKeyword(storeSeq, reviewKeyword);
+
+            if (isAlready) {
+                Review review = reviewRepository.findByStoreSeqAndReviewKeyword(storeSeq, reviewKeyword);
+                //    public Review findByStoreSeqAndReviewKeywordReviewKeywordSeq(Integer storeSeq, Integer reviewKeywordSeq);
+                //    여기서 파라미터가 일치하지 않아서 자꾸 에러가 남. keywordSeq를 그대로 넣으면 안 되는 것이었다...흑...
+                review.setReviewKeywordCount(review.getReviewKeywordCount()+1);
+                reviewRepository.save(review);
+            } else {
+                Review review = Review.builder()
+                        .storeSeq(storeSeq)
+                        .reviewKeyword(reviewKeyword)
+                        .reviewKeywordCount(1)
+                        .build();
+                reviewRepository.save(review);
+            }
         }
     }
 
-    public class KeywordReviewCount {
-        private Keyword keyword;
-        private Long reviewCount;
-
-        public KeywordReviewCount(Keyword keyword, Long reviewCount) {
-            this.keyword = keyword;
-            this.reviewCount = reviewCount;
-        }
-
-        public Keyword getKeyword() {
-            return keyword;
-        }
-
-        public Long getReviewCount() {
-            return reviewCount;
-        }
-    }
-
-    public List<KeywordReviewCount> getKeywordReviewCounts(Integer storeSeq) {
+    public List<Review> getReviewsByStoreSeqOrderByReviewKeywordCount(Integer storeSeq) {
         List<Review> reviews = reviewRepository.findByStoreSeq(storeSeq);
-        Map<Keyword, Long> keywordReviewCounts = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getKeyword, Collectors.counting()));
-
-        List<KeywordReviewCount> sortedKeywordReviewCounts = keywordReviewCounts.entrySet()
-                .stream()
-                .sorted(Map.Entry.<Keyword, Long>comparingByValue().reversed())
-                .map(entry -> new KeywordReviewCount(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
-
-        return sortedKeywordReviewCounts;
+        reviews.sort(Comparator.comparing(Review::getReviewKeywordCount).reversed());
+        return reviews;
     }
 }

@@ -36,7 +36,7 @@ export default function List({ navigation, route }) {
     return (
       <Shop
         PressFunction={() => {
-          navigation.navigate("Shop", { data:d });
+          navigation.navigate("Shop", { storeSeq:d.storeSeq });
         }}
         key={index}
         data={d}

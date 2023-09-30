@@ -24,7 +24,7 @@ export default function Gift({ data, usable, onPress }) {
           <View style={styles.body}>
             <Image style={styles.image} source={data.image} />
             <View style={styles.contents}>
-              <Text style={styles.shopName}>{data.shopname}</Text>
+              <Text style={styles.shopName}>{data[0].storeName}</Text>
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
                 {data["from"]
@@ -57,7 +57,7 @@ export default function Gift({ data, usable, onPress }) {
                 navigation={navigation}
                 content={"재주문"}
                 pressFuction={() => {
-                  navigation.navigate("MakeCard", { selectedProducts: data });
+                  navigation.navigate("Shop", { storeSeq: data.storeSeq });
                 }}
               />
             </View>

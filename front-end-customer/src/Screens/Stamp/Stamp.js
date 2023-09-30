@@ -8,6 +8,7 @@ import SubTitle from "../../Components/SubTitle/SubTitle";
 export default function Stamp({ route, navigation }) {
   const storeName = route.params.storeName;
   const stampCount = route.params.stampCount;
+  const stampPage = route.params.stampPage;
   const image = route.params.image;
   return (
     <>
@@ -21,9 +22,10 @@ export default function Stamp({ route, navigation }) {
             <View style={styles.stampBox}>
               <SubTitle subTitle={"현재 적립 소복소복"} customStyles={{ color: "#FFBF46" }} />
               <Text style={styles.stampCount}>
-                {stampCount} <Text style={styles.stampTotal}>/10</Text>
+                {stampCount==0? 10 : stampCount} <Text style={styles.stampTotal}>/10</Text>
               </Text>
               <Image style={styles.stampImage} source={image} />
+              <Text>- {stampPage} -</Text>
             </View>
           }
         />

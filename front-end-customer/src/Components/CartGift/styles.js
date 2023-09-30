@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 
   counter : {
     flexDirection : 'row',
-    alignItems : 'center',
+    alignItems : 'flex-end',
     justifyContent : 'space-evenly',
   },
   

@@ -10,7 +10,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableOpacity,
-  BackHandler,
 } from "react-native";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";

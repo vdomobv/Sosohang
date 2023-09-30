@@ -14,10 +14,6 @@ export default function StampList({ navigation }) {
   const [userStamp, setUserStamp] = useState();
   const [userStampList, setUserStampList] = useState([]);
 
-  // const stampList = StampListDummy.map((data, index) => {
-  //   return <Coupon key={index} data={data} navigation={navigation} />;
-  // });
-
   const stampData = userStampList.map((data, index) => {
     console.log('test: ', userStamp[data]);
     return (

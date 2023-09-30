@@ -8,16 +8,20 @@ import SquareImage from "../../Components/SquareImage/SquareImage";
 export default function WaitingPayment({ navigation, route }) {
   const [paymentResult, setPaymentResult] = useState(route.params.result);
   const totalPrice = route.params.totalPrice;
-  const productList = route.params.groupedProducts;
+  const productList = route.params.groupedByStore;
   const to = route.params.to;
   const result = route.params.result;
 
-  const groupedName = Object.keys(productList);
+  const storeNames = []
+  for (let key in productList) {
+    storeNames.push(productList[key][0].storeName)
+  }
+
   const data = {
     pg: "tosspayments",
     pay_method: "card",
-    merchant_uid: `test_${new Date().getTime()}`,
-    name: `${groupedName.join(", ")}`,
+    merchant_uid: `product_${new Date().getTime()}`,
+    name: `${storeNames.join(", ")}`,
     amount: totalPrice,
     currency: "KRW",
     language: "ko",

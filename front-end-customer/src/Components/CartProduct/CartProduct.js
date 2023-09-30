@@ -7,50 +7,17 @@ import Checkbox from "expo-checkbox";
 
 export default function CartProduct({
   data,
-  productCheck,
-  onCheckChange,
-  updateTotalPrice,
-  totalPrice,
-  setSelectedProducts,
+  checked,
+  onProductCheckChange,
 }) {
-  const [isChecked, setIsChecked] = useState(productCheck);
-  const [productCount, setProductCount] = useState(data.quantity);
-
-  // useEffect(() => {
-  //   setIsChecked(productCheck);
-  // }, [productCheck]);
-
-  // useEffect(() => {
-  //   if (isChecked) {
-  //     setSelectedProducts((prevSet) => new Set([...prevSet, product]));
-  //   } else {
-  //     setSelectedProducts((prevSet) => {
-  //       const newSet = new Set(prevSet);
-  //       newSet.delete(product);
-  //       return newSet;
-  //     });
-  //   }
-  // }, [isChecked]);
-
   return (
     <View style={styles.container}>
       <Checkbox
         style={styles.checkBox}
-        // totalPrice={totalPrice}
-        value={false}
-        // onValueChange={() => {
-        //   const newCheck = !productCheck;
-        //   setIsChecked(newCheck);
-        //   onCheckChange(newCheck);
-        //   if (newCheck) {
-        //     updateTotalPrice(productCount * product.price);
-        //   } else {
-        //     updateTotalPrice(-productCount * product.price);
-        //   }
-        // }}
-        // color={isChecked ? "#4630EB" : undefined}
+        value={checked}
+        onValueChange={onProductCheckChange}
       />
-      <Image style={{ flex: 2, marginRight: 10 }} source={data.product.productImage}></Image>
+      <Image style={{ flex: 2, marginRight: 10 }} source={require('assets/images/bread.png')}></Image>
       <View style={{ flex: 4 }}>
         <Text style={[styles.textBold, { marginTop: 5 }]}>{data.product.productName}</Text>
         <Text style={styles.price}>{data.product.productPrice} 원</Text>
@@ -60,28 +27,20 @@ export default function CartProduct({
             name="remove-circle-outline"
             style={styles.circleIcon}
             onPress={() => {
-              if (productCount > 1) {
-                setProductCount(productCount - 1);
-                if (isChecked) {
-                  updateTotalPrice(-product.price);
-                }
-              }
+              // TODO: Uncomment and fix this part
             }}
           />
-          <Text style={styles.count}>{productCount}</Text>
+          <Text style={styles.count}>{data.quantity}</Text>
           <Ionicons
             name="add-circle-outline"
             style={styles.circleIcon}
             onPress={() => {
-              setProductCount(productCount + 1);
-              if (isChecked) {
-                updateTotalPrice(+data.product.productPrice);
-              }
+              // TODO: Uncomment and fix this part
             }}
           />
         </View>
         <Text style={[styles.textBold, { textAlign: "right", marginRight: 10 }]}>
-          {productCount * data.product.productPrice} 원
+          {data.quantity * data.product.productPrice} 원
         </Text>
       </View>
     </View>

@@ -16,6 +16,7 @@ import Line from "../../Components/Line/Line";
 import Product from "../../Components/Product/Product";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import DibButton from "../../Components/DibButton/DibButton"
+import Loading from "../../Components/Loading/Loading"
 
 import ShopDummy from "../../Dummys/Shop/ShopDummy";
 
@@ -39,63 +40,7 @@ export default function Shop({ navigation, route }) {
   const [dibState, setDibState] = useState();
   const [product, setProduct] = useState([]);
   const [saleProduct, setSaleProduct] = useState([]);
-
-  useEffect(() => {
-    // 찜 상태 불러오기
-    const fetchData = async () => {
-      const result = await getStoreDibData(tempUser, storeSeq);
-      setDibState(result);
-    };
-    fetchData();
-  }, [dibState])
-
-  useEffect(() => {
-    // 키워드 불러오기
-    const getKeywords = async () => {
-      try {
-        const response = await axios.get(
-          `http://j9c109.p.ssafy.io:8081/api/v1/store/keywordlist/${storeSeq}`
-        );
-        setKeywords(response.data);
-      } catch (error) {
-        console.error("Error fetching store data:", error);
-      }
-    };
-    getKeywords();
-
-    // 상점, 상품 데이터 불러오기
-    const fetchData = async () => {
-      console.log(storeSeq)
-      const storeResult = await getStoreData(storeSeq)
-      const result = await getProduct(storeSeq);
-
-      // 상품 데이터, 세일 상품 데이터 분리
-      if (Array.isArray(result)) {
-        const regularProducts = result.filter(data => data.productDcrate === null);
-        const saleProducts = result.filter(data => data.productDcrate !== null);
-
-        setProduct(regularProducts);
-        setSaleProduct(saleProducts);
-      }
-
-      setStoreData(storeResult);
-      console.log('get check : ', storeResult)
-      console.log('set check : ', storeResult)
-    };
-
-    fetchData();
-  }, []);
-
   const [storeData, setStoreData] = useState();
-
-  // 상품 선택 배열, 상품 개수 배열 생성
-  useEffect(() => {
-    setCheckedProducts(product.map(() => false))
-    setProductsAmount(product.map(() => 1))
-    setCheckedSaleProducts(saleProduct.map(() => false))
-    setSaleProductAmount(saleProduct.map(() => 1))
-  }, [product])
-
   const [keywords, setKeywords] = useState([])
   const [checkedProducts, setCheckedProducts] = useState([])
   const [productsAmount, setProductsAmount] = useState([]);
@@ -106,6 +51,55 @@ export default function Shop({ navigation, route }) {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [shouldNavigate, setShouldNavigate] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const getKeywords = async () => {
+    try {
+      const response = await axios.get(
+        `http://j9c109.p.ssafy.io:8081/api/v1/store/keywordlist/${storeSeq}`
+      );
+      setKeywords(response.data);
+    } catch (error) {
+      console.error("Error fetching store data:", error);
+    }
+  };
+
+  const fetchData = async () => {
+    console.log(storeSeq)
+    const storeResult = await getStoreData(storeSeq)
+    const result = await getProduct(storeSeq);
+    // 찜 상태 불러오기
+    const dibData = await getStoreDibData(tempUser, storeSeq);
+    setDibState(dibData);
+
+    // 상품 데이터, 세일 상품 데이터 분리
+    if (Array.isArray(result)) {
+      const regularProducts = result.filter(data => data.productDcrate === null);
+      const saleProducts = result.filter(data => data.productDcrate !== null);
+
+      setProduct(regularProducts);
+      setSaleProduct(saleProducts);
+    }
+
+    console.log('get check : ', storeResult)
+    setStoreData(storeResult);
+  };
+
+
+  useEffect(() => {
+    // 키워드 불러오기
+    getKeywords();
+    // 상점, 상품 데이터 불러오기
+    fetchData();
+  }, []);
+
+  // 상품 선택 배열, 상품 개수 배열 생성
+  useEffect(() => {
+    setCheckedProducts(product.map(() => false))
+    setProductsAmount(product.map(() => 1))
+    setCheckedSaleProducts(saleProduct.map(() => false))
+    setSaleProductAmount(saleProduct.map(() => 1))
+  }, [product])
+
 
   // 상품 목록
   const productList = product.map((data, index) => {
@@ -167,7 +161,7 @@ export default function Shop({ navigation, route }) {
           const temp = {
             ...data,
             count: productsAmount[index],
-            storeName: storeData.storeName
+            storeName : storeData.storeName
           };
           newSelectedProducts.push(temp);
         }
@@ -179,7 +173,7 @@ export default function Shop({ navigation, route }) {
           const temp = {
             ...data,
             count: saleProductAmount[index],
-            storeName: storeData.storeName,
+            storeName : storeData.storeName
           };
           newSelectedProducts.push(temp);
         }
@@ -218,14 +212,15 @@ export default function Shop({ navigation, route }) {
       >
         <View style={styles.header}>
           <View style={styles.title}>
-            <Title title={storeData.storeName} />
+            <Title title={storeData ? storeData.storeName : 'Loading...'} />
           </View>
-          <DibButton userSeq={tempUser} storeSeq={storeData.storeSeq} dibState={dibState} setDibState={setDibState} />
+          <DibButton userSeq={tempUser} storeSeq={storeData ? storeData.storeSeq : null} dibState={dibState} setDibState={setDibState} />
         </View>
-        <Image source={ShopDummy.imageUrl} style={styles.image} />
+
+        <Image source={require("assets/images/bread.png")} style={styles.image} />
         <View style={styles.content}>
           <View style={styles.head}>
-            <SectionTitle content={storeData.category.categoryName} />
+            <SectionTitle content={storeData ? storeData.category.categoryName : 'Loading...'} />
             <View style={styles.keywords}>
               {keywords.map((keyword, index) => {
                 return (
@@ -239,35 +234,35 @@ export default function Shop({ navigation, route }) {
           <View style={styles.body}>
             <Info
               logo={<Ionicons color={"#575761"} name="map-outline" size={20} />}
-              data={storeData.storeLocation || "준비중이에요 :)"}
+              data={storeData ? storeData.storeLocation : "Loading.. :)"}
             />
             <Info
               logo={
                 <Ionicons color={"#575761"} name="call-outline" size={20} />
               }
-              data={storeData.storeTell || "준비중이에요 :)"}
+              data={storeData ? storeData.storeTell : "Loading.. :)"}
             />
             <Info
               logo={
                 <Ionicons color={"#575761"} name="calendar-outline" size={20} />
               }
-              data={storeData.storeHoliday || "준비중이에요 :)"}
+              data={storeData ? storeData.storeHoliday : "Loading.. :)"}
             />
             <Info
               logo={
                 <Ionicons color={"#575761"} name="time-outline" size={20} />
               }
-              data={storeData.storeWorkhour || "준비중이에요 :)"}
+              data={storeData ? storeData.storeWorkhour : "Loading.. :)"}
             />
             <Info
               logo={
                 <Ionicons color={"#575761"} name="home-outline" size={20} />
               }
-              data={storeData.storeUrl || "준비중이에요 :)"}
+              data={storeData ? storeData.storeUrl : "Loading.. :)"}
             />
             <Info
               logo={<Ionicons color={"#575761"} name="car-outline" size={20} />}
-              data={storeData.storeParkinglot || "준비중이에요 :)"}
+              data={storeData ? storeData.storeParkinglot : "Loading.. :)"}
             />
             <Info
               logo={
@@ -277,7 +272,7 @@ export default function Shop({ navigation, route }) {
                   size={20}
                 />
               }
-              data={storeData.storeExtraInfo || "준비중이에요 :)"}
+              data={storeData ? storeData.storeExtraInfo : "준비중이에요 :)"}
             />
           </View>
         </View>

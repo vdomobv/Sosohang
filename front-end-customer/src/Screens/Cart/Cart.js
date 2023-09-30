@@ -15,19 +15,18 @@ const dummy = CartDummy;
 export default function Cart({ navigation }) {
   const tempUser = 1;
   const [checkAll, setCheckAll] = useState(false);
-  const [checkedProduct, setCheckedProduct] = useState();
-  const [checkedShop, setCheckedShop] = useState();
-  const [checkedItems, setCheckedItems] = useState(dummy.map(() => checkAll));
+  const [checkedProduct, setCheckedProduct] = useState({});
+  const [checkedShop, setCheckedShop] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
-  const [selectedProducts, setSelectedProducts] = useState(new Set());
   const [cartData, setCartData] = useState([])
   const [groupedData, setGroupedData] = useState({})
+  const [selectedProducts, setSelectedProducts] = useState([])
+
 
   // 장바구니 데이터 조회
   useEffect(() => {
     const fetchData = async () => {
       const result = await getCartData(tempUser);
-      // console.log(result);
       setCartData(result);
     };
 
@@ -66,21 +65,42 @@ export default function Cart({ navigation }) {
 
   // 전체 선택
   useEffect(() => {
-    setCheckedItems(dummy.map(() => checkAll));
+    const newCheckedShop = { ...checkedShop };
+    const newCheckedProduct = { ...checkedProduct };
+    Object.keys(newCheckedShop).forEach((key) => {
+      newCheckedShop[key] = checkAll;
+      newCheckedProduct[key] = newCheckedProduct[key].map(() => checkAll);
+    });
+    setCheckedShop(newCheckedShop);
+    setCheckedProduct(newCheckedProduct);
   }, [checkAll]);
 
-  // 모두 선택했을 때, 전체 선택도 체크되도록
+  // 총 결제 금액, 선택 상품 변경
   useEffect(() => {
-    const allShopsChecked = checkedItems.every((val) => val === true);
-    if (allShopsChecked) {
-      setCheckAll(true);
-    }
-  }, [checkedItems]);
+    Object.keys(checkedProduct).map((storeSeq) => {
+      const temp = checkedProduct[storeSeq];
+      temp.map((value, index) => {
+        if (value) {
+          const tempProductData = groupedData[storeSeq][index].product;
+          console.log(tempProductData);
+          tempProductData['storeSeq'] = storeSeq
+          tempProductData['count'] = groupedData[storeSeq][index].quantity;
 
-  // 총 결제 금액 변경
-  const updateTotalPrice = (priceChange) => {
-    setTotalPrice((prevTotal) => prevTotal + priceChange);
-  };
+          const newSelectedProduct = [...selectedProducts, tempProductData]
+          setSelectedProducts(newSelectedProduct);
+          const tempPrice = newSelectedProduct.reduce((acc, item) => {
+            console.log(item.product)
+            return acc + item.productPrice * item.count;
+          }, 0);
+          setTotalPrice(tempPrice);
+          console.log(newSelectedProduct);
+        } else {
+          setTotalPrice(0)
+          setSelectedProducts([]);
+        }
+      })
+    })
+  }, [checkedProduct])
 
   const renderGroupedProducts = () => {
     return Object.keys(groupedData).map((storeSeq) => {
@@ -88,19 +108,20 @@ export default function Cart({ navigation }) {
       return (
         <CartShop
           key={storeSeq}
+          storeSeq={storeSeq}
           data={storeCart}
-
           checkedShop={checkedShop}
           checked={checkedShop[storeSeq]}
-          checkedProduct={checkedProduct[storeSeq]}
-          // totalPrice={productPrice * storeCart.quantity}
-          updateTotalPrice={updateTotalPrice}
-          onCheckChange={(storeSeq, checked) => {
-            const newCheckedProduct = [...checkedProduct];
-            newCheckedProduct[storeSeq][cartSeq] = checked;
+          checkedProduct={checkedProduct}
+          setCheckedProduct={setCheckedProduct}
+          onShopCheckChange={() => {
+            const newCheckedShop = { ...checkedShop };
+            newCheckedShop[storeSeq] = !checkedShop[storeSeq];
+            setCheckedShop(newCheckedShop);
+            const newCheckedProduct = { ...checkedProduct };
+            newCheckedProduct[storeSeq] = newCheckedProduct[storeSeq].map(() => newCheckedShop[storeSeq]);
             setCheckedProduct(newCheckedProduct);
           }}
-          setSelectedProducts={setSelectedProducts}
         />
       )
 
@@ -121,22 +142,7 @@ export default function Cart({ navigation }) {
                 onValueChange={() => {
                   const newCheck = !checkAll;
                   setCheckAll(newCheck);
-                  if (newCheck) {
-                    const totals = Object.keys(groupedData).map(key => {
-                      const productsInShop = groupedData[key];
-                      return productsInShop.reduce((acc, data) => {
-                        return acc + data.quantity * data.product.productPrice;
-                      }, 0);
-                    });
-
-                    // totals 배열의 합계를 계산하십시오.
-                    const grandTotal = totals.reduce((acc, curr) => acc + curr, 0);
-                    setTotalPrice(grandTotal);
-                  } else {
-                    setTotalPrice(0);
-                  }
                 }}
-                color={checkAll ? "#4630EB" : undefined}
               />{" "}
               전체 선택
             </Text>
@@ -162,7 +168,7 @@ export default function Cart({ navigation }) {
               const selectedProductsArray = Array.from(selectedProducts);
               if (selectedProductsArray.length) {
                 navigation.navigate("MakeCard", {
-                  selectedProducts: selectedProductsArray,
+                  selectedProducts: selectedProducts,
                   totalPrice: totalPrice,
                 });
               } else {

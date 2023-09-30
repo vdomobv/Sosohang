@@ -18,7 +18,6 @@ import SelectImage from "../../Components/SelectImage/SelectImage";
 
 export default function MakeCard({ route, navigation }) {
   const { selectedProducts, totalPrice } = route.params;
-
   const [selectedButton, setSelectedButton] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null); // 선택된 카드 이미지
   const [message, setMessage] = useState(""); // 입력된 텍스트를 관리
@@ -77,7 +76,7 @@ export default function MakeCard({ route, navigation }) {
     acc[key].push(product);
     return acc;
   }, {});
-  console.log(groupedByStore)
+  console.log('groupedByStore : ', groupedByStore)
 
 
   // 그룹화된 상품을 렌더링

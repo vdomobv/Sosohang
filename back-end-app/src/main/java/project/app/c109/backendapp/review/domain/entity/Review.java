@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.app.c109.backendapp.keyword.domain.entity.Keyword;
+import project.app.c109.backendapp.reviewkeyword.entity.ReviewKeyword;
 
 import javax.persistence.*;
 
@@ -22,10 +23,13 @@ public class Review {
     private Integer reviewSeq;
 
     @ManyToOne
-    @JoinColumn(name = "keyword_seq")
-    private Keyword keyword;
+    @JoinColumn(name = "review_keyword_seq")
+    private ReviewKeyword reviewKeyword;
 
     @Column(name = "store_seq")
     private Integer storeSeq;
+
+    @Column(name = "review_keyword_count")
+    private Integer reviewKeywordCount;
 
 }

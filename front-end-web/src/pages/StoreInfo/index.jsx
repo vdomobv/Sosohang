@@ -1,69 +1,106 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
-import Cookies from "js-cookie";
-import Wrapper from "./styles";
 import Header from "../../components/Header";
 import EditStoreInfo from "../../components/EditStoreInfo";
-import InputOwnerInfo from "../../components/InputOwnerInfo";
-import InputStoreIssue from "../../components/InputStoreIssue";
+import EditOwnerInfo from "../../components/EditOwnerInfo";
+import EditStoreIssue from "../../components/EditStoreIssue";
+import FileUpload from "../../components/FileUpload";
 
 function StoreInfo() {
-  const [totalStoreInfo, setTotalStoreInfo] = useState({});
+  const [storeKeywords, setStoreKeywords] = useState([]);
   const [storeInfo, setStoreInfo] = useState({});
-  const [ownerInfo, setOwnerInfo] = useState({});
   const [storeIssue, setStoreIssue] = useState({});
+  const [storeUrl, setStoreUrl] = useState("");
 
-  useEffect(() => {
-    try {
-      const token = Cookies.get("token");
-      const res = axios.post("", { token: token });
-
-      setTotalStoreInfo(res);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
-  const editTotalStoreInfo =  async() => {    
-    if(!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
-      return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.")
-    }
-    try {
-      const res = await axios.post("", {
+  /*
+  {
         storeName: storeInfo.storeName,
+        registrationNumber: storeInfo.storeRegNum,
         storeLocation: storeInfo.storeAddress,
         categorySeq: storeInfo.storeCategory,
+        storeLatitude: storeInfo.storeLatitude,
+        storeLongitude: storeInfo.storeLongitude,
         ownerTell: ownerInfo.storePhoneNum,
         storePassword: ownerInfo.storePassword,
         storeTell: storeIssue.storeCallNum,
         storeParkinglot: storeIssue.storeParkinglot,
         storeWorkhour: storeIssue.storeWorkDay,
         storeHoliday: storeIssue.storeHoliday,
-        storeUrl: storeIssue.storeUrl,
         storeExtraInfo: storeIssue.storeExtraInfo,
         selectedKeywordSeqList: storeIssue.storeKeywords,
+        storeUrl: storeUrl,
+      }
+
+      {
+  // "categorySeq": 0,
+  "selectedKeywordSeqList": [
+    0
+  ],
+  // "storeName": "string",
+  // "storeLocation": "string",
+  // "storeTell": "string",
+  // "storeParkinglot": "string",
+  // "storeWorkhour": "string",
+  // "storeHoliday": "string",
+  // "storeExtraInfo": "string",
+  "storeUrl": "string",
+  "storeImage": "string",
+  // "storeLatitude": 0,
+  // "storeLongitude": 0
+}
+   */
+
+  useEffect(() => {
+    axios
+      .get("/api/v1/store/info")
+      .then(async (res) => {
+        await axios
+          .get(`/api/v1/store/keywordlist/${res.data.store.storeSeq}`)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+        console.log("ehlsi?")
+        setStoreInfo({
+          storeName: res.data.store.storeName,
+          storeRegNum: res.data.registartionNumber,
+          storeAddress: res.data.store.storeLocation,
+          storeCategory: res.data.store.category.categorySeq,
+          storeLatitude: res.data.store.storeLatitude,
+          storeLongitude: res.data.store.storeLongitude,
+        });
+        setStoreIssue({
+          storeCallNum: res.data.store.storeTell,
+          storeParkinglot: res.data.store.storeParkinglot,
+          storeWorkDay: res.data.store.storeWorkhour,
+          storeHoliday: res.data.store.storeHoliday,
+          storeExtraInfo: res.data.store.storeExtraInfo,
+        });
+        setStoreUrl(res.data.store.storeUrl)
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  }, []);
 
   return (
     <div>
       <Header />
-      <Wrapper>
-        <form>
-          <div className="container">
-            <EditStoreInfo onChange={setStoreInfo} info={totalStoreInfo} />
-            <InputOwnerInfo onChange={setOwnerInfo} info={totalStoreInfo} />
-          </div>
-          <div>
-            <InputStoreIssue onChange={setStoreIssue} info={totalStoreInfo} />
-          </div>
-          <Button onClick={editTotalStoreInfo}>회원가입</Button>
-        </form>
-      </Wrapper>
+      <h1>상점정보</h1>
+      <form>
+        <div>
+          <EditStoreInfo />
+          <EditOwnerInfo />
+        </div>
+        <div>
+          <EditStoreIssue />
+          <FileUpload onChange={setStoreUrl} />
+        </div>
+        <Button>정보수정</Button>
+      </form>
     </div>
   );
 }

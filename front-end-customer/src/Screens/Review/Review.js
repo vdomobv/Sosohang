@@ -25,7 +25,7 @@ export default function Review({ route, navigation }) {
   const toggleKeyword = (index) => {
     const newSelectedKeywords = [...selectedKeywords];
     const selectedCount = newSelectedKeywords.filter((isSelected) => isSelected).length;
-    
+
     if (selectedCount < 3 || newSelectedKeywords[index]) {
       newSelectedKeywords[index] = !newSelectedKeywords[index];
       setSelectedKeywords(newSelectedKeywords);
@@ -42,7 +42,7 @@ export default function Review({ route, navigation }) {
         <ScrollBox style={styles.scrollBoxContainer}
           content={
             <>
-              <Box content={<Gift data={giftData} />} />
+              <Box content={<Gift data={giftData}/>} />
               <View style={styles.reviewBox}>
                 <Text style={[styles.reviewInfo, { fontSize: 21, fontWeight: 'bold' }]}>선물은 만족스러우셨나요?{'\n'}</Text>
                 <Text style={[styles.reviewInfo, { fontSize: 18, padding: 5 }]}>

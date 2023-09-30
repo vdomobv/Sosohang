@@ -50,7 +50,7 @@ public class SettlementController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			} 
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
         
         List<Settlement> settlements = settlementService.getSettlementsByStore(storeSeq);
@@ -86,8 +86,8 @@ public class SettlementController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 
-        LocalDate startDate = LocalDate.parse(startDateStr, DateTimeFormatter.ISO_DATE);
-        LocalDate endDate = LocalDate.parse(endDateStr, DateTimeFormatter.ISO_DATE);
+        LocalDateTime startDate = LocalDateTime.parse(startDateStr, DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime endDate = LocalDateTime.parse(endDateStr, DateTimeFormatter.ISO_DATE_TIME);
 
         List<Settlement> settlements = settlementService.getSettlementsByStoreAndDate(storeSeq, startDate, endDate);
 

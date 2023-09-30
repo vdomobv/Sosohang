@@ -32,23 +32,43 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
   },
-  button: {
+
+  shopname: {
     // backgroundColor: '#E6FEDA',
     backgroundColor: '#46C27D',
     height: 40,
     padding: 5,
     borderRadius: 30,
     margin: 10,
+    marginHorizontal: 40,
+    marginVertical: 20
     // elevation: 5, // Android shadow
   },
 
-  buttonText: {
+  shopnameText: {
     textAlign: 'center',
     fontSize: 20,
     // fontWeight: 'bold',
-    color:'white'
+    color: 'white'
   },
 
+  reviewKeyword: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+
+  keywordButton: {
+    // backgroundColor: '#E6FEDA', 
+    borderColor: '#46C27D',
+    borderWidth: 1,
+    padding: 8,
+    paddingHorizontal: 15,
+    borderRadius: 30,
+    margin: 5,
+    marginHorizontal: 5,
+    fontSize: 16
+  },
 
 });
 

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     // margin : 'auto',
     // borderRadius : 10,
     // backgroundColor : "#E6FEDA",
-    fontSize : 20,
+    // fontSize : 25,
   },
 
 });

@@ -35,14 +35,13 @@ export default function Review({ route, navigation }) {
                   리뷰는 상점 사장님들에게
                   소중한 의견으로 전달됩니다.</Text>
                 <TouchableOpacity
-                  style={[styles.button,
-                  { marginHorizontal: 40, marginVertical: 20 }]}
+                  style={styles.shopname}
                 // 클릭시 각 상점 상세페이지로 이동?
                 >
-                  <Text style={styles.buttonText}>{giftData.shopname}</Text>
+                  <Text style={styles.shopnameText}>{giftData.shopname}</Text>
                 </TouchableOpacity>
 
-                {/* 카테고리 별로 다른 review 키워드 나오게 */}
+                {/* 미선택 : 테두리 -> 선택 : 채운 색깔 */}
                 {/* <ReviewBar content={ */}
 
                 {/* <View style={styles.reviewKeyword}>
@@ -50,14 +49,24 @@ export default function Review({ route, navigation }) {
                 </View> */}
 
                 <View style={styles.reviewKeyword}>
+
                   {reviewKeyword.map((keyword, index) => (
-                    <Text style={{ backgroundColor: '#E6FEDA', padding:10, borderRadius:20, margin: 5 }}
-                    key={index}> {keyword}</Text>
+                    // <Text style={{ backgroundColor: '#E6FEDA', padding: 10, paddingHorizontal: 15, borderRadius: 20, margin: 5, marginHorizontal: 5, fontSize : 16 }}
+                    <Text style={styles.keywordButton}
+                      key={index}> {keyword}</Text>
                   ))}
                 </View>
 
                 {/* } /> */}
+
+                {/* 리뷰 남기기 버튼 */}
+
+                <TouchableOpacity style={styles.touchableOpacity}>
+                  <Text>리뷰 남기기</Text>
+                </TouchableOpacity>
+
               </View>
+
             </>
           } />
       </View>

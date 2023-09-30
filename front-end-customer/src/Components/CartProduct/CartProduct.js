@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import styles from "./styles";
 import { View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";

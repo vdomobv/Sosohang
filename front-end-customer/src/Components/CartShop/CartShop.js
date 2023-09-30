@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import styles from "./styles";
 import { View, Text } from "react-native";
 import Checkbox from "expo-checkbox";

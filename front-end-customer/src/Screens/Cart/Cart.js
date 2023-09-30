@@ -2,15 +2,12 @@ import styles from "./styles";
 import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useEffect, useState } from "react";
 
-import CartDummy from "../../Dummys/Cart/CartDummy";
-
 import Checkbox from "expo-checkbox";
 import Tabs from "../../Components/Tabs/Tabs";
 import CartShop from "../../Components/CartShop/CartShop";
 import Title from "../../Components/Title/Title";
 
 import { getCartData } from "../../Utils/CartAPI";
-const dummy = CartDummy;
 
 export default function Cart({ navigation }) {
   const tempUser = 1;

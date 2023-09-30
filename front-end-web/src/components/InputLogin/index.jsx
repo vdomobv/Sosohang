@@ -7,7 +7,6 @@ import Wrapper from "./styles";
 
 function InputLogin() {
   const navigate = useNavigate();
-  const navigate = useNavigate();
   const [storeRegNum, setStoreRegNum] = useState(""); // 상점 사업자등록번호
   const [storePassword, setStorePassword] = useState(""); // 상점 비밀번호
   const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이는지 여부

@@ -12,30 +12,37 @@ function SignUp() {
   const [storeInfo, setStoreInfo] = useState({});
   const [ownerInfo, setOwnerInfo] = useState({});
   const [storeIssue, setStoreIssue] = useState({});
+  const [storeUrl, setStoreUrl] = useState("");
 
   const handleSignup = async () => {
     if (!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
       return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
     }
-    try {
-      const res = await axios.post("/api/v1/store/register", {
+
+    await axios
+      .post("/api/v1/store/register", {
         storeName: storeInfo.storeName,
         registrationNumber: storeInfo.storeRegNum,
         storeLocation: storeInfo.storeAddress,
         categorySeq: storeInfo.storeCategory,
+        storeLatitude: storeInfo.storeLatitude,
+        storeLongitude: storeInfo.storeLongitude,
         ownerTell: ownerInfo.storePhoneNum,
         storePassword: ownerInfo.storePassword,
         storeTell: storeIssue.storeCallNum,
         storeParkinglot: storeIssue.storeParkinglot,
         storeWorkhour: storeIssue.storeWorkDay,
         storeHoliday: storeIssue.storeHoliday,
-        storeUrl: storeIssue.storeUrl,
         storeExtraInfo: storeIssue.storeExtraInfo,
         selectedKeywordSeqList: storeIssue.storeKeywords,
+        storeUrl: storeUrl,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   return (
@@ -49,7 +56,7 @@ function SignUp() {
           </div>
           <div>
             <InputStoreIssue onChange={setStoreIssue} />
-            <FileUpload />
+            <FileUpload onChange={setStoreUrl} />
           </div>
           <Button onClick={handleSignup}>회원가입</Button>
         </form>

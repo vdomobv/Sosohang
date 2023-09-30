@@ -24,8 +24,8 @@ public class StoreUpdateRequest {
     @Nullable
     private String storeTell;
 
-    @Nullable
-    private String ownerTell;
+    // @Nullable
+    // private String ownerTell;
 
     @Nullable
     private String storeParkinglot;

@@ -177,9 +177,9 @@ public class StoreService {
 		if (storeUpdateRequest.getStoreTell() != null) {
 			store.setStoreTell(storeUpdateRequest.getStoreTell());
 		}
-		if (storeUpdateRequest.getOwnerTell() != null) {
-			store.setOwnerTell(storeUpdateRequest.getOwnerTell());
-		}
+		// if (storeUpdateRequest.getOwnerTell() != null) {
+		// 	store.setOwnerTell(storeUpdateRequest.getOwnerTell());
+		// }
 		if (storeUpdateRequest.getStoreParkinglot() != null) {
 			store.setStoreParkinglot(storeUpdateRequest.getStoreParkinglot());
 		}

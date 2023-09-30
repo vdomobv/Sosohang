@@ -26,7 +26,6 @@ import Loading from "../../Components/Loading/Loading";
 import CustomTooltip from "../../Components/CustomTooltips/CustomTooltips";
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";
 import Alarm from "../../Components/Alarm/Alarm";
-import Title from "../../Components/Title/Title";
 import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 // dummys

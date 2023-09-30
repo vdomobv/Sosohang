@@ -19,7 +19,6 @@ export default function Cart({ navigation }) {
   const [groupedData, setGroupedData] = useState({})
   const [selectedProducts, setSelectedProducts] = useState([])
 
-
   // 장바구니 데이터 조회
   const fetchData = async () => {
     const result = await getCartData(tempUser);
@@ -107,6 +106,7 @@ export default function Cart({ navigation }) {
           key={storeSeq}
           storeSeq={storeSeq}
           data={storeCart}
+          tempUser={tempUser}
           checkedShop={checkedShop}
           checked={checkedShop[storeSeq]}
           checkedProduct={checkedProduct}
@@ -119,6 +119,7 @@ export default function Cart({ navigation }) {
             newCheckedProduct[storeSeq] = newCheckedProduct[storeSeq].map(() => newCheckedShop[storeSeq]);
             setCheckedProduct(newCheckedProduct);
           }}
+          fetchData={fetchData}
         />
       )
 
@@ -146,7 +147,6 @@ export default function Cart({ navigation }) {
             <TouchableOpacity onPress={() => {
               if (selectedProducts.length > 0) {
                 selectedProducts.map((data) => {
-                  console.log(data.productSeq)
                   deleteCartData(tempUser, data.productSeq)
                 })
                 fetchData();

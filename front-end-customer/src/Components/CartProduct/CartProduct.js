@@ -1,13 +1,22 @@
 import styles from "./styles";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
+import { updateQuantity } from "../../Utils/CartAPI";
 
 export default function CartProduct({
   data,
   checked,
   onProductCheckChange,
+  callbackUpdateQuantity,
+  tempUser,
+  fetchData
 }) {
+  const fetchUpdateQuantity = async (productSeq, quantity) => {
+    await updateQuantity(tempUser, productSeq, quantity)
+    fetchData();
+  }
+
   return (
     <View style={styles.container}>
       <Checkbox
@@ -25,7 +34,11 @@ export default function CartProduct({
             name="remove-circle-outline"
             style={styles.circleIcon}
             onPress={() => {
-              // TODO: Uncomment and fix this part
+              if (data.quantity > 1) {
+                fetchUpdateQuantity(data.product.productSeq, -1)
+              } else {
+                Alert.alert('수량은 한개 미만으로 설정할 수 없습니다.')
+              }
             }}
           />
           <Text style={styles.count}>{data.quantity}</Text>
@@ -33,7 +46,7 @@ export default function CartProduct({
             name="add-circle-outline"
             style={styles.circleIcon}
             onPress={() => {
-              // TODO: Uncomment and fix this part
+              fetchUpdateQuantity(data.product.productSeq, 1)
             }}
           />
         </View>

@@ -12,6 +12,8 @@ export default function CartShop({
   checkedProduct,
   setCheckedProduct,
   storeSeq,
+  fetchData,
+  tempUser
 }) {
   if (checkedProduct !== undefined) {
     return (
@@ -30,6 +32,7 @@ export default function CartShop({
               if (checkedProduct[storeSeq] !== undefined) {
                 return (
                   <CartProduct
+                    tempUser={tempUser}
                     key={d.cartSeq}
                     data={d}
                     checked={checkedProduct[storeSeq][index]}
@@ -39,6 +42,7 @@ export default function CartShop({
                       newCheckedProduct[storeSeq][index] = newValue;
                       setCheckedProduct(newCheckedProduct)
                     }}
+                    fetchData={fetchData}
                   />
                 );
               }

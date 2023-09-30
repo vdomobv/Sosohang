@@ -43,7 +43,7 @@ public class SettlementService {
     public List<Settlement> getSettlementsByStore(Integer storeSeq) {
         return settlementRepository.findByStoreStoreSeq(storeSeq);
     }
-    public List<Settlement> getSettlementsByStoreAndDate(Integer storeSeq, LocalDate startDate, LocalDate endDate) {
+    public List<Settlement> getSettlementsByStoreAndDate(Integer storeSeq, LocalDateTime startDate, LocalDateTime endDate) {
         return settlementRepository.findByStoreStoreSeqAndSettlementAddedDateBetween(storeSeq, startDate, endDate);
     }
 }

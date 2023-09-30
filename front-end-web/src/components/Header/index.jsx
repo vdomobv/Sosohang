@@ -1,10 +1,39 @@
-import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
 import Wrapper from './styles';
+import axios from 'axios';
 
 function Header() {
-  const auth = false;
+  const [auth, setAuth] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("/api/v1/store/token_test")
+      .then((res) => {
+        console.log(res.data)
+        if(res.data === true) {
+          setAuth(true);
+        } else {
+          setAuth(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }, [])
+
+  const handleLogout = () => {
+    axios
+      .get("/api/v1/store/logout")
+      .then((res) => {
+        navigate("/")
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   return (
     <Wrapper>
@@ -18,8 +47,17 @@ function Header() {
       </Link>
       {auth ?
       <div className="links"> 
-        <NavLink to="/login">
-          만드는 중
+        <NavLink to="/storeManage" className={({ isActive }) => isActive ? 'active' : undefined}>
+          판매내역
+        </NavLink>
+        <NavLink to="/productManage" className={({ isActive }) => isActive ? 'active' : undefined}>
+          상품관리
+        </NavLink>
+        <NavLink to="/storeInfo" className={({ isActive }) => isActive ? 'active' : undefined}>
+          상점정보
+        </NavLink>
+        <NavLink onClick={handleLogout} className={({ isActive }) => isActive ? undefined : undefined}>
+          로그아웃
         </NavLink>
       </div>
       :

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.product.domain.entity.Product;
+import project.app.c109.backendapp.store.domain.entity.Store;
 
 import javax.persistence.*;
 
@@ -29,6 +30,10 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "product_seq", nullable = false)
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "store_seq")
+    private Store store;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;

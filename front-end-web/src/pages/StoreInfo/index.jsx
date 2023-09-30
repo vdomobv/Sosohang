@@ -16,7 +16,7 @@ function StoreInfo() {
 
   useEffect(() => {
     try {
-      const token = Cokkies.get("token");
+      const token = Cookies.get("token");
       const res = axios.post("", { token: token });
 
       setTotalStoreInfo(res);
@@ -55,7 +55,7 @@ function StoreInfo() {
       <Wrapper>
         <form>
           <div className="container">
-            <InputStoreInfo onChange={setStoreInfo} info={totalStoreInfo} />
+            <EditStoreInfo onChange={setStoreInfo} info={totalStoreInfo} />
             <InputOwnerInfo onChange={setOwnerInfo} info={totalStoreInfo} />
           </div>
           <div>

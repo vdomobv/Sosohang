@@ -37,8 +37,7 @@ function EditStoreInfo({ onChange, info }) {
       storeName !== "" &&
       storeRegNum !== "" &&
       storeAddress !== "" &&
-      storeCategory !== "" &&
-      isVerifiedRegNum
+      storeCategory !== ""
     ) {
       setConfirmStoreInfo(true);
     }
@@ -54,7 +53,6 @@ function EditStoreInfo({ onChange, info }) {
     storeAddress,
     storeCategory,
     confirmStoreInfo,
-    isVerifiedRegNum,
     onChange,
   ]);
 
@@ -128,14 +126,7 @@ function EditStoreInfo({ onChange, info }) {
           onCompletePost={onCompletePost}
           setIsOpenPost={setIsOpenPost}
         />
-      ) : null}
-      {isOpenRegNum ? (
-        <ModalStoreRegNum
-          regNum={storeRegNum}
-          setIsOpenRegNum={setIsOpenRegNum}
-          setIsVerifiedRegNum={setIsVerifiedRegNum}
-        />
-      ) : null}
+      ) : null} 
     </div>
   );
 }

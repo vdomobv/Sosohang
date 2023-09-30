@@ -24,6 +24,7 @@ import axios from "axios";
 import { getStoreDibData } from "../../Utils/DibAPI";
 import { getProduct } from "../../Utils/ProductAPI";
 import { getStoreData } from "../../Utils/StoreAPI";
+import { addToCart } from "../../Utils/CartAPI";
 
 const Info = ({ logo, data }) => {
   return (
@@ -64,7 +65,6 @@ export default function Shop({ navigation, route }) {
   };
 
   const fetchData = async () => {
-    console.log(storeSeq)
     const storeResult = await getStoreData(storeSeq)
     const result = await getProduct(storeSeq);
     // 찜 상태 불러오기
@@ -80,7 +80,6 @@ export default function Shop({ navigation, route }) {
       setSaleProduct(saleProducts);
     }
 
-    console.log('get check : ', storeResult)
     setStoreData(storeResult);
   };
 
@@ -145,6 +144,51 @@ export default function Shop({ navigation, route }) {
     );
   });
 
+  // 선택된 상품
+  const getSelectedProduct = () => {
+    let newSelectedProducts = [];
+
+    product.forEach((data, index) => {
+      if (checkedProducts[index]) {
+        setTotalPrice(totalPrice + productsAmount[index] * data.productPrice)
+        const temp = {
+          ...data,
+          count: productsAmount[index],
+          storeName: storeData.storeName
+        };
+        newSelectedProducts.push(temp);
+      }
+    });
+
+    saleProduct.forEach((data, index) => {
+      if (checkedSaleProducts[index]) {
+        setTotalPrice(totalPrice + saleProductAmount[index] * data.productPrice)
+        const temp = {
+          ...data,
+          count: saleProductAmount[index],
+          storeName: storeData.storeName
+        };
+        newSelectedProducts.push(temp);
+      }
+    });
+
+    return newSelectedProducts
+  }
+
+  // 장바구니에 담기
+  const putInCart = () => {
+    const t1 = checkedProducts.every((val) => val === false);
+    const t2 = checkedSaleProducts.every((val) => val === false);
+    if (t1 && t2) {
+      Alert.alert("메뉴 선택 후 장바구니에 담을 수 있습니다.");
+    } else {
+      const newSelectedProducts = getSelectedProduct();
+      newSelectedProducts.map((data) => {
+        addToCart(tempUser, data.productSeq, data.count);
+      })
+    }
+  }
+
   // 주문할 상품
   const orderProducts = () => {
     // 상품 선택 여부 확인
@@ -153,32 +197,7 @@ export default function Shop({ navigation, route }) {
     if (t1 && t2) {
       Alert.alert("메뉴 선택 후 선물할 수 있습니다.");
     } else {
-      let newSelectedProducts = [];
-
-      product.forEach((data, index) => {
-        if (checkedProducts[index]) {
-          setTotalPrice(totalPrice + productsAmount[index] * data.productPrice)
-          const temp = {
-            ...data,
-            count: productsAmount[index],
-            storeName : storeData.storeName
-          };
-          newSelectedProducts.push(temp);
-        }
-      });
-
-      saleProduct.forEach((data, index) => {
-        if (checkedSaleProducts[index]) {
-          setTotalPrice(totalPrice + saleProductAmount[index] * data.productPrice)
-          const temp = {
-            ...data,
-            count: saleProductAmount[index],
-            storeName : storeData.storeName
-          };
-          newSelectedProducts.push(temp);
-        }
-      });
-
+      const newSelectedProducts = getSelectedProduct();
       setSelectedProducts(newSelectedProducts);
       setShouldNavigate(true);
     }
@@ -293,7 +312,12 @@ export default function Shop({ navigation, route }) {
         <View style={styles.blank}></View>
       </ScrollView>
       {showButton && (
-        <View style={styles.button}>
+        <View style={styles.buttons}>
+          <CustomButton
+            customStyles={{ backgroundColor: "#FFBF46" }}
+            content={<Text style={styles.text}>장바구니</Text>}
+            pressFuction={putInCart}
+          />
           <CustomButton
             content={<Text style={styles.text}>선물하기</Text>}
             pressFuction={orderProducts}

@@ -42,11 +42,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 
-  button: {
-    height: 50,
+  buttons: {
+    flexDirection: 'row',
     position: 'absolute',
     width: '95%',
-    height: '',
     bottom: 0,
     marginVertical: 10,
     alignSelf: 'center',

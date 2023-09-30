@@ -7,7 +7,7 @@ import Tabs from "../../Components/Tabs/Tabs";
 import CartShop from "../../Components/CartShop/CartShop";
 import Title from "../../Components/Title/Title";
 
-import { getCartData } from "../../Utils/CartAPI";
+import { getCartData, deleteCartData } from "../../Utils/CartAPI";
 
 export default function Cart({ navigation }) {
   const tempUser = 1;
@@ -21,12 +21,12 @@ export default function Cart({ navigation }) {
 
 
   // 장바구니 데이터 조회
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getCartData(tempUser);
-      setCartData(result);
-    };
+  const fetchData = async () => {
+    const result = await getCartData(tempUser);
+    setCartData(result);
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -143,13 +143,24 @@ export default function Cart({ navigation }) {
               />{" "}
               전체 선택
             </Text>
-            <Text style={styles.delete}>선택 삭제</Text>
+            <TouchableOpacity onPress={() => {
+              if (selectedProducts.length > 0) {
+                selectedProducts.map((data) => {
+                  console.log(data.productSeq)
+                  deleteCartData(tempUser, data.productSeq)
+                })
+                fetchData();
+              } else {
+                Alert.alert('삭제할 상품을 선택해주세요.')
+              }
+            }}>
+              <Text style={styles.delete}>선택 삭제</Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.listBody}>
             <ScrollView style={styles.scrollList}>
               {renderGroupedProducts()}
-
             </ScrollView>
           </View>
         </View>
@@ -161,9 +172,7 @@ export default function Cart({ navigation }) {
           <TouchableOpacity
             style={styles.okay}
             onPress={() => {
-              // selectedProducts를 배열로 변환하여 전달
-              const selectedProductsArray = Array.from(selectedProducts);
-              if (selectedProductsArray.length) {
+              if (selectedProducts.length) {
                 navigation.navigate("MakeCard", {
                   selectedProducts: selectedProducts,
                   totalPrice: totalPrice,

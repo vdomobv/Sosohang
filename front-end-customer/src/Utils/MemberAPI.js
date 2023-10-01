@@ -71,3 +71,16 @@ export const getMemberData = async (memberSeq) => {
         console.error("Error fetching store data in getMemberData:", error);
     }
 }
+
+export const updateMemberNickname = async (memberSeq, newNickname) => {
+    try {
+        const response = await axios.put(
+            `http://j9c109.p.ssafy.io:8081/api/v1/member/update/${memberSeq}?newMemberNickname=${newNickname}`
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching store data in getMemberData:", error);
+    }
+}
+

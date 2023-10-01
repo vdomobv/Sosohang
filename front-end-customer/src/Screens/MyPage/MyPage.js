@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from "react-native";
 
 import Tabs from "../../Components/Tabs/Tabs";
 import Title from "../../Components/Title/Title";
@@ -19,7 +19,7 @@ import buyDummy from "../../Dummys/MyPage/BuyDummy";
 
 import { useEffect, useState } from "react";
 import { getDibData } from "../../Utils/DibAPI";
-import { logout, getMemberSeq, getMemberData } from "../../Utils/MemberAPI";
+import { logout, getMemberSeq, getMemberData, updateMemberNickname } from "../../Utils/MemberAPI";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
 const user = userDummy;
@@ -29,9 +29,10 @@ export default function MyPage({ navigation }) {
   const [dibData, setDibData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({})
+  const [updating, setUpdating] = useState(false);
+  const [newMemberNickname, setNewMemberNickname] = useState('');
 
   const fetchData = async () => {
-    setLoading(true);
     const memberSeq = await getMemberSeq();
     if (memberSeq !== undefined) {
       setTempUser(memberSeq);
@@ -55,7 +56,9 @@ export default function MyPage({ navigation }) {
 
   // 로그인 여부 가져오기
   useEffect(() => {
+    setLoading(true);
     fetchData();
+    setLoading(false);
   }, []);
 
 
@@ -65,6 +68,10 @@ export default function MyPage({ navigation }) {
       fetchMemberData();
     }
   }, [dibData]);
+
+  useEffect(() => {
+    console.log(newMemberNickname)
+  }, [newMemberNickname])
 
   const dibs = dibData && dibData.length > 0 ? dibData.map((data, index) => {
     return <CarouselItem key={index} props={data.store}
@@ -93,17 +100,30 @@ export default function MyPage({ navigation }) {
                 source={require("assets/images/bread.png")}
               />
               <View style={styles.user}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.name}>{userData.memberNickname}</Text>
-                  <Text
-                    onPress={() => {
-                      console.log("이름 수정");
+                <TouchableOpacity onPress={() => {
+                  console.log('이름 바꾸기')
+                  setUpdating(true)
+                }} style={{ flexDirection: "row" }}>
+                  {
+                    updating &&
+                    <TextInput onSubmitEditing={() => {
+                      updateMemberNickname(tempUser, newMemberNickname)
+                      setUpdating(false)
                     }}
+                      value={newMemberNickname}
+                      onChangeText={(text) => { setNewMemberNickname(text) }}
+                      style={styles.updateNickname}
+                      placeholder={userData.memberNickname} />
+                  }
+                  {!updating &&
+                    <Text style={styles.name}>{userData.memberNickname}</Text>}
+
+                  <Text
                   >
                     {" "}
                     ✏️
                   </Text>
-                </View>
+                </TouchableOpacity>
                 <Text style={styles.phone}>{userData.memberPhone}</Text>
                 <TouchableOpacity onPress={() => {
                   logout()

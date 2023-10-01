@@ -8,7 +8,7 @@ export const getCartData = async (memberSeq) => {
 
         return response.data;
     } catch (error) {
-        console.error("Error fetching store data:", error);
+        console.error("Error fetching store data in getCartData:", error);
     }
 };
 
@@ -18,7 +18,7 @@ export const deleteCartData = async (memberSeq, productSeq) => {
             `http://j9c109.p.ssafy.io:8081/api/v1/cart/delete?memberSeq=${memberSeq}&productSeq=${productSeq}`
         );
     } catch (error) {
-        console.error("Error fetching store data:", error);
+        console.error("Error fetching store data in deleteCartData:", error);
     }
 };
 
@@ -36,7 +36,7 @@ export const updateQuantity = async (memberSeq, productSeq, quantity) => {
         );
 
     } catch (error) {
-        console.error("Error fetching store data:", error);
+        console.error("Error fetching store data in updateQuantity:", error);
     }
 };
 
@@ -54,7 +54,7 @@ export const addToCart = async (memberSeq, productSeq, quantity) => {
         );
 
     } catch (error) {
-        console.error("Error fetching store data:", error);
+        console.error("Error fetching store data in addToCart:", error);
     }
 };
 

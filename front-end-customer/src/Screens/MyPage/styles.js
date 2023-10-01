@@ -53,6 +53,12 @@ const styles = StyleSheet.create({
   section3: {
     marginHorizontal: 10,
   },
+
+  logout: {
+    textDecorationLine: "underline",
+    color : 'grey',
+    marginTop : 5
+  }
 });
 
 export default styles;

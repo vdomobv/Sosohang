@@ -72,19 +72,19 @@ export default function Main({ navigation }) {
     fetchLocation();
   }, [isFocused]);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axios.get(
-          "http://j9c109.p.ssafy.io:8081/api/v1/store"
-        );
-        setStoreData(response.data);
-      } catch (error) {
-        console.error("Error fetching store data:", error);
-      }
-    };
+  const getAllStoreData = async () => {
+    try {
+      const response = await axios.get(
+        "http://j9c109.p.ssafy.io:8081/api/v1/store"
+      );
+      setStoreData(response.data);
+    } catch (error) {
+      console.error("Error fetching store data:", error);
+    }
+  };
 
-    getData();
+  useEffect(() => {
+    getAllStoreData();
     fetchLocation();
   }, []);
 

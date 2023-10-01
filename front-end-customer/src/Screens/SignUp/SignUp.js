@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import axios from "axios";
 import styles from "./styles";
+import { login } from "../../Utils/MemberAPI";
 
 export default function SignUp({ navigation }) {
   const [loginPhoneNumber, setLoginPhoneNumber] = useState("");
@@ -22,25 +23,7 @@ export default function SignUp({ navigation }) {
       if (
         loginPassword.match(/^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/)
       ) {
-        // 로그인 로직 작성
-        axios
-          .post("http://j9c109.p.ssafy.io:8081/api/v1/member/login", {
-            memberPhone: loginPhoneNumber,
-            memberPassword: loginPassword,
-          })
-          .then((response) => {
-            // 로그인 성공 시 처리
-            if (response.data.token) {
-              Alert.alert("알림", "로그인 성공!");
-            } else {
-              Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");
-            }
-          })
-          .catch((error) => {
-            // 로그인 실패 시 처리
-            Alert.alert("알림", "로그인에 실패하였습니다. 다시 시도해 주세요.");
-            console.log(error)
-          });
+        login(navigation, loginPhoneNumber, loginPassword);
       } else {
         Alert.alert(
           "알림", "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."

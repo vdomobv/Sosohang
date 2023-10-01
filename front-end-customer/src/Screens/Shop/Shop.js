@@ -14,7 +14,6 @@ import Line from "../../Components/Line/Line";
 import Product from "../../Components/Product/Product";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import DibButton from "../../Components/DibButton/DibButton"
-import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 import axios from "axios";
 import { useEffect, useState } from "react";

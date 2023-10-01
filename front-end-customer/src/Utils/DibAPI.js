@@ -42,7 +42,7 @@ export const removeDib = async (memberSeq, storeSeq) => {
 export const addDib = async (memberSeq, storeSeq) => {
     try {
         const response = await axios.post(
-            `http://j9c109.p.ssafy.io:8081/api/v1/dib/add?memberId=${memberSeq}&storeId=${storeSeq}`
+            `http://j9c109.p.ssafy.io:8081/api/v1/dib/add?memberSeq=${memberSeq}&storeSeq=${storeSeq}`
         );
     } catch (error) {
         console.error("Error fetching store data:", error);

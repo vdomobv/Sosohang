@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Wrapper from "./styles";
 
@@ -28,9 +27,6 @@ function InputLogin() {
         storePassword: storePassword,
       })
       .then((res) => {
-        if(res.data.isLogin === "success") {
-          navigate("/productManage")
-        }
         if(res.data.isLogin === "success") {
           navigate("/productManage")
         }

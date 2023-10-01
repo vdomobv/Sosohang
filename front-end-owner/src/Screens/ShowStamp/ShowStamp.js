@@ -13,6 +13,7 @@ export default function ShowStamp({ navigation }) {
   const [stampPhoneNumber, setStampPhoneNumber] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [stampData, setStampData] = useState([]);
+  const [memberNickname, setMemberNickname] = useState("");
 
   const handleShowStamp = async () => {
     console.log("클릭")
@@ -24,8 +25,9 @@ export default function ShowStamp({ navigation }) {
 
         const { data } = response;
 
-        if (data && data.length > 0) {
+        if (data) {
           setStampData(data);
+          setMemberNickname(data[0].member.memberNickname);
           setModalVisible(true);
         } else {
           Alert.alert('알림', '해당 회원의 정보가 없습니다.');
@@ -87,8 +89,11 @@ export default function ShowStamp({ navigation }) {
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
           alertTitle={'회원 정보 확인'}
-          alertText={`스탬프 개수: ${stampData.length}개`}
-          targetScreen="AddStamp"
+          alertText={`${memberNickname} 회원님이 맞으신가요?`}
+          onPress={() => {
+            navigation.navigate('AddStamp', { stampData });
+            setModalVisible(false);
+          }}
         />
 
       </View>

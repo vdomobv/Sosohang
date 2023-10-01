@@ -9,7 +9,8 @@ import Box from "../../Components/Box/Box";
 import PlusMinusModal from "../../Components/PlusMinusModal/PlusMinusModal";
 import Tabs from "../../Components/Tabs/Tabs";
 
-export default function AddStamp({ navigation }) {
+export default function AddStamp({ route, navigation }) {
+  const { stampData } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [stampCount, setStampCount] = useState(1);
 
@@ -29,13 +30,27 @@ export default function AddStamp({ navigation }) {
     }
   };
 
+  const stampImages = {
+    1: require('assets/images/stamp1.png'),
+    2: require('assets/images/stamp2.png'),    
+    3: require('assets/images/stamp3.png'),
+    4: require('assets/images/stamp4.png'),
+    5: require('assets/images/stamp5.png'),    
+    6: require('assets/images/stamp6.png'),
+    7: require('assets/images/stamp7.png'),
+    8: require('assets/images/stamp8.png'),    
+    9: require('assets/images/stamp9.png'),
+    10: require('assets/images/stamp10.png'),
+  };
+
+
   return (
     <>
       <View style={styles.container}>
         <Title title={"소복소복 도장"} />
         <View style={styles.subtitle}>
-          {/* <Title title={stamp.shopname} /> */}
-          <SubTitle subTitle={"상점 이름"} />
+          {/* 상점 이름 */}
+          <Title title={stampData[0].store.storeName} />
         </View>
         <Box
           content={
@@ -43,12 +58,10 @@ export default function AddStamp({ navigation }) {
               <SubTitle subTitle={"현재 적립 소복소복"} customStyles={{ color: "#FFBF46" }} />
               <Text style={styles.stampCount}>
                 {/* 현재 스탬프 */}
-                {/* {stamp.stamp} */}
+                {stampData.length}
                 <Text style={styles.stampTotal}>/10</Text>
               </Text>
-              <Image style={styles.stampImage}
-                source={require('assets/images/stamp3.png')}
-              />
+              <Image style={styles.stampImage} source={stampImages[stampData.length]} />
             </View>
           }
         />
@@ -88,7 +101,7 @@ export default function AddStamp({ navigation }) {
           onDecrement={decrementStampCount}
           targetScreen="AddStamp"
         />
- 
+
       </View>
       <Tabs navigation={navigation} />
     </>

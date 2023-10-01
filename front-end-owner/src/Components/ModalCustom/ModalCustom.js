@@ -4,12 +4,8 @@ import React from 'react';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
-export default function ModalCustom({ visible, onClose, alertTitle, alertText, targetScreen }) {
+export default function ModalCustom({ visible, onClose, alertTitle, alertText, onPress }) {
   const navigation = useNavigation();
-
-  const handleConfirm = () => {
-    navigation.navigate(targetScreen);
-  };
 
   return (
     <Modal
@@ -31,7 +27,7 @@ export default function ModalCustom({ visible, onClose, alertTitle, alertText, t
           <Text style={[styles.modalText, styles.alertText]}>{alertText}</Text>
           <Pressable
             style={styles.button}
-            onPress={handleConfirm}>
+            onPress={onPress}>
             <Text style={styles.buttonText}>확인</Text>
           </Pressable>
         </View>

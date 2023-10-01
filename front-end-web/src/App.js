@@ -10,6 +10,7 @@ import SignUp from "./pages/SignUp"
 import ProductManage from "./pages/ProductManage"
 import StoreManage from "./pages/StoreManage"
 import StoreInfo from "./pages/StoreInfo"
+import WebGift from "./pages/WebGift"
 
 const router = createBrowserRouter([
   { path: "*", element: <NotFound /> },
@@ -18,7 +19,8 @@ const router = createBrowserRouter([
   { path: "/signup", element: <SignUp />},
   { path: "/productManage", element: <ProductManage />},
   { path: "/storeManage", element: <StoreManage />},
-  { path: "/storeInfo", element: <StoreInfo />}
+  { path: "/storeInfo", element: <StoreInfo />},
+  { path: "/WebGift", element: <WebGift />}
 ])
 
 function App() {

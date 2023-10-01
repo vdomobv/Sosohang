@@ -12,7 +12,6 @@ function Header() {
     axios
       .get("/api/v1/store/token_test")
       .then((res) => {
-        console.log(res.data)
         if(res.data === true) {
           setAuth(true);
         } else {

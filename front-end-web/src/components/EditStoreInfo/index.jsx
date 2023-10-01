@@ -3,12 +3,157 @@ import { Form, InputGroup, Button } from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 
-function EditStoreInfo() {
-  return(
+function EditStoreInfo(props) {
+  const { onChange, info } = props;
+  const [confirmStoreInfo, setConfirmStoreInfo] = useState(false); // StoreInfo 유효성여부
+
+  const [storeName, setStoreName] = useState(""); // 상점 이름
+
+  const [storeRegNum, setStoreRegNum] = useState(""); // 사업자 등록번호
+
+  const [storeAddress, setStoreAddres] = useState(""); // 상점 전체 주소
+  const [mainAddress, setMainAddress] = useState(""); // 상점 대표 주소
+  const [extraAddress, setExtraAddress] = useState(""); // 상점 상세 주소
+  const [isOpenPost, setIsOpenPost] = useState(false); //  주소 검색창 열렸는지
+  const [storeLatitude, setStoreLatitude] = useState(""); // 상점 위도
+  const [storeLongitude, setStoreLongitude] = useState(""); // 상점 경도
+
+  // 우편번호찾기 모달 띄우기
+  const onChangeOpenPost = (e) => {
+    e.preventDefault(); // 새로고침 방지
+    setIsOpenPost(!isOpenPost);
+  };
+
+  // 찾은 주소 입력하기
+  const onCompletePost = (data) => {
+    axios
+      .get(
+        `https://dapi.kakao.com/v2/local/search/address.json?query=${data.address}`,
+        {
+          headers: {
+            Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_ACCESS_KEY}`,
+          },
+        }
+      )
+      .then((res) => {
+        setMainAddress(data.address);
+        setExtraAddress(data.buildingName);
+        setStoreAddres(data.address + " " + " " + data.buildingName);
+        setStoreLatitude(res.data.documents[0].y);
+        setStoreLongitude(res.data.documents[0].x);
+        setIsOpenPost(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const [storeCategory, setStoreCategory] = useState(""); // 상점 카테고리
+
+  useEffect(() => {
+    setStoreName(info.storeName);
+    setStoreRegNum(info.storeRegNum);
+    setStoreAddres(info.storeAddress);
+    setMainAddress(info.mainAddress);
+    setExtraAddress(info.extraAddress);
+    setStoreLatitude(info.storeLatitude);
+    setStoreLongitude(info.storeLongitude);
+    setStoreCategory(info.storeCategory);
+  }, [info]);
+
+  useEffect(() => {
+    if (
+      storeName !== "" &&
+      storeRegNum !== "" &&
+      storeAddress !== "" &&
+      storeCategory !== ""
+    ) {
+      setConfirmStoreInfo(true);
+    }
+    onChange({
+      storeName,
+      storeRegNum,
+      storeAddress,
+      storeCategory,
+      confirmStoreInfo,
+      storeLatitude,
+      storeLongitude,
+    });
+  }, [storeName, storeAddress, storeCategory, onChange]);
+
+
+  return (
     <div>
-      <h1>상점정보</h1>
+      <h4>상점 정보</h4>
+      <div style={{ outline: "none" }}>
+        <Form.Label>상점 이름*</Form.Label>
+        <InputGroup>
+          <Form.Control
+            placeholder="상점 이름"
+            aria-label="상점이름을 입력하세요."
+            value={storeName}
+            onChange={(e) => setStoreName(e.target.value)}
+          />
+        </InputGroup>
+      </div>
+
+      <div style={{ height: "70px" }}>
+        <Form.Label>사업자등록번호*</Form.Label>
+        <InputGroup>
+          <Form.Control
+            aria-label="사업자등록번호를 입력하세요."
+            readOnly={true}
+            value={storeRegNum}
+          />
+        </InputGroup>
+      </div>
+
+      <div>
+        <Form.Label>상점 위치*</Form.Label>
+        <InputGroup>
+          <Form.Control
+            placeholder="우편번호 조회"
+            aria-label="우측버튼을 눌러 우편번호를 조회하세요"
+            readOnly={true}
+            value={mainAddress}
+          />
+          <Button id="postcode-button-addon2" onClick={onChangeOpenPost}>
+            검색하기
+          </Button>
+        </InputGroup>
+        <InputGroup style={{ marginTop: "15px" }}>
+          <Form.Control
+            placeholder="상세주소"
+            aria-label="상점의 상세주소를 입력하세요"
+            value={extraAddress}
+            onChange={(e) => {
+              setExtraAddress(e.target.value);
+              setStoreAddres(mainAddress + " " + " " + e.target.value);
+            }}
+          />
+        </InputGroup>
+      </div>
+
+      <div>
+        <Form.Label>상점 카테고리*</Form.Label>
+        <Form.Select
+          aria-label="상점 카테고리를 선택해 주세요."
+          value={storeCategory}
+          onChange={(e) => setStoreCategory(e.target.value)}>
+          <option>상점카테고리</option>
+          <option value="1">One</option>
+          <option value="2">two</option>
+          <option value="3">three</option>
+        </Form.Select>
+      </div>
+      {isOpenPost ? (
+        <ModalStorePostcode
+          onCompletePost={onCompletePost}
+          setIsOpenPost={setIsOpenPost}
+        />
+      ) : null}
     </div>
-  )
+  );
 }
 
 export default EditStoreInfo;

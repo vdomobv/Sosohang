@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Wrapper from "./styles";
 import Header from "../../components/Header";
@@ -9,10 +10,11 @@ import InputStoreIssue from "../../components/InputStoreIssue";
 import FileUpload from "../../components/FileUpload";
 
 function SignUp() {
+  const navigate = useNavigate();
   const [storeInfo, setStoreInfo] = useState({});
   const [ownerInfo, setOwnerInfo] = useState({});
   const [storeIssue, setStoreIssue] = useState({});
-  const [storeUrl, setStoreUrl] = useState("");
+  const [storeImageUrl, setStoreImageUrl] = useState("");
 
   const handleSignup = async () => {
     if (!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
@@ -35,10 +37,13 @@ function SignUp() {
         storeHoliday: storeIssue.storeHoliday,
         storeExtraInfo: storeIssue.storeExtraInfo,
         selectedKeywordSeqList: storeIssue.storeKeywords,
-        storeUrl: storeUrl,
+        storeUrl: storeIssue.storeUrl,
+        storeImage: storeImageUrl,
       })
       .then((res) => {
         console.log(res);
+        alert("회원가입이 완료되었습니다.")
+        navigate("/")
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +61,7 @@ function SignUp() {
           </div>
           <div>
             <InputStoreIssue onChange={setStoreIssue} />
-            <FileUpload onChange={setStoreUrl} />
+            <FileUpload onChange={setStoreImageUrl} />
           </div>
           <Button onClick={handleSignup}>회원가입</Button>
         </form>

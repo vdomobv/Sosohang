@@ -1,5 +1,6 @@
 package project.app.c109.backendapp.sosoticon.service;
 
+import com.amazonaws.services.pinpoint.model.ChannelType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,11 @@ import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.amazonaws.services.pinpoint.AmazonPinpoint;
+import com.amazonaws.services.pinpoint.AmazonPinpointClientBuilder;
+import com.amazonaws.services.pinpoint.model.*;
+import com.amazonaws.AmazonServiceException;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +46,7 @@ public class SosoticonService {
     // QRCodeUtil 빈 주입
     @Autowired
     private QRCodeUtil qrCodeUtil;
+
 
     @Transactional
     public Sosoticon createSosoticon(SosoticonRequestDTO requestDTO) {
@@ -80,6 +87,9 @@ public class SosoticonService {
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());
+
+            // MMS 보내기
+            sendMMSWithImageLink(sosoticon.getSosoticonTaker(), "소중한 사람에게 소소한 행복을!, 띵동- 행복의 선물이 도착했습니다.", sosoticon.getSosoticonImage());
 
             return sosoticonRepository.save(sosoticon);
         } catch (Exception e) {
@@ -185,24 +195,38 @@ public class SosoticonService {
 
         return sosoticonRepository.save(existingSosoticon);
     }
-//    @Transactional
-//    public SosoticonResponseDTO deductAmount(SosoticonDeductRequestDTO request) {
-//        Sosoticon existingSosoticon = sosoticonRepository.findBySosoticonCode(request.getSosoticonCode())
-//                .orElseThrow(() -> new RuntimeException("Sosoticon not found with code: " + request.getSosoticonCode()));
-//
-//        int currentBalance = existingSosoticon.getSosoticonValue();
-//
-//        // 잔액이 차감하려는 금액보다 적으면 예외 발생
-//        if (currentBalance < request.getDeductAmount()) {
-//            throw new RuntimeException("Insufficient balance.");
-//        }
-//
-//        // 잔액 차감
-//        existingSosoticon.setSosoticonValue(currentBalance - request.getDeductAmount());
-//        Sosoticon updatedSosoticon = sosoticonRepository.save(existingSosoticon);
-//
-//        // 변경된 정보를 DTO로 변환하여 반환
-//        return convertEntityToDto(updatedSosoticon);
-//    }
+
+
+    public void sendMMSWithImageLink(String phoneNumber, String message, String imageUrl) {
+        try {
+            AmazonPinpoint client = AmazonPinpointClientBuilder.defaultClient();
+
+            // 주소 설정
+            Map<String, AddressConfiguration> addressMap = new HashMap<>();
+            addressMap.put(phoneNumber, new AddressConfiguration().withChannelType(ChannelType.SMS));
+
+            // 메시지 설정
+            SMSMessage smsMessage = new SMSMessage()
+                    .withBody(message + " " + imageUrl)
+                    .withMessageType(MessageType.PROMOTIONAL)
+                    .withSenderId("joajoa");
+
+            // 전송할 메시지 요청을 구성
+            SendMessagesRequest request = new SendMessagesRequest()
+                    .withApplicationId("6779d3d4fc6146228df515fb71a100d3")  // Pinpoint 애플리케이션 ID
+                    .withMessageRequest(new MessageRequest()
+                            .withAddresses(addressMap)
+                            .withMessageConfiguration(new DirectMessageConfiguration().withSMSMessage(smsMessage)));
+
+            // 메시지 전송 요청을 실행하고 응답을 받습니다.
+            SendMessagesResult result = client.sendMessages(request);
+            Map<String, MessageResult> resultMap = result.getMessageResponse().getResult();
+            resultMap.forEach((k, v) -> System.out.println(k + ":" + v.getMessageId() + ":" + v.getStatusCode()));
+
+        } catch (AmazonServiceException e) {
+            System.err.println(e.getErrorMessage());
+            throw new RuntimeException("Failed to send MMS", e);
+        }
+    }
 
 }

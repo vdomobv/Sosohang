@@ -58,6 +58,9 @@ dependencies {
     // env 실행
 	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
 
+	// 주문 localdatetime -> json
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3' // 사용하시는 Jackson 라이브러리의 버전에 맞춰주세요.
+
 
 }
 

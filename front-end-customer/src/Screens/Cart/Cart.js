@@ -73,31 +73,33 @@ export default function Cart({ navigation }) {
 
   // 총 결제 금액, 선택 상품 변경
   useEffect(() => {
-    Object.keys(checkedProduct).map((storeSeq) => {
+    let newSelectedProducts = [];
+
+    Object.keys(checkedProduct).forEach((storeSeq) => {
       const temp = checkedProduct[storeSeq];
-      temp.map((value, index) => {
+      temp.forEach((value, index) => {
         if (value) {
           const tempProductData = groupedData[storeSeq][index].product;
-          console.log(tempProductData);
-          tempProductData['storeSeq'] = storeSeq
+          tempProductData['storeSeq'] = storeSeq;
           tempProductData['count'] = groupedData[storeSeq][index].quantity;
-
-          const newSelectedProduct = [...selectedProducts, tempProductData]
-          setSelectedProducts(newSelectedProduct);
-          const tempPrice = newSelectedProduct.reduce((acc, item) => {
-            console.log(item.product)
-            return acc + item.productPrice * item.count;
-          }, 0);
-          setTotalPrice(tempPrice);
-          console.log(newSelectedProduct);
-        } else {
-          setTotalPrice(0)
-          setSelectedProducts([]);
+          newSelectedProducts.push(tempProductData);
         }
-      })
-    })
+      });
+    });
+
+    setSelectedProducts(newSelectedProducts);
+
   }, [checkedProduct])
 
+
+  useEffect(() => {
+    const tempPrice = selectedProducts.reduce((acc, item) => {
+      console.log('test: ', item)
+      return acc + item.productPrice * item.count;
+    }, 0);
+    setTotalPrice(tempPrice);
+  }, [selectedProducts])
+  
   const renderGroupedProducts = () => {
     return Object.keys(groupedData).map((storeSeq) => {
       const storeCart = groupedData[storeSeq];

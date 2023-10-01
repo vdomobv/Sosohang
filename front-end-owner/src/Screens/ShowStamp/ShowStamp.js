@@ -2,7 +2,7 @@
 import { View, Text, TextInput, TouchableOpacity, Alert, Image } from "react-native";
 import React, { useState } from 'react';
 import styles from "./styles";
-
+import axios from 'axios';
 import Title from "../../Components/Title/Title";
 import SubTitle from "../../Components/SubTitle/SubTitle";
 import Box from "../../Components/Box/Box";
@@ -12,15 +12,29 @@ import Tabs from "../../Components/Tabs/Tabs";
 export default function ShowStamp({ navigation }) {
   const [stampPhoneNumber, setStampPhoneNumber] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [stampData, setStampData] = useState([]);
 
-  const handleShowStamp = () => {
+  const handleShowStamp = async () => {
+    console.log("클릭")
     if (stampPhoneNumber.length === 11) {
+      try {
+        const response = await axios.get(
+          `https://j9c109.p.ssafy.io/api/v1/stamp/${stampPhoneNumber}/1?stampStatus=0`
+        );
 
-      // 회원 정보가 있다면? 해당 회원의 해당 상점 스탬프 정보 가져오기
-      setModalVisible(true);
+        const { data } = response;
+
+        if (data && data.length > 0) {
+          setStampData(data);
+          setModalVisible(true);
+        } else {
+          Alert.alert('알림', '해당 회원의 정보가 없습니다.');
+        }
+      } catch (error) {
+        console.error('데이터를 가져오는 중에 오류가 발생했습니다:', error);
+        Alert.alert('알림', '데이터를 불러오는 중에 오류가 발생했습니다.');
+      }
     } else {
-      // 회원 정보가 없다면? 재입력
-
       Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
     }
   };
@@ -42,16 +56,13 @@ export default function ShowStamp({ navigation }) {
                   <TextInput
                     style={[styles.textInput, { width: 240 }]}
                     keyboardType="numeric"
-                    maxLength={11} // 최대 길이를 11로 설정
+                    maxLength={11}
                     onChangeText={(text) => {
-                      // 입력된 값이 숫자인지 확인
                       if (/^[0-9]*$/.test(text)) {
-                        // 숫자인 경우에만 상태 업데이트
                         if (text.length <= 11) {
                           setStampPhoneNumber(text);
                         }
                       } else {
-                        // 숫자가 아닌 경우 경고창 표시
                         Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
                       }
                     }}
@@ -65,7 +76,7 @@ export default function ShowStamp({ navigation }) {
           <TouchableOpacity
             style={[styles.button]}
             onPress={handleShowStamp}
-            >
+          >
             <Text style={[styles.buttonText]}>
               회원 정보 조회
             </Text>
@@ -76,10 +87,10 @@ export default function ShowStamp({ navigation }) {
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
           alertTitle={'회원 정보 확인'}
-          alertText={'OO님이신가요?'}
-          // alertText={`${scannedData?.data} 님이 맞습니까?`}
+          alertText={`스탬프 개수: ${stampData.length}개`}
           targetScreen="AddStamp"
         />
+
       </View>
       <Tabs navigation={navigation} />
     </>

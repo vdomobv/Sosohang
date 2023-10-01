@@ -3,7 +3,6 @@ import { Modal, Button, Form } from "react-bootstrap";
 import axios from "axios";
 
 function ModalProdctEdit({ show, onHide, product, onEditProduct }) {
-  // console.log(product);
   const [editedProduct, setEditedProduct] = useState({});
 
   useEffect(() => {

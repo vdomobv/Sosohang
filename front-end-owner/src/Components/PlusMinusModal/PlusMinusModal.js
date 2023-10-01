@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
-export default function PlusMinusModal({ visible, onClose, alertTitle }) {
+export default function PlusMinusModal({ visible, onClose, alertTitle, onPress }) {
   const navigation = useNavigation();
   const [number, setNumber] = useState(0);
 
@@ -18,15 +18,6 @@ export default function PlusMinusModal({ visible, onClose, alertTitle }) {
     setNumber(number + 1);
   };
 
-  const handleConfirm = () => {
-    navigation.navigate(targetScreen);
-  };
-
-  const handleCloseModal = () => {
-    setNumber(1);
-    onClose();
-  };
-
   return (
     <Modal
       animationType="slide"
@@ -37,7 +28,7 @@ export default function PlusMinusModal({ visible, onClose, alertTitle }) {
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
+          <TouchableOpacity onPress={() => onClose()} style={styles.closeButton}>
             <Ionicons name="close" size={24} color="black" />
           </TouchableOpacity>
           <Text style={[styles.modalText, styles.alertTitle]}>{alertTitle}</Text>
@@ -54,7 +45,7 @@ export default function PlusMinusModal({ visible, onClose, alertTitle }) {
 
           <Pressable
             style={styles.button}
-            onPress={handleConfirm}>
+            onPress={onPress}>
             <Text style={styles.buttonText}>적립</Text>
           </Pressable>
         </View>

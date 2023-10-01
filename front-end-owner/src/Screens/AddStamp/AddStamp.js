@@ -13,6 +13,9 @@ export default function AddStamp({ route, navigation }) {
   const { stampData } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [stampCount, setStampCount] = useState(1);
+  // 상점 seq
+  // 폰넘버
+  // stampCount
 
   const handleStamp = () => {
     setModalVisible(true);
@@ -43,6 +46,29 @@ export default function AddStamp({ route, navigation }) {
     10: require('assets/images/stamp10.png'),
   };
 
+  const handlePress = async () => {
+    try {
+      const response = await axios.post(
+        'https://j9c109.p.ssafy.io/api/v1/stamp/earn',
+        {
+          storeSeq: 1,
+          memberPhone: '01012341234',
+          stampCount: stampCount,
+        }
+      );
+  
+      // 서버로부터의 응답 처리
+      console.log('응답 데이터:', response.data);
+  
+      // 모달 닫기
+      setModalVisible(false);
+    } catch (error) {
+      // 오류 처리
+      console.error('오류 발생:', error);
+      // 모달 닫기
+      setModalVisible(false);
+    }
+  };
 
   return (
     <>
@@ -56,7 +82,7 @@ export default function AddStamp({ route, navigation }) {
           content={
             <View style={styles.stampBox}>
               <SubTitle subTitle={"현재 적립 소복소복"} customStyles={{ color: "#FFBF46" }} />
-              <Text style={styles.stampCount}>
+              <Text style={styles.stampNow}>
                 {/* 현재 스탬프 */}
                 {stampData.length}
                 <Text style={styles.stampTotal}>/10</Text>
@@ -99,7 +125,7 @@ export default function AddStamp({ route, navigation }) {
           stampCount={stampCount}
           onIncrement={incrementStampCount}
           onDecrement={decrementStampCount}
-          targetScreen="AddStamp"
+          onPress={handlePress}
         />
 
       </View>

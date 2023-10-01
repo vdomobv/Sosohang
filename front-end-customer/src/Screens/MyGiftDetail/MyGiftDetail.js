@@ -1,12 +1,12 @@
 import styles from "./styles";
 import React from "react";
-import { ScrollView, View, Text } from "react-native";
+import { View } from "react-native";
 
 import Tabs from "../../Components/Tabs/Tabs";
 import Title from "../../Components/Title/Title";
 import Box from "../../Components/Box/Box";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
-import Gift from "../../Components/Gift/Gift";
+import GiftNoBtn from "../../Components/GiftNoBtn/GiftNoBtn";
 import GiftCardBackground from "../../Components/GiftCardBackground/GiftCardBackground";
 
 export default function MyGiftDetail({ route, navigation }) {
@@ -25,7 +25,7 @@ export default function MyGiftDetail({ route, navigation }) {
         <ScrollBox style={styles.scrollBoxContainer}
           content={
             <>
-              <Box content={<Gift data={giftData} />} />
+              <Box content={<GiftNoBtn data={giftData} />} />
               <GiftCardBackground content={content} />
             </>
           } />

@@ -24,7 +24,8 @@ export default function Gift({ data, usable, onPress }) {
           <View style={styles.body}>
             <Image style={styles.image} source={data.image} />
             <View style={styles.contents}>
-              <Text style={styles.shopName}>{data[0].storeName}</Text>
+              <Text style={styles.shopName}>{data.storeName}</Text>
+              {/* <Text style={styles.shopName}>{data[0].storeName}</Text> */}
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
                 {data["from"]

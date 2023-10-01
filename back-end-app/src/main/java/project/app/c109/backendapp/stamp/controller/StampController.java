@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import project.app.c109.backendapp.stamp.domain.entity.Stamp;
 import project.app.c109.backendapp.stamp.service.StampService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -71,8 +72,14 @@ public class StampController {
     }
 
     @GetMapping("/{memberPhone}/{storeSeq}")
-    public List<Stamp> getStampByMemberAndStoreAndStampStatus(@PathVariable String memberPhone, @PathVariable Integer storeSeq, @RequestParam Integer stampStatus) {
-        return stampService.getStampByMemberAndStoreAndStampStatus(memberPhone, storeSeq, stampStatus);
+    public ResponseEntity<List<Stamp>> getStampByMemberAndStoreAndStampStatus(@PathVariable String memberPhone, @PathVariable Integer storeSeq, @RequestParam Integer stampStatus) {
+        try {
+            List<Stamp> stamps = stampService.getStampByMemberAndStoreAndStampStatus(memberPhone, storeSeq, stampStatus);
+            return ResponseEntity.ok(stamps);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 }

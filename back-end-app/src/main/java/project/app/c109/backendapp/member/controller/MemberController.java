@@ -187,9 +187,9 @@ public class MemberController {
         return ResponseEntity.ok("토큰이 있는 사용자");
     }
 
-    @GetMapping("/{memberPhone}")
-    public ResponseEntity<?> getMemberByMemberPhone(@RequestParam String memberPhone) {
-        Member member = memberService.getMemberByMemberPhone(memberPhone);
+    @GetMapping("/{memberSeq}")
+    public ResponseEntity<?> getMemberByMemberPhone(@RequestParam Integer memberSeq) {
+        Member member = memberService.getMemberByMemberSeq(memberSeq);
 
         if (member != null ) {
             return ResponseEntity.ok(member);

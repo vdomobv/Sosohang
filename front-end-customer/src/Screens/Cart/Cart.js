@@ -9,8 +9,7 @@ import Title from "../../Components/Title/Title";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
 import { getCartData, deleteCartData } from "../../Utils/CartAPI";
-import { getMemberSeq, setMemberSeq } from "../../Utils/MemberAPI";
-import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
+import { getMemberSeq } from "../../Utils/MemberAPI";
 import Loading from "../../Components/Loading/Loading";
 
 export default function Cart({ navigation }) {

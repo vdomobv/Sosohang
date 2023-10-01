@@ -110,7 +110,8 @@ export default function MyPage({ navigation }) {
             </View>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("StampList");
+                console.log(tempUser)
+                navigation.navigate("StampList", {tempUser});
               }}
             >
               <StampAfter />

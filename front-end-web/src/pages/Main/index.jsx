@@ -199,7 +199,7 @@ function Main() {
                           fontWeight: "bold",
                         }}
                       >
-                        백엔드
+                        프론트엔드
                       </p>
                       <p>
                         ㅇㅇ<br></br>

@@ -69,7 +69,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
-  innerInput: { top: 250, 
+  innerInput: { 
+    top: 250, 
     height: 150, 
     textAlign: 'center', 
     fontSize: 18, 

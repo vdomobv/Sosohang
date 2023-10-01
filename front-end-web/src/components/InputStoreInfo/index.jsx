@@ -83,10 +83,9 @@ function InputStoreInfo({ onChange }) {
         }
       )
       .then((res) => {
-        console.log(res.data.documents[0].x)
         setMainAddress(data.address);
         setExtraAddress(data.buildingName);
-        setStoreAddres(data.address + data.buildingName);
+        setStoreAddres(data.address + " " + " " + data.buildingName);
         setStoreLatitude(res.data.documents[0].y);
         setStoreLongitude(res.data.documents[0].x);
         setIsOpenPost(false);
@@ -187,8 +186,8 @@ function InputStoreInfo({ onChange }) {
             aria-label="상점의 상세주소를 입력하세요"
             value={extraAddress}
             onChange={(e) => {
-              setExtraAddress(e.target.value);
-              setStoreAddres(mainAddress + e.target.value);
+              setExtraAddress(e.target.value.replace(/\s{2,}/gi, ' '));
+              setStoreAddres(mainAddress + " " + " " + e.target.value);
             }}
           />
         </InputGroup>

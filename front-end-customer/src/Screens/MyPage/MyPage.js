@@ -10,14 +10,15 @@ import Carousel from "../../Components/Carousel/Carousel";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import Gift from "../../Components/Gift/Gift";
 import StampAfter from "../../Components/StampAfter/StampAfter";
+import Box from "../../Components/Box/Box";
+import SectionSubtitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 import userDummy from "../../Dummys/MyPage/UserDummy";
 import buyDummy from "../../Dummys/MyPage/BuyDummy";
-import { useEffect, useState } from "react";
 
+import { useEffect, useState } from "react";
 import { getDibData } from "../../Utils/DibAPI";
-import Box from "../../Components/Box/Box";
-import SectionSubtitle from "../../Components/SectionSubTitle/SectionSubTitle";
+import { logout } from "../../Utils/MemberAPI";
 
 const user = userDummy;
 
@@ -69,6 +70,12 @@ export default function MyPage({ navigation }) {
                 </Text>
               </View>
               <Text style={styles.phone}>{user.phone}</Text>
+              <TouchableOpacity onPress={() => {
+                logout()
+                console.log("로그아웃 되었습니다.")
+               }}>
+                <Text style={styles.logout}>로그아웃 하기</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <TouchableOpacity

@@ -35,3 +35,27 @@ export const setMemberSeq = async (memberSeq) => {
         console.log("SetMemberSeq Error: ", e);
     }
 };
+
+export const getMemberSeq = async () => {
+    try {
+        const storedValue = JSON.parse(await AsyncStorage.getItem("memberSeq"));
+
+        if (storedValue === null || storedValue === undefined) {
+            return undefined;
+        }
+
+        const memberSeq = JSON.parse(storedValue);
+        return memberSeq;
+    } catch (e) {
+        console.log(e);
+        return undefined;
+    }
+};
+
+export const logout = async () => {
+    try {
+        await AsyncStorage.removeItem("memberSeq");
+    } catch (e) {
+        console.log(e);
+    }
+}

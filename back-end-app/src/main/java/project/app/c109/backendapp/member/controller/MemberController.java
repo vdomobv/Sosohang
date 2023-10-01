@@ -188,7 +188,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberSeq}")
-    public ResponseEntity<?> getMemberByMemberPhone(@RequestParam Integer memberSeq) {
+    public ResponseEntity<?> getMemberByMemberPhone(@PathVariable Integer memberSeq) {
         Member member = memberService.getMemberByMemberSeq(memberSeq);
 
         if (member != null ) {

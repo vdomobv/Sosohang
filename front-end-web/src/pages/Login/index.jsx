@@ -1,12 +1,20 @@
-import React from "react";
-// import Header from "../../components/Header";
+import React, {useEffect, useState} from "react";
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 import InputLogin from "../../components/InputLogin";
 import Wrapper from "./styles";
 
 function Login() {
+  const navigate = useNavigate();
+
+  const tokenCookie = Cookies.get("jwtToken");
+  console.log(tokenCookie);
+  useEffect(() => {
+    if (tokenCookie !== undefined) return navigate("/")
+  }, [tokenCookie])  
+  
   return (
     <>
-      {/* <Header /> */}
       <Wrapper>
         <div className="loginContainer">
 

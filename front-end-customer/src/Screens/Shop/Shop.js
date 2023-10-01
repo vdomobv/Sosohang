@@ -22,6 +22,7 @@ import { getProduct } from "../../Utils/ProductAPI";
 import { getStoreData } from "../../Utils/StoreAPI";
 import { addToCart } from "../../Utils/CartAPI";
 import CustomModal from "../../Components/CustomModal/CustomModal";
+import { getMemberSeq } from "../../Utils/MemberAPI";
 
 const Info = ({ logo, data }) => {
   return (
@@ -33,7 +34,6 @@ const Info = ({ logo, data }) => {
 };
 
 export default function Shop({ navigation, route }) {
-  const tempUser = 1;
   const storeSeq = route.params.storeSeq;
   const [dibState, setDibState] = useState();
   const [product, setProduct] = useState([]);
@@ -50,6 +50,7 @@ export default function Shop({ navigation, route }) {
   const [shouldNavigate, setShouldNavigate] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [modalState, setModalState] = useState(false);
+  const [tempUser, setTempUser] = useState();
 
   const getKeywords = async () => {
     try {
@@ -63,11 +64,13 @@ export default function Shop({ navigation, route }) {
   };
 
   const fetchData = async () => {
+    const userData = await getMemberSeq();
+    if (userData !== undefined) {
+      setTempUser(userData);
+    }
+
     const storeResult = await getStoreData(storeSeq)
     const result = await getProduct(storeSeq);
-    // 찜 상태 불러오기
-    const dibData = await getStoreDibData(tempUser, storeSeq);
-    setDibState(dibData);
 
     // 상품 데이터, 세일 상품 데이터 분리
     if (Array.isArray(result)) {
@@ -80,6 +83,17 @@ export default function Shop({ navigation, route }) {
 
     setStoreData(storeResult);
   };
+
+  useEffect(() => {
+    // 찜 상태 불러오기
+    if (tempUser !== undefined) {
+      const fetchDibData = async () => {
+        const dibData = await getStoreDibData(tempUser, storeSeq);
+        setDibState(dibData);
+      }
+      fetchDibData();
+    }
+  }, [tempUser])
 
 
   useEffect(() => {
@@ -232,7 +246,9 @@ export default function Shop({ navigation, route }) {
           <View style={styles.title}>
             <Title title={storeData ? storeData.storeName : 'Loading...'} />
           </View>
-          <DibButton userSeq={tempUser} storeSeq={storeData ? storeData.storeSeq : null} dibState={dibState} setDibState={setDibState} />
+          {tempUser !== undefined ?
+            <DibButton userSeq={tempUser} storeSeq={storeData ? storeData.storeSeq : null} dibState={dibState} setDibState={setDibState} />
+            : undefined}
         </View>
 
         <Image source={require("assets/images/bread.png")} style={styles.image} />

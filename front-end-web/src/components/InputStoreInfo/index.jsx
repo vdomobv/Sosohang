@@ -48,7 +48,9 @@ function InputStoreInfo({ onChange }) {
         ) {
           setIsOpenRegNum(!isOpenRegNum);
         } else {
-          return alert("존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요.");
+          return alert(
+            "존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요."
+          );
         }
       })
       .catch((err) => {
@@ -60,6 +62,8 @@ function InputStoreInfo({ onChange }) {
   const [mainAddress, setMainAddress] = useState(""); // 상점 대표 주소
   const [extraAddress, setExtraAddress] = useState(""); // 상점 상세 주소
   const [isOpenPost, setIsOpenPost] = useState(false); //  주소 검색창 열렸는지
+  const [storeLatitude, setStoreLatitude] = useState(0); // 상점 위도
+  const [storeLongitude, setStoreLongitude] = useState(0); // 상점 경도
 
   // 우편번호찾기 모달 띄우기
   const onChangeOpenPost = (e) => {
@@ -69,13 +73,29 @@ function InputStoreInfo({ onChange }) {
 
   // 찾은 주소 입력하기
   const onCompletePost = (data) => {
-    setMainAddress(data.address);
-    setExtraAddress(data.buildingName);
-    setStoreAddres(data.address + data.buildingName);
-    setIsOpenPost(false);
+    axios
+      .get(
+        `https://dapi.kakao.com/v2/local/search/address.json?query=${data.address}`,
+        {
+          headers: {
+            Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_ACCESS_KEY}`,
+          },
+        }
+      )
+      .then((res) => {
+        setMainAddress(data.address);
+        setExtraAddress(data.buildingName);
+        setStoreAddres(data.address + " " + " " + data.buildingName);
+        setStoreLatitude(res.data.documents[0].y);
+        setStoreLongitude(res.data.documents[0].x);
+        setIsOpenPost(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const [storeCategory, setStoreCategory] = useState(""); // 상점 카테고리
+  const [storeCategory, setStoreCategory] = useState("1"); // 상점 카테고리
 
   useEffect(() => {
     if (
@@ -93,6 +113,8 @@ function InputStoreInfo({ onChange }) {
       storeAddress,
       storeCategory,
       confirmStoreInfo,
+      storeLatitude,
+      storeLongitude,
     });
   }, [
     storeName,
@@ -164,8 +186,8 @@ function InputStoreInfo({ onChange }) {
             aria-label="상점의 상세주소를 입력하세요"
             value={extraAddress}
             onChange={(e) => {
-              setExtraAddress(e.target.value);
-              setStoreAddres(mainAddress + e.target.value);
+              setExtraAddress(e.target.value.replace(/\s{2,}/gi, ' '));
+              setStoreAddres(mainAddress + " " + " " + e.target.value);
             }}
           />
         </InputGroup>

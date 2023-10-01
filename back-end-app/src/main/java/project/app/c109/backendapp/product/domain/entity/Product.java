@@ -20,7 +20,7 @@ public class Product {
     private Integer productSeq;
 
     // Store 엔터티와의 관계 설정
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "store_seq")
     private Store store;
 
@@ -35,7 +35,7 @@ public class Product {
 
     // 할인율
     @Column(name = "product_dcrate")
-    private Integer productDcrate;
+    private Double productDcrate;
 
     // 상품설명, null을 허용하지 않고 길이는 최대 2000
     @Column(name = "product_info", nullable = false, length = 2000)
@@ -91,11 +91,11 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public Integer getProductDcrate() {
+    public Double getProductDcrate() {
         return productDcrate;
     }
 
-    public void setProductDcrate(Integer productDcrate) {
+    public void setProductDcrate(Double productDcrate) {
         this.productDcrate = productDcrate;
     }
 

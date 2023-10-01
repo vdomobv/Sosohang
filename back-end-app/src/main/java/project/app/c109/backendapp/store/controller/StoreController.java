@@ -154,7 +154,7 @@ public class StoreController {
 
 	@PutMapping("/update")
 	public ResponseEntity<Map<String, String>> updateStoreInfo(@RequestBody StoreUpdateRequest storeUpdateRequest, @CookieValue(name = "jwtToken") String cookieValue) {
-		Integer storeSeq = 0;
+		Integer storeSeq = -1;
 		
 		logger.info(cookieValue);
 		if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
@@ -162,13 +162,10 @@ public class StoreController {
 		}
 		// JWT 토큰의 유효성 검사
 		if (jwtUtils.validateToken(cookieValue)) {
-			String registrationNumber = jwtUtils.getRegistrationNumberFromToken(cookieValue);
+			storeSeq = jwtUtils.getStoreSeqFromToken(cookieValue);
 
-		if (registrationNumber != null) {
-			Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
-			if (store != null) {
-					storeSeq = store.getStoreSeq();
-				} 
+		if (storeSeq == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			} 
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -224,7 +221,7 @@ public class StoreController {
 
 		if (store != null && passwordEncoder.matches(storeLoginRequest.getStorePassword(), store.getStorePassword())) {
 			// 로그인 성공 시 JWT 토큰 생성하여 반환
-			String token = jwtUtils.generateStoreToken(storeLoginRequest.getRegistrationNumber());
+			String token = jwtUtils.generateStoreToken(store.getStoreSeq());
 			logger.info("Store login successful for registrationNumber: " + storeLoginRequest.getRegistrationNumber());
 
 			// JWT 토큰을 쿠키에 저장
@@ -246,28 +243,22 @@ public class StoreController {
 
 	@GetMapping("/token_test")
 	public ResponseEntity<?> test(@CookieValue(name = "jwtToken") String cookieValue) {	
-		logger.info(cookieValue);
+
 		if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
 			cookieValue = cookieValue.substring(7); // "Bearer " 부분을 제외한 토큰 추출
 		}
 			// JWT 토큰의 유효성 검사
-			if (jwtUtils.validateToken(cookieValue)) {
+		if (jwtUtils.validateToken(cookieValue)) {
+			Integer storeSeq = jwtUtils.getStoreSeqFromToken(cookieValue);
 
-				String registrationNumber = jwtUtils.getRegistrationNumberFromToken(cookieValue);
-				if (registrationNumber != null) {
-					Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
-					if (store != null) {
-						return ResponseEntity.ok(store.getStoreSeq());
-					} else {
-						return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Store not found");
-					}
-				} else {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid JWT token");
-				}
-			}
-		
+		if (storeSeq == null) {
+			return ResponseEntity.ok("noStore");
+			} 
+		return ResponseEntity.ok("true");
 
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+		} else {
+			return ResponseEntity.ok("false");
+		}
 	}
 
 	@GetMapping("/nearby")
@@ -284,7 +275,7 @@ public class StoreController {
 
 	@GetMapping("/info")
 	public ResponseEntity<StoreInfoResponse> getStoreInfoDetails( @CookieValue(name = "jwtToken") String cookieValue) {
-		Integer storeSeq = -1;
+		Integer storeSeq;
 		
 		logger.info(cookieValue);
 		if (cookieValue != null && cookieValue.startsWith("Bearer ")) {
@@ -292,17 +283,14 @@ public class StoreController {
 		}
 		// JWT 토큰의 유효성 검사
 		if (jwtUtils.validateToken(cookieValue)) {
-			String registrationNumber = jwtUtils.getRegistrationNumberFromToken(cookieValue);
+			storeSeq = jwtUtils.getStoreSeqFromToken(cookieValue);
 
-		if (registrationNumber != null) {
-			Store store = storeService.findStoreByRegistrationNumber(registrationNumber);
-			if (store != null) {
-					storeSeq = store.getStoreSeq();
-				} 
+		if (storeSeq == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			} 
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
+		}	
 
 		Store store = storeService.getStoreDetails(storeSeq);
 		StoreInfoResponse response =new StoreInfoResponse(store.getRegistrationNumber(), store);
@@ -312,5 +300,18 @@ public class StoreController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
+
+	@GetMapping("/logout")
+		public ResponseEntity<String> logout(HttpServletResponse response) {
+    // 쿠키 삭제
+    Cookie cookie = new Cookie("jwtToken", null);
+    cookie.setPath("/");
+    cookie.setMaxAge(0); // 쿠키 만료 시간을 0으로 설정하여 삭제
+
+    response.addCookie(cookie);
+
+    // 로그아웃 응답
+    return ResponseEntity.ok("로그아웃");
+}
 
 }

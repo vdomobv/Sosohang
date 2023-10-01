@@ -1,13 +1,15 @@
 import styles from "./styles";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { useNavigation } from '@react-navigation/native';
 
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import SubTitle from "../SubTitle/SubTitle";
 
-export default function Gift({ data, usable, onPress, navigation }) {
+export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
+  const navigation = useNavigation();
 
   return (
     <>
@@ -22,7 +24,8 @@ export default function Gift({ data, usable, onPress, navigation }) {
           <View style={styles.body}>
             <Image style={styles.image} source={data.image} />
             <View style={styles.contents}>
-              <Text style={styles.shopName}>{data.shopname}</Text>
+              <Text style={styles.shopName}>{data.storeName}</Text>
+              {/* <Text style={styles.shopName}>{data[0].storeName}</Text> */}
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
                 {data["from"]
@@ -55,7 +58,7 @@ export default function Gift({ data, usable, onPress, navigation }) {
                 navigation={navigation}
                 content={"재주문"}
                 pressFuction={() => {
-                  navigation.navigate("MakeCard", { selectedProducts: data });
+                  navigation.navigate("Shop", { storeSeq: data.storeSeq });
                 }}
               />
             </View>
@@ -68,7 +71,14 @@ export default function Gift({ data, usable, onPress, navigation }) {
                   }}
                   content={"기간 연장하기"}
                 />
-              ) : undefined}
+              ) : (
+                <CustomButton
+                  content={"후기 남기기"} 
+                  pressFuction={() => {
+                    navigation.navigate("Review", { giftData: data });
+                  }}
+                />
+              )}
             </View>
           )}
         </View>

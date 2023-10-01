@@ -9,6 +9,7 @@ import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 import ProductManage from "./pages/ProductManage"
 import StoreManage from "./pages/StoreManage"
+import StoreInfo from "./pages/StoreInfo"
 
 const router = createBrowserRouter([
   { path: "*", element: <NotFound /> },
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp />},
   { path: "/productManage", element: <ProductManage />},
-  { path: "/storeManage", element: <StoreManage />}
+  { path: "/storeManage", element: <StoreManage />},
+  { path: "/storeInfo", element: <StoreInfo />}
 ])
 
 function App() {

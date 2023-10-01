@@ -1,12 +1,15 @@
 import styles from "./styles";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import SectionSubTitle from '../SectionSubTitle/SectionSubTitle';
 import SectionTitle from "../SectionTitle/SectionTitle";
 
 export default function Amount({ productAmount, onCheckChange }) {
     const [amount, setAmount] = useState(productAmount);
+    
+    useEffect(() => {
+        setAmount(productAmount);
+    }, [productAmount])
 
     useEffect(() => {
         onCheckChange(amount);

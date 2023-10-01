@@ -8,8 +8,13 @@ import { useEffect, useState } from "react";
 import Amount from "../Amount/Amount";
 
 export default function Product({ data, checked, amount, onCheckChange, onAmountChange }) {
-    const [isChecked, setIsChecked] = useState(checked);
-    const [productAmount, setproductAmount] = useState(amount);
+    const [isChecked, setIsChecked] = useState();
+    const [productAmount, setProductAmount] = useState();
+    
+    useEffect(() => {
+        setIsChecked(checked)
+        setProductAmount(amount)
+    }, [amount])
 
     useEffect(() => {
         onAmountChange(productAmount);
@@ -27,14 +32,14 @@ export default function Product({ data, checked, amount, onCheckChange, onAmount
                     setIsChecked(!isChecked);
                     onCheckChange(isChecked);
                 }} />
-            <SquareImage imageSrc={data.image} />
+            <SquareImage imageSrc={data.productImage} />
             <View style={styles.content}>
-                <SectionTitle content={data.name} />
-                {data.productSale ? <Text style={styles.prevPrice}>{`${data.price}원`}</Text> : null}
-                <SectionTitle content={`${data.productSale ? (1-data.productSale) * data.price : data.price}원`} customStyles={{ color: '#FF4646' }} />
+                <SectionTitle content={data.productName} />
+                {data.productDcrate ? <Text style={styles.prevPrice}>{`${data.productPrice}원`}</Text> : null}
+                <SectionTitle content={`${data.productDcrate ? (1 - data.productDcrate) * data.productPrice : data.productPrice}원`} customStyles={{ color: '#FF4646' }} />
                 <View style={styles.amount}>
                     <Amount onCheckChange={(productAmount) => {
-                        setproductAmount(productAmount);
+                        setProductAmount(productAmount);
                     }} productAmount={productAmount} />
                 </View>
             </View>

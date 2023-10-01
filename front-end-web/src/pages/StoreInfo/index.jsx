@@ -1,69 +1,109 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
-import Cookies from "js-cookie";
-import Wrapper from "./styles";
 import Header from "../../components/Header";
 import EditStoreInfo from "../../components/EditStoreInfo";
-import InputOwnerInfo from "../../components/InputOwnerInfo";
-import InputStoreIssue from "../../components/InputStoreIssue";
+import EditStoreIssue from "../../components/EditStoreIssue";
+import FileUpload from "../../components/FileUpload";
 
 function StoreInfo() {
-  const [totalStoreInfo, setTotalStoreInfo] = useState({});
+  const navigate = useNavigate();
+  const [storeKeywords, setStoreKeywords] = useState([]);
   const [storeInfo, setStoreInfo] = useState({});
-  const [ownerInfo, setOwnerInfo] = useState({});
+  const [storeEditInfo, setStoreEditInfo] = useState({});
   const [storeIssue, setStoreIssue] = useState({});
+  const [storeEditIssue, setStoreEditIssue] = useState({});
+  const [storeImage, setStoreImage] = useState("");
+  const [storeEditImage, setStoreEditImage] = useState("");
 
   useEffect(() => {
-    try {
-      const token = Cokkies.get("token");
-      const res = axios.post("", { token: token });
-
-      setTotalStoreInfo(res);
-    } catch (err) {
-      console.log(err);
-    }
+    axios
+      .get("/api/v1/store/info")
+      .then(async (res) => {
+        await axios
+          .get(`/api/v1/store/keywordlist/${res.data.store.storeSeq}`)
+          .then((res) => {
+            res.data.forEach((ele) => {
+              storeKeywords.push(ele.keywordSeq);
+            });
+          })
+          .catch((err) => {
+            console.error(err);
+          });        
+        setStoreInfo({
+          storeName: res.data.store.storeName,
+          storeRegNum: res.data.registartionNumber,
+          storeAddress: res.data.store.storeLocation,
+          mainAddress: res.data.store.storeLocation.split("  ")[0],
+          extraAddress: res.data.store.storeLocation.split("  ")[1],
+          storeCategory: res.data.store.category.categorySeq,
+          storeLatitude: res.data.store.storeLatitude,
+          storeLongitude: res.data.store.storeLongitude,
+        });
+        setStoreIssue({
+          storeCallNum: res.data.store.storeTell,
+          storeParkinglot: res.data.store.storeParkinglot,
+          storeWorkDay: res.data.store.storeWorkhour,
+          storeHoliday: res.data.store.storeHoliday,
+          storeExtraInfo: res.data.store.storeExtraInfo,
+          storeUrl: res.data.store.storeUrl,
+          storeKeywords: storeKeywords,
+          storeImage: res.data.store.storeImage
+        });
+        setStoreImage(res.data.store.storeImage);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  const editTotalStoreInfo =  async() => {    
-    if(!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
-      return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.")
+  const handleEditStoreInfo = async () => {
+    if (!(storeEditInfo.confirmStoreInfo)) {
+      return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
     }
-    try {
-      const res = await axios.post("", {
-        storeName: storeInfo.storeName,
-        storeLocation: storeInfo.storeAddress,
-        categorySeq: storeInfo.storeCategory,
-        ownerTell: ownerInfo.storePhoneNum,
-        storePassword: ownerInfo.storePassword,
-        storeTell: storeIssue.storeCallNum,
-        storeParkinglot: storeIssue.storeParkinglot,
-        storeWorkhour: storeIssue.storeWorkDay,
-        storeHoliday: storeIssue.storeHoliday,
-        storeUrl: storeIssue.storeUrl,
-        storeExtraInfo: storeIssue.storeExtraInfo,
-        selectedKeywordSeqList: storeIssue.storeKeywords,
+
+    await axios
+      .put("/api/v1/store/update", {
+        storeName: storeEditInfo.storeName,
+        registrationNumber: storeEditInfo.storeRegNum,
+        storeLocation: storeEditInfo.storeAddress,
+        categorySeq: storeEditInfo.storeCategory,
+        storeLatitude: storeEditInfo.storeLatitude,
+        storeLongitude: storeEditInfo.storeLongitude,
+        storeTell: storeEditIssue.storeCallNum,
+        storeParkinglot: storeEditIssue.storeParkinglot,
+        storeWorkhour: storeEditIssue.storeWorkDay,
+        storeHoliday: storeEditIssue.storeHoliday,
+        storeExtraInfo: storeEditIssue.storeExtraInfo,
+        selectedKeywordSeqList: storeEditIssue.storeKeywords,
+        storeUrl: storeEditIssue.storeUrl,
+        storeImage: storeEditImage === "" ? storeImage:storeEditImage,
+      })
+      .then((res) => {
+        console.log(res);
+        alert("상점정보가 수정되었습니다.")
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   return (
     <div>
       <Header />
-      <Wrapper>
-        <form>
-          <div className="container">
-            <InputStoreInfo onChange={setStoreInfo} info={totalStoreInfo} />
-            <InputOwnerInfo onChange={setOwnerInfo} info={totalStoreInfo} />
-          </div>
-          <div>
-            <InputStoreIssue onChange={setStoreIssue} info={totalStoreInfo} />
-          </div>
-          <Button onClick={editTotalStoreInfo}>회원가입</Button>
-        </form>
-      </Wrapper>
+      <h1>상점정보</h1>
+      <form>
+        <div>
+          <EditStoreInfo onChange={setStoreEditInfo} info={storeInfo}/>
+        </div>
+        <div>
+          <EditStoreIssue onChange={setStoreEditIssue} info={storeIssue}/>
+          <FileUpload onChange={setStoreEditImage} />
+        </div>
+        <Button onClick={handleEditStoreInfo}>정보수정</Button>
+      </form>
     </div>
   );
 }

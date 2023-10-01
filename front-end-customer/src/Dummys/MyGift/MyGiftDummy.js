@@ -1,7 +1,7 @@
 const MyGiftDummy = [
   {
     from: "위코딩",
-    shopname: "치읓의 자리",
+    storeName: "치읓의 자리",
     count: 1,
     name: "도서 구매 2만원권",
     price: 20000,
@@ -13,7 +13,7 @@ const MyGiftDummy = [
   },
   {
     from: "양코딩",
-    shopname: "놀러와와 애견카페",
+    storeName: "놀러와와 애견카페",
     count: 1,
     name: "강아지 용품",
     price: 10000,
@@ -21,6 +21,18 @@ const MyGiftDummy = [
     cardImage: require("assets/images/cheerup.png"),
     message: "파이팅!",
     createdAt: "2023. 9. 28 PM 6:37:10",
+    qrImage: "https://sosoticon.s3.ap-northeast-2.amazonaws.com/QRCode_3de13672-94cf-4aee-8e34-2f1cfc94cab8.png",
+  },
+  {
+    from: "박코딩",
+    storeName: "놀러와와 애견카페",
+    count: 1,
+    name: "강아지 용품",
+    price: 0,
+    image: require("assets/images/bread.png"),
+    cardImage: require("assets/images/thx.png"),
+    message: "고마워 :)",
+    createdAt: "2023. 9. 30 PM 2:15:56",
     qrImage: "https://sosoticon.s3.ap-northeast-2.amazonaws.com/QRCode_3de13672-94cf-4aee-8e34-2f1cfc94cab8.png",
   },
 ];

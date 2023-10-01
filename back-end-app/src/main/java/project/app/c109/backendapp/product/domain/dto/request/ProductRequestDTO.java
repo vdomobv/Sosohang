@@ -3,10 +3,10 @@ package project.app.c109.backendapp.product.domain.dto.request;
 public class ProductRequestDTO {
 
     private Integer storeSeq;       // store의 ID를 저장하는 필드
-
+    private Integer productSeq;
     private String productName;
     private Integer productPrice;
-    private Integer productDcrate;
+    private Double productDcrate;
     private String productInfo;
     private String productExp;
     private String productImage;
@@ -20,6 +20,10 @@ public class ProductRequestDTO {
 
     public void setStoreSeq(Integer storeSeq) {
         this.storeSeq = storeSeq;
+    }
+
+    public Integer getProducSeq() {
+        return productSeq;
     }
 
     public String getProductName() {
@@ -38,11 +42,11 @@ public class ProductRequestDTO {
         this.productPrice = productPrice;
     }
 
-    public Integer getProductDcrate() {
+    public Double getProductDcrate() {
         return productDcrate;
     }
 
-    public void setProductDcrate(Integer productDcrate) {
+    public void setProductDcrate(Double productDcrate) {
         this.productDcrate = productDcrate;
     }
 

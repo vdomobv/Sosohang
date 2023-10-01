@@ -2,19 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
-import ModalStoreRegNum from "../../components/ModalStoreRegNum";
 
-function EditStoreInfo({ onChange, info }) {
+function EditStoreInfo(props) {
+  const { onChange, info } = props;
   const [confirmStoreInfo, setConfirmStoreInfo] = useState(false); // StoreInfo 유효성여부
 
-  const [storeName, setStoreName] = useState(info.storeName); // 상점 이름
+  const [storeName, setStoreName] = useState(""); // 상점 이름
 
-  const storeRegNum = info.registrationNumber; // 사업자 등록번호
+  const [storeRegNum, setStoreRegNum] = useState(""); // 사업자 등록번호
 
   const [storeAddress, setStoreAddres] = useState(""); // 상점 전체 주소
   const [mainAddress, setMainAddress] = useState(""); // 상점 대표 주소
   const [extraAddress, setExtraAddress] = useState(""); // 상점 상세 주소
   const [isOpenPost, setIsOpenPost] = useState(false); //  주소 검색창 열렸는지
+  const [storeLatitude, setStoreLatitude] = useState(""); // 상점 위도
+  const [storeLongitude, setStoreLongitude] = useState(""); // 상점 경도
 
   // 우편번호찾기 모달 띄우기
   const onChangeOpenPost = (e) => {
@@ -24,21 +26,47 @@ function EditStoreInfo({ onChange, info }) {
 
   // 찾은 주소 입력하기
   const onCompletePost = (data) => {
-    setMainAddress(data.address);
-    setExtraAddress(data.buildingName);
-    setStoreAddres(data.address + data.buildingName);
-    setIsOpenPost(false);
+    axios
+      .get(
+        `https://dapi.kakao.com/v2/local/search/address.json?query=${data.address}`,
+        {
+          headers: {
+            Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_ACCESS_KEY}`,
+          },
+        }
+      )
+      .then((res) => {
+        setMainAddress(data.address);
+        setExtraAddress(data.buildingName);
+        setStoreAddres(data.address + " " + " " + data.buildingName);
+        setStoreLatitude(res.data.documents[0].y);
+        setStoreLongitude(res.data.documents[0].x);
+        setIsOpenPost(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const [storeCategory, setStoreCategory] = useState(""); // 상점 카테고리
+
+  useEffect(() => {
+    setStoreName(info.storeName);
+    setStoreRegNum(info.storeRegNum);
+    setStoreAddres(info.storeAddress);
+    setMainAddress(info.mainAddress);
+    setExtraAddress(info.extraAddress);
+    setStoreLatitude(info.storeLatitude);
+    setStoreLongitude(info.storeLongitude);
+    setStoreCategory(info.storeCategory);
+  }, [info]);
 
   useEffect(() => {
     if (
       storeName !== "" &&
       storeRegNum !== "" &&
       storeAddress !== "" &&
-      storeCategory !== "" &&
-      isVerifiedRegNum
+      storeCategory !== ""
     ) {
       setConfirmStoreInfo(true);
     }
@@ -48,15 +76,11 @@ function EditStoreInfo({ onChange, info }) {
       storeAddress,
       storeCategory,
       confirmStoreInfo,
+      storeLatitude,
+      storeLongitude,
     });
-  }, [
-    storeName,
-    storeAddress,
-    storeCategory,
-    confirmStoreInfo,
-    isVerifiedRegNum,
-    onChange,
-  ]);
+  }, [storeName, storeAddress, storeCategory, onChange]);
+
 
   return (
     <div>
@@ -67,7 +91,7 @@ function EditStoreInfo({ onChange, info }) {
           <Form.Control
             placeholder="상점 이름"
             aria-label="상점이름을 입력하세요."
-            value={info.storeName}
+            value={storeName}
             onChange={(e) => setStoreName(e.target.value)}
           />
         </InputGroup>
@@ -77,11 +101,9 @@ function EditStoreInfo({ onChange, info }) {
         <Form.Label>사업자등록번호*</Form.Label>
         <InputGroup>
           <Form.Control
-            placeholder="사업자등록번호(- 없이 숫자만 입력하세요)"
             aria-label="사업자등록번호를 입력하세요."
-            maxLength={10}
             readOnly={true}
-            value={info.registrationNumber}
+            value={storeRegNum}
           />
         </InputGroup>
       </div>
@@ -106,7 +128,7 @@ function EditStoreInfo({ onChange, info }) {
             value={extraAddress}
             onChange={(e) => {
               setExtraAddress(e.target.value);
-              setStoreAddres(mainAddress + e.target.value);
+              setStoreAddres(mainAddress + " " + " " + e.target.value);
             }}
           />
         </InputGroup>
@@ -116,6 +138,7 @@ function EditStoreInfo({ onChange, info }) {
         <Form.Label>상점 카테고리*</Form.Label>
         <Form.Select
           aria-label="상점 카테고리를 선택해 주세요."
+          value={storeCategory}
           onChange={(e) => setStoreCategory(e.target.value)}>
           <option>상점카테고리</option>
           <option value="1">One</option>
@@ -127,13 +150,6 @@ function EditStoreInfo({ onChange, info }) {
         <ModalStorePostcode
           onCompletePost={onCompletePost}
           setIsOpenPost={setIsOpenPost}
-        />
-      ) : null}
-      {isOpenRegNum ? (
-        <ModalStoreRegNum
-          regNum={storeRegNum}
-          setIsOpenRegNum={setIsOpenRegNum}
-          setIsVerifiedRegNum={setIsVerifiedRegNum}
         />
       ) : null}
     </div>

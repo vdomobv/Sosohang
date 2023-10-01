@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import project.app.c109.backendapp.product.domain.entity.Product;
 import project.app.c109.backendapp.store.domain.entity.Store;
 
 
+@Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByStoreStoreSeq(Integer storeSeq);
-
-
+    Optional<Product> findByProductSeq(Integer productSeq);
     Optional<Product> findByProductSeqAndStore(Integer productSeq, Store store);
 }
 // JPA (Java Persistence API)를 사용하여 작성된 인터페이스

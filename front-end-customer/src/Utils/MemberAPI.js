@@ -59,3 +59,15 @@ export const logout = async () => {
         console.log(e);
     }
 }
+
+export const getMemberData = async (memberSeq) => {
+    try {
+        const response = await axios.get(
+            `http://j9c109.p.ssafy.io:8081/api/v1/member/${memberSeq}`
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching store data in getMemberData:", error);
+    }
+}

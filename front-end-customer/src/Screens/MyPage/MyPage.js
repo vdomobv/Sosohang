@@ -19,7 +19,7 @@ import buyDummy from "../../Dummys/MyPage/BuyDummy";
 
 import { useEffect, useState } from "react";
 import { getDibData } from "../../Utils/DibAPI";
-import { logout, getMemberSeq } from "../../Utils/MemberAPI";
+import { logout, getMemberSeq, getMemberData } from "../../Utils/MemberAPI";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
 const user = userDummy;
@@ -28,6 +28,7 @@ export default function MyPage({ navigation }) {
   const [tempUser, setTempUser] = useState();
   const [dibData, setDibData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState({})
 
   const fetchData = async () => {
     setLoading(true);
@@ -35,12 +36,21 @@ export default function MyPage({ navigation }) {
     if (memberSeq !== undefined) {
       setTempUser(memberSeq);
     }
-    setLoading(false);
   };
 
-  const fetchDibData = async () => {
+  useEffect(() => {
+    if (tempUser !== undefined) {
+      fetchMemberData();
+    }
+    setLoading(false);
+
+  }, [tempUser]);
+
+  const fetchMemberData = async () => {
     const result = await getDibData(tempUser);
     setDibData(result);
+    const userResult = await getMemberData(tempUser);
+    setUserData(userResult);
   };
 
   // 로그인 여부 가져오기
@@ -48,16 +58,11 @@ export default function MyPage({ navigation }) {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (tempUser !== undefined) {
-      fetchDibData();
-    }
-  }, [tempUser]);
 
   // 찜 데이터 변경 시, 업데이트
   useEffect(() => {
     if (tempUser !== undefined) {
-      fetchDibData();
+      fetchMemberData();
     }
   }, [dibData]);
 
@@ -72,7 +77,7 @@ export default function MyPage({ navigation }) {
   const buy = buyDummy.map((data, index) => {
     return <Gift navigation={navigation} key={index} data={data} />;
   });
-  
+
   if (loading) {
     return <Loading />
   } else if (tempUser) {
@@ -89,7 +94,7 @@ export default function MyPage({ navigation }) {
               />
               <View style={styles.user}>
                 <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.name}>{user.name}</Text>
+                  <Text style={styles.name}>{userData.memberNickname}</Text>
                   <Text
                     onPress={() => {
                       console.log("이름 수정");
@@ -99,7 +104,7 @@ export default function MyPage({ navigation }) {
                     ✏️
                   </Text>
                 </View>
-                <Text style={styles.phone}>{user.phone}</Text>
+                <Text style={styles.phone}>{userData.memberPhone}</Text>
                 <TouchableOpacity onPress={() => {
                   logout()
                   console.log("로그아웃 되었습니다.")
@@ -110,7 +115,7 @@ export default function MyPage({ navigation }) {
             </View>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("StampList", {tempUser});
+                navigation.navigate("StampList", { tempUser });
               }}
             >
               <StampAfter />

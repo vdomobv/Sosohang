@@ -6,7 +6,7 @@ import Tabs from "../../Components/Tabs/Tabs";
 import Title from "../../Components/Title/Title";
 import Box from "../../Components/Box/Box";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
-import Gift from "../../Components/Gift/Gift";
+import GiftNoBtn from "../../Components/GiftNoBtn/GiftNoBtn";
 import CategoryData from "../../Dummys/Main/CategoryData";
 
 export default function Review({ route, navigation }) {
@@ -42,7 +42,7 @@ export default function Review({ route, navigation }) {
         <ScrollBox style={styles.scrollBoxContainer}
           content={
             <>
-              <Box content={<Gift data={giftData}/>} />
+              <Box content={<GiftNoBtn data={giftData}/>} />
               <View style={styles.reviewBox}>
                 <Text style={[styles.reviewInfo, { fontSize: 21, fontWeight: 'bold' }]}>선물은 만족스러우셨나요?{'\n'}</Text>
                 <Text style={[styles.reviewInfo, { fontSize: 18, padding: 5 }]}>
@@ -52,7 +52,7 @@ export default function Review({ route, navigation }) {
                 <TouchableOpacity style={styles.shopname}
                 // 클릭시 각 상점 상세페이지로 이동?
                 >
-                  <Text style={styles.shopnameText}>{giftData.shopname}</Text>
+                  <Text style={styles.shopnameText}>{giftData.storeName}</Text>
                 </TouchableOpacity>
                 <Text style={[styles.reviewInfo, { fontSize: 15, marginBottom: 8 }]}>
                   최대 3개까지 선택 가능합니다.</Text>
@@ -73,6 +73,7 @@ export default function Review({ route, navigation }) {
                     </TouchableOpacity>
                   ))}
                 </View>
+                {/* 버튼 클릭 시, 리뷰 키워드 저장되도록 */}
                 <TouchableOpacity style={styles.reviewButton}>
                   <Text style={styles.buttonText}>후기 남기기</Text>
                 </TouchableOpacity>

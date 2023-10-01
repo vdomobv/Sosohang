@@ -18,24 +18,39 @@ import buyDummy from "../../Dummys/MyPage/BuyDummy";
 
 import { useEffect, useState } from "react";
 import { getDibData } from "../../Utils/DibAPI";
-import { logout } from "../../Utils/MemberAPI";
+import { logout, getMemberSeq } from "../../Utils/MemberAPI";
+import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
 const user = userDummy;
 
 export default function MyPage({ navigation }) {
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await getDibData(tempUser);
-      setDibData(result);
-    };
-
-    fetchData();
-  }, [dibData]);
-
+  const [tempUser, setTempUser] = useState();
   const [dibData, setDibData] = useState([]);
-  const tempUser = 1;
 
-  const dibs = dibData.length > 0 ? dibData.map((data, index) => {
+  const fetchData = async () => {
+    const memberSeq = await getMemberSeq();
+    if (memberSeq !== undefined) {
+      setTempUser(memberSeq);
+      fetchDibData();
+    }
+  };
+
+  const fetchDibData = async () => {
+    const result = await getDibData(tempUser);
+    setDibData(result);
+  };
+
+  // 로그인 여부, 데이터 가져오기
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // 찜 데이터 변경 시, 업데이트
+  // useEffect(() => {
+  //   fetchDibData();
+  // }, [dibData]);
+
+  const dibs = dibData && dibData.length > 0 ? dibData.map((data, index) => {
     return <CarouselItem key={index} props={data.store}
       onPressFunction={() => {
         navigation.navigate('Shop', { data: data.store })
@@ -46,88 +61,95 @@ export default function MyPage({ navigation }) {
   const buy = buyDummy.map((data, index) => {
     return <Gift navigation={navigation} key={index} data={data} />;
   });
-  return (
-    <>
-      <ScrollView style={styles.container}>
-        <Title title={"나의 소소행"} />
+  if (tempUser) {
 
-        <View style={styles.section1}>
-          <View style={styles.profile}>
-            <Image
-              style={styles.profileImage}
-              source={require("assets/images/bread.png")}
-            />
-            <View style={styles.user}>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.name}>{user.name}</Text>
-                <Text
-                  onPress={() => {
-                    console.log("이름 수정");
-                  }}
-                >
-                  {" "}
-                  ✏️
-                </Text>
+    return (
+      <>
+        <ScrollView style={styles.container}>
+          <Title title={"나의 소소행"} />
+
+          <View style={styles.section1}>
+            <View style={styles.profile}>
+              <Image
+                style={styles.profileImage}
+                source={require("assets/images/bread.png")}
+              />
+              <View style={styles.user}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.name}>{user.name}</Text>
+                  <Text
+                    onPress={() => {
+                      console.log("이름 수정");
+                    }}
+                  >
+                    {" "}
+                    ✏️
+                  </Text>
+                </View>
+                <Text style={styles.phone}>{user.phone}</Text>
+                <TouchableOpacity onPress={() => {
+                  logout()
+                  console.log("로그아웃 되었습니다.")
+                }}>
+                  <Text style={styles.logout}>로그아웃 하기</Text>
+                </TouchableOpacity>
               </View>
-              <Text style={styles.phone}>{user.phone}</Text>
-              <TouchableOpacity onPress={() => {
-                logout()
-                console.log("로그아웃 되었습니다.")
-               }}>
-                <Text style={styles.logout}>로그아웃 하기</Text>
-              </TouchableOpacity>
             </View>
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("StampList");
-            }}
-          >
-            <StampAfter />
-          </TouchableOpacity>
-        </View>
-
-        <Line />
-
-        <View style={styles.section2}>
-          <View style={styles.header}>
-            <SubTitle
-              customStyles={{ marginVertical: 10 }}
-              subTitle={"❤️ 찜 목록"}
-            />
-            <Text
+            <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Dibs");
+                navigation.navigate("StampList");
               }}
             >
-              상세보기 ＞{" "}
-            </Text>
+              <StampAfter />
+            </TouchableOpacity>
           </View>
-          <Carousel content={dibs} />
-        </View>
 
-        <Line />
+          <Line />
 
-        <View style={styles.section3}>
-          <View style={styles.header}>
-            <SubTitle
-              customStyles={{ marginVertical: 10 }}
-              subTitle={"💸 구매 내역"}
-            />
-            <Text
-              onPress={() => {
-                navigation.navigate("PurchaseHistory", {
-                  buy: buyDummy,
-                });
-              }}
-            >
-              상세보기 ＞{" "}
-            </Text>
+          <View style={styles.section2}>
+            <View style={styles.header}>
+              <SubTitle
+                customStyles={{ marginVertical: 10 }}
+                subTitle={"❤️ 찜 목록"}
+              />
+              <Text
+                onPress={() => {
+                  navigation.navigate("Dibs");
+                }}
+              >
+                상세보기 ＞{" "}
+              </Text>
+            </View>
+            <Carousel content={dibs} />
           </View>
-          <ScrollBox content={buy} />
-        </View>
-      </ScrollView>
-      <Tabs navigation={navigation} />
-    </>
-  );
+
+          <Line />
+
+          <View style={styles.section3}>
+            <View style={styles.header}>
+              <SubTitle
+                customStyles={{ marginVertical: 10 }}
+                subTitle={"💸 구매 내역"}
+              />
+              <Text
+                onPress={() => {
+                  navigation.navigate("PurchaseHistory", {
+                    buy: buyDummy,
+                  });
+                }}
+              >
+                상세보기 ＞{" "}
+              </Text>
+            </View>
+            <ScrollBox content={buy} />
+          </View>
+        </ScrollView>
+        <Tabs navigation={navigation} />
+      </>
+    );
+  } else {
+    return (
+      <LoginRequired navigation={navigation}/>
+    )
+  }
 }

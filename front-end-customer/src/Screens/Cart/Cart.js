@@ -31,7 +31,6 @@ export default function Cart({ navigation }) {
 
       const result = await getCartData(tempUser);
       setCartData(result);
-    } else {
     }
   };
 

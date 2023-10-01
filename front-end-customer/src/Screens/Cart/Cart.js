@@ -11,6 +11,7 @@ import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 import { getCartData, deleteCartData } from "../../Utils/CartAPI";
 import { getMemberSeq, setMemberSeq } from "../../Utils/MemberAPI";
 import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
+import Loading from "../../Components/Loading/Loading";
 
 export default function Cart({ navigation }) {
   const [tempUser, setTempUser] = useState();
@@ -21,17 +22,20 @@ export default function Cart({ navigation }) {
   const [cartData, setCartData] = useState([])
   const [groupedData, setGroupedData] = useState({})
   const [selectedProducts, setSelectedProducts] = useState([])
+  const [loading, setLoading] = useState(true);
 
   // 장바구니 데이터 조회
   const fetchData = async () => {
+    setLoading(true);
     const memberSeq = await getMemberSeq();
 
     if (memberSeq !== undefined) {
       setTempUser(memberSeq);
 
-      const result = await getCartData(tempUser);
+      const result = await getCartData(memberSeq);
       setCartData(result);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -136,7 +140,9 @@ export default function Cart({ navigation }) {
     })
   }
 
-  if (tempUser) {
+  if (loading) {
+    return <Loading />
+  } else if (tempUser) {
     return (
       <>
         <View style={styles.container}>

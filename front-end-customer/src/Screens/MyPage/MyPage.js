@@ -12,6 +12,7 @@ import Gift from "../../Components/Gift/Gift";
 import StampAfter from "../../Components/StampAfter/StampAfter";
 import Box from "../../Components/Box/Box";
 import SectionSubtitle from "../../Components/SectionSubTitle/SectionSubTitle";
+import Loading from "../../Components/Loading/Loading";
 
 import userDummy from "../../Dummys/MyPage/UserDummy";
 import buyDummy from "../../Dummys/MyPage/BuyDummy";
@@ -26,13 +27,15 @@ const user = userDummy;
 export default function MyPage({ navigation }) {
   const [tempUser, setTempUser] = useState();
   const [dibData, setDibData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
+    setLoading(true);
     const memberSeq = await getMemberSeq();
     if (memberSeq !== undefined) {
       setTempUser(memberSeq);
-      fetchDibData();
     }
+    setLoading(false);
   };
 
   const fetchDibData = async () => {
@@ -40,15 +43,23 @@ export default function MyPage({ navigation }) {
     setDibData(result);
   };
 
-  // 로그인 여부, 데이터 가져오기
+  // 로그인 여부 가져오기
   useEffect(() => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (tempUser !== undefined) {
+      fetchDibData();
+    }
+  }, [tempUser]);
+
   // 찜 데이터 변경 시, 업데이트
-  // useEffect(() => {
-  //   fetchDibData();
-  // }, [dibData]);
+  useEffect(() => {
+    if (tempUser !== undefined) {
+      fetchDibData();
+    }
+  }, [dibData]);
 
   const dibs = dibData && dibData.length > 0 ? dibData.map((data, index) => {
     return <CarouselItem key={index} props={data.store}
@@ -61,8 +72,10 @@ export default function MyPage({ navigation }) {
   const buy = buyDummy.map((data, index) => {
     return <Gift navigation={navigation} key={index} data={data} />;
   });
-  if (tempUser) {
-
+  
+  if (loading) {
+    return <Loading />
+  } else if (tempUser) {
     return (
       <>
         <ScrollView style={styles.container}>
@@ -149,7 +162,7 @@ export default function MyPage({ navigation }) {
     );
   } else {
     return (
-      <LoginRequired navigation={navigation}/>
+      <LoginRequired navigation={navigation} />
     )
   }
 }

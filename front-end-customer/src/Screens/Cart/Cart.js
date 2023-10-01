@@ -71,32 +71,34 @@ export default function Cart({ navigation }) {
     setCheckedProduct(newCheckedProduct);
   }, [checkAll]);
 
-  // 총 결제 금액, 선택 상품 변경
+  // 선택 상품 변경
   useEffect(() => {
-    Object.keys(checkedProduct).map((storeSeq) => {
+    let newSelectedProducts = [];
+
+    Object.keys(checkedProduct).forEach((storeSeq) => {
       const temp = checkedProduct[storeSeq];
-      temp.map((value, index) => {
+      temp.forEach((value, index) => {
         if (value) {
           const tempProductData = groupedData[storeSeq][index].product;
-          console.log(tempProductData);
-          tempProductData['storeSeq'] = storeSeq
+          tempProductData['storeSeq'] = storeSeq;
           tempProductData['count'] = groupedData[storeSeq][index].quantity;
-
-          const newSelectedProduct = [...selectedProducts, tempProductData]
-          setSelectedProducts(newSelectedProduct);
-          const tempPrice = newSelectedProduct.reduce((acc, item) => {
-            console.log(item.product)
-            return acc + item.productPrice * item.count;
-          }, 0);
-          setTotalPrice(tempPrice);
-          console.log(newSelectedProduct);
-        } else {
-          setTotalPrice(0)
-          setSelectedProducts([]);
+          newSelectedProducts.push(tempProductData);
         }
-      })
-    })
+      });
+    });
+
+    setSelectedProducts(newSelectedProducts);
+
   }, [checkedProduct])
+
+  // 총 결제 금액 변경
+  useEffect(() => {
+    const tempPrice = selectedProducts.reduce((acc, item) => {
+      console.log('test: ', item)
+      return acc + item.productPrice * item.count;
+    }, 0);
+    setTotalPrice(tempPrice);
+  }, [selectedProducts])
 
   const renderGroupedProducts = () => {
     return Object.keys(groupedData).map((storeSeq) => {
@@ -122,7 +124,6 @@ export default function Cart({ navigation }) {
           fetchData={fetchData}
         />
       )
-
     })
   }
 
@@ -144,16 +145,17 @@ export default function Cart({ navigation }) {
               />{" "}
               전체 선택
             </Text>
-            <TouchableOpacity onPress={() => {
+            <TouchableOpacity onPress={async () => {
               if (selectedProducts.length > 0) {
-                selectedProducts.map((data) => {
-                  deleteCartData(tempUser, data.productSeq)
-                })
-                fetchData();
+                for (let data of selectedProducts) {
+                  await deleteCartData(tempUser, data.productSeq);
+                }
+                await fetchData();
               } else {
-                Alert.alert('삭제할 상품을 선택해주세요.')
+                Alert.alert('삭제할 상품을 선택해주세요.');
               }
-            }}>
+            }}
+            >
               <Text style={styles.delete}>선택 삭제</Text>
             </TouchableOpacity>
           </View>

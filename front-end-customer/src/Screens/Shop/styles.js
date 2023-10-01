@@ -59,6 +59,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 30
+  },
+
+  modalButtons : {
+    flexDirection : 'row',
   }
 
 });

@@ -26,8 +26,6 @@ function FileUpload({ onChange }) {
 
     try {
       await s3.upload(params).promise();
-      console.log(params.Bucket);
-      console.log("File uploaded to S3 successfully.");
       onChange(
         `https://sosoticon.s3.ap-northeast-2.amazonaws.com/${params.Key}`
       );

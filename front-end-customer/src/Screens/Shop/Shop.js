@@ -8,23 +8,21 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import { useEffect, useState } from "react";
-
 import Title from "../../Components/Title/Title";
 import SectionTitle from "../../Components/SectionTitle/SectionTitle";
 import Line from "../../Components/Line/Line";
 import Product from "../../Components/Product/Product";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import DibButton from "../../Components/DibButton/DibButton"
-import Loading from "../../Components/Loading/Loading"
-
-import ShopDummy from "../../Dummys/Shop/ShopDummy";
+import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { getStoreDibData } from "../../Utils/DibAPI";
 import { getProduct } from "../../Utils/ProductAPI";
 import { getStoreData } from "../../Utils/StoreAPI";
 import { addToCart } from "../../Utils/CartAPI";
+import CustomModal from "../../Components/CustomModal/CustomModal";
 
 const Info = ({ logo, data }) => {
   return (
@@ -52,6 +50,7 @@ export default function Shop({ navigation, route }) {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [shouldNavigate, setShouldNavigate] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [modalState, setModalState] = useState(false);
 
   const getKeywords = async () => {
     try {
@@ -73,8 +72,8 @@ export default function Shop({ navigation, route }) {
 
     // 상품 데이터, 세일 상품 데이터 분리
     if (Array.isArray(result)) {
-      const regularProducts = result.filter(data => data.productDcrate === null);
-      const saleProducts = result.filter(data => data.productDcrate !== null);
+      const regularProducts = result.filter(data => data.productDcrate === 0);
+      const saleProducts = result.filter(data => data.productDcrate !== 0);
 
       setProduct(regularProducts);
       setSaleProduct(saleProducts);
@@ -186,6 +185,7 @@ export default function Shop({ navigation, route }) {
       newSelectedProducts.map((data) => {
         addToCart(tempUser, data.productSeq, data.count);
       })
+      setModalState(true);
     }
   }
 
@@ -324,6 +324,27 @@ export default function Shop({ navigation, route }) {
           />
         </View>
       )}
+
+      <CustomModal modalState={modalState}
+        content={
+          <View>
+            <View>
+              <SectionTitle content={<Text>장바구니에 상품을 담았습니다.</Text>} />
+              <SectionTitle content={<Text>장바구니로 이동하시겠습니까?</Text>} />
+            </View>
+            <View style={styles.modalButtons}>
+              <CustomButton
+                customStyles={{ backgroundColor: "#FFBF46" }}
+                content={<Text style={styles.modalText}>이동하기</Text>}
+                pressFuction={() => { navigation.navigate('Cart') }}
+              />
+              <CustomButton
+                content={<Text style={styles.modalText}>계속 쇼핑하기</Text>}
+                pressFuction={() => { setModalState(false) }}
+              />
+            </View>
+          </View>
+        } />
     </>
   );
 }

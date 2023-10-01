@@ -71,7 +71,7 @@ export default function Cart({ navigation }) {
     setCheckedProduct(newCheckedProduct);
   }, [checkAll]);
 
-  // 총 결제 금액, 선택 상품 변경
+  // 선택 상품 변경
   useEffect(() => {
     let newSelectedProducts = [];
 
@@ -91,7 +91,7 @@ export default function Cart({ navigation }) {
 
   }, [checkedProduct])
 
-
+  // 총 결제 금액 변경
   useEffect(() => {
     const tempPrice = selectedProducts.reduce((acc, item) => {
       console.log('test: ', item)
@@ -99,7 +99,7 @@ export default function Cart({ navigation }) {
     }, 0);
     setTotalPrice(tempPrice);
   }, [selectedProducts])
-  
+
   const renderGroupedProducts = () => {
     return Object.keys(groupedData).map((storeSeq) => {
       const storeCart = groupedData[storeSeq];
@@ -145,16 +145,17 @@ export default function Cart({ navigation }) {
               />{" "}
               전체 선택
             </Text>
-            <TouchableOpacity onPress={() => {
+            <TouchableOpacity onPress={async () => {
               if (selectedProducts.length > 0) {
-                selectedProducts.map((data) => {
-                  deleteCartData(tempUser, data.productSeq)
-                })
-                fetchData();
+                for (let data of selectedProducts) {
+                  await deleteCartData(tempUser, data.productSeq);
+                }
+                await fetchData();
               } else {
-                Alert.alert('삭제할 상품을 선택해주세요.')
+                Alert.alert('삭제할 상품을 선택해주세요.');
               }
-            }}>
+            }}
+            >
               <Text style={styles.delete}>선택 삭제</Text>
             </TouchableOpacity>
           </View>

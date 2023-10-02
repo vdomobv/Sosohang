@@ -1,11 +1,11 @@
 import styles from "./styles";
-import { View, Text } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 
-export default function HashTag({props}) {
+export default function HashTag({props, pressFucntion}) {
     return (
-      <View style={styles.container}>
-        <Text>{props.name}</Text>
-      </View>
+      <TouchableOpacity onPress={pressFucntion} style={styles.container}>
+        <Text># {props.keywordName}</Text>
+      </TouchableOpacity>
     );
   }
   

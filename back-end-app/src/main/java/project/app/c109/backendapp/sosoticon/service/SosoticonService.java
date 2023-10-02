@@ -103,7 +103,7 @@ public class SosoticonService {
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
             sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
-//            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
+            sosoticon.setSosoticonUrl(requestDTO.getSosoticonUrl());
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());
@@ -111,9 +111,19 @@ public class SosoticonService {
 
             // MMS 보내기
             sendMMSWithImageLink(
-                    requestDTO.getSosoticonTaker(), // 수신자 전화번호
-                    requestDTO.getSosoticonText(),  // 메시지 텍스트
-                    qrImageUrl // qr URL
+                    // 발신자 이름
+                    requestDTO.getSosoticonGiverName(),
+                    // 수신자 이름
+                    requestDTO.getSosoticonTakerName(),
+                    // 수신자 전화번호
+                    requestDTO.getSosoticonTaker(),
+                    // 메시지 텍스트
+                    requestDTO.getSosoticonText(),
+                    // qr URL
+                    // qrImageUrl,
+                    //웹페이지 링크
+                    requestDTO.getSosoticonUrl()
+
             );
 
             LocalDateTime now = LocalDateTime.now();
@@ -225,13 +235,14 @@ public class SosoticonService {
     }
 
 
-public void sendMMSWithImageLink(String phoneNumber, String messageText, String imageUrl) {
+public void sendMMSWithImageLink(String sosoticonGiverName, String sosoticonTakerName, String phoneNumber, String messageText, String webUrl) {
     try {
         Twilio.init(twilioAccountSid, twilioAuthToken);
 
         List<URI> mediaUrl = new ArrayList<>();
-        mediaUrl.add(URI.create(imageUrl));
-        String customizedMessage = "Your Custom Text Here: " + messageText;
+        mediaUrl.add(URI.create(webUrl));
+        String customizedMessage = sosoticonGiverName+ " 님이 " + sosoticonTakerName + " 님께 보내신 선물입니다.\n\n"
+                + messageText + "\n"+ "\n"+ "동네 상점 모바일 쿠폰 서비스 '소소행'에서 발송 되었습니다. :)";
 
         Message sentMessage = Message.creator(
                         new PhoneNumber(phoneNumber), // to

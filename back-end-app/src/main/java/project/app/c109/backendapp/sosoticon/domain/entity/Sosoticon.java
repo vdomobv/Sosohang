@@ -50,8 +50,8 @@ public class Sosoticon {
     @Column(name = "sosoticon_text")
     private String sosoticonText;
 
-    @Column(name = "sosoticon_audio")
-    private String sosoticonAudio;
+    @Column(name = "sosoticon_url")
+    private String sosoticonUrl;
 
     @Column(name = "sosoticon_image")
     private String sosoticonImage;
@@ -132,12 +132,12 @@ public class Sosoticon {
         this.sosoticonText = sosoticonText;
     }
 
-    public String getSosoticonAudio() {
-        return sosoticonAudio;
+    public String getSosoticonUrl() {
+        return sosoticonUrl;
     }
 
-    public void setSosoticonAudio(String sosoticonAudio) {
-        this.sosoticonAudio = sosoticonAudio;
+    public void setSosoticonUrl(String sosoticonUrl) {
+        this.sosoticonUrl = sosoticonUrl;
     }
 
     public String getSosoticonImage() {

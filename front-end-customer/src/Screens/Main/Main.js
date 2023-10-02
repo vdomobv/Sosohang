@@ -30,19 +30,16 @@ import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 // dummys
 import AlarmDummy from "../../Dummys/Main/AlarmDummy";
 import CategoryData from "../../Dummys/Main/CategoryData";
-import HashTagData from "../../Dummys/Main/HashTagData";
 
 // utils
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import axios from "axios";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
 import { getRecentStoreByLocation, getStoreByLocation, getKeywords, getKeywordStoreByLocation } from "../../Utils/StoreAPI";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 
-
 const categoryData = CategoryData;
-const hashTags = HashTagData;
 const alarmDummy = AlarmDummy;
 
 export default function Main({ navigation }) {
@@ -60,6 +57,7 @@ export default function Main({ navigation }) {
   const [locationStore, setLocationStore] = useState([]);
   const [keywordStore, setKeywordStore] = useState([]);
   const [keywords, setKeywords] = useState([]);
+  const [selectedKeyword, setSelectedKeyword] = useState();
 
   // 사용자 로그인 여부 확인
   const fetchData = async () => {
@@ -107,6 +105,7 @@ export default function Main({ navigation }) {
     const result = await getKeywordStoreByLocation(coords.latitude, coords.longitude, keywordSeq);
     if (result !== undefined) {
       setKeywordStore(result);
+      setSelectedKeyword(keywordSeq)
     }
   }
 
@@ -206,7 +205,7 @@ export default function Main({ navigation }) {
     return <HashTag pressFucntion={() => {
       fetchKewordStore(data.keywordSeq)
     }}
-      key={data.keywordSeq} props={data} />;
+      key={data.keywordSeq} props={data} selectedKeyword={selectedKeyword}/>;
   });
 
   const shopCarousel = locationStore.map((data) => {

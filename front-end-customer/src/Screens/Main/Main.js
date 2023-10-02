@@ -36,7 +36,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
-import { getRecentStoreByLocation, getStoreByLocation, getKeywords, getKeywordStoreByLocation } from "../../Utils/StoreAPI";
+import { getRecentStoreByLocation, getAllStoreData, getStoreByLocation, getKeywords, getKeywordStoreByLocation } from "../../Utils/StoreAPI";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 
 const categoryData = CategoryData;
@@ -81,16 +81,12 @@ export default function Main({ navigation }) {
   };
 
   // 모든 가게 정보 가져오기 (for 검색)
-  const getAllStoreData = async () => {
-    try {
-      const response = await axios.get(
-        "http://j9c109.p.ssafy.io:8081/api/v1/store"
-      );
-      setStoreData(response.data);
-    } catch (error) {
-      console.error("Error fetching store data:", error);
+  const fetchAllStoreData = async () => {
+    const result = await getAllStoreData();
+    if (result !== undefined) {
+      setStoreData(result);
     }
-  };
+  }
 
   // 키워드 가져오기
   const fetchKeywords = async () => {
@@ -112,7 +108,7 @@ export default function Main({ navigation }) {
   // 화면 렌더링 전 실행
   useEffect(() => {
     fetchData();
-    getAllStoreData();
+    fetchAllStoreData();
     fetchLocation();
     fetchKeywords();
   }, []);
@@ -205,7 +201,7 @@ export default function Main({ navigation }) {
     return <HashTag pressFucntion={() => {
       fetchKewordStore(data.keywordSeq)
     }}
-      key={data.keywordSeq} props={data} selectedKeyword={selectedKeyword}/>;
+      key={data.keywordSeq} props={data} selectedKeyword={selectedKeyword} />;
   });
 
   const shopCarousel = locationStore.map((data) => {
@@ -252,7 +248,7 @@ export default function Main({ navigation }) {
               <View style={[styles.location]}>
                 <Ionicons
                   onPress={() => {
-                    navigation.navigate("Map", { coords, location });
+                    navigation.navigate("Map", { coords, location, storeData });
                   }}
                   name="location-sharp"
                   color={"#BFBFBF"}

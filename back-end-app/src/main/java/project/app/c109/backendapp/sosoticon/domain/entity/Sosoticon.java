@@ -1,6 +1,7 @@
 package project.app.c109.backendapp.sosoticon.domain.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import lombok.Data;
@@ -68,6 +69,9 @@ public class Sosoticon {
 
     @Column(name = "qr_image_url")
     private String qrImageUrl;
+
+    @Column
+    private LocalDateTime createdAt;
 
     // Default constructor
     public Sosoticon() {

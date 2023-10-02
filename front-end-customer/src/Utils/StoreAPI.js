@@ -53,7 +53,7 @@ export const getStoreByLocation = async (latitute, longitude) => {
 export const getKeywordStoreByLocation = async (latitute, longitude, keywordSeq) => {
     try {
         const response = await axios.get(
-            `http://j9c109.p.ssafy.io:8081/api/v1/store/nearby/{keywordSeq}?latitude=${latitute}&longitude=${longitude}&keywordSeq=${keywordSeq}`
+            `http://j9c109.p.ssafy.io:8081/api/v1/store/nearby/keyword?latitude=${latitute}&longitude=${longitude}&keywordSeq=${keywordSeq}`
         );
 
         return response.data;

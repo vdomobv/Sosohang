@@ -10,7 +10,6 @@ import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
 import { getCartData, deleteCartData } from "../../Utils/CartAPI";
 import { getMemberSeq } from "../../Utils/MemberAPI";
-import Loading from "../../Components/Loading/Loading";
 
 export default function Cart({ navigation }) {
   const [tempUser, setTempUser] = useState();
@@ -94,6 +93,7 @@ export default function Cart({ navigation }) {
           const tempProductData = groupedData[storeSeq][index].product;
           tempProductData['storeSeq'] = storeSeq;
           tempProductData['count'] = groupedData[storeSeq][index].quantity;
+          tempProductData['storeName'] = tempProductData.store.storeName
           newSelectedProducts.push(tempProductData);
         }
       });
@@ -139,9 +139,7 @@ export default function Cart({ navigation }) {
     })
   }
 
-  if (loading) {
-    return <Loading />
-  } else if (tempUser) {
+  if (tempUser) {
     return (
       <>
         <View style={styles.container}>

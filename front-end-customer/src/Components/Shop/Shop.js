@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 
 import SquareImage from "../SquareImage/SquareImage";
 import SubTitle from "../SubTitle/SubTitle";

@@ -16,7 +16,6 @@ export default function ShowStamp({ navigation }) {
   const [memberNickname, setMemberNickname] = useState("");
 
   const handleShowStamp = async () => {
-    console.log("클릭")
     if (stampPhoneNumber.length === 11) {
       try {
         const response = await axios.get(

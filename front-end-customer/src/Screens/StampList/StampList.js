@@ -9,40 +9,41 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { customGroupBy } from "../../Utils/GroupBy";
 
-export default function StampList({ navigation }) {
-  const tempUser = 1;
+export default function StampList({ navigation, route }) {
   const [userStamp, setUserStamp] = useState();
   const [userStampList, setUserStampList] = useState([]);
+  const tempUser = route.params.tempUser;
 
-  const stampData = userStampList.map((data, index) => {
-    console.log('test: ', userStamp[data]);
-    return (
-      <Coupon key={index} storeName={data} data={userStamp[data]} navigation={navigation} />
-    );
-  });
+  const getStampData = async () => {
+    try {
+      const response = await axios.get(
+        `http://j9c109.p.ssafy.io:8081/api/v1/stamp/member/status?memberSeq=${tempUser}&stampStatus=0`
+      );
+
+      console.log(response.data);
+
+      const groupedData = customGroupBy(
+        response.data,
+        (item) => item.store.storeSeq
+      );
+
+      setUserStamp(groupedData);
+      setUserStampList(Object.keys(groupedData));
+    } catch (error) {
+      console.error("Error fetching store data in getStampData:", error);
+    }
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axios.get(
-          `http://j9c109.p.ssafy.io:8081/api/v1/stamp/${tempUser}`
-        );
+    getStampData();
+  }, [tempUser]);
 
-        const groupedData = customGroupBy(
-          response.data,
-          (item) => item.store.storeName
-        );
-
-        setUserStamp(groupedData);
-        setUserStampList(Object.keys(groupedData));
-      } catch (error) {
-        console.error("Error fetching store data:", error);
-      }
-    };
-
-    getData();
-  }, []);
-
+  const stampData = userStampList.map((data, index) => {
+    const storeName = userStamp[data][0].store.storeName
+    return (
+      <Coupon key={index} storeName={storeName} data={userStamp[data]} navigation={navigation} />
+    );
+  });
   return (
     <>
       <View style={styles.container}>

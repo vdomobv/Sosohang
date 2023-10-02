@@ -7,10 +7,8 @@ import DibButton from "../DibButton/DibButton";
 
 import { useState } from "react";
 
-export default function Shop({ data, PressFunction, dibSeq }) {
+export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
   const [dibState, setDibState] = useState(dibSeq ? true : false);
-  const tempUser = 1;
-
   return (
     <View style={styles.container}>
       <SquareImage imageSrc={require("assets/dummyimages/anuek.jpg")} />
@@ -20,7 +18,11 @@ export default function Shop({ data, PressFunction, dibSeq }) {
             <Text style={styles.category}>{data.category.categoryName}</Text>
             <SubTitle subTitle={data.storeName} />
           </View>
-          <DibButton dibState={dibState} setDibState={setDibState} userSeq={tempUser} storeSeq={data.storeSeq} />
+          {
+            tempUser!== undefined ?
+              <DibButton dibState={dibState} setDibState={setDibState} userSeq={tempUser} storeSeq={data.storeSeq} />
+              : undefined
+          }
         </View>
         <Text onPress={PressFunction} style={styles.more}>
           상세보기 ＞

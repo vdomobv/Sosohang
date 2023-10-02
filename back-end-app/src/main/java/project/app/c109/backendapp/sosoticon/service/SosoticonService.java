@@ -74,8 +74,9 @@ public class SosoticonService {
             Store storeEntity = storeRepository.findById(requestDTO.getStoreSeq())
                     .orElseThrow(() -> new RuntimeException("Store not found with ID: " + requestDTO.getStoreSeq()));
             sosoticon.setStore(storeEntity);
-
+            sosoticon.setSosoticonTakerName(requestDTO.getSosoticonTakerName());
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
+            sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
             sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
@@ -238,6 +239,12 @@ public class SosoticonService {
         sosoticonList.addAll(sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone));
 
         sosoticonList.sort(Comparator.comparing(Sosoticon::getSosoticonSeq).reversed());
+        return sosoticonList;
+    }
+
+    public List<Sosoticon> getReceivedList(Integer memberSeq) {
+        Member member = memberRepository.findByMemberSeq(memberSeq).get();
+        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
         return sosoticonList;
     }
 

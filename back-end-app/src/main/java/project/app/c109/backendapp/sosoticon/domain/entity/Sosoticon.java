@@ -3,9 +3,13 @@ package project.app.c109.backendapp.sosoticon.domain.entity;
 import javax.persistence.*;
 import java.util.UUID;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.member.domain.entity.Member;
 
+@Data
 @Entity // 이 클래스는 JPA의 엔터티 클래스입니다. DB 테이블과 매핑됩니다.
 @Table(name = "sosoticon") // 해당 엔터티는 "sosoticon" 테이블과 매핑됩니다.
 public class Sosoticon {
@@ -19,8 +23,14 @@ public class Sosoticon {
     @JoinColumn(name = "member_seq", referencedColumnName = "member_seq")
     private Member member;
 
+    @Column
+    @Getter
+    @Setter
+    private String sosoticonGiverName;
+
     @Column(name = "order_id")
     private Integer orderId;
+
 
     @ManyToOne
     @JoinColumn(name = "store_seq", referencedColumnName = "store_seq")
@@ -29,6 +39,11 @@ public class Sosoticon {
 
     @Column(name = "sosoticon_taker")
     private String sosoticonTaker;
+
+    @Column
+    @Setter
+    @Getter
+    private String sosoticonTakerName;
 
     @Column(name = "sosoticon_text")
     private String sosoticonText;

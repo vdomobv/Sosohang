@@ -15,7 +15,33 @@ export default function AddStamp({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [stampCount, setStampCount] = useState(1);
   const [nowStamp, setNowStamp] = useState(stampData.length);
+  const [stampImages, setStampImages] = useState({
+    1: require('assets/images/stamp1.png'),
+    2: require('assets/images/stamp2.png'),
+    3: require('assets/images/stamp3.png'),
+    4: require('assets/images/stamp4.png'),
+    5: require('assets/images/stamp5.png'),
+    6: require('assets/images/stamp6.png'),
+    7: require('assets/images/stamp7.png'),
+    8: require('assets/images/stamp8.png'),
+    9: require('assets/images/stamp9.png'),
+    10: require('assets/images/stamp10.png'),
+  });
 
+  useEffect(() => {
+    setStampImages({
+      1: require('assets/images/stamp1.png'),
+      2: require('assets/images/stamp2.png'),
+      3: require('assets/images/stamp3.png'),
+      4: require('assets/images/stamp4.png'),
+      5: require('assets/images/stamp5.png'),
+      6: require('assets/images/stamp6.png'),
+      7: require('assets/images/stamp7.png'),
+      8: require('assets/images/stamp8.png'),
+      9: require('assets/images/stamp9.png'),
+      10: require('assets/images/stamp10.png'),
+    });
+  }, [nowStamp]);
 
   const storeSeq = stampData[0].store.storeSeq;
   const phoneNumber = stampData[0].member.memberPhone;
@@ -32,19 +58,6 @@ export default function AddStamp({ route, navigation }) {
     }
   };
 
-  const stampImages = {
-    1: require('assets/images/stamp1.png'),
-    2: require('assets/images/stamp2.png'),
-    3: require('assets/images/stamp3.png'),
-    4: require('assets/images/stamp4.png'),
-    5: require('assets/images/stamp5.png'),
-    6: require('assets/images/stamp6.png'),
-    7: require('assets/images/stamp7.png'),
-    8: require('assets/images/stamp8.png'),
-    9: require('assets/images/stamp9.png'),
-    10: require('assets/images/stamp10.png'),
-  };
-
   const handlePress = async (count) => {
     try {
       const response = await axios
@@ -58,11 +71,7 @@ export default function AddStamp({ route, navigation }) {
         setModalVisible(false);
 
         const updatedStamp = nowStamp + count;
-        console.log('적립하려는 스탬프 값', count)
-        console.log('업데이트된 스탬프 값:', updatedStamp);
-        // 현재 스탬프 값을 업데이트된 값으로 설정
         setNowStamp(updatedStamp);
-        // navigation.navigate("AddStamp");
       } else {
         Alert.alert('알림', '정보가 없습니다.');
       }
@@ -75,7 +84,6 @@ export default function AddStamp({ route, navigation }) {
 
   const handleStamp = () => {
     setModalVisible(true);
-    // handlePress(stampCount); 
   }
 
   return (
@@ -95,7 +103,7 @@ export default function AddStamp({ route, navigation }) {
                 {nowStamp}
                 <Text style={styles.stampTotal}>/10</Text>
               </Text>
-              <Image style={styles.stampImage} source={stampImages[stampData.length]} />
+              <Image style={styles.stampImage} source={stampImages[nowStamp]} />
             </View>
           }
         />
@@ -130,7 +138,6 @@ export default function AddStamp({ route, navigation }) {
           visible={modalVisible}
           onClose={() => {
             setModalVisible(false);
-            setStampCount(1); // 모달이 닫힐 때 stampCount를 1로 초기화
           }}
           alertTitle={`도장 적립`}
           stampCount={stampCount}

@@ -6,11 +6,14 @@ import Checkbox from "expo-checkbox";
 import Tabs from "../../Components/Tabs/Tabs";
 import CartShop from "../../Components/CartShop/CartShop";
 import Title from "../../Components/Title/Title";
+import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
 import { getCartData, deleteCartData } from "../../Utils/CartAPI";
+import { getMemberSeq } from "../../Utils/MemberAPI";
+import Loading from "../../Components/Loading/Loading";
 
 export default function Cart({ navigation }) {
-  const tempUser = 1;
+  const [tempUser, setTempUser] = useState();
   const [checkAll, setCheckAll] = useState(false);
   const [checkedProduct, setCheckedProduct] = useState({});
   const [checkedShop, setCheckedShop] = useState({});
@@ -18,11 +21,20 @@ export default function Cart({ navigation }) {
   const [cartData, setCartData] = useState([])
   const [groupedData, setGroupedData] = useState({})
   const [selectedProducts, setSelectedProducts] = useState([])
+  const [loading, setLoading] = useState(true);
 
   // 장바구니 데이터 조회
   const fetchData = async () => {
-    const result = await getCartData(tempUser);
-    setCartData(result);
+    setLoading(true);
+    const memberSeq = await getMemberSeq();
+
+    if (memberSeq !== undefined) {
+      setTempUser(memberSeq);
+
+      const result = await getCartData(memberSeq);
+      setCartData(result);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -127,68 +139,76 @@ export default function Cart({ navigation }) {
     })
   }
 
-  return (
-    <>
-      <View style={styles.container}>
-        <Title title={"장바구니"} />
-        <View style={styles.cartList}>
-          <View style={styles.listHead}>
-            <Text>
-              {" "}
-              <Checkbox
-                style={styles.checkBox}
-                value={checkAll}
-                onValueChange={() => {
-                  const newCheck = !checkAll;
-                  setCheckAll(newCheck);
-                }}
-              />{" "}
-              전체 선택
-            </Text>
-            <TouchableOpacity onPress={async () => {
-              if (selectedProducts.length > 0) {
-                for (let data of selectedProducts) {
-                  await deleteCartData(tempUser, data.productSeq);
+  if (loading) {
+    return <Loading />
+  } else if (tempUser) {
+    return (
+      <>
+        <View style={styles.container}>
+          <Title title={"장바구니"} />
+          <View style={styles.cartList}>
+            <View style={styles.listHead}>
+              <Text>
+                {" "}
+                <Checkbox
+                  style={styles.checkBox}
+                  value={checkAll}
+                  onValueChange={() => {
+                    const newCheck = !checkAll;
+                    setCheckAll(newCheck);
+                  }}
+                />{" "}
+                전체 선택
+              </Text>
+              <TouchableOpacity onPress={async () => {
+                if (selectedProducts.length > 0) {
+                  for (let data of selectedProducts) {
+                    await deleteCartData(tempUser, data.productSeq);
+                  }
+                  await fetchData();
+                } else {
+                  Alert.alert('삭제할 상품을 선택해주세요.');
                 }
-                await fetchData();
-              } else {
-                Alert.alert('삭제할 상품을 선택해주세요.');
-              }
-            }}
+              }}
+              >
+                <Text style={styles.delete}>선택 삭제</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.listBody}>
+              <ScrollView style={styles.scrollList}>
+                {renderGroupedProducts()}
+              </ScrollView>
+            </View>
+          </View>
+          <View style={styles.total}>
+            <View style={styles.price}>
+              <Text style={styles.priceText}> 총 결제 금액</Text>
+              <Text style={styles.priceText}>{totalPrice} 원</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.okay}
+              onPress={() => {
+                if (selectedProducts.length) {
+                  navigation.navigate("MakeCard", {
+                    selectedProducts: selectedProducts,
+                    totalPrice: totalPrice,
+                  });
+                } else {
+                  Alert.alert("선물을 선택해주세요.");
+                }
+              }}
             >
-              <Text style={styles.delete}>선택 삭제</Text>
+              <Text style={[styles.priceText, { color: "white" }]}>선물하기</Text>
             </TouchableOpacity>
           </View>
-
-          <View style={styles.listBody}>
-            <ScrollView style={styles.scrollList}>
-              {renderGroupedProducts()}
-            </ScrollView>
-          </View>
         </View>
-        <View style={styles.total}>
-          <View style={styles.price}>
-            <Text style={styles.priceText}> 총 결제 금액</Text>
-            <Text style={styles.priceText}>{totalPrice} 원</Text>
-          </View>
-          <TouchableOpacity
-            style={styles.okay}
-            onPress={() => {
-              if (selectedProducts.length) {
-                navigation.navigate("MakeCard", {
-                  selectedProducts: selectedProducts,
-                  totalPrice: totalPrice,
-                });
-              } else {
-                Alert.alert("선물을 선택해주세요.");
-              }
-            }}
-          >
-            <Text style={[styles.priceText, { color: "white" }]}>선물하기</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <Tabs navigation={navigation} />
-    </>
-  );
+        <Tabs navigation={navigation} />
+      </>
+    );
+  } else {
+    return (<>
+      <LoginRequired navigation={navigation} />
+    </>)
+  }
 }

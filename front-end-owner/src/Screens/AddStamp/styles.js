@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
   },
 
-  stampCount: {
+  stampNow: {
     fontSize: 34,
     fontWeight: "bold",
     color: "#FFBF46",

@@ -18,7 +18,7 @@ const stampImages = {
 
 export default function Coupon({ navigation, data, storeName }) {
   const stampCount = data.length % 10;
-  const stampPage = parseInt(data.length / 10);
+  const stampPage = parseInt(data.length / 11) + 1;
   return (
     <TouchableOpacity
       style={styles.container}

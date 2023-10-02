@@ -25,9 +25,15 @@ import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
+
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.*;
+
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+
 
 @Service
 public class SosoticonService {
@@ -93,13 +99,15 @@ public class SosoticonService {
             Store storeEntity = storeRepository.findById(requestDTO.getStoreSeq())
                     .orElseThrow(() -> new RuntimeException("Store not found with ID: " + requestDTO.getStoreSeq()));
             sosoticon.setStore(storeEntity);
-
+            sosoticon.setSosoticonTakerName(requestDTO.getSosoticonTakerName());
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
+            sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
 //            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());
+
 
             // MMS 보내기
             sendMMSWithImageLink(
@@ -107,6 +115,10 @@ public class SosoticonService {
                     requestDTO.getSosoticonText(),  // 메시지 텍스트
                     qrImageUrl // qr URL
             );
+
+            LocalDateTime now = LocalDateTime.now();
+            sosoticon.setCreatedAt(now);
+
             return sosoticonRepository.save(sosoticon);
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while creating the Sosoticon", e);
@@ -234,5 +246,47 @@ public void sendMMSWithImageLink(String phoneNumber, String messageText, String 
     }
 }
 
+
+    public List<Member> findYouAndMeList(Integer memberSeq) {
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with seq: " + memberSeq));
+        Set<Member> youAndMeSet = new HashSet<>();
+
+        List<Sosoticon> sendSosoticons = sosoticonRepository.findByMemberMemberSeq(memberSeq);
+        for (Sosoticon sosoticon : sendSosoticons) {
+            Optional<Member> takerOpt = memberRepository.findByMemberPhone(sosoticon.getSosoticonTaker());
+            takerOpt.ifPresent(youAndMeSet::add); // Set에 추가
+        }
+
+        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
+        for (Sosoticon sosoticon : receiveSosoticons) {
+            Member giver = sosoticon.getMember();
+            if (giver != null) {
+                youAndMeSet.add(giver); // Set에 추가
+            }
+        }
+
+        return new ArrayList<>(youAndMeSet); // Set을 List로 변환하여 반환
+    }
+
+    public List<Sosoticon> findYouAndMeSosoticonList(Integer mySeq, Integer yourSeq) {
+        String memberPhone = memberRepository.findByMemberSeq(yourSeq).get().getMemberPhone();
+        memberPhone = "+82" + memberPhone.substring(1);
+        Integer memberSeq = mySeq;
+        List<Sosoticon> sosoticonList = sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone);
+
+        memberPhone = "+82" + memberRepository.findByMemberSeq(mySeq).get().getMemberPhone().substring(1);
+        memberSeq = yourSeq;
+        sosoticonList.addAll(sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone));
+
+        sosoticonList.sort(Comparator.comparing(Sosoticon::getSosoticonSeq).reversed());
+        return sosoticonList;
+    }
+
+    public List<Sosoticon> getReceivedList(Integer memberSeq) {
+        Member member = memberRepository.findByMemberSeq(memberSeq).get();
+        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
+        return sosoticonList;
+    }
 
 }

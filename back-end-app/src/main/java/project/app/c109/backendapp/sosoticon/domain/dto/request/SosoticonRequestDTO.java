@@ -1,12 +1,28 @@
 package project.app.c109.backendapp.sosoticon.domain.dto.request;
 
 
+
 // 클라이언트에서 모바일 쿠폰 관련 정보를 전송할 때 사용되는 DTO
+
+import lombok.Getter;
+import lombok.Setter;
+
+// 이 클래스는 클라이언트에서 모바일 쿠폰 관련 정보를 전송할 때 사용되는 DTO입니다.
+
 public class SosoticonRequestDTO {
 
     private Integer memberSeq;
     private Integer orderSeq;
     private Integer storeSeq;
+
+    @Getter
+    @Setter
+    private String sosoticonTakerName;
+
+    @Getter
+    @Setter
+    private String sosoticonGiverName;
+
     private String sosoticonTaker;
     private String sosoticonText;
 //    private String sosoticonAudio;

@@ -93,6 +93,7 @@ export default function Cart({ navigation }) {
           const tempProductData = groupedData[storeSeq][index].product;
           tempProductData['storeSeq'] = storeSeq;
           tempProductData['count'] = groupedData[storeSeq][index].quantity;
+          tempProductData['storeName'] = tempProductData.store.storeName
           newSelectedProducts.push(tempProductData);
         }
       });

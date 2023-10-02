@@ -83,6 +83,7 @@ export default function MakeCard({ route, navigation }) {
   const renderGroupedProducts = () => {
     return Object.keys(groupedByStore).map((storeSeq) => {
       const productsInShop = groupedByStore[storeSeq];
+      console.log('여기 : ', productsInShop[0])
       return (
         <View key={storeSeq}>
           <Text style={styles.shopName}>

@@ -24,13 +24,14 @@ public class Sosoticon {
     @JoinColumn(name = "member_seq", referencedColumnName = "member_seq")
     private Member member;
 
+
+    @Column(name = "order_seq")
+    private Integer orderSeq;
+
     @Column
     @Getter
     @Setter
     private String sosoticonGiverName;
-
-    @Column(name = "order_id")
-    private Integer orderId;
 
 
     @ManyToOne
@@ -106,12 +107,12 @@ public class Sosoticon {
         this.store = store;
     }
 
-    public Integer getOrderId() {
-        return orderId;
+    public Integer getOrderSeq() {
+        return orderSeq;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setOrderSeq(Integer orderSeq) {
+        this.orderSeq = orderSeq;
     }
 
 

@@ -1,6 +1,11 @@
 package project.app.c109.backendapp.sosoticon.service;
 
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.exception.ApiException;
+import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.app.c109.backendapp.member.repository.MemberRepository;
@@ -19,10 +24,16 @@ import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
+
+import javax.annotation.PostConstruct;
+import java.net.URI;
+import java.util.*;
+
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 public class SosoticonService {
@@ -43,6 +54,19 @@ public class SosoticonService {
     @Autowired
     private QRCodeUtil qrCodeUtil;
 
+    @Autowired
+    private Environment env;
+
+    private String twilioAccountSid;
+    private String twilioAuthToken;
+    private String twilioPhoneNumber;
+
+    @PostConstruct
+    public void init() {
+        twilioAccountSid = env.getProperty("twilio.accountSid");
+        twilioAuthToken = env.getProperty("twilio.authToken");
+        twilioPhoneNumber = env.getProperty("twilio.phoneNumber");
+    }
     @Transactional
     public Sosoticon createSosoticon(SosoticonRequestDTO requestDTO) {
         try {
@@ -69,7 +93,7 @@ public class SosoticonService {
             sosoticon.setMember(memberEntity);
 
 
-            sosoticon.setOrderId(requestDTO.getOrderId());
+            sosoticon.setOrderSeq(requestDTO.getOrderSeq());
 
 
             Store storeEntity = storeRepository.findById(requestDTO.getStoreSeq())
@@ -79,12 +103,22 @@ public class SosoticonService {
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
             sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
-            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
+//            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());
+
+
+            // MMS 보내기
+            sendMMSWithImageLink(
+                    requestDTO.getSosoticonTaker(), // 수신자 전화번호
+                    requestDTO.getSosoticonText(),  // 메시지 텍스트
+                    qrImageUrl // qr URL
+            );
+
             LocalDateTime now = LocalDateTime.now();
             sosoticon.setCreatedAt(now);
+
             return sosoticonRepository.save(sosoticon);
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while creating the Sosoticon", e);
@@ -189,25 +223,29 @@ public class SosoticonService {
 
         return sosoticonRepository.save(existingSosoticon);
     }
-//    @Transactional
-//    public SosoticonResponseDTO deductAmount(SosoticonDeductRequestDTO request) {
-//        Sosoticon existingSosoticon = sosoticonRepository.findBySosoticonCode(request.getSosoticonCode())
-//                .orElseThrow(() -> new RuntimeException("Sosoticon not found with code: " + request.getSosoticonCode()));
-//
-//        int currentBalance = existingSosoticon.getSosoticonValue();
-//
-//        // 잔액이 차감하려는 금액보다 적으면 예외 발생
-//        if (currentBalance < request.getDeductAmount()) {
-//            throw new RuntimeException("Insufficient balance.");
-//        }
-//
-//        // 잔액 차감
-//        existingSosoticon.setSosoticonValue(currentBalance - request.getDeductAmount());
-//        Sosoticon updatedSosoticon = sosoticonRepository.save(existingSosoticon);
-//
-//        // 변경된 정보를 DTO로 변환하여 반환
-//        return convertEntityToDto(updatedSosoticon);
-//    }
+
+
+public void sendMMSWithImageLink(String phoneNumber, String messageText, String imageUrl) {
+    try {
+        Twilio.init(twilioAccountSid, twilioAuthToken);
+
+        List<URI> mediaUrl = new ArrayList<>();
+        mediaUrl.add(URI.create(imageUrl));
+        String customizedMessage = "Your Custom Text Here: " + messageText;
+
+        Message sentMessage = Message.creator(
+                        new PhoneNumber(phoneNumber), // to
+                        new PhoneNumber(twilioPhoneNumber), // from
+                        customizedMessage)
+                .setMediaUrl(mediaUrl)
+                .create();
+
+    } catch (ApiException e) {
+        System.err.println(e.getMessage());
+        throw new RuntimeException("Failed to send MMS", e);
+    }
+}
+
 
     public List<Member> findYouAndMeList(Integer memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq)
@@ -220,7 +258,7 @@ public class SosoticonService {
             takerOpt.ifPresent(youAndMeSet::add); // Set에 추가
         }
 
-        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
+        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker("+82" + member.getMemberPhone().substring(1));
         for (Sosoticon sosoticon : receiveSosoticons) {
             Member giver = sosoticon.getMember();
             if (giver != null) {
@@ -247,7 +285,7 @@ public class SosoticonService {
 
     public List<Sosoticon> getReceivedList(Integer memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq).get();
-        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
+        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker("+82" + member.getMemberPhone().substring(1));
         return sosoticonList;
     }
 

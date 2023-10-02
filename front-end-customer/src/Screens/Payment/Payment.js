@@ -29,6 +29,7 @@ export default function Payment({ navigation, route }) {
               },
             ]);
           } else {
+            console.log("여기 : ", productList)
             navigation.navigate("PaymentResult", {
               paymentData: data,
               productList: productList,

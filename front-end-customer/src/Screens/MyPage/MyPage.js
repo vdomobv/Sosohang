@@ -22,8 +22,6 @@ import { getDibData } from "../../Utils/DibAPI";
 import { logout, getMemberSeq, getMemberData, updateMemberNickname } from "../../Utils/MemberAPI";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
-const user = userDummy;
-
 export default function MyPage({ navigation }) {
   const [tempUser, setTempUser] = useState();
   const [dibData, setDibData] = useState([]);

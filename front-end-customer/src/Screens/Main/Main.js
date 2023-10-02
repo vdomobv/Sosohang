@@ -30,22 +30,20 @@ import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 // dummys
 import AlarmDummy from "../../Dummys/Main/AlarmDummy";
 import CategoryData from "../../Dummys/Main/CategoryData";
-import MainDummy from "../../Dummys/Main/MainDummy";
-import HashTagData from "../../Dummys/Main/HashTagData";
 
 // utils
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import axios from "axios";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
+import { getRecentStoreByLocation, getAllStoreData, getStoreByLocation, getKeywords, getKeywordStoreByLocation } from "../../Utils/StoreAPI";
+import { getMemberSeq } from "../../Utils/MemberAPI";
 
 const categoryData = CategoryData;
-const dummydata = MainDummy;
-const hashTags = HashTagData;
 const alarmDummy = AlarmDummy;
 
 export default function Main({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
+  const [tempUser, setTempUser] = useState();
   const [waiting, setWaiting] = useState(true);
   const [coords, setCoords] = useState({});
   const [location, setLocation] = useState({});
@@ -55,7 +53,20 @@ export default function Main({ navigation }) {
   const [search, setSearch] = useState("");
   const [searchState, setSearchState] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
+  const [locationStore, setLocationStore] = useState([]);
+  const [keywordStore, setKeywordStore] = useState([]);
+  const [keywords, setKeywords] = useState([]);
+  const [selectedKeyword, setSelectedKeyword] = useState();
 
+  // 사용자 로그인 여부 확인
+  const fetchData = async () => {
+    const memberSeq = await getMemberSeq();
+    if (memberSeq !== undefined) {
+      setTempUser(memberSeq);
+    }
+  };
+
+  // 좌표, 위치(동 이름)
   const fetchLocation = async () => {
     const resultCoords = await initializeCoords();
     setCoords(resultCoords);
@@ -68,26 +79,59 @@ export default function Main({ navigation }) {
     setWaiting(false);
   };
 
+  // 모든 가게 정보 가져오기 (for 검색)
+  const fetchAllStoreData = async () => {
+    const result = await getAllStoreData();
+    if (result !== undefined) {
+      setStoreData(result);
+    }
+  }
+
+  // 키워드 가져오기
+  const fetchKeywords = async () => {
+    const result = await getKeywords();
+    if (result !== undefined) {
+      setKeywords(result);
+    }
+  }
+
+  // 키워드에 해당하는 상점만 가져오기
+  const fetchKewordStore = async (keywordSeq) => {
+    const result = await getKeywordStoreByLocation(coords.latitude, coords.longitude, keywordSeq);
+    if (result !== undefined) {
+      setKeywordStore(result);
+      setSelectedKeyword(keywordSeq)
+    }
+  }
+
+  // 화면 렌더링 전 실행
+  useEffect(() => {
+    fetchData();
+    fetchAllStoreData();
+    fetchLocation();
+    fetchKeywords();
+  }, []);
+
+  // 메인으로 다시 돌아오면 다시 좌표 정보 가져오기
   useEffect(() => {
     fetchLocation();
   }, [isFocused]);
 
-  const getAllStoreData = async () => {
-    try {
-      const response = await axios.get(
-        "http://j9c109.p.ssafy.io:8081/api/v1/store"
-      );
-      setStoreData(response.data);
-    } catch (error) {
-      console.error("Error fetching store data:", error);
-    }
-  };
-
+  // 좌표 정보가 바뀌면 해당 좌표 주변 가게 정보 가져오기
   useEffect(() => {
-    getAllStoreData();
-    fetchLocation();
-  }, []);
+    const fetchStoreByLocation = async () => {
+      const recentStores = await getRecentStoreByLocation(coords.latitude, coords.longitude);
+      setLocationStore(recentStores);
+      const stores = await getStoreByLocation(coords.latitude, coords.longitude);
+      setKeywordStore(stores);
+    }
 
+    if (coords.latitude !== undefined) {
+      fetchStoreByLocation();
+    }
+  }, [coords])
+
+  // 검색창 입력 저장
   useEffect(() => {
     if (search) {
       setSearchState(true);
@@ -96,6 +140,7 @@ export default function Main({ navigation }) {
     }
   }, [search]);
 
+  // 키보드 바깥 클릭하면 닫히도록
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
@@ -109,22 +154,25 @@ export default function Main({ navigation }) {
     };
   }, []);
 
+  // 검색
   const updateSearch = (data) => {
     setSearch(data);
-    // console.log(search);
     updateSearchResult(data);
   };
 
+  // 검색창 상태
   const updateSearchState = () => {
     setSearchState(true);
   };
 
+  // 검색 내용 삭제
   const cancelSearchState = () => {
     setSearchState(false);
     setSearchResult([]);
     setSearch("");
   };
 
+  // 검색 미리 보기
   const updateSearchResult = (currentSearch) => {
     let result = storeData
       .filter((data) => data.storeName.includes(currentSearch) === true)
@@ -148,18 +196,34 @@ export default function Main({ navigation }) {
     );
   });
 
-  const hashTagItems = hashTags.map((data, index) => {
-    return <HashTag key={index} props={data} />;
+  const hashTagItems = keywords.map((data) => {
+    return <HashTag pressFucntion={() => {
+      fetchKewordStore(data.keywordSeq)
+    }}
+      key={data.keywordSeq} props={data} selectedKeyword={selectedKeyword} />;
   });
 
-  const carouselDummy = dummydata.map((data) => {
+  const shopCarousel = locationStore.map((data) => {
     return (
       <CarouselItem
         navigation={navigation}
         onPressFunction={() => {
-          navigation.navigate("Shop");
+          navigation.navigate("Shop", { storeSeq: data.storeSeq });
         }}
-        key={data.name}
+        key={data.storeSeq}
+        props={data}
+      />
+    );
+  });
+
+  const keywordShopCarousel = keywordStore.map((data) => {
+    return (
+      <CarouselItem
+        navigation={navigation}
+        onPressFunction={() => {
+          navigation.navigate("Shop", { storeSeq: data.storeSeq });
+        }}
+        key={data.storeSeq}
         props={data}
       />
     );
@@ -183,7 +247,7 @@ export default function Main({ navigation }) {
               <View style={[styles.location]}>
                 <Ionicons
                   onPress={() => {
-                    navigation.navigate("Map", { coords, location });
+                    navigation.navigate("Map", { coords, location, storeData, tempUser });
                   }}
                   name="location-sharp"
                   color={"#BFBFBF"}
@@ -249,11 +313,14 @@ export default function Main({ navigation }) {
                 </View>
               </View>
             </View>
-            <Button
-              title="회원가입"
-              onPress={() => navigation.navigate("SignUp")}
-            />
-
+            {
+              tempUser !== undefined ?
+                <Button
+                  title="로그인 / 회원가입"
+                  onPress={() => navigation.navigate("SignUp")}
+                />
+                : null
+            }
             {/* <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
               <Title title={"배너 광고 자리입니다."} />
             </View> */}
@@ -268,7 +335,7 @@ export default function Main({ navigation }) {
                   content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."}
                 />
               </View>
-              <Carousel content={carouselDummy} />
+              <Carousel content={shopCarousel} />
             </View>
 
             <Line />
@@ -277,7 +344,15 @@ export default function Main({ navigation }) {
                 content={"선물 받을 친구의 취향으로 골라보세요! 😘"}
               />
               <Carousel content={hashTagItems} />
-              <Carousel content={carouselDummy} />
+              {
+                keywordStore.length > 0 ?
+                  <Carousel content={keywordShopCarousel} />
+                  : <View>
+                    <Text style={styles.nothing}>
+                      아직 키워드에 해당하는 상점이 없어요 🥲
+                    </Text>
+                  </View>
+              }
             </View>
           </ScrollView>
         </TouchableWithoutFeedback>

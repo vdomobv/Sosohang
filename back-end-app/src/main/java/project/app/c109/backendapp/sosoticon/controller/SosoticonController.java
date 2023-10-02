@@ -66,4 +66,10 @@ public class SosoticonController {
         List<Sosoticon> result = sosoticonService.findYouAndMeSosoticonList(mySeq, yourSeq);
         return result;
     }
+
+    @GetMapping("/received")
+    public List<Sosoticon> getReceivedList(@RequestParam Integer memberSeq) {
+        List<Sosoticon> result = sosoticonService.getReceivedList(memberSeq);
+        return result;
+    }
 }

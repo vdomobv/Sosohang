@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-// import axios from "axios";
+import axios from "axios";
 import styles from "./styles";
 
 import Title from "../../Components/Title/Title";
@@ -12,11 +12,27 @@ export default function LogIn({ navigation }) {
 
   const handleLogIn = () => {
     // 전화번호가 11자리인지 확인
-    if (loginPhoneNumber.length === 11) {
+    if (loginPhoneNumber.length === 10) {
       // 비밀번호가 조건에 맞는지 확인
       if (
-        loginPassword.match(/^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/)
+        loginPassword.match(
+          /^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/
+        )
       ) {
+        axios
+          .post("/api/v1/store/login", {
+            registrationNumber: loginPhoneNumber,
+            storePassword: loginPassword,
+          })
+          .then((res) => {
+            if (res.data.isLogin === "success") {
+              navigation.navigate("QrReader");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("로그인 실패");
+          });
         // 로그인 로직 작성
         // axios
         //   .post('http://172.30.1.74:8080/api/v1/member/login', {
@@ -39,7 +55,8 @@ export default function LogIn({ navigation }) {
         //   });
       } else {
         Alert.alert(
-          "알림", "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
+          "알림",
+          "비밀번호는 대/소문자, 숫자, 특수문자를 포함한 6~15자로 입력해 주세요."
         );
       }
     } else {
@@ -53,18 +70,20 @@ export default function LogIn({ navigation }) {
         <Title title={"사장님 로그인"} />
         {/* <View style={styles.loginContainer}> */}
 
-        <Text style={styles.info}>비밀번호 찾기는 웹사이트에서 가능합니다.</Text>
-        <View style={{ alignItems: 'center' }}>
+        <Text style={styles.info}>
+          비밀번호 찾기는 웹사이트에서 가능합니다.
+        </Text>
+        <View style={{ alignItems: "center" }}>
           <TextInput
             style={styles.input}
-            placeholder="전화번호를 입력해 주세요."
+            placeholder="사업자등록번호를 입력해 주세요."
             keyboardType="numeric"
-            maxLength={11} // 최대 길이를 11로 설정
+            maxLength={10} // 최대 길이를 10로 설정
             onChangeText={(text) => {
               // 입력된 값이 숫자인지 확인
               if (/^[0-9]*$/.test(text)) {
                 // 숫자인 경우에만 상태 업데이트
-                if (text.length <= 11) {
+                if (text.length <= 10) {
                   setLoginPhoneNumber(text);
                 }
               } else {
@@ -81,12 +100,8 @@ export default function LogIn({ navigation }) {
             onChangeText={(text) => setLoginPassword(text)}
             value={loginPassword}
           />
-          <TouchableOpacity
-            style={[styles.button]}
-            onPress={handleLogIn}>
-            <Text style={[styles.buttonText]}>
-              로그인
-            </Text>
+          <TouchableOpacity style={[styles.button]} onPress={handleLogIn}>
+            <Text style={[styles.buttonText]}>로그인</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import Wrapper from "./styles";
 import Header from "../../components/Header";
 import InputStoreInfo from "../../components/InputStoreInfo";
@@ -13,11 +13,11 @@ import FileUpload from "../../components/FileUpload";
 function SignUp() {
   const navigate = useNavigate();
 
-  const tokenCookie = Cookies.get("jwtToken");
-  console.log(tokenCookie);
-  useEffect(() => {
-    if (tokenCookie !== undefined) return navigate("/")
-  }, [tokenCookie])  
+  // const tokenCookie = Cookies.get("jwtToken");
+  // console.log(tokenCookie);
+  // useEffect(() => {
+  //   if (tokenCookie !== undefined) return navigate("/")
+  // }, [tokenCookie])  
 
   const [storeInfo, setStoreInfo] = useState({});
   const [ownerInfo, setOwnerInfo] = useState({});

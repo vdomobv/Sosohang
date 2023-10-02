@@ -41,7 +41,7 @@ public class SosoticonController {
 
 
     // 잔액 업데이트
-    @PostMapping("/deductAmount")
+    @PutMapping("/deductAmount")
     public ResponseEntity<SosoticonResponseDTO> deductAmount(@RequestBody SosoticonDeductRequestDTO deductRequestDTO) {
         Sosoticon updatedSosoticon = sosoticonService.deductAmount(deductRequestDTO);
         SosoticonResponseDTO responseDTO = new SosoticonResponseDTO();

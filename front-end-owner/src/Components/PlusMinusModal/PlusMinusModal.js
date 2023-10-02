@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function PlusMinusModal({ visible, onClose, alertTitle, onPress }) {
   const navigation = useNavigation();
-  const [number, setNumber] = useState(0);
+  const [number, setNumber] = useState(1);
 
   const decrementNumber = () => {
     if (number > 1) {
@@ -18,6 +18,11 @@ export default function PlusMinusModal({ visible, onClose, alertTitle, onPress }
     setNumber(number + 1);
   };
 
+  const handlePress = () => {
+    // 변경된 값을 onPress 함수로 전달
+    onPress(number);
+    onClose(); 
+  };
   return (
     <Modal
       animationType="slide"
@@ -45,7 +50,7 @@ export default function PlusMinusModal({ visible, onClose, alertTitle, onPress }
 
           <Pressable
             style={styles.button}
-            onPress={onPress}>
+            onPress={handlePress}>
             <Text style={styles.buttonText}>적립</Text>
           </Pressable>
         </View>

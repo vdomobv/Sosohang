@@ -17,3 +17,6 @@ HELP.md
 !**/src/test/**/out/
 
 .vscode
+
+**/tmpnodejsnpm-cache/
+*/tmpnodejsnpm-cache

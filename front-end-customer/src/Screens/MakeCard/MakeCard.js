@@ -24,8 +24,9 @@ export default function MakeCard({ route, navigation }) {
   const [contacts, setContacts] = useState([]); // 연락처 데이터를 저장
   const [contactName, setContactName] = useState("");
   const [contactPhoneNumber, setContactPhoneNumber] = useState("");
+  const [giverName, setGiverName] = useState("");
 
-  
+
   // 연락처 가져오기 함수
   const getContacts = async () => {
     // 연락처 액세스 권한 요청
@@ -127,6 +128,10 @@ export default function MakeCard({ route, navigation }) {
           <View style={styles.subcontainer}>
             <Text style={styles.subtitle}>😊 보내는 사람 👉</Text>
             <TextInput
+              value={giverName}
+              onChangeText={(text) => {
+                setGiverName(text); // 이름 입력 시 상태 업데이트
+              }}
               style={[styles.input, { marginHorizontal: 40 }]}
               placeholder="상대방에게 표시되는 이름이에요."
             />
@@ -198,7 +203,14 @@ export default function MakeCard({ route, navigation }) {
                   groupedByStore,
                   totalPrice,
                   result: false,
-                  to: contactName,
+                  sosoticonData: {
+                    sosoticonTakerName: contactName,
+                    sosoticonGiverName: giverName,
+                    sosoticonTaker: contactPhoneNumber.replaceAll("-",""),
+                    sosoticonText: message,
+                    sosoticonStatus: 1,
+                  }
+
                 });
               }
             }}

@@ -8,14 +8,16 @@ import Gift from "../../Components/Gift/Gift";
 import Box from "../../Components/Box/Box";
 import { useEffect, useState } from "react";
 import { getMemberSeq } from "../../Utils/MemberAPI";
-import { makeOrder } from "../../Utils/PaymentAPI";
+import { makeOrder, makeSosoticon } from "../../Utils/PaymentAPI";
 
 export default function PaymentResult({ navigation, route }) {
   const paymentData = route.params.paymentData;
   const productList = route.params.productList;
+  const sosoticonData = route.params.sosoticonData;
   const to = route.params.to;
   const [orderList, setOrderList] = useState([])
   const [tempUser, setTempUser] = useState()
+  const [totalOrder, setTotalOrder] = useState()
 
   useEffect(() => {
     const fetchMemberSeq = async () => {
@@ -36,7 +38,7 @@ export default function PaymentResult({ navigation, route }) {
 
       Object.keys(productList).map((key) => {
         productList[key].map((d) => {
-          console.log('데이터 리스트', d)
+          console.log("확인 :", d)
           temp.push({
             'productSeq': d.productSeq,
             'count': d.count
@@ -53,11 +55,39 @@ export default function PaymentResult({ navigation, route }) {
   }, [tempUser])
 
   useEffect(() => {
-    if (orderList.length > 0) {
-      console.log('되라되라 :', orderList)
-      makeOrder(tempUser, orderList)
+    const fetchOrder = async () => {
+      if (orderList.length > 0) {
+        
+        const response = await makeOrder(tempUser, orderList);
+        
+        if (response !== undefined) {
+          setTotalOrder(response);
+        }
+      }
     }
-  }, [orderList])
+
+    fetchOrder(); 
+}, [orderList])
+
+
+  useEffect(() => {
+    console.log('test : ', totalOrder)
+    Object.keys(productList).map((key) => {
+      const tempData = {...sosoticonData};
+      tempData['storeSeq'] = key;
+      tempData['sosoticonValue'] = productList[key];
+
+      const productsInShop = productList[key];
+      const totalProductPrice = productsInShop.reduce((acc, product) => {
+        return acc + product.productPrice * product.count;
+      }, 0);
+
+      tempData['sosoticonValue'] = totalProductPrice;
+      console.log(tempData);
+
+      makeSosoticon(tempData);
+    })
+  }, [totalOrder])
 
   const gifts = Object.keys(productList).map((storeSeq) => {
     const productsInShop = productList[storeSeq];

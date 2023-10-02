@@ -258,7 +258,7 @@ public void sendMMSWithImageLink(String phoneNumber, String messageText, String 
             takerOpt.ifPresent(youAndMeSet::add); // Set에 추가
         }
 
-        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
+        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker("+82" + member.getMemberPhone().substring(1));
         for (Sosoticon sosoticon : receiveSosoticons) {
             Member giver = sosoticon.getMember();
             if (giver != null) {
@@ -285,7 +285,7 @@ public void sendMMSWithImageLink(String phoneNumber, String messageText, String 
 
     public List<Sosoticon> getReceivedList(Integer memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq).get();
-        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
+        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker("+82" + member.getMemberPhone().substring(1));
         return sosoticonList;
     }
 

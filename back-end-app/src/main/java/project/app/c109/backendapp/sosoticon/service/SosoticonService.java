@@ -19,8 +19,9 @@ import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.EntityNotFoundException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SosoticonService {
@@ -204,5 +205,40 @@ public class SosoticonService {
 //        // 변경된 정보를 DTO로 변환하여 반환
 //        return convertEntityToDto(updatedSosoticon);
 //    }
+
+    public List<Member> findYouAndMeList(Integer memberSeq) {
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with seq: " + memberSeq));
+        Set<Member> youAndMeSet = new HashSet<>();
+
+        List<Sosoticon> sendSosoticons = sosoticonRepository.findByMemberMemberSeq(memberSeq);
+        for (Sosoticon sosoticon : sendSosoticons) {
+            Optional<Member> takerOpt = memberRepository.findByMemberPhone(sosoticon.getSosoticonTaker());
+            takerOpt.ifPresent(youAndMeSet::add); // Set에 추가
+        }
+
+        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
+        for (Sosoticon sosoticon : receiveSosoticons) {
+            Member giver = sosoticon.getMember();
+            if (giver != null) {
+                youAndMeSet.add(giver); // Set에 추가
+            }
+        }
+
+        return new ArrayList<>(youAndMeSet); // Set을 List로 변환하여 반환
+    }
+
+    public List<Sosoticon> findYouAndMeSosoticonList(Integer mySeq, Integer yourSeq) {
+        String memberPhone = memberRepository.findByMemberSeq(yourSeq).get().getMemberPhone();
+        Integer memberSeq = mySeq;
+        List<Sosoticon> sosoticonList = sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone);
+
+        memberPhone = memberRepository.findByMemberSeq(mySeq).get().getMemberPhone();
+        memberSeq = yourSeq;
+        sosoticonList.addAll(sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone));
+
+        sosoticonList.sort(Comparator.comparing(Sosoticon::getSosoticonSeq).reversed());
+        return sosoticonList;
+    }
 
 }

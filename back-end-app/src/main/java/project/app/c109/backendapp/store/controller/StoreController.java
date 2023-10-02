@@ -302,7 +302,7 @@ public class StoreController {
 	}
 
 	@GetMapping("/logout")
-		public ResponseEntity<String> logout(HttpServletResponse response) {
+	public ResponseEntity<String> logout(HttpServletResponse response) {
     // 쿠키 삭제
     Cookie cookie = new Cookie("jwtToken", null);
     cookie.setPath("/");
@@ -312,6 +312,6 @@ public class StoreController {
 
     // 로그아웃 응답
     return ResponseEntity.ok("로그아웃");
-}
+	}
 
 }

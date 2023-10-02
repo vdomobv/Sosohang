@@ -1,7 +1,11 @@
 package project.app.c109.backendapp.sosoticon.service;
 
-import com.amazonaws.services.pinpoint.model.ChannelType;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.exception.ApiException;
+import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.app.c109.backendapp.member.repository.MemberRepository;
@@ -19,14 +23,11 @@ import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.amazonaws.services.pinpoint.AmazonPinpoint;
-import com.amazonaws.services.pinpoint.AmazonPinpointClientBuilder;
-import com.amazonaws.services.pinpoint.model.*;
-import com.amazonaws.AmazonServiceException;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.PostConstruct;
+import java.net.URI;
+import java.util.*;
 
 @Service
 public class SosoticonService {
@@ -47,7 +48,19 @@ public class SosoticonService {
     @Autowired
     private QRCodeUtil qrCodeUtil;
 
+    @Autowired
+    private Environment env;
 
+    private String twilioAccountSid;
+    private String twilioAuthToken;
+    private String twilioPhoneNumber;
+
+    @PostConstruct
+    public void init() {
+        twilioAccountSid = env.getProperty("twilio.accountSid");
+        twilioAuthToken = env.getProperty("twilio.authToken");
+        twilioPhoneNumber = env.getProperty("twilio.phoneNumber");
+    }
     @Transactional
     public Sosoticon createSosoticon(SosoticonRequestDTO requestDTO) {
         try {
@@ -74,7 +87,7 @@ public class SosoticonService {
             sosoticon.setMember(memberEntity);
 
 
-            sosoticon.setOrderId(requestDTO.getOrderId());
+            sosoticon.setOrderSeq(requestDTO.getOrderSeq());
 
 
             Store storeEntity = storeRepository.findById(requestDTO.getStoreSeq())
@@ -83,14 +96,17 @@ public class SosoticonService {
 
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
-            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
+//            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());
 
             // MMS 보내기
-            sendMMSWithImageLink(sosoticon.getSosoticonTaker(), "소중한 사람에게 소소한 행복을!, 띵동- 행복의 선물이 도착했습니다.", sosoticon.getSosoticonImage());
-
+            sendMMSWithImageLink(
+                    requestDTO.getSosoticonTaker(), // 수신자 전화번호
+                    requestDTO.getSosoticonText(),  // 메시지 텍스트
+                    qrImageUrl // qr URL
+            );
             return sosoticonRepository.save(sosoticon);
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while creating the Sosoticon", e);
@@ -197,36 +213,26 @@ public class SosoticonService {
     }
 
 
-    public void sendMMSWithImageLink(String phoneNumber, String message, String imageUrl) {
-        try {
-            AmazonPinpoint client = AmazonPinpointClientBuilder.defaultClient();
+public void sendMMSWithImageLink(String phoneNumber, String messageText, String imageUrl) {
+    try {
+        Twilio.init(twilioAccountSid, twilioAuthToken);
 
-            // 주소 설정
-            Map<String, AddressConfiguration> addressMap = new HashMap<>();
-            addressMap.put(phoneNumber, new AddressConfiguration().withChannelType(ChannelType.SMS));
+        List<URI> mediaUrl = new ArrayList<>();
+        mediaUrl.add(URI.create(imageUrl));
+        String customizedMessage = "Your Custom Text Here: " + messageText;
 
-            // 메시지 설정
-            SMSMessage smsMessage = new SMSMessage()
-                    .withBody(message + " " + imageUrl)
-                    .withMessageType(MessageType.PROMOTIONAL)
-                    .withSenderId("joajoa");
+        Message sentMessage = Message.creator(
+                        new PhoneNumber(phoneNumber), // to
+                        new PhoneNumber(twilioPhoneNumber), // from
+                        customizedMessage)
+                .setMediaUrl(mediaUrl)
+                .create();
 
-            // 전송할 메시지 요청을 구성
-            SendMessagesRequest request = new SendMessagesRequest()
-                    .withApplicationId("6779d3d4fc6146228df515fb71a100d3")  // Pinpoint 애플리케이션 ID
-                    .withMessageRequest(new MessageRequest()
-                            .withAddresses(addressMap)
-                            .withMessageConfiguration(new DirectMessageConfiguration().withSMSMessage(smsMessage)));
-
-            // 메시지 전송 요청을 실행하고 응답을 받습니다.
-            SendMessagesResult result = client.sendMessages(request);
-            Map<String, MessageResult> resultMap = result.getMessageResponse().getResult();
-            resultMap.forEach((k, v) -> System.out.println(k + ":" + v.getMessageId() + ":" + v.getStatusCode()));
-
-        } catch (AmazonServiceException e) {
-            System.err.println(e.getErrorMessage());
-            throw new RuntimeException("Failed to send MMS", e);
-        }
+    } catch (ApiException e) {
+        System.err.println(e.getMessage());
+        throw new RuntimeException("Failed to send MMS", e);
     }
+}
+
 
 }

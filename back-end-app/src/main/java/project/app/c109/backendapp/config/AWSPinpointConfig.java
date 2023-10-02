@@ -27,11 +27,16 @@ public class AWSPinpointConfig {
 
     @Bean
     public AmazonPinpoint amazonPinpoint() {
+        logger.info("Initializing AmazonPinpoint with region: {}", region);
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
 
-        return AmazonPinpointClientBuilder.standard()
+        AmazonPinpoint pinpoint = AmazonPinpointClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                 .withRegion(Regions.fromName(region))
                 .build();
+
+        logger.info("AmazonPinpoint initialized successfully!");
+
+        return pinpoint;
     }
 }

@@ -32,7 +32,6 @@ import AlarmDummy from "../../Dummys/Main/AlarmDummy";
 import CategoryData from "../../Dummys/Main/CategoryData";
 
 // utils
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
@@ -197,7 +196,7 @@ export default function Main({ navigation }) {
     );
   });
 
-  const hashTagItems = keywords.map((data, index) => {
+  const hashTagItems = keywords.map((data) => {
     return <HashTag pressFucntion={() => {
       fetchKewordStore(data.keywordSeq)
     }}
@@ -248,7 +247,7 @@ export default function Main({ navigation }) {
               <View style={[styles.location]}>
                 <Ionicons
                   onPress={() => {
-                    navigation.navigate("Map", { coords, location, storeData });
+                    navigation.navigate("Map", { coords, location, storeData, tempUser });
                   }}
                   name="location-sharp"
                   color={"#BFBFBF"}

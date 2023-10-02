@@ -20,6 +20,7 @@ import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -82,7 +83,8 @@ public class SosoticonService {
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());
-
+            LocalDateTime now = LocalDateTime.now();
+            sosoticon.setCreatedAt(now);
             return sosoticonRepository.save(sosoticon);
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while creating the Sosoticon", e);
@@ -231,10 +233,11 @@ public class SosoticonService {
 
     public List<Sosoticon> findYouAndMeSosoticonList(Integer mySeq, Integer yourSeq) {
         String memberPhone = memberRepository.findByMemberSeq(yourSeq).get().getMemberPhone();
+        memberPhone = "+82" + memberPhone.substring(1);
         Integer memberSeq = mySeq;
         List<Sosoticon> sosoticonList = sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone);
 
-        memberPhone = memberRepository.findByMemberSeq(mySeq).get().getMemberPhone();
+        memberPhone = "+82" + memberRepository.findByMemberSeq(mySeq).get().getMemberPhone().substring(1);
         memberSeq = yourSeq;
         sosoticonList.addAll(sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone));
 

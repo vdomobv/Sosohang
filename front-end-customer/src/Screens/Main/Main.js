@@ -104,6 +104,15 @@ export default function Main({ navigation }) {
     }
   }
 
+  // 현재 위치 근방의 데이터만 가져오기
+  const fetchStoreByLocation = async () => {
+    console.log(coords)
+    const recentStores = await getRecentStoreByLocation(coords.latitude, coords.longitude);
+    setLocationStore(recentStores);
+    const stores = await getStoreByLocation(coords.latitude, coords.longitude);
+    setKeywordStore(stores);
+  }
+
   // 화면 렌더링 전 실행
   useEffect(() => {
     fetchData();
@@ -115,17 +124,13 @@ export default function Main({ navigation }) {
   // 메인으로 다시 돌아오면 다시 좌표 정보 가져오기
   useEffect(() => {
     fetchLocation();
+    if (coords.latitude !== undefined) {
+      fetchStoreByLocation();
+    }
   }, [isFocused]);
 
   // 좌표 정보가 바뀌면 해당 좌표 주변 가게 정보 가져오기
   useEffect(() => {
-    const fetchStoreByLocation = async () => {
-      const recentStores = await getRecentStoreByLocation(coords.latitude, coords.longitude);
-      setLocationStore(recentStores);
-      const stores = await getStoreByLocation(coords.latitude, coords.longitude);
-      setKeywordStore(stores);
-    }
-
     if (coords.latitude !== undefined) {
       fetchStoreByLocation();
     }

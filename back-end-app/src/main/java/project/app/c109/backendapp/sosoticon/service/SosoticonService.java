@@ -101,7 +101,7 @@ public class SosoticonService {
                     .orElseThrow(() -> new RuntimeException("Store not found with ID: " + requestDTO.getStoreSeq()));
             sosoticon.setStore(storeEntity);
             sosoticon.setSosoticonTakerName(requestDTO.getSosoticonTakerName());
-            sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
+            sosoticon.setSosoticonTaker("+82" + requestDTO.getSosoticonTaker().substring(1));
             sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
 //            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
@@ -112,7 +112,7 @@ public class SosoticonService {
 
             // MMS 보내기
             sendMMSWithImageLink(
-                    requestDTO.getSosoticonTaker(), // 수신자 전화번호
+                    "+82" + requestDTO.getSosoticonTaker().substring(1), // 수신자 전화번호
                     requestDTO.getSosoticonText(),  // 메시지 텍스트
                     qrImageUrl // qr URL
             );

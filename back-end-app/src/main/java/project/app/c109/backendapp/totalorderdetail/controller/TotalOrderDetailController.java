@@ -29,8 +29,8 @@ public class TotalOrderDetailController {
 //    }
 
     @GetMapping("/{memberSeq}")
-    public Map<Integer, Map<Integer, List<GroupedOrderDetailResponse>>> getGroupedTotalOrderDetailsByMember(@PathVariable Integer memberSeq) {
-        Map<Integer, Map<Integer, List<GroupedOrderDetailResponse>>> groupedOrderDetails = totalOrderDetailService.getGroupedOrderDetailsByMemberSeq(memberSeq);
+    public List<TotalOrderDetail> getGroupedTotalOrderDetailsByMember(@PathVariable Integer memberSeq) {
+        List<TotalOrderDetail> groupedOrderDetails = totalOrderDetailService.getGroupedOrderDetailsByMemberSeq(memberSeq);
         return groupedOrderDetails;
     }
 

@@ -253,7 +253,7 @@ public class StoreController {
 
 		if (storeSeq == null) {
 			return ResponseEntity.ok("noStore");
-			}
+			} 
 		Map<String, Integer> tokenResponse = new HashMap<>();
 		tokenResponse.put("storeSeq", storeSeq);
 		return ResponseEntity.ok(tokenResponse);

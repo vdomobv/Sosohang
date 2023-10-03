@@ -42,7 +42,7 @@ export default function WaitingPayment({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.image}>
-        <SquareImage imageSrc={require("assets/images/giftbox.gif")} />
+        <SquareImage imageSrc={"assets/images/giftbox.gif"} />
       </View>
       <View style={styles.button}>
         <CustomButton

@@ -208,6 +208,7 @@ export default function Main({ navigation }) {
       key={data.keywordSeq} props={data} selectedKeyword={selectedKeyword} />;
   });
 
+  // 위치 기반 추천
   const shopCarousel = locationStore.map((data) => {
     return (
       <CarouselItem
@@ -340,6 +341,7 @@ export default function Main({ navigation }) {
                   content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."}
                 />
               </View>
+              {/* 위치 기반 추천 */}
               <Carousel content={shopCarousel} />
             </View>
 

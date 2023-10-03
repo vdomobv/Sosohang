@@ -31,10 +31,13 @@ export default function Dibs({ navigation }) {
     fetchUserAndData();
   }, [])
 
+  // console.log(dibData);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await getDibData(tempUser);
       setDibData(result);
+      // console.log(result);
     };
 
     if (dibData !== undefined && dibData.length > 0) {

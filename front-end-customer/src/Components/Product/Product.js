@@ -10,7 +10,9 @@ import Amount from "../Amount/Amount";
 export default function Product({ data, checked, amount, onCheckChange, onAmountChange }) {
     const [isChecked, setIsChecked] = useState();
     const [productAmount, setProductAmount] = useState();
-    
+    console.log(data);
+    const productImage = data.productImage;
+
     useEffect(() => {
         setIsChecked(checked)
         setProductAmount(amount)
@@ -32,7 +34,7 @@ export default function Product({ data, checked, amount, onCheckChange, onAmount
                     setIsChecked(!isChecked);
                     onCheckChange(isChecked);
                 }} />
-            <SquareImage imageSrc={data.productImage} />
+            <SquareImage imageSrc={productImage === 'string' ? require("assets/images/bread.png") : { uri: productImage }} />
             <View style={styles.content}>
                 <SectionTitle content={data.productName} />
                 {data.productDcrate ? <Text style={styles.prevPrice}>{`${data.productPrice}원`}</Text> : null}

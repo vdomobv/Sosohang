@@ -90,7 +90,7 @@ export default function MyPage({ navigation }) {
   }, [dibData]);
 
   useEffect(() => {
-    console.log(newMemberNickname)
+    // console.log(newMemberNickname)
   }, [newMemberNickname])
 
   const dibs = dibData && dibData.length > 0 ? dibData.map((data, index) => {
@@ -121,7 +121,7 @@ export default function MyPage({ navigation }) {
               />
               <View style={styles.user}>
                 <TouchableOpacity onPress={() => {
-                  console.log('이름 바꾸기')
+                  // console.log('이름 바꾸기')
                   setUpdating(true)
                 }} style={{ flexDirection: "row" }}>
                   {

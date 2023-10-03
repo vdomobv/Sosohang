@@ -85,7 +85,7 @@ export const removeData = async (key) => {
 export const initializeCoords = async () => {
     const coords = JSON.parse(await getCoords());
     if (coords) {
-        console.log("coords is");
+        // console.log("coords is");
         return coords;
     } else {
         console.log("coords isn't");
@@ -99,7 +99,7 @@ export const initializeCoords = async () => {
 export const initializeLocation = async (latitude, longitude) => {
     const location = JSON.parse(await getLocation());
     if (location) {
-        console.log("location is");
+        // console.log("location is");
         if (typeof location === 'string') {
             return location;
         } else {

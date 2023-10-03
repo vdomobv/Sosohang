@@ -17,7 +17,7 @@ export default function StampList({ navigation, route }) {
   const getStampData = async () => {
     try {
       const response = await axios.get(
-        `http://j9c109.p.ssafy.io:8081/api/v1/stamp/member/status?memberSeq=${tempUser}&stampStatus=0`
+        `https://j9c109.p.ssafy.io/api/v1/stamp/member/status?memberSeq=${tempUser}&stampStatus=0`
       );
 
       console.log(response.data);

@@ -88,6 +88,7 @@ public class SosoticonService {
             qrData.put("uuid", uuid);
             qrData.put("taker", requestDTO.getSosoticonTaker());
             qrData.put("message", requestDTO.getSosoticonText());
+            qrData.put("storeSeq", requestDTO.getStoreSeq().toString());
             String jsonData = objectMapper.writeValueAsString(qrData);
 
 //            String generatedQRCodePath = qrCodeUtil.generateQRCode(jsonData, uuid); // QR 코드 생성
@@ -108,7 +109,7 @@ public class SosoticonService {
                     .orElseThrow(() -> new RuntimeException("Store not found with ID: " + requestDTO.getStoreSeq()));
             sosoticon.setStore(storeEntity);
             sosoticon.setSosoticonTakerName(requestDTO.getSosoticonTakerName());
-            sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
+            sosoticon.setSosoticonTaker("+82" + requestDTO.getSosoticonTaker().substring(1));
             sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
             sosoticon.setSosoticonUrl(requestDTO.getSosoticonUrl());
@@ -136,6 +137,13 @@ public class SosoticonService {
             } catch (RuntimeException e) {
                 System.err.println("MMS 전송에 실패했지만 소소티콘은 정상적으로 발행됩니다.");
             }
+
+            sendMMSWithImageLink(
+                    "+82" + requestDTO.getSosoticonTaker().substring(1), // 수신자 전화번호
+                    requestDTO.getSosoticonText(),  // 메시지 텍스트
+                    qrImageUrl // qr URL
+            );
+
 
             LocalDateTime now = LocalDateTime.now();
             sosoticon.setCreatedAt(now);
@@ -235,7 +243,8 @@ public class SosoticonService {
 
         int updatedBalance = currentBalance - amountToDeduct;
         existingSosoticon.setSosoticonValue(currentBalance - amountToDeduct); // 차감된 금액으로 업데이트
-        existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice() - amountToDeduct);
+        // existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice() - amountToDeduct);
+        existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice());
 
         // 잔액이 0이거나 더 작으면
         if (updatedBalance <= 0) {

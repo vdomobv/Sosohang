@@ -4,12 +4,14 @@ import {Modal} from "react-bootstrap";
 import Cookies from "js-cookie";
 
 const ProtectedRoute = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const auth = Cookies.get("jwtToken");
   const navigate = useNavigate();  
 
   useEffect(() => {
     if (auth === undefined) {
       navigate("/");
+      setIsOpenModal(true);
       alert("로그인이 필요한 페이지입니다.");
     }    
   }, [auth, navigate]);
@@ -17,7 +19,7 @@ const ProtectedRoute = () => {
   return (
     <>
       <Outlet />
-      <Modal show={true} />
+      <Modal show={isOpenModal} />
     </>
   );
 };

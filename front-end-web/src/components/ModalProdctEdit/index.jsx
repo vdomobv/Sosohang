@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import axios from "axios";
+import FileUpload from "../FileUpload";
 
 function ModalProdctEdit({ show, onHide, product, onEditProduct }) {
   const [editedProduct, setEditedProduct] = useState({});
@@ -20,7 +20,7 @@ function ModalProdctEdit({ show, onHide, product, onEditProduct }) {
   };
 
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal centered show={show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>제품 수정</Modal.Title>
       </Modal.Header>
@@ -83,11 +83,7 @@ function ModalProdctEdit({ show, onHide, product, onEditProduct }) {
           </Form.Group>
           <Form.Group controlId="productImage">
             <Form.Label>이미지</Form.Label>
-            <Form.Control
-              // type="file"
-              name="productImage"
-              value={editedProduct?.productImage}
-              onChange={handleInputChange}
+            <FileUpload
             />
           </Form.Group>
           <Form.Group controlId="productCount">

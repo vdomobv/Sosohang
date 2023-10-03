@@ -12,7 +12,7 @@ function Header() {
     axios
       .get("/api/v1/store/token_test")
       .then((res) => {
-        if(res.data === true) {
+        if(res.data !== false) {
           setAuth(true);
         } else {
           setAuth(false);

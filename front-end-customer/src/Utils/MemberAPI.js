@@ -41,6 +41,7 @@ export const getMemberSeq = async () => {
         const storedValue = JSON.parse(await AsyncStorage.getItem("memberSeq"));
 
         if (storedValue === null || storedValue === undefined) {
+            console.log('저장된 사용자 없음.')
             return undefined;
         }
 

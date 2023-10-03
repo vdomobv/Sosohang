@@ -88,6 +88,13 @@ const styles = StyleSheet.create({
 
   searchText : {
     fontSize : 18,
+  },
+
+  nothing: {
+    justifyContent : 'center',
+    textAlign : 'center',
+    alignContent : 'center',
+    marginVertical : 65
   }
 
   

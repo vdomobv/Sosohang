@@ -112,7 +112,7 @@ public class SosoticonService {
 
             // MMS 보내기
             sendMMSWithImageLink(
-                    requestDTO.getSosoticonTaker(), // 수신자 전화번호
+                    "+82" + requestDTO.getSosoticonTaker().substring(1), // 수신자 전화번호
                     requestDTO.getSosoticonText(),  // 메시지 텍스트
                     qrImageUrl // qr URL
             );

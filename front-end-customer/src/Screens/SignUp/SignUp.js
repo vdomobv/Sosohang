@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { ScrollView, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import axios from "axios";
 import styles from "./styles";
 import { login } from "../../Utils/MemberAPI";
@@ -156,6 +156,7 @@ export default function SignUp({ navigation }) {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <Text style={styles.title}>로그인</Text>
       <TextInput
@@ -283,5 +284,6 @@ export default function SignUp({ navigation }) {
         </Text>
       </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 }

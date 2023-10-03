@@ -26,7 +26,7 @@ export default function ShowStamp({ navigation, route }) {
 
         const { data } = response;
 
-        if (isEmptyArray(data)) {
+        if (data) {
           console.log(typeof(data));
           setStampData(data);
           setMemberNickname(data[0].member.memberNickname);

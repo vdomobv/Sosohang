@@ -7,12 +7,10 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import SubTitle from "../SubTitle/SubTitle";
 
-
-
-export default function Gift({ data, usable, onPress }) {
+export default function ReceivedGift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
-  console.log("여기", data)
+  console.log(data);
 
   return (
     <>
@@ -20,19 +18,19 @@ export default function Gift({ data, usable, onPress }) {
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.person}>
-              {data["from"] ? " from. " + data.from : " to. " + data.to}{" "}
+              {data["sosoticonTakerName"] ? " from. " + data.sosoticonTakerName : " to. " + data.to}{" "}
             </Text>
-            <Text style={styles.date}>{data.createdAt}</Text>
+            <Text style={styles.date}>{new Date(data.createdAt).toLocaleString()}</Text>
           </View>
           <View style={styles.body}>
-            <Image style={styles.image} source={data.image} />
+            <Image style={styles.image} source={data.store.storeImage} />
             <View style={styles.contents}>
-              <Text style={styles.shopName}>{data.storeName}</Text>
+              <Text style={styles.shopName}>{data.store.storeName}</Text>
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
-                {data["from"]
-                  ? "남은 금액 : " + data.currentPrice
-                  : data.totalPrice}{" "}
+                {data["sosoticonTakerName"]
+                  ? "남은 금액 : " + data.sosoticonValue
+                  : data.sosoticonPrice}{" "}
                 원
               </Text>
             </View>
@@ -66,14 +64,7 @@ export default function Gift({ data, usable, onPress }) {
             </View>
           ) : (
             <View style={styles.buttons}>
-              {usable ? (
-                <CustomButton
-                  pressFuction={() => {
-                    console.log("연장하기 기능 구현 필요합니당.");
-                  }}
-                  content={"기간 연장하기"}
-                />
-              ) : (
+              {usable ? ("") : (
                 <CustomButton
                   content={"후기 남기기"} 
                   pressFuction={() => {

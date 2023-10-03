@@ -5,10 +5,35 @@ import SquareImage from "../SquareImage/SquareImage";
 import SubTitle from "../SubTitle/SubTitle";
 import DibButton from "../DibButton/DibButton";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { getStoreDibData } from "../../Utils/DibAPI";
+
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
   const [dibState, setDibState] = useState(dibSeq ? true : false);
+
+  const fetchData = async () => {
+    if (tempUser && data.storeSeq) {
+      try {
+        const result = await getStoreDibData(tempUser, data.storeSeq);
+        setDibState(result);
+      } catch (error) {
+        console.error("Error fetching member data:", error);
+      }
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [data, tempUser])
+  );
+
+  useEffect(() => {
+    fetchData();
+  }, [data, tempUser]);
+
   return (
     <View style={styles.container}>
       <SquareImage imageSrc={require("assets/dummyimages/anuek.jpg")} />

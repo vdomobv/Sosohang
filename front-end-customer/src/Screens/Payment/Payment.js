@@ -10,6 +10,7 @@ export default function Payment({ navigation, route }) {
   const data = route.params.data;
   const productList = route.params.productList;
   const to = route.params.to;
+  const sosoticonData = route.params.sosoticonData;
 
   return (
     <View style={styles.container}>
@@ -17,6 +18,7 @@ export default function Payment({ navigation, route }) {
         userCode={userCode}
         loading={<Loading />}
         data={data}
+        
         callback={(response) => {
           if (response.error_code) {
             console.log(response);
@@ -30,10 +32,11 @@ export default function Payment({ navigation, route }) {
             ]);
           } else {
             console.log("여기 : ", productList)
-            navigation.navigate("PaymentResult", {
+            navigation.replace("PaymentResult", {
               paymentData: data,
               productList: productList,
               to: to,
+              sosoticonData: sosoticonData
             });
           }
         }}

@@ -1,28 +1,63 @@
 import styles from "./styles";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity } from "react-native";
 
 import Title from "../../Components/Title/Title";
 import SubTitle from "../../Components/SubTitle/SubTitle";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
-import Gift from "../../Components/Gift/Gift";
+import ReceivedGift from "../../Components/Gift/ReceivedGift";
 import Tabs from "../../Components/Tabs/Tabs";
+import { getMyGiftList } from "../../Utils/MyGiftAPI";
+import { getMemberSeq } from "../../Utils/MemberAPI";
 
-import MyGiftDummy from "../../Dummys/MyGift/MyGiftDummy";
-const dummy = MyGiftDummy;
+// 더미 관련
+// import MyGiftDummy from "../../Dummys/MyGift/MyGiftDummy";
+// const dummy = MyGiftDummy;
 
 export default function MyGift({ navigation }) {
   const [activatedTab, setActivatedTab] = useState(true)
+
+  // 더미 아님. 찐임.
+  const [dummy, setDummy] = useState([]);
+
+  const [tempUser, setTempUser] = useState();
+
+  const fetchData = async () => {
+    const memberSeq = await getMemberSeq();
+    if (memberSeq !== undefined) {
+      setTempUser(memberSeq);
+    }
+  };
+
+  useEffect(() => {
+    if (tempUser !== undefined) {
+      fetchMemberData();
+    }
+  }, [tempUser]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchMemberData = async () => {
+    try {
+        const result = await getMyGiftList(tempUser);
+        setDummy(result);
+        // console.log('여기', result);
+    } catch(error) {
+        console.error('Error fetching member data:', error);
+    }
+  };
 
   const handleGiftClick = (giftData) => {
     navigation.navigate("MyGiftDetail", { giftData }); 
   };
 
-  const usableGifts = dummy.filter((d) => d.price > 0 === true).map((d, index) => {
-    return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} usable={true} />;
+  const usableGifts = dummy.filter((d) => d.sosoticonStatus === 1 === true).map((d, index) => {
+    return <ReceivedGift onPress={() => handleGiftClick(d)} data={d} key={index} usable={true} />;
   });
-  const unusableGifts = dummy.filter((d) => d.price == 0 === true).map((d, index) => {
-    return <Gift onPress={() => handleGiftClick(d)} data={d} key={index} usable={false}/>;
+  const unusableGifts = dummy.filter((d) => d.sosoticonStatus === 2 === true).map((d, index) => {
+    return <ReceivedGift onPress={() => handleGiftClickr(d)} data={d} key={index} usable={false}/>;
   })
 
 return (

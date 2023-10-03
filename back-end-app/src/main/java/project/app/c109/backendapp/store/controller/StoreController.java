@@ -227,7 +227,7 @@ public class StoreController {
 			// JWT 토큰을 쿠키에 저장
 			Cookie cookie = new Cookie("jwtToken", token);
 			cookie.setPath("/");
-			cookie.setMaxAge(3600); // Set the expiration time for the cookie (in seconds)
+			cookie.setMaxAge(360000); // Set the expiration time for the cookie (in seconds)
 
 			response.addCookie(cookie);
 

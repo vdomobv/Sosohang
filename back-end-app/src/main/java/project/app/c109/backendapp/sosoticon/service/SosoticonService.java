@@ -126,7 +126,7 @@ public class SosoticonService {
                         // 수신자 이름
                         requestDTO.getSosoticonTakerName(),
                         // 수신자 전화번호
-                        requestDTO.getSosoticonTaker(),
+                        "+82" + requestDTO.getSosoticonTaker().substring(1),
                         // 메시지 텍스트
                         requestDTO.getSosoticonText(),
                         // qr URL
@@ -137,13 +137,6 @@ public class SosoticonService {
             } catch (RuntimeException e) {
                 System.err.println("MMS 전송에 실패했지만 소소티콘은 정상적으로 발행됩니다.");
             }
-
-            sendMMSWithImageLink(
-                    "+82" + requestDTO.getSosoticonTaker().substring(1), // 수신자 전화번호
-                    requestDTO.getSosoticonText(),  // 메시지 텍스트
-                    qrImageUrl // qr URL
-            );
-
 
             LocalDateTime now = LocalDateTime.now();
             sosoticon.setCreatedAt(now);

@@ -10,7 +10,7 @@ function ModalProdctDelete(props) {
   };
 
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal centered show={show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>제품 삭제</Modal.Title>
       </Modal.Header>
@@ -18,7 +18,7 @@ function ModalProdctDelete(props) {
         <p>다음 제품을 삭제하시겠습니까?</p>
         <ul>
           {products?.map((product, index) => (
-            <li key={index}>{product.productName} / {product.productPrice}</li>
+            <li key={index}>{product.productName} / {product.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원"}</li>
           ))}
         </ul>
       </Modal.Body>

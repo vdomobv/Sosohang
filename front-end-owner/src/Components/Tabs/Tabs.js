@@ -39,7 +39,7 @@ export default function Tabs({ navigation }) {
         <Text style={styles.name}>QR</Text>
       </View>
 
-      <View style={styles.subContainer}>
+      {/* <View style={styles.subContainer}>
         <FontAwesome5Icon size={35} name="credit-card"
           color={(activeTab === "InputPayment" || activeTab === "DonePayment") ? "#46C27D" : "black"}
           onPress={() => {
@@ -49,7 +49,7 @@ export default function Tabs({ navigation }) {
           }}
         />
         <Text style={styles.name}>(테스트용)</Text>
-      </View>
+      </View> */}
 
       <View style={styles.subContainer}>
         <FontAwesome5Icon size={30} name="stamp"

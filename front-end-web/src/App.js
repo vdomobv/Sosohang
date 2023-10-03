@@ -11,16 +11,20 @@ import ProductManage from "./pages/ProductManage"
 import StoreManage from "./pages/StoreManage"
 import StoreInfo from "./pages/StoreInfo"
 import WebGift from "./pages/WebGift"
+import ProtectedRoute from "./pages/ProtecedRoute";
+import publicRoute from "./pages/PublicRoute";
 
 const router = createBrowserRouter([
   { path: "*", element: <NotFound /> },
   { path: "/", element: <Main /> },
+  { path: "/WebGift", element: <WebGift />},
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp />},
-  { path: "/productManage", element: <ProductManage />},
-  { path: "/storeManage", element: <StoreManage />},
-  { path: "/storeInfo", element: <StoreInfo />},
-  { path: "/WebGift", element: <WebGift />}
+  { path: "/", element: <ProtectedRoute />, children: [
+    { path: "/productManage", element: <ProductManage />},
+    { path: "/storeManage", element: <StoreManage />},
+    { path: "/storeInfo", element: <StoreInfo />},
+  ]},
 ])
 
 function App() {

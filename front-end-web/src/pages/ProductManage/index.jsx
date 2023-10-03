@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 import Header from "../../components/Header";
-import TableProductActive from "../../components/TableProductActive"
+import TableProductActive from "../../components/TableProductActive";
+import TableProductEvent from "../../components/TableProductEvent";
 
-function ProductManage() {  
-
+function ProductManage() {
   return (
-    <div>
+    <div >
       <Header />
-      <h1>기본 제품 목록</h1>      
-      <TableProductActive/>      
+      <TableProductActive />
+      <TableProductEvent />
     </div>
   );
 }

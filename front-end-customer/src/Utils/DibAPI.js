@@ -3,7 +3,7 @@ import axios from "axios";
 export const getDibData = async (memberSeq) => {
     try {
         const response = await axios.get(
-            `http://j9c109.p.ssafy.io:8081/api/v1/dib/${memberSeq}`
+            `https://j9c109.p.ssafy.io/api/v1/dib/${memberSeq}`
         );
 
         return response.data;
@@ -15,7 +15,7 @@ export const getDibData = async (memberSeq) => {
 export const getStoreDibData = async (memberSeq, storeSeq) => {
     try {
         const response = await axios.get(
-            `http://j9c109.p.ssafy.io:8081/api/v1/dib/${memberSeq}/${storeSeq}`
+            `https://j9c109.p.ssafy.io/api/v1/dib/${memberSeq}/${storeSeq}`
         );
 
         if (response.data.length > 0) {
@@ -32,7 +32,7 @@ export const getStoreDibData = async (memberSeq, storeSeq) => {
 export const removeDib = async (memberSeq, storeSeq) => {
     try {
         const response = await axios.delete(
-            `http://j9c109.p.ssafy.io:8081/api/v1/dib/remove?memberSeq=${memberSeq}&storeSeq=${storeSeq}`
+            `https://j9c109.p.ssafy.io/api/v1/dib/remove?memberSeq=${memberSeq}&storeSeq=${storeSeq}`
         );
     } catch (error) {
         console.error("Error fetching store data in removeDib:", error);
@@ -42,7 +42,7 @@ export const removeDib = async (memberSeq, storeSeq) => {
 export const addDib = async (memberSeq, storeSeq) => {
     try {
         const response = await axios.post(
-            `http://j9c109.p.ssafy.io:8081/api/v1/dib/add?memberSeq=${memberSeq}&storeSeq=${storeSeq}`
+            `https://j9c109.p.ssafy.io/api/v1/dib/add?memberSeq=${memberSeq}&storeSeq=${storeSeq}`
         );
     } catch (error) {
         console.error("Error fetching store data in addDib:", error);

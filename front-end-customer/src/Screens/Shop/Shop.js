@@ -82,6 +82,7 @@ export default function Shop({ navigation, route }) {
     }
 
     setStoreData(storeResult);
+    console.log(storeResult);
   };
 
   useEffect(() => {
@@ -255,7 +256,7 @@ export default function Shop({ navigation, route }) {
             : undefined}
         </View>
 
-        <Image source={require("assets/images/bread.png")} style={styles.image} />
+        <Image src={storeData ? storeData.storeImage : "assets/images/bread.png"} style={styles.image} />
         <View style={styles.content}>
           <View style={styles.head}>
             <SectionTitle content={storeData ? storeData.category.categoryName : 'Loading...'} />

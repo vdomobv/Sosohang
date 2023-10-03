@@ -58,7 +58,7 @@ export default function Map({ route, navigation }) {
           <Title title={nowLocation} />
         </TouchableOpacity>
         <MapView
-          // minZoomLevel={15}
+          minZoomLevel={15}
           style={styles.map}
           region={{
             latitude: nowCoords.latitude,

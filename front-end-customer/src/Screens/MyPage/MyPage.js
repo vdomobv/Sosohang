@@ -96,7 +96,7 @@ export default function MyPage({ navigation }) {
   const dibs = dibData && dibData.length > 0 ? dibData.map((data, index) => {
     return <CarouselItem key={index} props={data.store}
       onPressFunction={() => {
-        navigation.navigate('Shop', { data: data.store })
+        navigation.navigate('Shop', { storeSeq: data.store.storeSeq })
       }} />;
   }) :
     <Box customStyles={{ paddingHorizontal: 75, alignSelf: 'center' }} content={<SectionSubtitle content={"아직 찜한 상점이 없어요 :) "} />} />
@@ -148,6 +148,7 @@ export default function MyPage({ navigation }) {
                 <TouchableOpacity onPress={() => {
                   logout()
                   console.log("로그아웃 되었습니다.")
+                  navigation.navigate('Main')
                 }}>
                   <Text style={styles.logout}>로그아웃 하기</Text>
                 </TouchableOpacity>

@@ -36,7 +36,7 @@ export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
 
   return (
     <View style={styles.container}>
-      <SquareImage imageSrc={require("assets/dummyimages/anuek.jpg")} />
+      <SquareImage imageSrc={data.storeImage} />
       <View style={styles.section}>
         <View style={styles.content}>
           <View style={styles.texts}>

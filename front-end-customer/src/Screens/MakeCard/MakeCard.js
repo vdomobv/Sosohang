@@ -121,8 +121,10 @@ export default function MakeCard({ route, navigation }) {
           <SelectImage
             selectedButton={selectedButton}
             setSelectedButton={setSelectedButton}
-            setSelectedImage={setSelectedImage}
+            selectedImage={selectedImage}  // 여기에 추가
+            setSelectedImage={setSelectedImage}  // 여기에 추가
             setMessage={setMessage}
+            message={message}
           />
 
           <View style={styles.subcontainer}>

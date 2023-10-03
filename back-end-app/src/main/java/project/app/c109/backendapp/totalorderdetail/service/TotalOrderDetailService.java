@@ -35,36 +35,9 @@ public class TotalOrderDetailService {
 //        return totalOrderDetails;
 //    }
 
-    public Map<Integer, Map<Integer, List<GroupedOrderDetailResponse>>> getGroupedOrderDetailsByMemberSeq(Integer memberSeq) {
+    public List<TotalOrderDetail> getGroupedOrderDetailsByMemberSeq(Integer memberSeq) {
         List<TotalOrderDetail> totalOrderDetails = totalOrderDetailRepository.findByMemberSeqOrderByTotalOrderSeqDesc(memberSeq);
-
-        // 그룹화된 주문 데이터를 담을 맵 초기화
-        Map<Integer, Map<Integer, List<GroupedOrderDetailResponse>>> groupedOrderDetails = new TreeMap<>(Comparator.reverseOrder());
-
-        // totalOrderDetails를 순회하면서 그룹화된 데이터 구성
-        for (TotalOrderDetail totalOrderDetail : totalOrderDetails) {
-            Integer totalOrderSeq = totalOrderDetail.getTotalOrderSeq();
-            Integer storeSeq = totalOrderDetail.getStoreSeq();
-
-            GroupedOrderDetailResponse groupedDetail = new GroupedOrderDetailResponse();
-            groupedDetail.setOrderDetailSeq(totalOrderDetail.getOrderDetailSeq());
-            groupedDetail.setTotalOrderSeq(totalOrderSeq);
-            groupedDetail.setProductName(totalOrderDetail.getProduct().getProductName());
-            groupedDetail.setStoreName(totalOrderDetail.getProduct().getStore().getStoreName());
-            groupedDetail.setStoreSeq(storeSeq);
-            groupedDetail.setCount(totalOrderDetail.getCount());
-            groupedDetail.setOrderPrice(totalOrderDetail.getOrderPrice());
-            groupedDetail.setStatus(totalOrderDetail.getStatus());
-            groupedDetail.setCreatedDate(totalOrderDetail.getCreatedDate());
-
-            // 그룹화된 데이터를 맵에 추가
-            groupedOrderDetails
-                    .computeIfAbsent(totalOrderSeq, k -> new HashMap<>())
-                    .computeIfAbsent(storeSeq, k -> new ArrayList<>())
-                    .add(groupedDetail);
-        }
-
-        return groupedOrderDetails;
+        return totalOrderDetails;
     }
 
 

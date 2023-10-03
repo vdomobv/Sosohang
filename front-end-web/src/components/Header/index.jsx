@@ -28,11 +28,14 @@ function Header() {
       .get("/api/v1/store/logout")
       .then((res) => {
         navigate("/")
+        setAuth(false);
       })
       .catch((err) => {
         console.log(err);
       })
   }
+
+  console.log(auth);
 
   return (
     <Wrapper>

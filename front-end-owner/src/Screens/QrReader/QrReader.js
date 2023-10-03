@@ -16,6 +16,7 @@ export default function QrReader({ navigation }) {
   const [scannedData, setScannedData] = useState(null);
   const [balance, setBalance] = useState("");
   const [warningMessage, setWarningMessage] = useState("");
+  const [storeSeq, setStoreSeq] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -23,11 +24,23 @@ export default function QrReader({ navigation }) {
       setHasPermission(status === "granted");
     })();
     setScanned(false);
+    axios
+      .get("https://j9c109.p.ssafy.io/api/v1/store/token_test")
+      .then((res) => {
+        if (res.data !== false) {
+          setStoreSeq(res.data.storeSeq);
+        } else {
+          setStoreSeq("");
+        }
+      })
+      .catch((err) => {
+        setStoreSeq("");
+      });
   }, []);
 
   const handleBarCodeScanned = (qrData) => {
     try {
-      console.log(JSON.parse(qrData.data));
+      JSON.parse(qrData.data);
       axios
         .get(
           `https://j9c109.p.ssafy.io/api/app/users/gift-cards/${
@@ -37,9 +50,14 @@ export default function QrReader({ navigation }) {
         .then((res) => {
           setScanned(true);
           setModalVisible(true);
-          setBalance(res.data);
-          setScannedData(JSON.parse(qrData.data).uuid)
-          setWarningMessage("");
+          // console.log(JSON.parse(qrData.data).storeSeq);
+          if (storeSeq === parseInt(JSON.parse(qrData.data).storeSeq)) {
+            setBalance(res.data);
+            setScannedData(JSON.parse(qrData.data).uuid);
+            setWarningMessage("");
+          } else {
+            setWarningMessage("해당 가게의 상품이 아닙니다.");
+          }
         })
         .catch((err) => {
           setScanned(true);
@@ -107,11 +125,20 @@ export default function QrReader({ navigation }) {
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원입니다.`
               : warningMessage
           }
-          onPress={ warningMessage === ""
-          ? balance === 0? () => setModalVisible(false) : () => {
-            setModalVisible(false);
-            navigation.navigate("InputPayment", {balance: balance, sosoticon: scannedData});
-          } : () => setModalVisible(false)}
+          onPress={
+            warningMessage === ""
+              ? balance === 0
+                ? () => setModalVisible(false)
+                : () => {
+                    setModalVisible(false);
+                    navigation.navigate("InputPayment", {
+                      balance: balance,
+                      sosoticon: scannedData,
+                      storeSeq: storeSeq,
+                    });
+                  }
+              : () => setModalVisible(false)
+          }
         />
       </View>
       <Tabs navigation={navigation} />

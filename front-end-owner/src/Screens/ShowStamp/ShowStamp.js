@@ -9,7 +9,9 @@ import Box from "../../Components/Box/Box";
 import ModalCustom from "../../Components/ModalCustom/ModalCustom";
 import Tabs from "../../Components/Tabs/Tabs";
 
-export default function ShowStamp({ navigation }) {
+export default function ShowStamp({ navigation, route }) {
+  const { storeSeq } = route.params;
+
   const [stampPhoneNumber, setStampPhoneNumber] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [stampData, setStampData] = useState([]);
@@ -19,12 +21,13 @@ export default function ShowStamp({ navigation }) {
     if (stampPhoneNumber.length === 11) {
       try {
         const response = await axios.get(
-          `https://j9c109.p.ssafy.io/api/v1/stamp/${stampPhoneNumber}/1?stampStatus=0`
+          `https://j9c109.p.ssafy.io/api/v1/stamp/${stampPhoneNumber}/${storeSeq}?stampStatus=0`
         );
 
         const { data } = response;
 
-        if (data) {
+        if (isEmptyArray(data)) {
+          console.log(typeof(data));
           setStampData(data);
           setMemberNickname(data[0].member.memberNickname);
           setModalVisible(true);

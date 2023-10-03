@@ -9,7 +9,7 @@ import ModalCustom from "../../Components/ModalCustom/ModalCustom";
 import Tabs from "../../Components/Tabs/Tabs";
 
 export default function InputPayment({ navigation, route }) {
-  const { balance, sosoticon } = route.params;
+  const { balance, sosoticon, storeSeq } = route.params;
   const [payment, setPayment] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -27,10 +27,10 @@ export default function InputPayment({ navigation, route }) {
           }
         )
         .then((res) => {
-          navigation.navigate("DonePayment");
+          navigation.navigate("DonePayment", {storeSeq: storeSeq});
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     }
   };

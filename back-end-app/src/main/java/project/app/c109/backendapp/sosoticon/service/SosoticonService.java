@@ -214,7 +214,8 @@ public class SosoticonService {
 
         int updatedBalance = currentBalance - amountToDeduct;
         existingSosoticon.setSosoticonValue(currentBalance - amountToDeduct); // 차감된 금액으로 업데이트
-        existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice() - amountToDeduct);
+        // existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice() - amountToDeduct);
+        existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice());
 
         // 잔액이 0이거나 더 작으면
         if (updatedBalance <= 0) {

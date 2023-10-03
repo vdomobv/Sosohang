@@ -12,7 +12,6 @@ import SubTitle from "../SubTitle/SubTitle";
 export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
-  console.log("여기", data)
 
   return (
     <>

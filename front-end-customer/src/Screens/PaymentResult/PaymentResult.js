@@ -9,6 +9,7 @@ import Box from "../../Components/Box/Box";
 import { useEffect, useState } from "react";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 import { makeOrder, makeSosoticon } from "../../Utils/PaymentAPI";
+import { handleUpload } from "../../Utils/UploadImage"
 
 export default function PaymentResult({ navigation, route }) {
   const paymentData = route.params.paymentData;
@@ -30,7 +31,10 @@ export default function PaymentResult({ navigation, route }) {
     };
 
     fetchMemberSeq();
+
+    handleUpload(sosoticonData)
   }, [])
+
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -72,6 +76,7 @@ export default function PaymentResult({ navigation, route }) {
 
   useEffect(() => {
     console.log('test : ', totalOrder)
+    console.log('소소티콘 이미지 : ', sosoticonData)
     if (totalOrder !== undefined) {
 
       Object.keys(productList).map((key) => {
@@ -81,7 +86,6 @@ export default function PaymentResult({ navigation, route }) {
         tempData['orderSeq'] = totalOrder.totalOrderSeq;
         tempData['storeSeq'] = parseInt(key);
         tempData["sosoticonUrl"] = "https://j9c109.p.ssafy.io/webgift/"
-        tempData['sosoticonImage'] = "string"
 
         const productsInShop = productList[key];
         const totalProductPrice = productsInShop.reduce((acc, product) => {

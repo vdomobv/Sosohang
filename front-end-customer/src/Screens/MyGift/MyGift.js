@@ -43,7 +43,6 @@ export default function MyGift({ navigation }) {
     try {
         const result = await getMyGiftList(tempUser);
         setDummy(result);
-        // console.log('여기', result);
     } catch(error) {
         console.error('Error fetching member data:', error);
     }

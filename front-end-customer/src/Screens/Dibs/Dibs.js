@@ -17,10 +17,13 @@ export default function Dibs({ navigation }) {
   const [dibData, setDibData] = useState([]);
   const tempUser = 1;
 
+  // console.log(dibData);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await getDibData(tempUser);
       setDibData(result);
+      // console.log(result);
     };
 
     fetchData();

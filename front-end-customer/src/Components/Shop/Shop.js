@@ -13,7 +13,7 @@ export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
 
   return (
     <View style={styles.container}>
-      <SquareImage imageSrc={storeImage === 'string' ? require("assets/images/bread.jpg") : { uri: storeImage }} />
+      <SquareImage imageSrc={storeImage === 'string' ? require("assets/images/bread.png") : { uri: storeImage }} />
       <View style={styles.section}>
         <View style={styles.content}>
           <View style={styles.texts}>

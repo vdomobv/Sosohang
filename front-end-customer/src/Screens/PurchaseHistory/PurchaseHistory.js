@@ -8,7 +8,7 @@ import Gift from "../../Components/Gift/Gift";
 
 export default function PurchaseHistory({ navigation, route }) {
   const buyList = route.params.buy || {};
-  console.log(buyList);
+  // console.log(buyList);
   return (
     <View style={styles.container}>
       <Title title={"구매내역"} />

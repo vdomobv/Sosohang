@@ -12,7 +12,7 @@ import SubTitle from "../SubTitle/SubTitle";
 export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
-  console.log("여기", data)
+  // console.log("여기", data)
 
   return (
     <>
@@ -66,22 +66,31 @@ export default function Gift({ data, usable, onPress }) {
             </View>
           ) : (
             <View style={styles.buttons}>
-              {usable ? (
+              {!usable && (
                 <CustomButton
-                  pressFuction={() => {
-                    console.log("연장하기 기능 구현 필요합니당.");
-                  }}
-                  content={"기간 연장하기"}
-                />
-              ) : (
-                <CustomButton
-                  content={"후기 남기기"} 
+                  content={"후기 남기기"}
                   pressFuction={() => {
                     navigation.navigate("Review", { giftData: data });
                   }}
                 />
               )}
             </View>
+            // {usable ? (
+            //   <CustomButton
+            //     pressFuction={() => {
+            //       console.log("연장하기 기능 구현 필요합니당.");
+            //     }}
+            //     content={"기간 연장하기"}
+            //   />
+            // ) : (
+            //   <CustomButton
+            //     content={"후기 남기기"} 
+            //     pressFuction={() => {
+            //       navigation.navigate("Review", { giftData: data });
+            //     }}
+            //   />
+            // )}
+
           )}
         </View>
         <CustomModal

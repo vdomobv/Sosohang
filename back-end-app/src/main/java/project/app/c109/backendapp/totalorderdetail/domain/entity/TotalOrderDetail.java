@@ -53,4 +53,7 @@ public class TotalOrderDetail {
 
     @Column
     private Integer status;
+
+    @Column
+    private String takerName;
 }

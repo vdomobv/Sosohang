@@ -33,6 +33,7 @@ public class TotalOrderService {
         Integer memberSeq = request.getMemberSeq();
         Integer totalPrice = 0;
         LocalDateTime now = LocalDateTime.now();
+        String takerName = request.getTakerName();
 
         TotalOrder totalOrder = TotalOrder.builder()
                 .memberSeq(memberSeq)
@@ -64,6 +65,7 @@ public class TotalOrderService {
                     .status(0)
                     .memberSeq(memberSeq)
                     .createdDate(now)
+                    .takerName(takerName)
                     .build();
             totalOrderDetailRepository.save(totalOrderDetail);
         }

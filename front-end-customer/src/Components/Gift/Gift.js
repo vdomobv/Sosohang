@@ -15,7 +15,7 @@ export default function Gift({ data, usable, onPress }) {
 
   return (
     <>
-      <TouchableOpacity onPress={onPress}>
+     <TouchableOpacity onPress={onPress}>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.person}>
@@ -24,7 +24,7 @@ export default function Gift({ data, usable, onPress }) {
             <Text style={styles.date}>{data.createdAt}</Text>
           </View>
           <View style={styles.body}>
-            <Image style={styles.image} source={data.image} />
+                        <Image style={styles.image} source={data.image} />
             <View style={styles.contents}>
               <Text style={styles.shopName}>{data.storeName}</Text>
               <Text style={styles.name}>{data.name}</Text>
@@ -39,7 +39,7 @@ export default function Gift({ data, usable, onPress }) {
 
           {data.to ? (
             <View style={styles.buttons}>
-              {data.currentPrice == data.totalPrice ? (
+                          {data.currentPrice == data.totalPrice ? (
                 <CustomButton
                   pressFuction={() => {
                     setModalState(true);
@@ -65,7 +65,7 @@ export default function Gift({ data, usable, onPress }) {
             </View>
           ) : (
             <View style={styles.buttons}>
-              {usable ? (
+                          {usable ? (
                 <CustomButton
                   pressFuction={() => {
                     console.log("연장하기 기능 구현 필요합니당.");
@@ -74,7 +74,7 @@ export default function Gift({ data, usable, onPress }) {
                 />
               ) : (
                 <CustomButton
-                  content={"후기 남기기"} 
+                  content={"후기 남기기"}
                   pressFuction={() => {
                     navigation.navigate("Review", { giftData: data });
                   }}

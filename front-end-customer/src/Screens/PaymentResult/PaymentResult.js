@@ -8,14 +8,17 @@ import Gift from "../../Components/Gift/Gift";
 import Box from "../../Components/Box/Box";
 import { useEffect, useState } from "react";
 import { getMemberSeq } from "../../Utils/MemberAPI";
-import { makeOrder } from "../../Utils/PaymentAPI";
+import { makeOrder, makeSosoticon } from "../../Utils/PaymentAPI";
+import { handleUpload } from "../../Utils/UploadImage"
 
 export default function PaymentResult({ navigation, route }) {
   const paymentData = route.params.paymentData;
   const productList = route.params.productList;
+  const sosoticonData = route.params.sosoticonData;
   const to = route.params.to;
   const [orderList, setOrderList] = useState([])
   const [tempUser, setTempUser] = useState()
+  const [totalOrder, setTotalOrder] = useState()
 
   useEffect(() => {
     const fetchMemberSeq = async () => {
@@ -28,7 +31,10 @@ export default function PaymentResult({ navigation, route }) {
     };
 
     fetchMemberSeq();
+
+    handleUpload(sosoticonData)
   }, [])
+
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -36,7 +42,7 @@ export default function PaymentResult({ navigation, route }) {
 
       Object.keys(productList).map((key) => {
         productList[key].map((d) => {
-          console.log('데이터 리스트', d)
+          console.log("확인 :", d)
           temp.push({
             'productSeq': d.productSeq,
             'count': d.count
@@ -53,11 +59,46 @@ export default function PaymentResult({ navigation, route }) {
   }, [tempUser])
 
   useEffect(() => {
-    if (orderList.length > 0) {
-      console.log('되라되라 :', orderList)
-      makeOrder(tempUser, orderList)
+    const fetchOrder = async () => {
+      if (orderList.length > 0) {
+
+        const response = await makeOrder(tempUser, orderList);
+        console.log('response', response);
+        if (response !== undefined) {
+          setTotalOrder(response);
+        }
+      }
     }
+
+    fetchOrder();
   }, [orderList])
+
+
+  useEffect(() => {
+    console.log('test : ', totalOrder)
+    console.log('소소티콘 이미지 : ', sosoticonData)
+    if (totalOrder !== undefined) {
+
+      Object.keys(productList).map((key) => {
+        console.log('상점 확인 : ', key)
+        const tempData = { ...sosoticonData };
+        tempData['memberSeq'] = tempUser;
+        tempData['orderSeq'] = totalOrder.totalOrderSeq;
+        tempData['storeSeq'] = parseInt(key);
+        tempData["sosoticonUrl"] = "https://j9c109.p.ssafy.io/webgift/"
+
+        const productsInShop = productList[key];
+        const totalProductPrice = productsInShop.reduce((acc, product) => {
+          return acc + product.productPrice * product.count;
+        }, 0);
+
+        tempData['sosoticonValue'] = totalProductPrice;
+        console.log('여기여기', tempData);
+
+        makeSosoticon(tempData);
+      })
+    }
+  }, [totalOrder])
 
   const gifts = Object.keys(productList).map((storeSeq) => {
     const productsInShop = productList[storeSeq];

@@ -30,7 +30,7 @@ export default function LogIn({ navigation }) {
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
             alert("로그인 실패");
           });
         // 로그인 로직 작성

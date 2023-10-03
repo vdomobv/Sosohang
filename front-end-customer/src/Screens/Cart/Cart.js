@@ -22,6 +22,17 @@ export default function Cart({ navigation }) {
   const [selectedProducts, setSelectedProducts] = useState([])
   const [loading, setLoading] = useState(true);
 
+  const fetchUser = async () => {
+    const memberSeq = await getMemberSeq();
+    if (memberSeq !== undefined) {
+      setTempUser(memberSeq);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, [])
+
   // 장바구니 데이터 조회
   const fetchData = async () => {
     setLoading(true);
@@ -106,7 +117,6 @@ export default function Cart({ navigation }) {
   // 총 결제 금액 변경
   useEffect(() => {
     const tempPrice = selectedProducts.reduce((acc, item) => {
-      console.log('test: ', item)
       return acc + item.productPrice * item.count;
     }, 0);
     setTotalPrice(tempPrice);

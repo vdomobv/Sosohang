@@ -3,6 +3,6 @@ import { Image } from "react-native";
 
 export default function SquareImage({ imageSrc }) {
   return (
-    <Image source={imageSrc} style={styles.image}/>
+    <Image src={imageSrc} style={styles.image}/>
   )
 }

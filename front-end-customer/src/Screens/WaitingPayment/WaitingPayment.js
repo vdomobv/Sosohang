@@ -10,6 +10,7 @@ export default function WaitingPayment({ navigation, route }) {
   const totalPrice = route.params.totalPrice;
   const productList = route.params.groupedByStore;
   const to = route.params.to;
+  const sosoticonData = route.params.sosoticonData;
   const result = route.params.result;
 
   const storeNames = []
@@ -32,7 +33,7 @@ export default function WaitingPayment({ navigation, route }) {
   useEffect(() => {
     if (!paymentResult) {
       console.log("before navigate", productList);
-      navigation.navigate("Payment", { data, productList, to });
+      navigation.navigate("Payment", { data, productList, to, sosoticonData });
     } else {
       navigation.goback();
     }
@@ -41,12 +42,12 @@ export default function WaitingPayment({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.image}>
-        <SquareImage imageSrc={require("assets/images/giftbox.gif")} />
+        <SquareImage imageSrc={"assets/images/giftbox.gif"} />
       </View>
       <View style={styles.button}>
         <CustomButton
           pressFuction={() => {
-            navigation.navigate("Payment", { data, to });
+            navigation.navigate("Payment", { data, to, sosoticonData });
           }}
           customStyles={{ justifyContent: "center" }}
           content={<Text style={styles.text}>결제하기</Text>}

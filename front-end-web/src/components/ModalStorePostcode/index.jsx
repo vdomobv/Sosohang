@@ -10,9 +10,7 @@ function ModalStorePostcode(props) {
   };
 
   return (
-    <div
-      className="modal show"
-      style={{ display: "block", position: "absolute" }}>
+    <Modal centered>
       <Modal.Dialog className="modalBox">
         <Modal.Header style={{ outline: "none" }} onClick={() => setIsOpenPost(false)}>우편번호 찾기</Modal.Header>
 
@@ -22,7 +20,7 @@ function ModalStorePostcode(props) {
           </div>
         </Modal.Body>
       </Modal.Dialog>
-    </div>
+    </Modal>
   );
 }
 

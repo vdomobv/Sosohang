@@ -3,10 +3,17 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Alert, TextInput, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
-export default function SelectImage() {
-  const [selectedButton, setSelectedButton] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [message, setMessage] = useState(""); // 입력된 텍스트를 관리
+export default function SelectImage({
+  selectedButton,
+  setSelectedButton,
+  selectedImage,  // 여기에 추가
+  setSelectedImage,  // 여기에 추가
+  setMessage,
+  message
+}) {
+  // const [selectedButton, setSelectedButton] = useState(null);
+  // const [selectedImage, setSelectedImage] = useState(null);
+  // const [message, setMessage] = useState(""); // 입력된 텍스트를 관리
 
   // "+" 버튼을 눌렀을 때 갤러리 열기
   const openImagePicker = async () => {

@@ -9,9 +9,11 @@ import { useState } from "react";
 
 export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
   const [dibState, setDibState] = useState(dibSeq ? true : false);
+  const storeImage = data.storeImage;
+
   return (
     <View style={styles.container}>
-      <SquareImage imageSrc={require("assets/dummyimages/anuek.jpg")} />
+      <SquareImage imageSrc={storeImage === 'string' ? require("assets/images/bread.jpg") : { uri: storeImage }} />
       <View style={styles.section}>
         <View style={styles.content}>
           <View style={styles.texts}>
@@ -19,7 +21,7 @@ export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
             <SubTitle subTitle={data.storeName} />
           </View>
           {
-            tempUser!== undefined ?
+            tempUser !== undefined ?
               <DibButton dibState={dibState} setDibState={setDibState} userSeq={tempUser} storeSeq={data.storeSeq} />
               : undefined
           }

@@ -36,7 +36,7 @@ const Info = ({ logo, data }) => {
 export default function Shop({ navigation, route }) {
   const storeSeq = route.params.storeSeq;
   const storeImage = route.params.storeImage;
-  
+
   const [dibState, setDibState] = useState();
   const [product, setProduct] = useState([]);
   const [saleProduct, setSaleProduct] = useState([]);
@@ -257,8 +257,7 @@ export default function Shop({ navigation, route }) {
             : undefined}
         </View>
 
-        <Image source={storeImage === 'string' ?
-          require("assets/images/bread.png")
+        <Image source={storeImage === 'string' ? require("assets/images/bread.png")
           : { uri: storeImage }} style={styles.image} />
         <View style={styles.content}>
           <View style={styles.head}>

@@ -17,10 +17,11 @@ import project.app.c109.backendapp.sosoticon.domain.entity.Sosoticon;
 import project.app.c109.backendapp.sosoticon.repository.SosoticonRepository;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.repository.MemberRepository;
+import project.app.c109.backendapp.sosoticon.util.QRCodeUtil_Image;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.store.repository.StoreRepository;
 
-import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
+//import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -50,9 +51,13 @@ public class SosoticonService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // QRCodeUtil 빈 주입
+////     QRCodeUtil 빈 주입
+//    @Autowired
+//    private QRCodeUtil qrCodeUtil;
+
+//     QRCodeUtil_Image 빈 주입
     @Autowired
-    private QRCodeUtil qrCodeUtil;
+    private QRCodeUtil_Image qrCodeUtil_image;
 
     @Autowired
     private Environment env;
@@ -72,7 +77,8 @@ public class SosoticonService {
         try {
             Sosoticon sosoticon = new Sosoticon();
 
-            String uuid = qrCodeUtil.generateUUID(); // UUID 생성
+//            String uuid = qrCodeUtil.generateUUID(); // UUID 생성(QRCode만)
+            String uuid = qrCodeUtil_image.generateUUID(); // UUID 생성(선물카드이미지로 합성되어)
 
             // qr이미지 주소값저장
             String qrImageUrl = "https://sosoticon.s3.ap-northeast-2.amazonaws.com/QRCode_" + uuid + ".png";
@@ -84,7 +90,9 @@ public class SosoticonService {
             qrData.put("message", requestDTO.getSosoticonText());
             String jsonData = objectMapper.writeValueAsString(qrData);
 
-            String generatedQRCodePath = qrCodeUtil.generateQRCode(jsonData, uuid); // QR 코드 생성
+//            String generatedQRCodePath = qrCodeUtil.generateQRCode(jsonData, uuid); // QR 코드 생성
+
+            String generatedQRCodePath = qrCodeUtil_image.generateQRCode(jsonData, uuid, requestDTO); // QR 코드 생성(선물카드형식)
             sosoticon.setSosoticonCode(uuid); // UUID를 DB에 저장
 
 
@@ -110,21 +118,24 @@ public class SosoticonService {
 
 
             // MMS 보내기
-            sendMMSWithImageLink(
-                    // 발신자 이름
-                    requestDTO.getSosoticonGiverName(),
-                    // 수신자 이름
-                    requestDTO.getSosoticonTakerName(),
-                    // 수신자 전화번호
-                    requestDTO.getSosoticonTaker(),
-                    // 메시지 텍스트
-                    requestDTO.getSosoticonText(),
-                    // qr URL
-                    // qrImageUrl,
-                    //웹페이지 링크
-                    requestDTO.getSosoticonUrl()
-
-            );
+            try {
+                sendMMSWithImageLink(
+                        // 발신자 이름
+                        requestDTO.getSosoticonGiverName(),
+                        // 수신자 이름
+                        requestDTO.getSosoticonTakerName(),
+                        // 수신자 전화번호
+                        requestDTO.getSosoticonTaker(),
+                        // 메시지 텍스트
+                        requestDTO.getSosoticonText(),
+                        // qr URL
+                        qrImageUrl,
+                        // 사용자 첨부 이미지
+                        requestDTO.getSosoticonImage()
+                );
+            } catch (RuntimeException e) {
+                System.err.println("MMS 전송에 실패했지만 소소티콘은 정상적으로 발행됩니다.");
+            }
 
             LocalDateTime now = LocalDateTime.now();
             sosoticon.setCreatedAt(now);
@@ -235,14 +246,14 @@ public class SosoticonService {
     }
 
 
-public void sendMMSWithImageLink(String sosoticonGiverName, String sosoticonTakerName, String phoneNumber, String messageText, String webUrl) {
+public void sendMMSWithImageLink(String sosoticonGiverName, String sosoticonTakerName, String phoneNumber, String messageText, String qrUrl, String userImage) {
     try {
         Twilio.init(twilioAccountSid, twilioAuthToken);
 
         List<URI> mediaUrl = new ArrayList<>();
-        mediaUrl.add(URI.create(webUrl));
-        String customizedMessage = sosoticonGiverName+ " 님이 " + sosoticonTakerName + " 님께 보내신 선물입니다.\n\n"
-                + messageText + "\n"+ "\n"+ "동네 상점 모바일 쿠폰 서비스 '소소행'에서 발송 되었습니다. :)";
+        mediaUrl.add(URI.create(qrUrl));
+        String customizedMessage = sosoticonGiverName+ " 님이 " + sosoticonTakerName + " 님께 보내신 선물입니다.\n"
+                + messageText + "\n"+ "동네 상점 모바일 쿠폰 서비스 '소소행'에서 발송 되었습니다. :)";
 
         Message sentMessage = Message.creator(
                         new PhoneNumber(phoneNumber), // to

@@ -11,22 +11,36 @@ import lombok.Setter;
 
 public class SosoticonRequestDTO {
 
+    // 보내는 사람 시퀀스
     private Integer memberSeq;
+    // 주문번호(클라이언트 값 그대로 가져감)
     private Integer orderSeq;
+    // 상점번호(클라이언트 값 그대로 가져감)
     private Integer storeSeq;
 
     @Getter
     @Setter
-    private String sosoticonTakerName;
+    // 보내는 사람 이름
+    private String sosoticonGiverName;
 
     @Getter
     @Setter
-    private String sosoticonGiverName;
+    // 받는 사람 이름
+    private String sosoticonTakerName;
 
+
+    // 받는 사람 전화번호 ( +821012345678 형식임)
     private String sosoticonTaker;
+
+    // 보내는 사람이 적는 메세지
     private String sosoticonText;
+
+    // 각 사람이 문자로 받게 되는 url
     private String sosoticonUrl;
+
+    // 사용자가 첨부하는 이미지
     private String sosoticonImage;
+
 //    private String sosoticonCode;
     private Integer sosoticonStatus;
     private Integer sosoticonValue;

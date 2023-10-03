@@ -1,14 +1,11 @@
-import React from 'react';
-import ChartStoreSales from '../../components/ChartStoreSales';
+import React, { useState, useEffect } from "react";
 import TableStoreSettlement from "../../components/TableStoreSettlement";
-import Header from "../../components/Header"
+import Header from "../../components/Header";
 
-function  StoreManage() {
-
+function StoreManage() {
   return (
     <div>
       <Header />
-      <h1>상점관리페이지</h1>
       <TableStoreSettlement />
     </div>
   );

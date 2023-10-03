@@ -10,7 +10,6 @@ import SubTitle from "../SubTitle/SubTitle";
 export default function ReceivedGift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
-  console.log(data);
 
   return (
     <>
@@ -23,7 +22,7 @@ export default function ReceivedGift({ data, usable, onPress }) {
             <Text style={styles.date}>{new Date(data.createdAt).toLocaleString()}</Text>
           </View>
           <View style={styles.body}>
-            <Image style={styles.image} source={data.store.storeImage} />
+            <Image style={styles.image} src={data.store.storeImage} />
             <View style={styles.contents}>
               <Text style={styles.shopName}>{data.store.storeName}</Text>
               <Text style={styles.name}>{data.name}</Text>

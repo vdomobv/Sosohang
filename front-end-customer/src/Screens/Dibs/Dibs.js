@@ -10,12 +10,26 @@ import Shop from "../../Components/Shop/Shop";
 import CategoryData from "../../Dummys/Main/CategoryData";
 import { getDibData } from "../../Utils/DibAPI";
 import { useEffect, useState } from "react";
+import { getMemberSeq } from "../../Utils/MemberAPI";
 
 export default function Dibs({ navigation }) {
-  const allCategory = [{ name: '전체' }, ...CategoryData];
-
   const [dibData, setDibData] = useState([]);
-  const tempUser = 1;
+  const [tempUser, setTempUser] = useState();
+
+  useEffect(() => {
+    const fetchUserAndData = async () => {
+      const memberSeq = await getMemberSeq();
+      if (memberSeq !== undefined) {
+        setTempUser(memberSeq);  // memberSeq 값을 상태로 설정
+        
+        // 이제 memberSeq 값을 사용하여 getDibData 호출
+        const result = await getDibData(memberSeq);
+        setDibData(result);
+      }
+    };
+
+    fetchUserAndData();
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,23 +37,19 @@ export default function Dibs({ navigation }) {
       setDibData(result);
     };
 
-    fetchData();
+    if (dibData !== undefined && dibData.length > 0) {
+      fetchData();
+    }
   }, [dibData]);
-
 
   return (
     <View style={styles.container}>
       <Title title={"찜 목록"} />
-      <View>
-        <Carousel content={allCategory.map((tag, index) => {
-          return <HashTag key={index} props={tag} />
-        })} />
-      </View>
       <ScrollBox content={dibData.map((d, index) => {
         return (<Shop key={index} data={d.store} dibSeq={d.dibSeq}
           PressFunction={() => {
-            navigation.navigate('Shop', { data : d.store})
-        }}/>)
+            navigation.navigate('Shop', { storeSeq: d.store.storeSeq })
+          }} />)
       })} />
     </View>
 

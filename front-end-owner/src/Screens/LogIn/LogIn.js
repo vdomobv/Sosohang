@@ -14,10 +14,10 @@ export default function LogIn({ navigation }) {
     // 전화번호가 11자리인지 확인
     if (loginPhoneNumber.length === 10) {
       // 비밀번호가 조건에 맞는지 확인
-      if (
-        loginPassword.match(
-          /^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/
-        )
+      if (true
+        // loginPassword.match(
+        //   /^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/
+        // )
       ) {
         axios
           .post("https://j9c109.p.ssafy.io/api/v1/store/login", {

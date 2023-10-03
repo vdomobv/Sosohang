@@ -12,7 +12,7 @@ function Header() {
     axios
       .get("/api/v1/store/token_test")
       .then((res) => {
-        if(res.data === true) {
+        if(res.data !== false) {
           setAuth(true);
         } else {
           setAuth(false);
@@ -28,11 +28,14 @@ function Header() {
       .get("/api/v1/store/logout")
       .then((res) => {
         navigate("/")
+        setAuth(false);
       })
       .catch((err) => {
         console.log(err);
       })
   }
+
+  console.log(auth);
 
   return (
     <Wrapper>

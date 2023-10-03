@@ -20,6 +20,7 @@ export const makeSosoticon = async (requestBody) => {
     try {
         const response = await axios.post(
             `http://j9c109.p.ssafy.io:8081/api/app/users/gift-cards/generateQR`,
+            // `http://localhost:8081/api/app/users/gift-cards/generateQR`,
             requestBody
         );
         return response.data;

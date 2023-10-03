@@ -57,36 +57,43 @@ export default function PaymentResult({ navigation, route }) {
   useEffect(() => {
     const fetchOrder = async () => {
       if (orderList.length > 0) {
-        
+
         const response = await makeOrder(tempUser, orderList);
-        
+        console.log('response', response);
         if (response !== undefined) {
           setTotalOrder(response);
         }
       }
     }
 
-    fetchOrder(); 
-}, [orderList])
+    fetchOrder();
+  }, [orderList])
 
 
   useEffect(() => {
     console.log('test : ', totalOrder)
-    Object.keys(productList).map((key) => {
-      const tempData = {...sosoticonData};
-      tempData['storeSeq'] = key;
-      tempData['sosoticonValue'] = productList[key];
+    if (totalOrder !== undefined) {
 
-      const productsInShop = productList[key];
-      const totalProductPrice = productsInShop.reduce((acc, product) => {
-        return acc + product.productPrice * product.count;
-      }, 0);
+      Object.keys(productList).map((key) => {
+        console.log('상점 확인 : ', key)
+        const tempData = { ...sosoticonData };
+        tempData['memberSeq'] = tempUser;
+        tempData['orderSeq'] = totalOrder.totalOrderSeq;
+        tempData['storeSeq'] = parseInt(key);
+        tempData["sosoticonUrl"] = "https://j9c109.p.ssafy.io/webgift/"
+        tempData['sosoticonImage'] = "string"
 
-      tempData['sosoticonValue'] = totalProductPrice;
-      console.log(tempData);
+        const productsInShop = productList[key];
+        const totalProductPrice = productsInShop.reduce((acc, product) => {
+          return acc + product.productPrice * product.count;
+        }, 0);
 
-      makeSosoticon(tempData);
-    })
+        tempData['sosoticonValue'] = totalProductPrice;
+        console.log('여기여기', tempData);
+
+        makeSosoticon(tempData);
+      })
+    }
   }, [totalOrder])
 
   const gifts = Object.keys(productList).map((storeSeq) => {

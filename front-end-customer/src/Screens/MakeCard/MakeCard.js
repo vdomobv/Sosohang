@@ -203,12 +203,14 @@ export default function MakeCard({ route, navigation }) {
                   groupedByStore,
                   totalPrice,
                   result: false,
+                  to : contactName,
                   sosoticonData: {
                     sosoticonTakerName: contactName,
                     sosoticonGiverName: giverName,
                     sosoticonTaker: contactPhoneNumber.replaceAll("-",""),
                     sosoticonText: message,
                     sosoticonStatus: 1,
+                    sosoticonImage : selectedImage
                   }
 
                 });

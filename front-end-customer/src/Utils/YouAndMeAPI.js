@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getYouList = (memberSeq) => {
   return axios
-        .get(`http://j9c109.p.ssafy.io:8081/api/app/users/gift-cards/youandme?memberSeq=${memberSeq}`)
+        .get(`https://j9c109.p.ssafy.io/api/app/users/gift-cards/youandme?memberSeq=${memberSeq}`)
         .then((response) => {
           return response.data;     
         })

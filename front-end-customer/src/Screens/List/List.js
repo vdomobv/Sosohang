@@ -21,7 +21,7 @@ export default function List({ navigation, route }) {
   const getData = async () => {
     try {
       const response = await axios.get(
-        `http://j9c109.p.ssafy.io:8081/api/v1/store/category/${categorySeq}`
+        `https://j9c109.p.ssafy.io/api/v1/store/category/${categorySeq}`
       );
       setStoreData(response.data);
     } catch (error) {

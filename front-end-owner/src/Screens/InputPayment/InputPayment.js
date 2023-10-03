@@ -1,29 +1,37 @@
 // components
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import axios from "axios";
 import styles from "./styles";
 
 import Title from "../../Components/Title/Title";
+import ModalCustom from "../../Components/ModalCustom/ModalCustom";
 import Tabs from "../../Components/Tabs/Tabs";
-import axios from "axios";
 
 export default function InputPayment({ navigation, route }) {
   const { balance, sosoticon } = route.params;
   const [payment, setPayment] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+
   const handlePayment = function () {
     if (payment !== "") {
+      if (parseInt(payment.toString().replace(/[^0-9]/g, "")) > balance) {
+        return setModalVisible(true);
+      }
       axios
-        .put("/api/app/users/gift-cards/deductAmount", {
-          sosoticonCode: sosoticon,
-          amount: payment,
-        })
+        .put(
+          "https://j9c109.p.ssafy.io/api/app/users/gift-cards/deductAmount",
+          {
+            sosoticonCode: sosoticon,
+            amount: parseInt(payment.toString().replace(/[^0-9]/g, "")),
+          }
+        )
         .then((res) => {
-          console.log(res)
+          navigation.navigate("DonePayment");
         })
         .catch((err) => {
-          console.log(err)
-        })
-      navigation.navigate("DonePayment");
+          console.log(err);
+        });
     }
   };
 
@@ -51,14 +59,22 @@ export default function InputPayment({ navigation, route }) {
           <TextInput
             style={[styles.textInput, { width: 240 }]}
             keyboardType="numeric"
-            value={payment}
-            onChange={(e) => setPayment(e.target.value)}></TextInput>
+            value={payment.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            onChange={(e) => setPayment(e.nativeEvent.text)}></TextInput>
           <Text style={styles.text}>원</Text>
         </View>
 
         <TouchableOpacity style={styles.button} onPress={handlePayment}>
           <Text style={styles.buttonText}>결제하기</Text>
         </TouchableOpacity>
+
+        <ModalCustom
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          alertTitle={"결제금액오류"}
+          alertText={"사용금액이 잔액보다 많습니다."}
+          onPress={() => setModalVisible(false)}
+        />
       </View>
       <Tabs navigation={navigation} />
     </>

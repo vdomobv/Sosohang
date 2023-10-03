@@ -46,7 +46,7 @@ export default function SignUp({ navigation }) {
       // 회원인지 판단, 비회원이라면 진행 (회원이라면? -> 로그인하도록)
 
       axios
-        .post(`http://j9c109.p.ssafy.io:8081/api/v1/member/register/phone-check?memberPhone=${phoneNumber}`, {
+        .post(`https://j9c109.p.ssafy.io/api/v1/member/register/phone-check?memberPhone=${phoneNumber}`, {
         })
         .then((response) => {
           if (response.data.status = "success") {
@@ -74,7 +74,7 @@ export default function SignUp({ navigation }) {
   const handleAuthCode = () => {
     if (authCode.length === 6) {
       axios
-        .post(`http://j9c109.p.ssafy.io:8081/api/v1/member/register/verify-code?memberPhone=${phoneNumber}&authCode=${authCode}`, {
+        .post(`https://j9c109.p.ssafy.io/api/v1/member/register/verify-code?memberPhone=${phoneNumber}&authCode=${authCode}`, {
         })
         .then((response) => {
           console.log(response)
@@ -111,7 +111,7 @@ export default function SignUp({ navigation }) {
               if (password === confirmPassword) {
                 // 회원가입 로직 작성
                 axios
-                  .post("http://j9c109.p.ssafy.io:8081/api/v1/member/register", {
+                  .post("https://j9c109.p.ssafy.io/api/v1/member/register", {
                     memberNickname: nickname,
                     memberPhone: phoneNumber,
                     memberPassword: confirmPassword,

@@ -1,55 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+// import Cookies from "js-cookie";
 import Header from "../../components/Header";
 import EditStoreInfo from "../../components/EditStoreInfo";
-import EditOwnerInfo from "../../components/EditOwnerInfo";
 import EditStoreIssue from "../../components/EditStoreIssue";
 import FileUpload from "../../components/FileUpload";
 
 function StoreInfo() {
+  const navigate = useNavigate();
+
+  // const tokenCookie = Cookies.get("jwtToken");
+  // console.log(tokenCookie);
+  // useEffect(() => {
+  //   if (tokenCookie === undefined) return navigate("/")
+  // }, [tokenCookie])  
+  
   const [storeKeywords, setStoreKeywords] = useState([]);
   const [storeInfo, setStoreInfo] = useState({});
+  const [storeEditInfo, setStoreEditInfo] = useState({});
   const [storeIssue, setStoreIssue] = useState({});
-  const [storeUrl, setStoreUrl] = useState("");
-
-  /*
-  {
-        storeName: storeInfo.storeName,
-        registrationNumber: storeInfo.storeRegNum,
-        storeLocation: storeInfo.storeAddress,
-        categorySeq: storeInfo.storeCategory,
-        storeLatitude: storeInfo.storeLatitude,
-        storeLongitude: storeInfo.storeLongitude,
-        ownerTell: ownerInfo.storePhoneNum,
-        storePassword: ownerInfo.storePassword,
-        storeTell: storeIssue.storeCallNum,
-        storeParkinglot: storeIssue.storeParkinglot,
-        storeWorkhour: storeIssue.storeWorkDay,
-        storeHoliday: storeIssue.storeHoliday,
-        storeExtraInfo: storeIssue.storeExtraInfo,
-        selectedKeywordSeqList: storeIssue.storeKeywords,
-        storeUrl: storeUrl,
-      }
-
-      {
-  // "categorySeq": 0,
-  "selectedKeywordSeqList": [
-    0
-  ],
-  // "storeName": "string",
-  // "storeLocation": "string",
-  // "storeTell": "string",
-  // "storeParkinglot": "string",
-  // "storeWorkhour": "string",
-  // "storeHoliday": "string",
-  // "storeExtraInfo": "string",
-  "storeUrl": "string",
-  "storeImage": "string",
-  // "storeLatitude": 0,
-  // "storeLongitude": 0
-}
-   */
+  const [storeEditIssue, setStoreEditIssue] = useState({});
+  const [storeImage, setStoreImage] = useState("");
+  const [storeEditImage, setStoreEditImage] = useState("");
 
   useEffect(() => {
     axios
@@ -58,16 +32,19 @@ function StoreInfo() {
         await axios
           .get(`/api/v1/store/keywordlist/${res.data.store.storeSeq}`)
           .then((res) => {
-            console.log(res);
+            res.data.forEach((ele) => {
+              storeKeywords.push(ele.keywordSeq);
+            });
           })
           .catch((err) => {
             console.error(err);
-          })
-        console.log("ehlsi?")
+          });        
         setStoreInfo({
           storeName: res.data.store.storeName,
           storeRegNum: res.data.registartionNumber,
           storeAddress: res.data.store.storeLocation,
+          mainAddress: res.data.store.storeLocation.split("  ")[0],
+          extraAddress: res.data.store.storeLocation.split("  ")[1],
           storeCategory: res.data.store.category.categorySeq,
           storeLatitude: res.data.store.storeLatitude,
           storeLongitude: res.data.store.storeLongitude,
@@ -78,28 +55,62 @@ function StoreInfo() {
           storeWorkDay: res.data.store.storeWorkhour,
           storeHoliday: res.data.store.storeHoliday,
           storeExtraInfo: res.data.store.storeExtraInfo,
+          storeUrl: res.data.store.storeUrl,
+          storeKeywords: storeKeywords,
+          storeImage: res.data.store.storeImage
         });
-        setStoreUrl(res.data.store.storeUrl)
+        setStoreImage(res.data.store.storeImage);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  const handleEditStoreInfo = async () => {
+    if (!(storeEditInfo.confirmStoreInfo)) {
+      return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
+    }
+
+    await axios
+      .put("/api/v1/store/update", {
+        storeName: storeEditInfo.storeName,
+        registrationNumber: storeEditInfo.storeRegNum,
+        storeLocation: storeEditInfo.storeAddress,
+        categorySeq: storeEditInfo.storeCategory,
+        storeLatitude: storeEditInfo.storeLatitude,
+        storeLongitude: storeEditInfo.storeLongitude,
+        storeTell: storeEditIssue.storeCallNum,
+        storeParkinglot: storeEditIssue.storeParkinglot,
+        storeWorkhour: storeEditIssue.storeWorkDay,
+        storeHoliday: storeEditIssue.storeHoliday,
+        storeExtraInfo: storeEditIssue.storeExtraInfo,
+        selectedKeywordSeqList: storeEditIssue.storeKeywords,
+        storeUrl: storeEditIssue.storeUrl,
+        storeImage: storeEditImage === "" ? storeImage:storeEditImage,
+      })
+      .then((res) => {
+        console.log(res);
+        alert("상점정보가 수정되었습니다.")
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
-      <Header />
+      <Header/>
       <h1>상점정보</h1>
       <form>
         <div>
-          <EditStoreInfo />
-          <EditOwnerInfo />
+          <EditStoreInfo onChange={setStoreEditInfo} info={storeInfo}/>
         </div>
         <div>
-          <EditStoreIssue />
-          <FileUpload onChange={setStoreUrl} />
+          <EditStoreIssue onChange={setStoreEditIssue} info={storeIssue}/>
+          <FileUpload onChange={setStoreEditImage} />
         </div>
-        <Button>정보수정</Button>
+        <Button onClick={handleEditStoreInfo}>정보수정</Button>
       </form>
     </div>
   );

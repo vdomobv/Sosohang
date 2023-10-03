@@ -88,8 +88,8 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public Member getMemberByMemberPhone(String memberPhone) {
-        Member member = memberRepository.findByMemberPhone(memberPhone).get();
+    public Member getMemberByMemberSeq(Integer memberSeq) {
+        Member member = memberRepository.findByMemberSeq(memberSeq).get();
         return member;
     }
 

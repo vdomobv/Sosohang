@@ -254,7 +254,9 @@ public class StoreController {
 		if (storeSeq == null) {
 			return ResponseEntity.ok("noStore");
 			} 
-		return ResponseEntity.ok("true");
+		Map<String, Integer> tokenResponse = new HashMap<>();
+		tokenResponse.put("storeSeq", storeSeq);
+		return ResponseEntity.ok(tokenResponse);
 
 		} else {
 			return ResponseEntity.ok("false");
@@ -267,7 +269,7 @@ public class StoreController {
 		return ResponseEntity.ok(stores);
 	}
 
-	@GetMapping("/nearby/{keywordSeq}")
+	@GetMapping("/nearby/keyword")
 	public ResponseEntity<List<Store>> getNearStores (@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam Integer keywordSeq) {
 		List<Store> stores = storeService.getNearStoresByKeyword(latitude, longitude, keywordSeq);
 		return ResponseEntity.ok(stores);
@@ -302,7 +304,7 @@ public class StoreController {
 	}
 
 	@GetMapping("/logout")
-		public ResponseEntity<String> logout(HttpServletResponse response) {
+	public ResponseEntity<String> logout(HttpServletResponse response) {
     // 쿠키 삭제
     Cookie cookie = new Cookie("jwtToken", null);
     cookie.setPath("/");
@@ -312,6 +314,6 @@ public class StoreController {
 
     // 로그아웃 응답
     return ResponseEntity.ok("로그아웃");
-}
+	}
 
 }

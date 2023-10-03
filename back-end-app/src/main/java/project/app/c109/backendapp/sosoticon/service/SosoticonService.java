@@ -1,6 +1,11 @@
 package project.app.c109.backendapp.sosoticon.service;
 
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.exception.ApiException;
+import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.app.c109.backendapp.member.repository.MemberRepository;
@@ -19,8 +24,16 @@ import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.HashMap;
-import java.util.Map;
+
+
+import javax.annotation.PostConstruct;
+import java.net.URI;
+import java.util.*;
+
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+
 
 @Service
 public class SosoticonService {
@@ -41,6 +54,19 @@ public class SosoticonService {
     @Autowired
     private QRCodeUtil qrCodeUtil;
 
+    @Autowired
+    private Environment env;
+
+    private String twilioAccountSid;
+    private String twilioAuthToken;
+    private String twilioPhoneNumber;
+
+    @PostConstruct
+    public void init() {
+        twilioAccountSid = env.getProperty("twilio.accountSid");
+        twilioAuthToken = env.getProperty("twilio.authToken");
+        twilioPhoneNumber = env.getProperty("twilio.phoneNumber");
+    }
     @Transactional
     public Sosoticon createSosoticon(SosoticonRequestDTO requestDTO) {
         try {
@@ -56,6 +82,7 @@ public class SosoticonService {
             qrData.put("uuid", uuid);
             qrData.put("taker", requestDTO.getSosoticonTaker());
             qrData.put("message", requestDTO.getSosoticonText());
+            qrData.put("storeSeq", requestDTO.getStoreSeq().toString());
             String jsonData = objectMapper.writeValueAsString(qrData);
 
             String generatedQRCodePath = qrCodeUtil.generateQRCode(jsonData, uuid); // QR 코드 생성
@@ -67,19 +94,31 @@ public class SosoticonService {
             sosoticon.setMember(memberEntity);
 
 
-            sosoticon.setOrderId(requestDTO.getOrderId());
+            sosoticon.setOrderSeq(requestDTO.getOrderSeq());
 
 
             Store storeEntity = storeRepository.findById(requestDTO.getStoreSeq())
                     .orElseThrow(() -> new RuntimeException("Store not found with ID: " + requestDTO.getStoreSeq()));
             sosoticon.setStore(storeEntity);
-
-            sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
+            sosoticon.setSosoticonTakerName(requestDTO.getSosoticonTakerName());
+            sosoticon.setSosoticonTaker("+82" + requestDTO.getSosoticonTaker().substring(1));
+            sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
-            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
+//            sosoticon.setSosoticonAudio(requestDTO.getSosoticonAudio());
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());
+
+
+            // MMS 보내기
+            sendMMSWithImageLink(
+                    requestDTO.getSosoticonTaker(), // 수신자 전화번호
+                    requestDTO.getSosoticonText(),  // 메시지 텍스트
+                    qrImageUrl // qr URL
+            );
+
+            LocalDateTime now = LocalDateTime.now();
+            sosoticon.setCreatedAt(now);
 
             return sosoticonRepository.save(sosoticon);
         } catch (Exception e) {
@@ -176,7 +215,8 @@ public class SosoticonService {
 
         int updatedBalance = currentBalance - amountToDeduct;
         existingSosoticon.setSosoticonValue(currentBalance - amountToDeduct); // 차감된 금액으로 업데이트
-        existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice() - amountToDeduct);
+        // existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice() - amountToDeduct);
+        existingSosoticon.setSosoticonPrice(existingSosoticon.getSosoticonPrice());
 
         // 잔액이 0이거나 더 작으면
         if (updatedBalance <= 0) {
@@ -185,24 +225,70 @@ public class SosoticonService {
 
         return sosoticonRepository.save(existingSosoticon);
     }
-//    @Transactional
-//    public SosoticonResponseDTO deductAmount(SosoticonDeductRequestDTO request) {
-//        Sosoticon existingSosoticon = sosoticonRepository.findBySosoticonCode(request.getSosoticonCode())
-//                .orElseThrow(() -> new RuntimeException("Sosoticon not found with code: " + request.getSosoticonCode()));
-//
-//        int currentBalance = existingSosoticon.getSosoticonValue();
-//
-//        // 잔액이 차감하려는 금액보다 적으면 예외 발생
-//        if (currentBalance < request.getDeductAmount()) {
-//            throw new RuntimeException("Insufficient balance.");
-//        }
-//
-//        // 잔액 차감
-//        existingSosoticon.setSosoticonValue(currentBalance - request.getDeductAmount());
-//        Sosoticon updatedSosoticon = sosoticonRepository.save(existingSosoticon);
-//
-//        // 변경된 정보를 DTO로 변환하여 반환
-//        return convertEntityToDto(updatedSosoticon);
-//    }
+
+
+public void sendMMSWithImageLink(String phoneNumber, String messageText, String imageUrl) {
+    try {
+        Twilio.init(twilioAccountSid, twilioAuthToken);
+
+        List<URI> mediaUrl = new ArrayList<>();
+        mediaUrl.add(URI.create(imageUrl));
+        String customizedMessage = "Your Custom Text Here: " + messageText;
+
+        Message sentMessage = Message.creator(
+                        new PhoneNumber(phoneNumber), // to
+                        new PhoneNumber(twilioPhoneNumber), // from
+                        customizedMessage)
+                .setMediaUrl(mediaUrl)
+                .create();
+
+    } catch (ApiException e) {
+        System.err.println(e.getMessage());
+        throw new RuntimeException("Failed to send MMS", e);
+    }
+}
+
+
+    public List<Member> findYouAndMeList(Integer memberSeq) {
+        Member member = memberRepository.findByMemberSeq(memberSeq)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with seq: " + memberSeq));
+        Set<Member> youAndMeSet = new HashSet<>();
+
+        List<Sosoticon> sendSosoticons = sosoticonRepository.findByMemberMemberSeq(memberSeq);
+        for (Sosoticon sosoticon : sendSosoticons) {
+            Optional<Member> takerOpt = memberRepository.findByMemberPhone(sosoticon.getSosoticonTaker());
+            takerOpt.ifPresent(youAndMeSet::add); // Set에 추가
+        }
+
+        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker("+82" + member.getMemberPhone().substring(1));
+        for (Sosoticon sosoticon : receiveSosoticons) {
+            Member giver = sosoticon.getMember();
+            if (giver != null) {
+                youAndMeSet.add(giver); // Set에 추가
+            }
+        }
+
+        return new ArrayList<>(youAndMeSet); // Set을 List로 변환하여 반환
+    }
+
+    public List<Sosoticon> findYouAndMeSosoticonList(Integer mySeq, Integer yourSeq) {
+        String memberPhone = memberRepository.findByMemberSeq(yourSeq).get().getMemberPhone();
+        memberPhone = "+82" + memberPhone.substring(1);
+        Integer memberSeq = mySeq;
+        List<Sosoticon> sosoticonList = sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone);
+
+        memberPhone = "+82" + memberRepository.findByMemberSeq(mySeq).get().getMemberPhone().substring(1);
+        memberSeq = yourSeq;
+        sosoticonList.addAll(sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone));
+
+        sosoticonList.sort(Comparator.comparing(Sosoticon::getSosoticonSeq).reversed());
+        return sosoticonList;
+    }
+
+    public List<Sosoticon> getReceivedList(Integer memberSeq) {
+        Member member = memberRepository.findByMemberSeq(memberSeq).get();
+        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker("+82" + member.getMemberPhone().substring(1));
+        return sosoticonList;
+    }
 
 }

@@ -7,9 +7,12 @@ import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import SubTitle from "../SubTitle/SubTitle";
 
+
+
 export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
+  console.log("여기", data)
 
   return (
     <>
@@ -25,7 +28,6 @@ export default function Gift({ data, usable, onPress }) {
             <Image style={styles.image} source={data.image} />
             <View style={styles.contents}>
               <Text style={styles.shopName}>{data.storeName}</Text>
-              {/* <Text style={styles.shopName}>{data[0].storeName}</Text> */}
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
                 {data["from"]

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+// import Cookies from "js-cookie";
 import Wrapper from "./styles";
 import Header from "../../components/Header";
 import InputStoreInfo from "../../components/InputStoreInfo";
@@ -9,15 +11,23 @@ import InputStoreIssue from "../../components/InputStoreIssue";
 import FileUpload from "../../components/FileUpload";
 
 function SignUp() {
+  const navigate = useNavigate();
+
+  // const tokenCookie = Cookies.get("jwtToken");
+  // console.log(tokenCookie);
+  // useEffect(() => {
+  //   if (tokenCookie !== undefined) return navigate("/")
+  // }, [tokenCookie])  
+
   const [storeInfo, setStoreInfo] = useState({});
   const [ownerInfo, setOwnerInfo] = useState({});
   const [storeIssue, setStoreIssue] = useState({});
-  const [storeUrl, setStoreUrl] = useState("");
+  const [storeImageUrl, setStoreImageUrl] = useState("");
 
   const handleSignup = async () => {
-    if (!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
-      return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
-    }
+    // if (!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
+    //   return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
+    // }
 
     await axios
       .post("/api/v1/store/register", {
@@ -35,10 +45,13 @@ function SignUp() {
         storeHoliday: storeIssue.storeHoliday,
         storeExtraInfo: storeIssue.storeExtraInfo,
         selectedKeywordSeqList: storeIssue.storeKeywords,
-        storeUrl: storeUrl,
+        storeUrl: storeIssue.storeUrl,
+        storeImage: storeImageUrl,
       })
       .then((res) => {
         console.log(res);
+        alert("회원가입이 완료되었습니다.")
+        navigate("/")
       })
       .catch((err) => {
         console.log(err);
@@ -47,7 +60,7 @@ function SignUp() {
 
   return (
     <div>
-      <Header />
+      <Header/>
       <Wrapper>
         <form>
           <div className="container">
@@ -56,7 +69,7 @@ function SignUp() {
           </div>
           <div>
             <InputStoreIssue onChange={setStoreIssue} />
-            <FileUpload onChange={setStoreUrl} />
+            <FileUpload onChange={setStoreImageUrl} />
           </div>
           <Button onClick={handleSignup}>회원가입</Button>
         </form>

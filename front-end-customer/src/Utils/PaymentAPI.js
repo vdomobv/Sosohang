@@ -7,7 +7,7 @@ export const makeOrder = async (memberSeq, productList) => {
             'orderItems': productList
         }
         const response = await axios.post(
-            `http://j9c109.p.ssafy.io:8081/api/v1/total-order/create`,
+            `https://j9c109.p.ssafy.io/api/v1/total-order/create`,
             requestBody
         );
         return response.data;

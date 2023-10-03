@@ -4,17 +4,17 @@ import Wrapper from "./styles";
 import { Fade, Slide } from "react-awesome-reveal";
 
 function Main() {
-  console.log(`
-    ┌──────┐
-    │버그발견시！│
-    │연락주십쇼！│
-    └──────┘
-    ヽ(＾ω＾)ﾉ三三　 　 2
-    　 (　 へ )三三　　┗팀┓三
-    　　く 三三 　　　 ┏┗　 三
-    ￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣
+  // console.log(`
+  //    ┌───────────┐
+  //    │버그발견시! │
+  //    │연락주십쇼! │
+  //    └───────────┘
+  //   ヽ(＾ω＾)ﾉ三三　 　 9
+  //   　 (　 へ )三三　　┗팀┓三
+  //   　　く 三三 　　　 ┏┗　 三
+  //   ￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣
     
-    `);
+  //   `);
 
   const secondSlideRef = useRef(null);
 
@@ -199,7 +199,7 @@ function Main() {
                           fontWeight: "bold",
                         }}
                       >
-                        백엔드
+                        프론트엔드
                       </p>
                       <p>
                         ㅇㅇ<br></br>

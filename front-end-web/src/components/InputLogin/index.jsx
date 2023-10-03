@@ -28,10 +28,8 @@ function InputLogin() {
       })
       .then((res) => {
         if(res.data.isLogin === "success") {
-          navigate("/productManage")
+          navigate("/")
         }
-
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);

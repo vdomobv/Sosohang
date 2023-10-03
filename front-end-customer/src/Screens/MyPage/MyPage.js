@@ -8,19 +8,22 @@ import SubTitle from "../../Components/SubTitle/SubTitle";
 import CarouselItem from "../../Components/CarouselItem/CarouselItem";
 import Carousel from "../../Components/Carousel/Carousel";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
-import Gift from "../../Components/Gift/Gift";
+import PurchaseHistory from "../../Components/PurchaseHistory/PurchaseHistory";
 import StampAfter from "../../Components/StampAfter/StampAfter";
 import Box from "../../Components/Box/Box";
 import SectionSubtitle from "../../Components/SectionSubTitle/SectionSubTitle";
 import Loading from "../../Components/Loading/Loading";
 
 import userDummy from "../../Dummys/MyPage/UserDummy";
-import buyDummy from "../../Dummys/MyPage/BuyDummy";
+// import buyDummy from "../../Dummys/MyPage/BuyDummy";
 
 import { useEffect, useState } from "react";
 import { getDibData } from "../../Utils/DibAPI";
 import { logout, getMemberSeq, getMemberData, updateMemberNickname } from "../../Utils/MemberAPI";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
+
+// 주문내역
+import { getPurchaseHistory } from "../../Utils/PurchaseHistoryAPI";
 
 export default function MyPage({ navigation }) {
   const [tempUser, setTempUser] = useState();
@@ -29,6 +32,7 @@ export default function MyPage({ navigation }) {
   const [userData, setUserData] = useState({})
   const [updating, setUpdating] = useState(false);
   const [newMemberNickname, setNewMemberNickname] = useState('');
+  const [buyDummy, setBuyDummy] = useState([]);
 
   const fetchData = async () => {
     const memberSeq = await getMemberSeq();
@@ -50,6 +54,24 @@ export default function MyPage({ navigation }) {
     setDibData(result);
     const userResult = await getMemberData(tempUser);
     setUserData(userResult);
+
+    const PurchaseHistory = await getPurchaseHistory(tempUser);
+    const groupedOrders = PurchaseHistory.reduce((acc, order) => {
+      if (!acc[order.totalOrderSeq]) {
+        acc[order.totalOrderSeq] = [];
+      }
+      acc[order.totalOrderSeq].push(order);
+      return acc;
+    }, {});
+    
+    // 그룹화된 데이터의 키를 내림차순으로 정렬
+    const sortedKeys = Object.keys(groupedOrders).sort((a, b) => b - a);
+    
+    // 내림차순으로 정렬된 키를 사용하여 그룹화된 데이터를 배열로 변환
+    const groupedOrdersArray = sortedKeys.map(key => groupedOrders[key]);
+
+    setBuyDummy(groupedOrdersArray);
+  
   };
 
   // 로그인 여부 가져오기
@@ -80,7 +102,7 @@ export default function MyPage({ navigation }) {
     <Box customStyles={{ paddingHorizontal: 75, alignSelf: 'center' }} content={<SectionSubtitle content={"아직 찜한 상점이 없어요 :) "} />} />
 
   const buy = buyDummy.map((data, index) => {
-    return <Gift navigation={navigation} key={index} data={data} />;
+    return <PurchaseHistory navigation={navigation} key={index} data={data} />;
   });
 
   if (loading) {

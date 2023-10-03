@@ -12,6 +12,9 @@ public class CreateOrderRequest {
     private Integer memberSeq;
 
     @NotNull
+    private String takerName;
+
+    @NotNull
     private List<OrderItemDTO> orderItems;
 
     @Data

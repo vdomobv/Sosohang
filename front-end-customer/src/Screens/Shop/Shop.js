@@ -55,7 +55,7 @@ export default function Shop({ navigation, route }) {
   const getKeywords = async () => {
     try {
       const response = await axios.get(
-        `http://j9c109.p.ssafy.io:8081/api/v1/store/keywordlist/${storeSeq}`
+        `https://j9c109.p.ssafy.io/api/v1/store/keywordlist/${storeSeq}`
       );
       setKeywords(response.data);
     } catch (error) {
@@ -107,9 +107,12 @@ export default function Shop({ navigation, route }) {
   useEffect(() => {
     setCheckedProducts(product.map(() => false))
     setProductsAmount(product.map(() => 1))
+  }, [product])
+
+  useEffect(() => {
     setCheckedSaleProducts(saleProduct.map(() => false))
     setSaleProductAmount(saleProduct.map(() => 1))
-  }, [product])
+  }, [saleProduct])
 
 
   // 상품 목록
@@ -136,6 +139,7 @@ export default function Shop({ navigation, route }) {
 
   // 할인 상품 목록
   const saleProductList = saleProduct.map((data, index) => {
+    console.log(data)
     return (
       <Product
         checked={checkedSaleProducts[index]}
@@ -226,7 +230,7 @@ export default function Shop({ navigation, route }) {
 
   // 버튼 스크롤 시 표시
   useEffect(() => {
-    if (scrollY >= 250) {
+    if (scrollY >= 100) {
       setShowButton(true);
     } else {
       setShowButton(false);

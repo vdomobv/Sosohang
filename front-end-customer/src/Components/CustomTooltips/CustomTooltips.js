@@ -1,8 +1,7 @@
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { Tooltip } from "@rneui/themed";
 import { useState } from "react";
 import { ScrollView } from "react-native";
-import styles from "../Category/styles";
 
 const CustomTooltip = ({ openTooltip, contents, info }) => {
   const [open, setOpen] = useState(openTooltip);

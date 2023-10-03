@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const login = (navigation, loginPhoneNumber, loginPassword) => {
     axios
-        .post("http://j9c109.p.ssafy.io:8081/api/v1/member/login", {
+        .post("https://j9c109.p.ssafy.io/api/v1/member/login", {
             memberPhone: loginPhoneNumber,
             memberPassword: loginPassword,
         })
@@ -41,6 +41,7 @@ export const getMemberSeq = async () => {
         const storedValue = JSON.parse(await AsyncStorage.getItem("memberSeq"));
 
         if (storedValue === null || storedValue === undefined) {
+            console.log('저장된 사용자 없음.')
             return undefined;
         }
 
@@ -63,7 +64,7 @@ export const logout = async () => {
 export const getMemberData = async (memberSeq) => {
     try {
         const response = await axios.get(
-            `http://j9c109.p.ssafy.io:8081/api/v1/member/${memberSeq}`
+            `https://j9c109.p.ssafy.io/api/v1/member/${memberSeq}`
         );
 
         return response.data;
@@ -75,7 +76,7 @@ export const getMemberData = async (memberSeq) => {
 export const updateMemberNickname = async (memberSeq, newNickname) => {
     try {
         const response = await axios.put(
-            `http://j9c109.p.ssafy.io:8081/api/v1/member/update/${memberSeq}?newMemberNickname=${newNickname}`
+            `https://j9c109.p.ssafy.io/api/v1/member/update/${memberSeq}?newMemberNickname=${newNickname}`
         );
 
         return response.data;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
+// import Cookies from "js-cookie";
 import Header from "../../components/Header";
 import EditStoreInfo from "../../components/EditStoreInfo";
 import EditStoreIssue from "../../components/EditStoreIssue";
@@ -9,6 +10,13 @@ import FileUpload from "../../components/FileUpload";
 
 function StoreInfo() {
   const navigate = useNavigate();
+
+  // const tokenCookie = Cookies.get("jwtToken");
+  // console.log(tokenCookie);
+  // useEffect(() => {
+  //   if (tokenCookie === undefined) return navigate("/")
+  // }, [tokenCookie])  
+  
   const [storeKeywords, setStoreKeywords] = useState([]);
   const [storeInfo, setStoreInfo] = useState({});
   const [storeEditInfo, setStoreEditInfo] = useState({});
@@ -92,7 +100,7 @@ function StoreInfo() {
 
   return (
     <div>
-      <Header />
+      <Header/>
       <h1>상점정보</h1>
       <form>
         <div>

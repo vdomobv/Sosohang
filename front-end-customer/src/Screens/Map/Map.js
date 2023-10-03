@@ -2,18 +2,24 @@ import styles from "./styles";
 import { View, Text, Alert, TouchableOpacity, BackHandler } from "react-native";
 import { useEffect, useState } from "react";
 
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import Postcode from "@actbase/react-daum-postcode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 
+import Shop from "../../Components/Shop/Shop";
 import Title from "../../Components/Title/Title";
 import { geoCoding } from "../../Utils/Location";
+import CustomTooltip from "../../Components/CustomTooltips/CustomTooltips";
+
 
 export default function Map({ route, navigation }) {
+  const storeData = route.params.storeData;
+  const tempUser = route.params.tempUser;
   const [nowCoords, setNowCoords] = useState(route.params.coords);
   const [nowLocation, setNowLocation] = useState(route.params.location);
   const [searching, setSearching] = useState(false);
+
 
   const fetchSecondCoords = async (address, location) => {
     await AsyncStorage.setItem("location", JSON.stringify(location));
@@ -52,7 +58,7 @@ export default function Map({ route, navigation }) {
           <Title title={nowLocation} />
         </TouchableOpacity>
         <MapView
-          minZoomLevel={15}
+          // minZoomLevel={15}
           style={styles.map}
           region={{
             latitude: nowCoords.latitude,
@@ -68,6 +74,24 @@ export default function Map({ route, navigation }) {
               longitude: nowCoords.longitude,
             }}
           />
+          {storeData.length > 0 ?
+            storeData.map((data) => {
+              if (data.storeLatitude !== undefined && data.storeLongitude !== undefined) {
+                return (
+                  <Marker onPress={() => { }}
+                    pinColor="#46C27D" key={data.storeSeq}
+                    coordinate={{ latitude: data.storeLatitude, longitude: data.storeLongitude }} >
+                    <Callout onPress={() => {
+                      const storeSeq = data.storeSeq;
+                      navigation.navigate('Shop', {storeSeq})}}>
+                      <Text>{data.storeName}</Text>
+                    </Callout>
+                  </Marker>
+                )
+              }
+            })
+            : undefined
+          }
         </MapView>
         {!searching && <View style={styles.info} />}
         {!searching && (

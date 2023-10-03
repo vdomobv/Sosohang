@@ -103,8 +103,11 @@ function TableProductActive() {
   };
 
   return (
-    <div>
-      <Button onClick={() => setShowAddModal(true)}>제품 추가</Button>
+    <div style={{ margin: "50px" }}>
+      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+        <h1>기본 상품 목록</h1>
+        <Button onClick={() => setShowAddModal(true)}>상품 추가</Button>
+      </div>
       <Button
         variant="danger"
         onClick={() => openDeleteModal(selectedProducts)}
@@ -128,37 +131,46 @@ function TableProductActive() {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
-            <tr key={index}>
-              <td>
-                <Form.Check
-                  type="checkbox"
-                  checked={selectedProducts.includes(product)}
-                  onChange={() => handleToggleSelect(product)}
-                />
-              </td>
-              <td>{product.productName}</td>
-              <td>{product.productPrice}</td>
-              <td>{product.productDcrate}</td>
-              <td>{product.productInfo}</td>
-              <td>{product.productExp}</td>
-              <td>
-                <img
-                  src={product.productImage}
-                  alt={product.productName}
-                  width="100"
-                />
-              </td>
-              <td>{product.productCount}</td>
-              <td>{product.salesAmount}</td>
-              <td>
-                <Button onClick={() => openEditModal(product)}>수정</Button>
-              </td>
-            </tr>
-          ))}
+          {products.map((product, index) =>
+            product.productDcrate === 0 ? (
+              <tr key={index}>
+                <td>
+                  <Form.Check
+                    type="checkbox"
+                    checked={selectedProducts.includes(product)}
+                    onChange={() => handleToggleSelect(product)}
+                  />
+                </td>
+                <td>{product.productName}</td>
+                <td>
+                  {product.productPrice
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원"}
+                </td>
+                <td>{product.productDcrate * 100 + "%"}</td>
+                <td>{product.productInfo}</td>
+                <td>{product.productExp}</td>
+                <td>
+                  <img
+                    src={product.productImage}
+                    alt={product.productName}
+                    width="100"
+                  />
+                </td>
+                <td>{product.productCount}</td>
+                <td>{product.salesAmount}</td>
+                <td>
+                  <Button onClick={() => openEditModal(product)}>수정</Button>
+                </td>
+              </tr>
+            ) : (
+              <></>
+            )
+          )}
         </tbody>
       </Table>
       <ModalProdctAdd
+        style={{ Top: "200px" }}
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
         onAddProduct={handleAddProduct}

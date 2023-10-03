@@ -134,3 +134,4 @@ export const geoCoding = async (address) => {
         Alert.alert('장소 검색을 위해서 위치 접근을 허용해주세요');
     }
 }
+

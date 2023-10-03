@@ -82,6 +82,7 @@ public class SosoticonService {
             qrData.put("uuid", uuid);
             qrData.put("taker", requestDTO.getSosoticonTaker());
             qrData.put("message", requestDTO.getSosoticonText());
+            qrData.put("storeSeq", requestDTO.getStoreSeq().toString());
             String jsonData = objectMapper.writeValueAsString(qrData);
 
             String generatedQRCodePath = qrCodeUtil.generateQRCode(jsonData, uuid); // QR 코드 생성

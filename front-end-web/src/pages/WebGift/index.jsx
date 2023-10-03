@@ -9,32 +9,34 @@ function WebGift() {
       <Wrapper>
         <div className="container">
           <div>
-            <img src="/assets/soso_logo_line.png" alt="sosohang_logo" className="logo" />
-            <div className="imgCenter">
+            <img src="/assets/soso_logo_line.png" alt="sosohang_logo" 
+            style={{ width: '50%', marginBottom: '10px' }}
+            />
               <div className="cardBackground">
                 {/* 소소티콘 배경 이미지 */}
                 <img src="/assets/greencard_qr.png" alt="CardBackground"
-                style={{ width: 800, height: 1600 }}
+                style={{ width: '70%' }}
                 />
               </div>
               <div className="cardImage">
                 {/* 카드 이미지 */}
                 <img src="/assets/thx.png" alt="ThankYouCard" 
-                style={{ width: 700, height: 480, borderRadius: 30 }}
+                style={{ width: '60%', borderRadius: 10 }}
                 />
               </div>
               <div className="messageBox">
+              <div className="message">
                 {/* 메시지 */}
                 <p>메시지 박스</p>
+              </div>
               </div>
               <div className="qrImage">
                 {/* QR 이미지 */}
                 <img src={qrImage} alt="QR_code"
-                style={{ width: 500, height: 500 }}
+                style={{ width: '60%' }}
                 />
               </div>
             </div>
-          </div>
         </div>
       </Wrapper>
     </>

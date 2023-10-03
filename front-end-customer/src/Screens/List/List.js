@@ -6,6 +6,7 @@ import shopListDummy from "../../Dummys/Shop/ShopListDummy";
 import Title from "../../Components/Title/Title";
 import Shop from "../../Components/Shop/Shop";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
+import Tabs from "../../Components/Tabs/Tabs";
 
 import { useState, useEffect } from "react";
 import { getMemberSeq } from "../../Utils/MemberAPI"
@@ -44,7 +45,7 @@ export default function List({ navigation, route }) {
     return (
       <Shop
         PressFunction={() => {
-          navigation.navigate("Shop", { storeSeq: d.storeSeq });
+          navigation.navigate("Shop", { storeSeq: d.storeSeq, storeImage: d.storeImage });
         }}
         key={index}
         data={d}
@@ -57,6 +58,7 @@ export default function List({ navigation, route }) {
     <View style={styles.container}>
       <Title title={category} />
       <ScrollBox content={shops} />
+      <Tabs navigation={navigation} />
     </View>
   );
 }

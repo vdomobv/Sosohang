@@ -413,9 +413,7 @@ export default function Shop({ navigation, route }) {
         <Line />
         <View style={styles.content}>
           <SectionTitle content={"여기는 어떤 곳이에요? 🤔"} />
-          <SectionSubTitle
-            content={"후기는 내 선물함의 사용완료 탭에서 남길 수 있습니다."}
-          />
+          <Text>후기는 내 선물함의 사용완료 탭에서 남길 수 있어요.</Text>
           <View style={styles.reviewlist}>{reviewList()}</View>
         </View>
         <Line />

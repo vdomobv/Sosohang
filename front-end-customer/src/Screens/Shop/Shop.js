@@ -1,5 +1,12 @@
 import styles from "./styles";
-import { View, Text, Image, ScrollView, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Title from "../../Components/Title/Title";
@@ -13,10 +20,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { getStoreDibData } from "../../Utils/DibAPI";
 import { getProduct } from "../../Utils/ProductAPI";
-import { getStoreData } from "../../Utils/StoreAPI";
+import { getStoreData, getReviewData } from "../../Utils/StoreAPI";
 import { addToCart } from "../../Utils/CartAPI";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import { getMemberSeq } from "../../Utils/MemberAPI";
+import SectionSubTitle from "../../Components/SectionSubTitle/SectionSubTitle";
 
 const Info = ({ logo, data }) => {
   return (
@@ -46,6 +54,9 @@ export default function Shop({ navigation, route }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [modalState, setModalState] = useState(false);
   const [tempUser, setTempUser] = useState();
+  const [reviews, setReviews] = useState([]);
+  const [reviewTotalCount, setReviewTotalCount] = useState(0);
+  const [toggleInfo, setToggleInfo] = useState(false);
 
   const getKeywords = async () => {
     try {
@@ -66,6 +77,7 @@ export default function Shop({ navigation, route }) {
 
     const storeResult = await getStoreData(storeSeq);
     const result = await getProduct(storeSeq);
+    const reviewData = await getReviewData(storeSeq);
 
     // 상품 데이터, 세일 상품 데이터 분리
     if (Array.isArray(result)) {
@@ -76,9 +88,21 @@ export default function Shop({ navigation, route }) {
       setSaleProduct(saleProducts);
     }
 
+    if (Array.isArray(reviewData)) {
+      setReviews(reviewData);
+    }
+
     setStoreData(storeResult);
     console.log(storeResult);
   };
+
+  useEffect(() => {
+    const temp = reviews.reduce((acc, review) => {
+      return acc + review.reviewKeywordCount;
+    }, 0);
+
+    setReviewTotalCount(temp);
+  }, [reviews]);
 
   useEffect(() => {
     // 찜 상태 불러오기
@@ -223,6 +247,40 @@ export default function Shop({ navigation, route }) {
     }
   };
 
+  // 리뷰목록
+  const reviewList = () => {
+    if (reviews.length > 0) {
+      return reviews.map((data) => {
+        return (
+          <View style={styles.reviewItem} key={data.reviewSeq}>
+            <Text style={styles.reviewLabel}>
+              {data.reviewKeyword.reviewKeywordName}
+            </Text>
+            <View
+              style={[
+                {
+                  width: `${
+                    (data.reviewKeywordCount / reviewTotalCount) * 100
+                  }%`,
+                },
+                styles.bar,
+              ]}
+            >
+              <Text style={styles.reviewText}>{data.reviewKeywordCount}</Text>
+            </View>
+          </View>
+        );
+      });
+    } else {
+      return (
+        <View style={styles.noReview}>
+          <Text>아직 후기가 없는 상점이에요.</Text>
+          <Text>소소티콘 사용 후, 후기를 남겨주세요. 😁</Text>
+        </View>
+      );
+    }
+  };
+
   // 페이지 이동
   useEffect(() => {
     if (shouldNavigate) {
@@ -289,45 +347,74 @@ export default function Shop({ navigation, route }) {
               logo={<Ionicons color={"#575761"} name="map-outline" size={20} />}
               data={storeData ? storeData.storeLocation : "Loading.. :)"}
             />
-            <Info
-              logo={
-                <Ionicons color={"#575761"} name="call-outline" size={20} />
-              }
-              data={storeData ? storeData.storeTell : "Loading.. :)"}
-            />
-            <Info
-              logo={
-                <Ionicons color={"#575761"} name="calendar-outline" size={20} />
-              }
-              data={storeData ? storeData.storeHoliday : "Loading.. :)"}
-            />
-            <Info
-              logo={
-                <Ionicons color={"#575761"} name="time-outline" size={20} />
-              }
-              data={storeData ? storeData.storeWorkhour : "Loading.. :)"}
-            />
-            <Info
-              logo={
-                <Ionicons color={"#575761"} name="home-outline" size={20} />
-              }
-              data={storeData ? storeData.storeUrl : "Loading.. :)"}
-            />
-            <Info
-              logo={<Ionicons color={"#575761"} name="car-outline" size={20} />}
-              data={storeData ? storeData.storeParkinglot : "Loading.. :)"}
-            />
-            <Info
-              logo={
-                <Ionicons
-                  color={"#575761"}
-                  name="chatbox-ellipses-outline"
-                  size={20}
+            {toggleInfo ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setToggleInfo(!toggleInfo);
+                }}
+              >
+                <Info
+                  logo={
+                    <Ionicons color={"#575761"} name="call-outline" size={20} />
+                  }
+                  data={storeData ? storeData.storeTell : "Loading.. :)"}
                 />
-              }
-              data={storeData ? storeData.storeExtraInfo : "Loading.. :)"}
-            />
+                <Info
+                  logo={
+                    <Ionicons
+                      color={"#575761"}
+                      name="calendar-outline"
+                      size={20}
+                    />
+                  }
+                  data={storeData ? storeData.storeHoliday : "Loading.. :)"}
+                />
+                <Info
+                  logo={
+                    <Ionicons color={"#575761"} name="time-outline" size={20} />
+                  }
+                  data={storeData ? storeData.storeWorkhour : "Loading.. :)"}
+                />
+                <Info
+                  logo={
+                    <Ionicons color={"#575761"} name="home-outline" size={20} />
+                  }
+                  data={storeData ? storeData.storeUrl : "Loading.. :)"}
+                />
+                <Info
+                  logo={
+                    <Ionicons color={"#575761"} name="car-outline" size={20} />
+                  }
+                  data={storeData ? storeData.storeParkinglot : "Loading.. :)"}
+                />
+                <Info
+                  logo={
+                    <Ionicons
+                      color={"#575761"}
+                      name="chatbox-ellipses-outline"
+                      size={20}
+                    />
+                  }
+                  data={storeData ? storeData.storeExtraInfo : "Loading.. :)"}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  setToggleInfo(!toggleInfo);
+                }}
+              >
+                <Text style={styles.toggleInfo}>상점 정보 더보기</Text>
+              </TouchableOpacity>
+            )}
           </View>
+        </View>
+
+        <Line />
+        <View style={styles.content}>
+          <SectionTitle content={"여기는 어떤 곳이에요? 🤔"} />
+          <Text>후기는 내 선물함의 사용완료 탭에서 남길 수 있어요.</Text>
+          <View style={styles.reviewlist}>{reviewList()}</View>
         </View>
         <Line />
         {saleProduct.length > 0 ? (

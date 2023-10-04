@@ -865,9 +865,6 @@ function InputStoreIssue({ onChange }) {
           />
         </InputGroup>
       </div>
-      <div style={{marginBottom: 20}}>
-        <Form.Label>상점 키워드</Form.Label>
-      </div>
     </div>
   );
 }

@@ -20,8 +20,8 @@ public class ReviewController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createReview(@RequestParam Integer storeSeq, @RequestParam List<Integer> selectedKeywordSeqList) {
-        reviewService.createReview(storeSeq, selectedKeywordSeqList);
+    public ResponseEntity<String> createReview(@RequestParam Integer storeSeq, @RequestParam Integer sosoticonSeq, @RequestParam List<Integer> selectedKeywordSeqList) {
+        reviewService.createReview(storeSeq, sosoticonSeq, selectedKeywordSeqList);
         return ResponseEntity.ok("Review created successfully.");
     }
     @GetMapping("/{storeSeq}")

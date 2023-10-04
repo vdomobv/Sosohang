@@ -140,6 +140,7 @@ public class SosoticonService {
 
             LocalDateTime now = LocalDateTime.now();
             sosoticon.setCreatedAt(now);
+            sosoticon.setSosoticonReviewStatus(1);
 
             return sosoticonRepository.save(sosoticon);
         } catch (Exception e) {

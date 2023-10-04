@@ -252,7 +252,7 @@ export default function Shop({ navigation, route }) {
     if (reviews.length > 0) {
       return reviews.map((data) => {
         return (
-          <View style={styles.reviewItem}>
+          <View style={styles.reviewItem} key={data.reviewSeq}>
             <Text style={styles.reviewLabel}>
               {data.reviewKeyword.reviewKeywordName}
             </Text>
@@ -414,7 +414,7 @@ export default function Shop({ navigation, route }) {
         <View style={styles.content}>
           <SectionTitle content={"여기는 어떤 곳이에요? 🤔"} />
           <SectionSubTitle
-            content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."}
+            content={"후기는 내 선물함의 사용완료 탭에서 남길 수 있습니다."}
           />
           <View style={styles.reviewlist}>{reviewList()}</View>
         </View>

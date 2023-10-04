@@ -11,8 +11,8 @@ import ProductManage from "./pages/ProductManage"
 import StoreManage from "./pages/StoreManage"
 import StoreInfo from "./pages/StoreInfo"
 import WebGift from "./pages/WebGift"
-import ProtectedRoute from "./pages/ProtecedRoute";
-import publicRoute from "./pages/PublicRoute";
+// import ProtectedRoute from "./pages/ProtecedRoute";
+// import publicRoute from "./pages/PublicRoute";
 
 const router = createBrowserRouter([
   { path: "*", element: <NotFound /> },
@@ -20,11 +20,16 @@ const router = createBrowserRouter([
   { path: "/WebGift", element: <WebGift />},
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp />},
-  { path: "/", element: <ProtectedRoute />, children: [
-    { path: "/productManage", element: <ProductManage />},
-    { path: "/storeManage", element: <StoreManage />},
-    { path: "/storeInfo", element: <StoreInfo />},
-  ]},
+
+  { path: "/productManage", element: <ProductManage />},
+  { path: "/storeManage", element: <StoreManage />},
+  { path: "/storeInfo", element: <StoreInfo />},
+
+  // { path: "/", element: <ProtectedRoute />, children: [
+  //   { path: "/productManage", element: <ProductManage />},
+  //   { path: "/storeManage", element: <StoreManage />},
+  //   { path: "/storeInfo", element: <StoreInfo />},
+  // ]},
 ])
 
 function App() {

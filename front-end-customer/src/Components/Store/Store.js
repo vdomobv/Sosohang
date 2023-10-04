@@ -24,7 +24,7 @@ export default function Store({ data, usable, onPress }) {
 
         <Image
           style={{ height: 120, width: 120, borderRadius: 10 }}
-          source={require("assets/dummyimages/anuek.jpg")}
+          src={data[0].product.store.storeImage}
         ></Image>
 
         <View style={{ marginLeft: 8 }}>

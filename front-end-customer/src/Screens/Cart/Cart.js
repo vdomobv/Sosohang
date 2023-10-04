@@ -17,9 +17,9 @@ export default function Cart({ navigation }) {
   const [checkedProduct, setCheckedProduct] = useState({});
   const [checkedShop, setCheckedShop] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
-  const [cartData, setCartData] = useState([])
-  const [groupedData, setGroupedData] = useState({})
-  const [selectedProducts, setSelectedProducts] = useState([])
+  const [cartData, setCartData] = useState([]);
+  const [groupedData, setGroupedData] = useState({});
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {
@@ -31,7 +31,7 @@ export default function Cart({ navigation }) {
 
   useEffect(() => {
     fetchUser();
-  }, [])
+  }, []);
 
   // 장바구니 데이터 조회
   const fetchData = async () => {
@@ -71,14 +71,13 @@ export default function Cart({ navigation }) {
     const newCheckedShop = {};
     const newCheckedProduct = {};
 
-    Object.keys(groupedData).forEach(key => {
+    Object.keys(groupedData).forEach((key) => {
       newCheckedShop[key] = false;
       newCheckedProduct[key] = groupedData[key].map(() => false);
     });
 
     setCheckedShop(newCheckedShop);
     setCheckedProduct(newCheckedProduct);
-
   }, [groupedData]);
 
   // 전체 선택
@@ -102,25 +101,24 @@ export default function Cart({ navigation }) {
       temp.forEach((value, index) => {
         if (value) {
           const tempProductData = groupedData[storeSeq][index].product;
-          tempProductData['storeSeq'] = storeSeq;
-          tempProductData['count'] = groupedData[storeSeq][index].quantity;
-          tempProductData['storeName'] = tempProductData.store.storeName
+          tempProductData["storeSeq"] = storeSeq;
+          tempProductData["count"] = groupedData[storeSeq][index].quantity;
+          tempProductData["storeName"] = tempProductData.store.storeName;
           newSelectedProducts.push(tempProductData);
         }
       });
     });
 
     setSelectedProducts(newSelectedProducts);
-
-  }, [checkedProduct])
+  }, [checkedProduct]);
 
   // 총 결제 금액 변경
   useEffect(() => {
     const tempPrice = selectedProducts.reduce((acc, item) => {
-      return acc + item.productPrice * item.count;
+      return acc + item.productPrice * (1 - item.productDcrate) * item.count;
     }, 0);
     setTotalPrice(tempPrice);
-  }, [selectedProducts])
+  }, [selectedProducts]);
 
   const renderGroupedProducts = () => {
     return Object.keys(groupedData).map((storeSeq) => {
@@ -140,14 +138,16 @@ export default function Cart({ navigation }) {
             newCheckedShop[storeSeq] = !checkedShop[storeSeq];
             setCheckedShop(newCheckedShop);
             const newCheckedProduct = { ...checkedProduct };
-            newCheckedProduct[storeSeq] = newCheckedProduct[storeSeq].map(() => newCheckedShop[storeSeq]);
+            newCheckedProduct[storeSeq] = newCheckedProduct[storeSeq].map(
+              () => newCheckedShop[storeSeq]
+            );
             setCheckedProduct(newCheckedProduct);
           }}
           fetchData={fetchData}
         />
-      )
-    })
-  }
+      );
+    });
+  };
 
   if (tempUser) {
     return (
@@ -168,16 +168,17 @@ export default function Cart({ navigation }) {
                 />{" "}
                 전체 선택
               </Text>
-              <TouchableOpacity onPress={async () => {
-                if (selectedProducts.length > 0) {
-                  for (let data of selectedProducts) {
-                    await deleteCartData(tempUser, data.productSeq);
+              <TouchableOpacity
+                onPress={async () => {
+                  if (selectedProducts.length > 0) {
+                    for (let data of selectedProducts) {
+                      await deleteCartData(tempUser, data.productSeq);
+                    }
+                    await fetchData();
+                  } else {
+                    Alert.alert("삭제할 상품을 선택해주세요.");
                   }
-                  await fetchData();
-                } else {
-                  Alert.alert('삭제할 상품을 선택해주세요.');
-                }
-              }}
+                }}
               >
                 <Text style={styles.delete}>선택 삭제</Text>
               </TouchableOpacity>
@@ -207,7 +208,9 @@ export default function Cart({ navigation }) {
                 }
               }}
             >
-              <Text style={[styles.priceText, { color: "white" }]}>선물하기</Text>
+              <Text style={[styles.priceText, { color: "white" }]}>
+                선물하기
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -215,8 +218,10 @@ export default function Cart({ navigation }) {
       </>
     );
   } else {
-    return (<>
-      <LoginRequired navigation={navigation} />
-    </>)
+    return (
+      <>
+        <LoginRequired navigation={navigation} />
+      </>
+    );
   }
 }

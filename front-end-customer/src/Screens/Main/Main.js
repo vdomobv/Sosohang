@@ -349,7 +349,9 @@ export default function Main({ navigation }) {
                 </View>
               </View>
             </View>
-            {tempUser !== undefined ? null : (
+            {tempUser !== undefined ? <Button
+                title="소상공인과 소중한 사람에게 소소한 행복을"
+              /> : (
               <Button
                 title="로그인 / 회원가입"
                 onPress={() => navigation.navigate("SignUp")}
@@ -363,7 +365,7 @@ export default function Main({ navigation }) {
             <View style={[styles.section]}>
               <View>
                 <SectionTitle
-                  content={"새로운 곳을 경험해보는 것은 어때요? 🆕"}
+                  content={`${location} 주변, 소소행을 소개합니다! 🆕`}
                 />
                 <SectionSubTitle
                   content={"친구에게 새로운 곳에 가볼 경험을 선물해주세요."}

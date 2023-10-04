@@ -3,13 +3,11 @@ import {
   ScrollView,
   View,
   Text,
-  Image,
   TouchableOpacity,
   TextInput,
   Alert,
-  Linking,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Contacts from "expo-contacts";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -27,7 +25,8 @@ export default function MakeCard({ route, navigation }) {
   const [contactName, setContactName] = useState("");
   const [contactPhoneNumber, setContactPhoneNumber] = useState("");
   const [giverName, setGiverName] = useState("");
-
+  const [contactStartIndex, setContactStartIndex] = useState(0);
+  const [isContactBoxVisible, setIsContactBoxVisible] = useState(false);
 
   // 연락처 가져오기 함수
   const getContacts = async () => {
@@ -44,17 +43,10 @@ export default function MakeCard({ route, navigation }) {
     const { data } = await Contacts.getContactsAsync();
 
     if (data.length > 0) {
-      console.log(data);
       setContacts(data);
     } else {
       Alert.alert("연락처가 없습니다.");
     }
-  };
-
-  // 연락처 가져오기 버튼을 눌렀을 때 호출
-  const handleGetContacts = () => {
-    // getContacts();
-    Linking.openURL("content://contacts/people/");
   };
 
   // 연락처 목록 보여주고 선택한 연락처 처리
@@ -62,10 +54,27 @@ export default function MakeCard({ route, navigation }) {
     if (selectedContact) {
       const { name, phoneNumbers } = selectedContact;
       const phoneNumber = phoneNumbers[0]?.number || "";
-
       setContactName(name);
       setContactPhoneNumber(phoneNumber);
     }
+  };
+
+  const renderContacts = () => {
+    const visibleContacts = contacts.slice(contactStartIndex, contactStartIndex + 4);
+    return (
+      <View style={{ marginLeft: 20 }}>
+        {visibleContacts.map((contact, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleContactSelection(contact)}
+          >
+            <Text style={{ marginVertical: 4, fontSize: 20 }}>
+              {contact.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
   };
 
   // 상품을 storeSeq를 기준으로 그룹화
@@ -123,8 +132,8 @@ export default function MakeCard({ route, navigation }) {
           <SelectImage
             selectedButton={selectedButton}
             setSelectedButton={setSelectedButton}
-            selectedImage={selectedImage}  // 여기에 추가
-            setSelectedImage={setSelectedImage}  // 여기에 추가
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
             setMessage={setMessage}
             message={message}
           />
@@ -148,7 +157,10 @@ export default function MakeCard({ route, navigation }) {
                 styles.button,
                 { marginHorizontal: 40, marginBottom: 20 },
               ]}
-              onPress={getContacts}
+              onPress={() => {
+                getContacts();
+                setIsContactBoxVisible(true);
+              }}
             >
               <Text style={styles.buttonText}>+ 연락처 가져오기</Text>
             </TouchableOpacity>
@@ -172,18 +184,33 @@ export default function MakeCard({ route, navigation }) {
                 }}
               />
             </View>
-            <ScrollView style={{ marginLeft: 53, marginTop: 10 }}>
-              {contacts.map((contact, index) => (
+
+            {/* 연락처 박스 */}
+            {isContactBoxVisible && (
+              <View style={styles.contactBox}>
                 <TouchableOpacity
-                  key={index}
-                  onPress={() => handleContactSelection(contact)}
+                  style={styles.arrowButton}
+                  onPress={() => {
+                    if (contactStartIndex > 0) {
+                      setContactStartIndex(contactStartIndex - 4);
+                    }
+                  }}
                 >
-                  <Text style={{ marginVertical: 5, fontSize: 20 }}>
-                    {contact.name}
-                  </Text>
+                  <Ionicons size={25} name="caret-up-outline" />
                 </TouchableOpacity>
-              ))}
-            </ScrollView>
+                {renderContacts()}
+                <TouchableOpacity
+                  style={styles.arrowButton}
+                  onPress={() => {
+                    if (contactStartIndex + 4 < contacts.length) {
+                      setContactStartIndex(contactStartIndex + 4);
+                    }
+                  }}
+                >
+                  <Ionicons size={25} name="caret-down-outline" />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
 
           <View style={styles.subcontainer}>
@@ -224,7 +251,6 @@ export default function MakeCard({ route, navigation }) {
 >
   <Text style={[styles.priceText, { color: "white" }]}>결제하기</Text>
 </TouchableOpacity>
-
         </View>
       </ScrollView>
     </>

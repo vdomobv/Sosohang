@@ -180,9 +180,9 @@ function EditStoreIssue(props) {
   ]);
 
   return (
-    <div className="optionalInputBox">
+    <div >
       <h4>부가 정보</h4>
-      <div>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>상점 전화번호</Form.Label>
         <InputGroup>
           <Form.Control
@@ -200,7 +200,7 @@ function EditStoreIssue(props) {
           />
         </InputGroup>
       </div>
-      <div>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>주차장</Form.Label>
         <InputGroup>
           <ToggleButton
@@ -226,7 +226,7 @@ function EditStoreIssue(props) {
           />
         </InputGroup>
       </div>
-      <div>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>영업시간</Form.Label>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <InputGroup style={{ width: "350px" }}>
@@ -264,7 +264,7 @@ function EditStoreIssue(props) {
               }>
               매 일
             </ToggleButton>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", flexDirection: "column"}}>
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
@@ -678,7 +678,7 @@ function EditStoreIssue(props) {
           </InputGroup>
         </div>
       </div>
-      <div>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>상점 휴무일</Form.Label>
         <div
           style={{
@@ -858,7 +858,7 @@ function EditStoreIssue(props) {
           </InputGroup>
         </div>
       </div>
-      <div>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>상점 홈페이지</Form.Label>
         <InputGroup>
           <Form.Control
@@ -869,18 +869,18 @@ function EditStoreIssue(props) {
           />
         </InputGroup>
       </div>
-      <div>
+      <div  style={{ outline: "none", margin: "20px"}}>
         <Form.Label>상점 설명</Form.Label>
         <InputGroup>
           <Form.Control
-            placeholder="짱큰거 필요"
+            placeholder="상점의 추가적인 정보를 알려주세요."
             aria-label="storeInfo"
             value={storeExtraInfo}
             onChange={(e) => setStoreExtraInfo(e.target.value)}
           />
         </InputGroup>
       </div>
-      <div>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>상점 키워드</Form.Label>
       </div>
     </div>

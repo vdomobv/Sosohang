@@ -81,11 +81,10 @@ function EditStoreInfo(props) {
     });
   }, [storeName, storeAddress, storeCategory, onChange]);
 
-
   return (
-    <div>
+    <div style={{marginTop:"50px", marginLeft:"100px", marginRight:"100px"}}>
       <h4>상점 정보</h4>
-      <div style={{ outline: "none" }}>
+      <div style={{ outline: "none", margin: "10px"}}>
         <Form.Label>상점 이름*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -97,7 +96,7 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div style={{ height: "70px" }}>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>사업자등록번호*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -108,7 +107,7 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>상점 위치*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -134,7 +133,7 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div>
+      <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>상점 카테고리*</Form.Label>
         <Form.Select
           aria-label="상점 카테고리를 선택해 주세요."
@@ -148,6 +147,8 @@ function EditStoreInfo(props) {
       </div>
       {isOpenPost ? (
         <ModalStorePostcode
+          show={isOpenPost}
+          onHide={() => setIsOpenPost(false)}
           onCompletePost={onCompletePost}
           setIsOpenPost={setIsOpenPost}
         />

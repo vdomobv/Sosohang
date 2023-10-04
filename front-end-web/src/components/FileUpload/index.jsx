@@ -1,11 +1,18 @@
 import React, { useState } from "react";
+import { Button, Form } from "react-bootstrap";
 import AWS from "aws-sdk";
+import styles from "./styles";
 
 function FileUpload({ onChange }) {
   const [file, setFile] = useState(null);
 
+  const [fileName, setFileName] = useState("파일 선택"); // 선택된 파일의 이름을 상태로 관리
+
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files[0]; // 선택된 파일을 변수에 할당
+    console.log(selectedFile);  // 여기에서 선택된 파일 로그 출력
+    setFile(selectedFile);
+    setFileName(selectedFile.name); // 추가: 선택된 파일의 이름 상태 업데이트
   };
 
   const handleUpload = async () => {
@@ -36,14 +43,40 @@ function FileUpload({ onChange }) {
 
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
-      <button
+      <Form.Label>이미지</Form.Label>
+      <div className="filebox">
+        <input
+          type="file"
+          className="custom-file-input"
+          variant="primary"
+          id="customFile"
+          onChange={handleFileChange}
+        />
+        <label className="custom-file-label" htmlFor="customFile">
+          {fileName}
+        </label>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            handleUpload();
+          }}
+          variant="light"
+          style={{ marginLeft: 10 }}
+        >
+          이미지 업로드
+        </Button>
+      </div>
+      <input type="file" onChange={handleFileChange}
+      style={{ marginLeft: '20px' }}
+      />
+      <Button
+        style={{ backgroundColor: "#46C27D", borderColor: '#46C27D' }}
         onClick={(e) => {
           e.preventDefault();
           handleUpload();
         }}>
-        Upload to S3
-      </button>
+        업로드
+      </Button>
     </div>
   );
 }

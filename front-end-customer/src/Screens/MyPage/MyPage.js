@@ -14,9 +14,6 @@ import Box from "../../Components/Box/Box";
 import SectionSubtitle from "../../Components/SectionSubTitle/SectionSubTitle";
 import Loading from "../../Components/Loading/Loading";
 
-import userDummy from "../../Dummys/MyPage/UserDummy";
-// import buyDummy from "../../Dummys/MyPage/BuyDummy";
-
 import { useEffect, useState } from "react";
 import { getDibData } from "../../Utils/DibAPI";
 import { logout, getMemberSeq, getMemberData, updateMemberNickname } from "../../Utils/MemberAPI";

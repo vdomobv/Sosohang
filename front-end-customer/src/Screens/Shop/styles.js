@@ -8,33 +8,34 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    flex: 1, alignItems: 'center'
+    flex: 1,
+    alignItems: "center",
   },
 
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 
-  dibButton : {
-    justifyContent : 'flex-end',
+  dibButton: {
+    justifyContent: "flex-end",
   },
 
   image: {
-    width: '100%',
+    width: "100%",
     height: 250,
-    objectFit: 'fill'
+    objectFit: "fill",
   },
 
   head: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginVertical: 10,
   },
 
   keywords: {
     marginLeft: 5,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
 
   content: {
@@ -43,28 +44,72 @@ const styles = StyleSheet.create({
   },
 
   buttons: {
-    flexDirection: 'row',
-    position: 'absolute',
-    width: '95%',
+    flexDirection: "row",
+    position: "absolute",
+    width: "95%",
     bottom: 0,
     marginVertical: 10,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 
   blank: {
-    height: 60
+    height: 60,
   },
 
   text: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 30
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 22,
   },
 
-  modalButtons : {
-    flexDirection : 'row',
-  }
+  modalButtons: {
+    flexDirection: "row",
+  },
 
+  bar: {
+    backgroundColor: "lightblue",
+    height: 20,
+    margin: 5,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+
+  reviewText: {
+    textAlign: "right",
+    marginRight: 10,
+  },
+
+  reviewItem: {
+    flexDirection: "row",
+  },
+
+  reviewLabel: {
+    textAlignVertical: "center",
+    width: "20%",
+    textAlign: "center",
+  },
+
+  noReview: {
+    height: 100,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  reviewlist: {
+    margin: 10,
+  },
+
+  toggleInfo: {
+    width: "100%",
+    height: 40,
+    textAlign: "center",
+    textAlignVertical: "center",
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 10,
+    marginTop: 5,
+  },
 });
 
-export default styles
+export default styles;

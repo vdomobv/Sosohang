@@ -11,15 +11,15 @@ import { getMyGiftList } from "../../Utils/MyGiftAPI";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
-// 더미 관련
-// import MyGiftDummy from "../../Dummys/MyGift/MyGiftDummy";
-// const dummy = MyGiftDummy;
 
-export default function MyGift({ navigation }) {
-  const [activatedTab, setActivatedTab] = useState(true);
+export default function MyGift({ navigation, route }) {
+  // console.log("여기", route.params.activatedTabValue)
+  const [activatedTab, setActivatedTab] = useState(route.params ? false : true);
+  // const [activatedTab, setActivatedTab] = useState(true);
 
   // 더미 아님. 찐임.
   const [dummy, setDummy] = useState([]);
+
 
   const [tempUser, setTempUser] = useState();
 
@@ -71,7 +71,7 @@ export default function MyGift({ navigation }) {
     .map((d, index) => {
       return (
         <ReceivedGift
-          onPress={() => handleGiftClickr(d)}
+          onPress={() => handleGiftClick(d)}
           data={d}
           key={index}
           usable={false}

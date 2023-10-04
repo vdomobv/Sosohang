@@ -26,8 +26,14 @@ const styles = StyleSheet.create({
 
   textBold: {
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 19,
+  },
+
+  textSamll: {
+    marginTop: 2,
+    fontSize: 16,
   }
+
 });
 
 export default styles;

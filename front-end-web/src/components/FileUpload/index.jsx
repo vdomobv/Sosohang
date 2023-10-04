@@ -66,6 +66,17 @@ function FileUpload({ onChange }) {
           이미지 업로드
         </Button>
       </div>
+      <input type="file" onChange={handleFileChange}
+      style={{ marginLeft: '20px' }}
+      />
+      <Button
+        style={{ backgroundColor: "#46C27D", borderColor: '#46C27D' }}
+        onClick={(e) => {
+          e.preventDefault();
+          handleUpload();
+        }}>
+        업로드
+      </Button>
     </div>
   );
 }

@@ -873,7 +873,7 @@ function EditStoreIssue(props) {
         <Form.Label>상점 설명</Form.Label>
         <InputGroup>
           <Form.Control
-            placeholder="짱큰거 필요"
+            placeholder="상점의 추가적인 정보를 알려주세요."
             aria-label="storeInfo"
             value={storeExtraInfo}
             onChange={(e) => setStoreExtraInfo(e.target.value)}

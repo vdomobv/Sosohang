@@ -45,9 +45,9 @@ display: flex;
 
   .button {
     width: 100%;
-    padding: 10px;
     border: none;
     margin-top : 12px;
+    padding: 10px;
     background-color: #528DD9;
   }
 

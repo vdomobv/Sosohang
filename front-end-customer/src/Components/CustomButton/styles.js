@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
 
   content: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
 

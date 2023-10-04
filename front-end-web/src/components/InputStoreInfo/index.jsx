@@ -206,9 +206,11 @@ function InputStoreInfo({ onChange }) {
       </div>
       {isOpenPost ? (
         <ModalStorePostcode
-          onCompletePost={onCompletePost}
-          setIsOpenPost={setIsOpenPost}
-        />
+        show={isOpenPost}
+        onHide={() => setIsOpenPost(false)}
+        onCompletePost={onCompletePost}
+        setIsOpenPost={setIsOpenPost}
+      />
       ) : null}
       {isOpenRegNum ? (
         <ModalStoreRegNum

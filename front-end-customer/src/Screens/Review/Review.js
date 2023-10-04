@@ -7,10 +7,10 @@ import Title from "../../Components/Title/Title";
 import Box from "../../Components/Box/Box";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import GiftNoBtn from "../../Components/GiftNoBtn/GiftNoBtn";
-import CategoryData from "../../Dummys/Main/CategoryData";
 
 // 카테고리에 해당하는 추천 리뷰 키워드 가져오기, 리뷰 생성하기
 import { getReviewKeywordListByCategorySeq, createReview } from "../../Utils/ReviewAPI";
+
 
 export default function Review({ route, navigation }) {
   const { giftData } = route.params;
@@ -25,7 +25,6 @@ export default function Review({ route, navigation }) {
   }, [giftData]);
 
   const fetchReviewKeywordData = async () => {
-
     try {
       const categorySeq = giftData.store.category.categorySeq;
       const result = await getReviewKeywordListByCategorySeq(categorySeq);
@@ -71,7 +70,9 @@ export default function Review({ route, navigation }) {
       Alert.alert("알림", "리뷰가 생성되었습니다", [
         {
           text: "확인",
-          onPress: () => navigation.goBack()
+          onPress: async () => {
+            navigation.replace("MyGift", { activatedTabValue : false});
+          }
         }
       ]);
     } catch (e) {

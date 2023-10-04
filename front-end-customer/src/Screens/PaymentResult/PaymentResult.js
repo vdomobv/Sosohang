@@ -128,7 +128,7 @@ export default function PaymentResult({ navigation, route }) {
     <ScrollView style={styles.container}>
       <Title title={"결제 완료"} />
       <View style={styles.image}>
-        <SquareImage imageSrc={require("assets/images/giftbox.gif")} />
+        <SquareImage imageSrc={"assets/images/giftbox.gif"} />
       </View>
       <View style={styles.gift}>{gifts}</View>
 

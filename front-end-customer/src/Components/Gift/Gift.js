@@ -10,8 +10,7 @@ import SubTitle from "../SubTitle/SubTitle";
 export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
-  // console.log("여기", data)
-
+  console.log("여기", data)
   return (
     <>
       <TouchableOpacity onPress={onPress}>
@@ -23,7 +22,7 @@ export default function Gift({ data, usable, onPress }) {
             <Text style={styles.date}>{data.createdAt}</Text>
           </View>
           <View style={styles.body}>
-            <Image style={styles.image} src={data.image} />
+            <Image style={styles.image} src={data[0].productImage} />
             <View style={styles.contents}>
               <Text style={styles.shopName}>{data.storeName}</Text>
               <Text style={styles.name}>{data.name}</Text>

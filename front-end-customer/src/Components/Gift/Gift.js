@@ -1,13 +1,11 @@
 import styles from "./styles";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import SubTitle from "../SubTitle/SubTitle";
-
-
 
 export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
@@ -16,7 +14,7 @@ export default function Gift({ data, usable, onPress }) {
 
   return (
     <>
-     <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress}>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.person}>
@@ -25,7 +23,7 @@ export default function Gift({ data, usable, onPress }) {
             <Text style={styles.date}>{data.createdAt}</Text>
           </View>
           <View style={styles.body}>
-                        <Image style={styles.image} source={data.image} />
+            <Image style={styles.image} src={data.image} />
             <View style={styles.contents}>
               <Text style={styles.shopName}>{data.storeName}</Text>
               <Text style={styles.name}>{data.name}</Text>
@@ -40,7 +38,7 @@ export default function Gift({ data, usable, onPress }) {
 
           {data.to ? (
             <View style={styles.buttons}>
-                          {data.currentPrice == data.totalPrice ? (
+              {data.currentPrice == data.totalPrice ? (
                 <CustomButton
                   pressFuction={() => {
                     setModalState(true);
@@ -84,13 +82,12 @@ export default function Gift({ data, usable, onPress }) {
             //   />
             // ) : (
             //   <CustomButton
-            //     content={"후기 남기기"} 
+            //     content={"후기 남기기"}
             //     pressFuction={() => {
             //       navigation.navigate("Review", { giftData: data });
             //     }}
             //   />
             // )}
-
           )}
         </View>
         <CustomModal

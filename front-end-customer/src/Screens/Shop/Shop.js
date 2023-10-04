@@ -165,10 +165,11 @@ export default function Shop({ navigation, route }) {
   // 선택된 상품
   const getSelectedProduct = () => {
     let newSelectedProducts = [];
+    setTotalPrice(0);
 
     product.forEach((data, index) => {
       if (checkedProducts[index]) {
-        setTotalPrice(totalPrice + productsAmount[index] * data.productPrice)
+        setTotalPrice(prevTotal => prevTotal + productsAmount[index] * data.productPrice)
         const temp = {
           ...data,
           count: productsAmount[index],
@@ -180,7 +181,7 @@ export default function Shop({ navigation, route }) {
 
     saleProduct.forEach((data, index) => {
       if (checkedSaleProducts[index]) {
-        setTotalPrice(totalPrice + saleProductAmount[index] * data.productPrice)
+        setTotalPrice(prevTotal => prevTotal + saleProductAmount[index] * data.productPrice * (1 - data.productDcrate))
         const temp = {
           ...data,
           count: saleProductAmount[index],
@@ -362,7 +363,9 @@ export default function Shop({ navigation, route }) {
               <CustomButton
                 customStyles={{ backgroundColor: "#FFBF46" }}
                 content={<Text style={styles.modalText}>이동하기</Text>}
-                pressFuction={() => { navigation.navigate('Cart') }}
+                pressFuction={() => { 
+                  setModalState(false)
+                  navigation.navigate('Cart') }}
               />
             </View>
           </View>

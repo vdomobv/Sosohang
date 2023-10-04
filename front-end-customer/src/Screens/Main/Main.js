@@ -349,7 +349,9 @@ export default function Main({ navigation }) {
                 </View>
               </View>
             </View>
-            {tempUser !== undefined ? null : (
+            {tempUser !== undefined ? <Button
+                title="소상공인에게 소소한 행복을, 소중한 사람에게 소소한 행복을"
+              /> : (
               <Button
                 title="로그인 / 회원가입"
                 onPress={() => navigation.navigate("SignUp")}

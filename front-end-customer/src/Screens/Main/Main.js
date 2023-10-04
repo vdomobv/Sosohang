@@ -35,7 +35,13 @@ import CategoryData from "../../Dummys/Main/CategoryData";
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { initializeCoords, initializeLocation } from "../../Utils/Location";
-import { getRecentStoreByLocation, getAllStoreData, getStoreByLocation, getKeywords, getKeywordStoreByLocation } from "../../Utils/StoreAPI";
+import {
+  getRecentStoreByLocation,
+  getAllStoreData,
+  getStoreByLocation,
+  getKeywords,
+  getKeywordStoreByLocation,
+} from "../../Utils/StoreAPI";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 
 const categoryData = CategoryData;
@@ -63,6 +69,8 @@ export default function Main({ navigation }) {
     const memberSeq = await getMemberSeq();
     if (memberSeq !== undefined) {
       setTempUser(memberSeq);
+    } else {
+      setTempUser();
     }
   };
 
@@ -85,7 +93,7 @@ export default function Main({ navigation }) {
     if (result !== undefined) {
       setStoreData(result);
     }
-  }
+  };
 
   // 키워드 가져오기
   const fetchKeywords = async () => {
@@ -93,25 +101,32 @@ export default function Main({ navigation }) {
     if (result !== undefined) {
       setKeywords(result);
     }
-  }
+  };
 
   // 키워드에 해당하는 상점만 가져오기
   const fetchKewordStore = async (keywordSeq) => {
-    const result = await getKeywordStoreByLocation(coords.latitude, coords.longitude, keywordSeq);
+    const result = await getKeywordStoreByLocation(
+      coords.latitude,
+      coords.longitude,
+      keywordSeq
+    );
     if (result !== undefined) {
       setKeywordStore(result);
-      setSelectedKeyword(keywordSeq)
+      setSelectedKeyword(keywordSeq);
     }
-  }
+  };
 
   // 현재 위치 근방의 데이터만 가져오기
   const fetchStoreByLocation = async () => {
-    console.log(coords)
-    const recentStores = await getRecentStoreByLocation(coords.latitude, coords.longitude);
+    console.log(coords);
+    const recentStores = await getRecentStoreByLocation(
+      coords.latitude,
+      coords.longitude
+    );
     setLocationStore(recentStores);
     const stores = await getStoreByLocation(coords.latitude, coords.longitude);
     setKeywordStore(stores);
-  }
+  };
 
   // 화면 렌더링 전 실행
   useEffect(() => {
@@ -123,6 +138,7 @@ export default function Main({ navigation }) {
 
   // 메인으로 다시 돌아오면 다시 좌표 정보 가져오기
   useEffect(() => {
+    fetchData();
     fetchLocation();
     if (coords.latitude !== undefined) {
       fetchStoreByLocation();
@@ -134,7 +150,7 @@ export default function Main({ navigation }) {
     if (coords.latitude !== undefined) {
       fetchStoreByLocation();
     }
-  }, [coords])
+  }, [coords]);
 
   // 검색창 입력 저장
   useEffect(() => {
@@ -195,17 +211,26 @@ export default function Main({ navigation }) {
         key={index}
         props={data}
         PressFunction={() => {
-          navigation.navigate("List", { category: data.name, categorySeq: data.categorySeq });
+          navigation.navigate("List", {
+            category: data.name,
+            categorySeq: data.categorySeq,
+          });
         }}
       />
     );
   });
 
   const hashTagItems = keywords.map((data) => {
-    return <HashTag pressFucntion={() => {
-      fetchKewordStore(data.keywordSeq)
-    }}
-      key={data.keywordSeq} props={data} selectedKeyword={selectedKeyword} />;
+    return (
+      <HashTag
+        pressFucntion={() => {
+          fetchKewordStore(data.keywordSeq);
+        }}
+        key={data.keywordSeq}
+        props={data}
+        selectedKeyword={selectedKeyword}
+      />
+    );
   });
 
   // 위치 기반 추천
@@ -253,7 +278,12 @@ export default function Main({ navigation }) {
               <View style={[styles.location]}>
                 <Ionicons
                   onPress={() => {
-                    navigation.navigate("Map", { coords, location, storeData, tempUser });
+                    navigation.navigate("Map", {
+                      coords,
+                      location,
+                      storeData,
+                      tempUser,
+                    });
                   }}
                   name="location-sharp"
                   color={"#BFBFBF"}
@@ -319,14 +349,12 @@ export default function Main({ navigation }) {
                 </View>
               </View>
             </View>
-            {
-              tempUser !== undefined ?
-                <Button
-                  title="로그인 / 회원가입"
-                  onPress={() => navigation.navigate("SignUp")}
-                />
-                : null
-            }
+            {tempUser !== undefined ? null : (
+              <Button
+                title="로그인 / 회원가입"
+                onPress={() => navigation.navigate("SignUp")}
+              />
+            )}
             {/* <View style={[styles.banner, { height: windowHeight * 0.12 }]}>
               <Title title={"배너 광고 자리입니다."} />
             </View> */}
@@ -351,15 +379,15 @@ export default function Main({ navigation }) {
                 content={"선물 받을 친구의 취향으로 골라보세요! 😘"}
               />
               <Carousel content={hashTagItems} />
-              {
-                keywordStore.length > 0 ?
-                  <Carousel content={keywordShopCarousel} />
-                  : <View>
-                    <Text style={styles.nothing}>
-                      아직 키워드에 해당하는 상점이 없어요 🥲
-                    </Text>
-                  </View>
-              }
+              {keywordStore.length > 0 ? (
+                <Carousel content={keywordShopCarousel} />
+              ) : (
+                <View>
+                  <Text style={styles.nothing}>
+                    아직 키워드에 해당하는 상점이 없어요 🥲
+                  </Text>
+                </View>
+              )}
             </View>
           </ScrollView>
         </TouchableWithoutFeedback>

@@ -12,7 +12,6 @@ import { useFocusEffect } from '@react-navigation/native';
 
 export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
   const [dibState, setDibState] = useState(dibSeq ? true : false);
-  const storeImage = data.storeImage;
   
   const fetchData = async () => {
     if (tempUser && data.storeSeq) {
@@ -37,7 +36,7 @@ export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
 
   return (
     <View style={styles.container}>
-      <SquareImage imageSrc={storeImage === 'string' ? require("assets/images/bread.png") : { uri: storeImage }} />
+      <SquareImage imageSrc={data.storeImage === 'string' ? "assets/images/bread.png" : data.storeImage } />
       <View style={styles.section}>
         <View style={styles.content}>
           <View style={styles.texts}>

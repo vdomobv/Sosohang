@@ -35,7 +35,6 @@ const Info = ({ logo, data }) => {
 
 export default function Shop({ navigation, route }) {
   const storeSeq = route.params.storeSeq;
-  const storeImage = route.params.storeImage;
 
   const [dibState, setDibState] = useState();
   const [product, setProduct] = useState([]);

@@ -1,5 +1,5 @@
 import styles from "./styles";
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Alert } from "react-native";
 
 import Tabs from "../../Components/Tabs/Tabs";
 import Title from "../../Components/Title/Title";
@@ -121,7 +121,6 @@ export default function MyPage({ navigation }) {
               />
               <View style={styles.user}>
                 <TouchableOpacity onPress={() => {
-                  // console.log('이름 바꾸기')
                   setUpdating(true)
                 }} style={{ flexDirection: "row" }}>
                   {
@@ -147,6 +146,7 @@ export default function MyPage({ navigation }) {
                 <Text style={styles.phone}>{userData.memberPhone}</Text>
                 <TouchableOpacity onPress={() => {
                   logout()
+                  Alert.alert("로그아웃 되었습니다.")
                   console.log("로그아웃 되었습니다.")
                   navigation.navigate('Main')
                 }}>

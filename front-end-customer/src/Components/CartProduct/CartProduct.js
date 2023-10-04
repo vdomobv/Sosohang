@@ -24,7 +24,7 @@ export default function CartProduct({
         value={checked}
         onValueChange={onProductCheckChange}
       />
-      <Image style={{ flex: 2, marginRight: 10 }} source={require('assets/images/bread.png')}></Image>
+      <Image style={{ flex: 2, marginHorizontal: 10, borderRadius: 10 }} src={data.product.productImage}></Image>
       <View style={{ flex: 4 }}>
         <Text style={[styles.textBold, { marginTop: 5 }]}>{data.product.productName}</Text>
         <Text style={styles.price}>{data.product.productPrice} 원</Text>

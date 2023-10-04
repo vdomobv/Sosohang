@@ -11,10 +11,6 @@ import { getMyGiftList } from "../../Utils/MyGiftAPI";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
-// 더미 관련
-// import MyGiftDummy from "../../Dummys/MyGift/MyGiftDummy";
-// const dummy = MyGiftDummy;
-
 export default function MyGift({ navigation }) {
   const [activatedTab, setActivatedTab] = useState(true);
 

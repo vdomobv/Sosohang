@@ -62,7 +62,7 @@ const Wrapper = styled.div`
 
   .footer-container {
     background-color: #dff1f3;
-    padding : 100px;
+    padding : 120px 100px;
   }
 
   .text-overlay2 {
@@ -186,7 +186,7 @@ const Wrapper = styled.div`
   .logo-container {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    // margin-top: 50px;
   }
 
   .logo {

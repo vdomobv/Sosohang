@@ -81,7 +81,6 @@ function EditStoreInfo(props) {
     });
   }, [storeName, storeAddress, storeCategory, onChange]);
 
-
   return (
     <div>
       <h4>상점 정보</h4>
@@ -148,6 +147,8 @@ function EditStoreInfo(props) {
       </div>
       {isOpenPost ? (
         <ModalStorePostcode
+          show={isOpenPost}
+          onHide={() => setIsOpenPost(false)}
           onCompletePost={onCompletePost}
           setIsOpenPost={setIsOpenPost}
         />

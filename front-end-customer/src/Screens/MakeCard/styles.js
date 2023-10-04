@@ -82,6 +82,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 8,
     paddingLeft: 15,
+    fontSize: 16,
+  },
+
+  contactBox: {
+    borderColor: 'gray',
+    borderRadius: 10,
+    borderWidth: 1,
+    marginHorizontal: 40,
+    marginTop: 15,
+    paddingVertical: 5,
+  },
+
+  arrowButton: {
+    alignSelf: 'center',
+    margin: -10,
   },
 
   shopName: {

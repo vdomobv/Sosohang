@@ -15,6 +15,8 @@ import { Ionicons } from "@expo/vector-icons";
 
 import CartGift from "../../Components/CartGift/CartGift";
 import SelectImage from "../../Components/SelectImage/SelectImage";
+import { uploadImageToNCP } from '../../Utils/UploadImage.js';
+
 
 export default function MakeCard({ route, navigation }) {
   const { selectedProducts, totalPrice } = route.params;
@@ -196,31 +198,33 @@ export default function MakeCard({ route, navigation }) {
             </View>
           </View>
           <TouchableOpacity
-            style={styles.okay}
-            onPress={() => {
-              if (contactName === "" || contactPhoneNumber === "") {
-                Alert.alert("받는 사람을 선택해주세요.");
-              } else {
-                navigation.navigate("WaitingPayment", {
-                  groupedByStore,
-                  totalPrice,
-                  result: false,
-                  to : contactName,
-                  sosoticonData: {
-                    sosoticonTakerName: contactName,
-                    sosoticonGiverName: giverName,
-                    sosoticonTaker: contactPhoneNumber.replaceAll("-",""),
-                    sosoticonText: message,
-                    sosoticonStatus: 1,
-                    sosoticonImage : selectedImage
-                  }
+  style={styles.okay}
+  onPress={async () => {
+    if (contactName === "" || contactPhoneNumber === "") {
+      Alert.alert("받는 사람을 선택해주세요.");
+    } else {
+      // NCP에 이미지를 업로드
+      const fileId = await uploadImageToNCP(selectedImage, `${Date.now()}test.jpg`);
+      navigation.navigate("WaitingPayment", {
+        groupedByStore,
+        totalPrice,
+        result: false,
+        to : contactName,
+        sosoticonData: {
+          sosoticonTakerName: contactName,
+          sosoticonGiverName: giverName,
+          sosoticonTaker: contactPhoneNumber.replaceAll("-",""),
+          sosoticonText: message,
+          sosoticonStatus: 1,
+          sosoticonImage : fileId
+        }
+      });
+    }
+  }}
+>
+  <Text style={[styles.priceText, { color: "white" }]}>결제하기</Text>
+</TouchableOpacity>
 
-                });
-              }
-            }}
-          >
-            <Text style={[styles.priceText, { color: "white" }]}>결제하기</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </>

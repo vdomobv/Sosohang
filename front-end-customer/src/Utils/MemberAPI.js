@@ -12,7 +12,7 @@ export const login = (navigation, loginPhoneNumber, loginPassword) => {
             // 로그인 성공 시 처리
             if (response.data.token) {
                 setMemberSeq(response.data.member.memberSeq);
-                Alert.alert("알림", "로그인 성공!");
+                // Alert.alert("알림", "로그인");
                 navigation.navigate('Main')
             } else {
                 Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");

@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
 
   arrowButton: {
     alignSelf: 'center',
-    margin: -10,
+    margin: -5,
   },
 
   shopName: {

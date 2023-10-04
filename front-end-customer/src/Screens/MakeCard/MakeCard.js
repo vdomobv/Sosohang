@@ -24,6 +24,7 @@ export default function MakeCard({ route, navigation }) {
   const [contactPhoneNumber, setContactPhoneNumber] = useState("");
   const [giverName, setGiverName] = useState("");
   const [contactStartIndex, setContactStartIndex] = useState(0);
+  const [isContactBoxVisible, setIsContactBoxVisible] = useState(false);
 
   // 연락처 가져오기 함수
   const getContacts = async () => {
@@ -45,11 +46,6 @@ export default function MakeCard({ route, navigation }) {
       Alert.alert("연락처가 없습니다.");
     }
   };
-
-  useEffect(() => {
-    // 컴포넌트가 마운트될 때 연락처를 불러옵니다.
-    getContacts();
-  }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출되도록 합니다.
 
   // 연락처 목록 보여주고 선택한 연락처 처리
   const handleContactSelection = (selectedContact) => {
@@ -134,8 +130,8 @@ export default function MakeCard({ route, navigation }) {
           <SelectImage
             selectedButton={selectedButton}
             setSelectedButton={setSelectedButton}
-            selectedImage={selectedImage} 
-            setSelectedImage={setSelectedImage} 
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
             setMessage={setMessage}
             message={message}
           />
@@ -159,7 +155,10 @@ export default function MakeCard({ route, navigation }) {
                 styles.button,
                 { marginHorizontal: 40, marginBottom: 20 },
               ]}
-              onPress={getContacts}
+              onPress={() => {
+                getContacts();
+                setIsContactBoxVisible(true);
+              }}
             >
               <Text style={styles.buttonText}>+ 연락처 가져오기</Text>
             </TouchableOpacity>
@@ -185,30 +184,31 @@ export default function MakeCard({ route, navigation }) {
             </View>
 
             {/* 연락처 박스 */}
-            <View style={styles.contactBox}>
-              <TouchableOpacity
-                style={styles.arrowButton}
-                onPress={() => {
-                  if (contactStartIndex > 0) {
-                    setContactStartIndex(contactStartIndex - 4);
-                  }
-                }}
-              >
-                <Ionicons size={25} name="caret-up-outline" />
-              </TouchableOpacity>
-              {renderContacts()}
-              <TouchableOpacity
-                style={styles.arrowButton}
-                onPress={() => {
-                  if (contactStartIndex + 4 < contacts.length) {
-                    setContactStartIndex(contactStartIndex + 4);
-                  }
-                }}
-              >
-                <Ionicons size={25} name="caret-down-outline" />
-              </TouchableOpacity>
-            </View>
-
+            {isContactBoxVisible && (
+              <View style={styles.contactBox}>
+                <TouchableOpacity
+                  style={styles.arrowButton}
+                  onPress={() => {
+                    if (contactStartIndex > 0) {
+                      setContactStartIndex(contactStartIndex - 4);
+                    }
+                  }}
+                >
+                  <Ionicons size={25} name="caret-up-outline" />
+                </TouchableOpacity>
+                {renderContacts()}
+                <TouchableOpacity
+                  style={styles.arrowButton}
+                  onPress={() => {
+                    if (contactStartIndex + 4 < contacts.length) {
+                      setContactStartIndex(contactStartIndex + 4);
+                    }
+                  }}
+                >
+                  <Ionicons size={25} name="caret-down-outline" />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
 
           <View style={styles.subcontainer}>

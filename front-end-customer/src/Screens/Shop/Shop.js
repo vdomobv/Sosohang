@@ -1,11 +1,5 @@
 import styles from "./styles";
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { View, Text, Image, ScrollView, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Title from "../../Components/Title/Title";
@@ -13,7 +7,7 @@ import SectionTitle from "../../Components/SectionTitle/SectionTitle";
 import Line from "../../Components/Line/Line";
 import Product from "../../Components/Product/Product";
 import CustomButton from "../../Components/CustomButton/CustomButton";
-import DibButton from "../../Components/DibButton/DibButton"
+import DibButton from "../../Components/DibButton/DibButton";
 
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -40,8 +34,8 @@ export default function Shop({ navigation, route }) {
   const [product, setProduct] = useState([]);
   const [saleProduct, setSaleProduct] = useState([]);
   const [storeData, setStoreData] = useState();
-  const [keywords, setKeywords] = useState([])
-  const [checkedProducts, setCheckedProducts] = useState([])
+  const [keywords, setKeywords] = useState([]);
+  const [checkedProducts, setCheckedProducts] = useState([]);
   const [productsAmount, setProductsAmount] = useState([]);
   const [checkedSaleProducts, setCheckedSaleProducts] = useState([]);
   const [saleProductAmount, setSaleProductAmount] = useState([]);
@@ -70,13 +64,13 @@ export default function Shop({ navigation, route }) {
       setTempUser(userData);
     }
 
-    const storeResult = await getStoreData(storeSeq)
+    const storeResult = await getStoreData(storeSeq);
     const result = await getProduct(storeSeq);
 
     // 상품 데이터, 세일 상품 데이터 분리
     if (Array.isArray(result)) {
-      const regularProducts = result.filter(data => data.productDcrate === 0);
-      const saleProducts = result.filter(data => data.productDcrate !== 0);
+      const regularProducts = result.filter((data) => data.productDcrate === 0);
+      const saleProducts = result.filter((data) => data.productDcrate !== 0);
 
       setProduct(regularProducts);
       setSaleProduct(saleProducts);
@@ -92,11 +86,10 @@ export default function Shop({ navigation, route }) {
       const fetchDibData = async () => {
         const dibData = await getStoreDibData(tempUser, storeSeq);
         setDibState(dibData);
-      }
+      };
       fetchDibData();
     }
-  }, [tempUser])
-
+  }, [tempUser]);
 
   useEffect(() => {
     // 키워드 불러오기
@@ -107,15 +100,14 @@ export default function Shop({ navigation, route }) {
 
   // 상품 선택 배열, 상품 개수 배열 생성
   useEffect(() => {
-    setCheckedProducts(product.map(() => false))
-    setProductsAmount(product.map(() => 1))
-  }, [product])
+    setCheckedProducts(product.map(() => false));
+    setProductsAmount(product.map(() => 1));
+  }, [product]);
 
   useEffect(() => {
-    setCheckedSaleProducts(saleProduct.map(() => false))
-    setSaleProductAmount(saleProduct.map(() => 1))
-  }, [saleProduct])
-
+    setCheckedSaleProducts(saleProduct.map(() => false));
+    setSaleProductAmount(saleProduct.map(() => 1));
+  }, [saleProduct]);
 
   // 상품 목록
   const productList = product.map((data, index) => {
@@ -141,7 +133,7 @@ export default function Shop({ navigation, route }) {
 
   // 할인 상품 목록
   const saleProductList = saleProduct.map((data, index) => {
-    console.log(data)
+    console.log(data);
     return (
       <Product
         checked={checkedSaleProducts[index]}
@@ -169,11 +161,13 @@ export default function Shop({ navigation, route }) {
 
     product.forEach((data, index) => {
       if (checkedProducts[index]) {
-        setTotalPrice(prevTotal => prevTotal + productsAmount[index] * data.productPrice)
+        setTotalPrice(
+          (prevTotal) => prevTotal + productsAmount[index] * data.productPrice
+        );
         const temp = {
           ...data,
           count: productsAmount[index],
-          storeName: storeData.storeName
+          storeName: storeData.storeName,
         };
         newSelectedProducts.push(temp);
       }
@@ -181,18 +175,24 @@ export default function Shop({ navigation, route }) {
 
     saleProduct.forEach((data, index) => {
       if (checkedSaleProducts[index]) {
-        setTotalPrice(prevTotal => prevTotal + saleProductAmount[index] * data.productPrice * (1 - data.productDcrate))
+        setTotalPrice(
+          (prevTotal) =>
+            prevTotal +
+            saleProductAmount[index] *
+              data.productPrice *
+              (1 - data.productDcrate)
+        );
         const temp = {
           ...data,
           count: saleProductAmount[index],
-          storeName: storeData.storeName
+          storeName: storeData.storeName,
         };
         newSelectedProducts.push(temp);
       }
     });
 
-    return newSelectedProducts
-  }
+    return newSelectedProducts;
+  };
 
   // 장바구니에 담기
   const putInCart = () => {
@@ -204,10 +204,10 @@ export default function Shop({ navigation, route }) {
       const newSelectedProducts = getSelectedProduct();
       newSelectedProducts.map((data) => {
         addToCart(tempUser, data.productSeq, data.count);
-      })
+      });
       setModalState(true);
     }
-  }
+  };
 
   // 주문할 상품
   const orderProducts = () => {
@@ -251,17 +251,29 @@ export default function Shop({ navigation, route }) {
       >
         <View style={styles.header}>
           <View style={styles.title}>
-            <Title title={storeData ? storeData.storeName : 'Loading...'} />
+            <Title title={storeData ? storeData.storeName : "Loading..."} />
           </View>
-          {tempUser !== undefined ?
-            <DibButton userSeq={tempUser} storeSeq={storeData ? storeData.storeSeq : null} dibState={dibState} setDibState={setDibState} />
-            : undefined}
+          {tempUser !== undefined ? (
+            <DibButton
+              userSeq={tempUser}
+              storeSeq={storeData ? storeData.storeSeq : null}
+              dibState={dibState}
+              setDibState={setDibState}
+            />
+          ) : undefined}
         </View>
 
-        <Image src={storeData ? storeData.storeImage : "assets/images/no_img.png"} style={styles.image} />
+        <Image
+          src={storeData ? storeData.storeImage : "assets/images/no_img.png"}
+          style={styles.image}
+        />
         <View style={styles.content}>
           <View style={styles.head}>
-            <SectionTitle content={storeData ? storeData.category.categoryName : 'Loading...'} />
+            <SectionTitle
+              content={
+                storeData ? storeData.category.categoryName : "Loading..."
+              }
+            />
             <View style={styles.keywords}>
               {keywords.map((keyword, index) => {
                 return (
@@ -313,63 +325,82 @@ export default function Shop({ navigation, route }) {
                   size={20}
                 />
               }
-              data={storeData ? storeData.storeExtraInfo : "준비중이에요 :)"}
+              data={storeData ? storeData.storeExtraInfo : "Loading.. :)"}
             />
           </View>
         </View>
         <Line />
-        {saleProduct.length > 0 ?
+        {saleProduct.length > 0 ? (
           <>
             <View style={styles.content}>
               <SectionTitle content={"이때 아니면 못 사는 이벤트 선물! 🔔"} />
               {saleProductList}
             </View>
             <Line />
-          </> : null
-        }
+          </>
+        ) : null}
         <View style={styles.content}>
           <SectionTitle content={"선물 목록 🎁"} />
           {productList}
         </View>
         <View style={styles.blank}></View>
       </ScrollView>
-      {/* {showButton && ( */}
-      <View style={styles.buttons}>
-        <CustomButton
-          customStyles={{ backgroundColor: "#FFBF46" }}
-          content={<Text style={styles.text}>장바구니</Text>}
-          pressFuction={putInCart}
-        />
-        <CustomButton
-          content={<Text style={styles.text}>선물하기</Text>}
-          pressFuction={orderProducts}
-        />
-      </View>
-      {/* )} */}
+      {tempUser !== undefined ? (
+        <View style={styles.buttons}>
+          <CustomButton
+            customStyles={{ backgroundColor: "#FFBF46" }}
+            content={<Text style={styles.text}>장바구니</Text>}
+            pressFuction={putInCart}
+          />
+          <CustomButton
+            content={<Text style={styles.text}>선물하기</Text>}
+            pressFuction={orderProducts}
+          />
+        </View>
+      ) : (
+        <View style={styles.buttons}>
+          <CustomButton
+            customStyles={{ backgroundColor: "#FFBF46" }}
+            content={
+              <Text style={styles.text}>선물 결제는 로그인 후 가능합니다.</Text>
+            }
+            pressFuction={() => {
+              navigation.navigate("SignUp");
+            }}
+          />
+        </View>
+      )}
 
-      <CustomModal modalState={modalState}
+      <CustomModal
+        modalState={modalState}
         content={
           <View>
             <View>
-              <SectionTitle content={<Text>장바구니에 상품을 담았어요.</Text>} />
+              <SectionTitle
+                content={<Text>장바구니에 상품을 담았어요.</Text>}
+              />
               <SectionTitle content={<Text>장바구니로 이동할까요?</Text>} />
               <Text></Text>
             </View>
             <View style={styles.modalButtons}>
               <CustomButton
                 content={<Text style={styles.modalText}>계속 쇼핑하기</Text>}
-                pressFuction={() => { setModalState(false) }}
+                pressFuction={() => {
+                  setModalState(false);
+                }}
               />
               <CustomButton
                 customStyles={{ backgroundColor: "#FFBF46" }}
                 content={<Text style={styles.modalText}>이동하기</Text>}
-                pressFuction={() => { 
-                  setModalState(false)
-                  navigation.navigate('Cart') }}
+                pressFuction={() => {
+                  setModalState(false);
+                  navigation.navigate("Cart");
+                }}
               />
             </View>
           </View>
-        } />
+        }
+      />
     </>
   );
 }

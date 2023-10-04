@@ -358,7 +358,9 @@ export default function Shop({ navigation, route }) {
               <CustomButton
                 customStyles={{ backgroundColor: "#FFBF46" }}
                 content={<Text style={styles.modalText}>이동하기</Text>}
-                pressFuction={() => { navigation.navigate('Cart') }}
+                pressFuction={() => { 
+                  setModalState(false)
+                  navigation.navigate('Cart') }}
               />
               <CustomButton
                 content={<Text style={styles.modalText}>계속 쇼핑하기</Text>}

@@ -85,3 +85,22 @@ export const updateMemberNickname = async (memberSeq, newNickname) => {
     }
 }
 
+
+export const handlePhoneVerification = (phoneNumber) => {
+    axios.post("https://j9c109.p.ssafy.io/api/v1/member/handlePhoneVerification", { phoneNumber: phoneNumber })
+        .then((response) => {
+            const responseData = response.data;
+            if (responseData === "이미 가입된 사용자입니다.") {
+                Alert.alert("알림", "이미 가입된 사용자입니다.");
+            } else if (responseData === "인증번호 전송 완료!") {
+                Alert.alert("알림", "인증 코드가 전송되었습니다.");
+                // 여기서 인증 코드 입력 화면으로 이동하는 로직 등을 추가할 수 있습니다.
+            } else {
+                Alert.alert("알림", "알 수 없는 응답입니다. 다시 시도해주세요.");
+            }
+        })
+        .catch((error) => {
+            Alert.alert("알림", "오류가 발생했습니다. 다시 시도해 주세요.");
+            console.error(error);
+        });
+}

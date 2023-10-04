@@ -29,7 +29,7 @@ public class SosoticonRequestDTO {
     private String sosoticonTakerName;
 
 
-    // 받는 사람 전화번호 ( +821012345678 형식임)
+    // 받는 사람 전화번호 ( 01012345678 형식임)
     private String sosoticonTaker;
 
     // 보내는 사람이 적는 메세지

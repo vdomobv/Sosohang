@@ -168,7 +168,7 @@ export default function Shop({ navigation, route }) {
 
     product.forEach((data, index) => {
       if (checkedProducts[index]) {
-        setTotalPrice(totalPrice + productsAmount[index] * data.productPrice)
+        setTotalPrice(prevTotal => prevTotal + productsAmount[index] * data.productPrice)
         const temp = {
           ...data,
           count: productsAmount[index],
@@ -180,7 +180,7 @@ export default function Shop({ navigation, route }) {
 
     saleProduct.forEach((data, index) => {
       if (checkedSaleProducts[index]) {
-        setTotalPrice(totalPrice + saleProductAmount[index] * data.productPrice * (1 - data.productDcrate))
+        setTotalPrice(prevTotal => prevTotal + saleProductAmount[index] * data.productPrice * (1 - data.productDcrate))
         const temp = {
           ...data,
           count: saleProductAmount[index],

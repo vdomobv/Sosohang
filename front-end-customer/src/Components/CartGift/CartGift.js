@@ -20,7 +20,7 @@ export default function CartGift({
 
   return (
     <View style={styles.container}>
-      <Image style={{ flex: 2 }} src={product.productImage}></Image>
+      <Image style={{ flex: 2, borderRadius : 10, marginRight:5 }} src={product.productImage}></Image>
       <View style={{ flex: 4 }}>
         <Text style={styles.textBold}>{product.productName}</Text>
         <Text>{product.productPrice * (1- product.productDcrate)} 원</Text>

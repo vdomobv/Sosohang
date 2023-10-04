@@ -165,6 +165,7 @@ export default function Shop({ navigation, route }) {
   // 선택된 상품
   const getSelectedProduct = () => {
     let newSelectedProducts = [];
+    setTotalPrice(0);
 
     product.forEach((data, index) => {
       if (checkedProducts[index]) {

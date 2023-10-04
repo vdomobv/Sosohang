@@ -103,15 +103,17 @@ function TableProductActive() {
   };
 
   return (
-    <div  style={{margin:"50px"}}>
-      <h1>이벤트 상품 목록</h1>
+    // 이벤트 상품 목록
+    <div  style={{margin:"100px"}}>
+      <h2>이벤트 상품 목록</h2>
       {/* <Button onClick={() => setShowAddModal(true)}>상품 추가</Button> */}
       <Button
         variant="danger"
         onClick={() => openDeleteModal(selectedProducts)}
         disabled={selectedProducts.length === 0} // 선택한 항목이 없을 때 비활성화
+        style={{ margin: "15px 0 10px 0", padding: "8px 17px" }}
       >
-        선택한 항목 삭제
+        선택 항목 삭제
       </Button>
       <Table striped bordered hover>
         <thead>

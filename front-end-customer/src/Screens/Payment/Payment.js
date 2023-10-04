@@ -13,6 +13,7 @@ export default function Payment({ navigation, route }) {
   const sosoticonData = route.params.sosoticonData;
 
   console.log(sosoticonData)
+  console.log(userCode)
 
   return (
     <View style={styles.container}>

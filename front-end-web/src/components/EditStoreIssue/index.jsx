@@ -144,16 +144,16 @@ function EditStoreIssue(props) {
     }
     setStoreHoliday(info.storeHoliday);
     const holiday = info.storeHoliday?.split(" ");
-    if(typeof(holiday) === "object") {
+    if (typeof holiday === "object") {
       holiday.forEach((day) => {
-        if(day === "월요일") setCloseMonday(true);
-        else if(day === "화요일") setCloseTuesday(true);
-        else if(day === "수요일") setCloseWendsday(true);
-        else if(day === "목요일") setCloseThursday(true);
-        else if(day === "금요일") setCloseFriday(true);
-        else if(day === "토요일") setCloseSaturday(true);
-        else if(day === "일요일") setCloseSunday(true);
-      })
+        if (day === "월요일") setCloseMonday(true);
+        else if (day === "화요일") setCloseTuesday(true);
+        else if (day === "수요일") setCloseWendsday(true);
+        else if (day === "목요일") setCloseThursday(true);
+        else if (day === "금요일") setCloseFriday(true);
+        else if (day === "토요일") setCloseSaturday(true);
+        else if (day === "일요일") setCloseSunday(true);
+      });
     }
     setStoreExtraInfo(info.storeExtraInfo);
     setStoreUrl(info.storeUrl);
@@ -180,9 +180,16 @@ function EditStoreIssue(props) {
   ]);
 
   return (
-    <div >
+    <div
+      style={{
+        width: "80%",
+        marginTop: "50px",
+        marginLeft: "100px",
+        marginRight: "100px",
+      }}
+    >
       <h4>부가 정보</h4>
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 전화번호</Form.Label>
         <InputGroup>
           <Form.Control
@@ -200,7 +207,7 @@ function EditStoreIssue(props) {
           />
         </InputGroup>
       </div>
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>주차장</Form.Label>
         <InputGroup>
           <ToggleButton
@@ -208,7 +215,9 @@ function EditStoreIssue(props) {
             type="checkbox"
             variant="outline-primary"
             checked={existParkinglot}
-            onChange={(e) => setExistParkinglot(e.currentTarget.checked)}>
+            onChange={(e) => setExistParkinglot(e.currentTarget.checked)}
+            style={{ borderRadius: "0.5rem 0 0 0.5rem" }}
+          >
             {existParkinglot ? "주차장 있음" : "주차장 없음"}
           </ToggleButton>
           <Form.Control
@@ -226,10 +235,17 @@ function EditStoreIssue(props) {
           />
         </InputGroup>
       </div>
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>영업시간</Form.Label>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <InputGroup style={{ width: "350px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "15px",
+            alignItems: "center"
+          }}
+        >
+          <InputGroup>
             <ToggleButton
               id="open-eveyday-toggle-check"
               type="checkbox"
@@ -252,6 +268,9 @@ function EditStoreIssue(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderRadius: "0.5rem",
+                marginLeft: 25,
+                marginRight: 25,
               }}
               disabled={
                 openMonday ||
@@ -261,10 +280,11 @@ function EditStoreIssue(props) {
                 openFriday ||
                 openSaturday ||
                 openSunday
-              }>
+              }
+            >
               매 일
             </ToggleButton>
-            <div style={{ display: "flex", flexDirection: "column"}}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
@@ -291,7 +311,7 @@ function EditStoreIssue(props) {
               />
             </div>
           </InputGroup>
-          <InputGroup style={{ width: "350px" }}>
+          <InputGroup>
             <ToggleButton
               id="open-monday-toggle-check"
               type="checkbox"
@@ -314,8 +334,12 @@ function EditStoreIssue(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderRadius: "0.5rem",
+                marginLeft: 25,
+                marginRight: 25,
               }}
-              disabled={openEveryday}>
+              disabled={openEveryday}
+            >
               월요일
             </ToggleButton>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -345,7 +369,7 @@ function EditStoreIssue(props) {
               />
             </div>
           </InputGroup>
-          <InputGroup style={{ width: "350px" }}>
+          <InputGroup>
             <ToggleButton
               id="open-tuesday-toggle-check"
               type="checkbox"
@@ -368,8 +392,12 @@ function EditStoreIssue(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderRadius: "0.5rem",
+                marginLeft: 25,
+                marginRight: 25,
               }}
-              disabled={openEveryday}>
+              disabled={openEveryday}
+            >
               화요일
             </ToggleButton>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -399,7 +427,7 @@ function EditStoreIssue(props) {
               />
             </div>
           </InputGroup>
-          <InputGroup style={{ width: "350px" }}>
+          <InputGroup>
             <ToggleButton
               id="open-wendsday-toggle-check"
               type="checkbox"
@@ -422,8 +450,12 @@ function EditStoreIssue(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderRadius: "0.5rem",
+                marginLeft: 25,
+                marginRight: 25,
               }}
-              disabled={openEveryday}>
+              disabled={openEveryday}
+            >
               수요일
             </ToggleButton>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -453,14 +485,7 @@ function EditStoreIssue(props) {
               />
             </div>
           </InputGroup>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginTop: "10px",
-          }}>
-          <InputGroup style={{ width: "350px" }}>
+          <InputGroup>
             <ToggleButton
               id="open-thursday-toggle-check"
               type="checkbox"
@@ -483,8 +508,12 @@ function EditStoreIssue(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderRadius: "0.5rem",
+                marginLeft: 25,
+                marginRight: 25,
               }}
-              disabled={openEveryday}>
+              disabled={openEveryday}
+            >
               목요일
             </ToggleButton>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -514,7 +543,7 @@ function EditStoreIssue(props) {
               />
             </div>
           </InputGroup>
-          <InputGroup style={{ width: "350px" }}>
+          <InputGroup>
             <ToggleButton
               id="open-friday-toggle-check"
               type="checkbox"
@@ -537,8 +566,12 @@ function EditStoreIssue(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderRadius: "0.5rem",
+                marginLeft: 25,
+                marginRight: 25,
               }}
-              disabled={openEveryday}>
+              disabled={openEveryday}
+            >
               금요일
             </ToggleButton>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -568,7 +601,7 @@ function EditStoreIssue(props) {
               />
             </div>
           </InputGroup>
-          <InputGroup style={{ width: "350px" }}>
+          <InputGroup>
             <ToggleButton
               id="open-saturday-toggle-check"
               type="checkbox"
@@ -591,8 +624,12 @@ function EditStoreIssue(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderRadius: "0.5rem",
+                marginLeft: 25,
+                marginRight: 25,
               }}
-              disabled={openEveryday}>
+              disabled={openEveryday}
+            >
               토요일
             </ToggleButton>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -622,7 +659,7 @@ function EditStoreIssue(props) {
               />
             </div>
           </InputGroup>
-          <InputGroup style={{ width: "350px" }}>
+          <InputGroup>
             <ToggleButton
               id="open-sunday-toggle-check"
               type="checkbox"
@@ -645,11 +682,22 @@ function EditStoreIssue(props) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderRadius: "0.5rem",
+                marginLeft: 25,
+                marginRight: 25,
               }}
-              disabled={openEveryday}>
+              disabled={openEveryday}
+            >
               일요일
             </ToggleButton>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-evenly",
+              }}
+            >
               <Form.Control
                 type="time"
                 aria-label="영업시간에 대한 정보를 입력해주세요"
@@ -678,18 +726,19 @@ function EditStoreIssue(props) {
           </InputGroup>
         </div>
       </div>
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 휴무일</Form.Label>
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignContent: "space-evenly",
-          }}>
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gridGap: "10px",
+            alignItems: "center",
+          }}
+        >
           <Form.Control
             placeholder="주기"
             aria-label="휴무주기에 대한 정보를 입력해주세요"
-            style={{ width: "100px" }}
             onChange={(e) => {
               let temp = [...storeCloseDay];
               temp[0] = e.target.value;
@@ -712,7 +761,8 @@ function EditStoreIssue(props) {
                 temp[1] = "";
                 setStoreCloseDay(temp);
               }
-            }}>
+            }}
+          >
             월요일
           </ToggleButton>
           <ToggleButton
@@ -731,7 +781,8 @@ function EditStoreIssue(props) {
                 temp[2] = "";
                 setStoreCloseDay(temp);
               }
-            }}>
+            }}
+          >
             화요일
           </ToggleButton>
           <ToggleButton
@@ -750,7 +801,8 @@ function EditStoreIssue(props) {
                 temp[3] = "";
                 setStoreCloseDay(temp);
               }
-            }}>
+            }}
+          >
             수요일
           </ToggleButton>
           <ToggleButton
@@ -769,7 +821,8 @@ function EditStoreIssue(props) {
                 temp[4] = "";
                 setStoreCloseDay(temp);
               }
-            }}>
+            }}
+          >
             목요일
           </ToggleButton>
           <ToggleButton
@@ -788,7 +841,8 @@ function EditStoreIssue(props) {
                 temp[5] = "";
                 setStoreCloseDay(temp);
               }
-            }}>
+            }}
+          >
             금요일
           </ToggleButton>
           <ToggleButton
@@ -807,7 +861,8 @@ function EditStoreIssue(props) {
                 temp[6] = "";
                 setStoreCloseDay(temp);
               }
-            }}>
+            }}
+          >
             토요일
           </ToggleButton>
           <ToggleButton
@@ -826,39 +881,41 @@ function EditStoreIssue(props) {
                 temp[7] = "";
                 setStoreCloseDay(temp);
               }
-            }}>
+            }}
+          >
             일요일
           </ToggleButton>
-          <InputGroup style={{ width: "350px" }}>
-            <ToggleButton
-              id="close-day-toggle-check"
-              type="checkbox"
-              variant="outline-primary"
-              checked={closeDay}
-              onChange={(e) => setCloseDay(e.currentTarget.checked)}
-              style={{ borderRadius: "5%" }}>
-              기타
-            </ToggleButton>
-            <Form.Control
-              placeholder="휴무일에 대한 정보를 입력해주세요"
-              aria-label="휴무일에 대한 정보를 입력해주세요"
-              disabled={!closeDay}
-              onChange={(e) => {
-                if (closeDay) {
-                  let temp = [...storeCloseDay];
-                  temp[8] = "/ " + e.target.value;
-                  setStoreCloseDay(temp);
-                } else {
-                  let temp = [...storeCloseDay];
-                  temp[8] = "";
-                  setStoreCloseDay(temp);
-                }
-              }}
-            />
-          </InputGroup>
         </div>
+        <InputGroup style={{ marginTop: 10 }}>
+          <ToggleButton
+            id="close-day-toggle-check"
+            type="checkbox"
+            variant="outline-primary"
+            checked={closeDay}
+            onChange={(e) => setCloseDay(e.currentTarget.checked)}
+            style={{ borderRadius: "0.5rem 0 0 0.5rem" }}
+          >
+            기타
+          </ToggleButton>
+          <Form.Control
+            placeholder="휴무일에 대한 정보를 입력해주세요"
+            aria-label="휴무일에 대한 정보를 입력해주세요"
+            disabled={!closeDay}
+            onChange={(e) => {
+              if (closeDay) {
+                let temp = [...storeCloseDay];
+                temp[8] = "/ " + e.target.value;
+                setStoreCloseDay(temp);
+              } else {
+                let temp = [...storeCloseDay];
+                temp[8] = "";
+                setStoreCloseDay(temp);
+              }
+            }}
+          />
+        </InputGroup>
       </div>
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 홈페이지</Form.Label>
         <InputGroup>
           <Form.Control
@@ -869,7 +926,7 @@ function EditStoreIssue(props) {
           />
         </InputGroup>
       </div>
-      <div  style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 설명</Form.Label>
         <InputGroup>
           <Form.Control
@@ -880,7 +937,7 @@ function EditStoreIssue(props) {
           />
         </InputGroup>
       </div>
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 키워드</Form.Label>
       </div>
     </div>

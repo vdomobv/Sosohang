@@ -15,7 +15,8 @@ import { getReviewKeywordListByCategorySeq, createReview } from "../../Utils/Rev
 export default function Review({ route, navigation }) {
   const { giftData } = route.params;
   const [reviewKeywordList, setReviewKeywordList] = useState([]);
-  console.log("데이타", giftData);
+  const sosoticonSeq = giftData.sosoticonSeq
+  console.log("데이타", giftData.sosoticonSeq);
   const [storeSeq, setStoreSeq] = useState(0);
 
   useEffect(() => {
@@ -63,11 +64,16 @@ export default function Review({ route, navigation }) {
     setSelectedKeywords(newSelectedKeywords);
 };
 
-  const submitReview = (storeSeq, selectedKeywords) => {
+  const submitReview = (storeSeq, sosoticonSeq, selectedKeywords) => {
     console.log("여기", selectedKeywords);
     try {
-      const result = createReview(storeSeq, selectedKeywords);
-      Alert.alert("알림", "리뷰가 생성되었습니다");
+      const result = createReview(storeSeq, sosoticonSeq, selectedKeywords);
+      Alert.alert("알림", "리뷰가 생성되었습니다", [
+        {
+          text: "확인",
+          onPress: () => navigation.goBack()
+        }
+      ]);
     } catch (e) {
       console.log(e);
     }
@@ -113,7 +119,7 @@ export default function Review({ route, navigation }) {
                   ))}
                 </View>
                 {/* 버튼 클릭 시, 리뷰 키워드 저장되도록 */}
-                <TouchableOpacity style={styles.reviewButton} onPress={() => submitReview(storeSeq, selectedKeywords)}>
+                <TouchableOpacity style={styles.reviewButton} onPress={() => submitReview(storeSeq, sosoticonSeq, selectedKeywords)}>
                   <Text style={styles.buttonText}>후기 남기기</Text>
                 </TouchableOpacity>
               </View>

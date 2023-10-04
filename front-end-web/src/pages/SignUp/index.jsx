@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import Cookies from "js-cookie";
 import Wrapper from "./styles";
@@ -17,7 +17,7 @@ function SignUp() {
   // console.log(tokenCookie);
   // useEffect(() => {
   //   if (tokenCookie !== undefined) return navigate("/")
-  // }, [tokenCookie])  
+  // }, [tokenCookie])
 
   const [storeInfo, setStoreInfo] = useState({});
   const [ownerInfo, setOwnerInfo] = useState({});
@@ -50,8 +50,8 @@ function SignUp() {
       })
       .then((res) => {
         console.log(res);
-        alert("회원가입이 완료되었습니다.")
-        navigate("/")
+        alert("회원가입이 완료되었습니다.");
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
@@ -60,18 +60,18 @@ function SignUp() {
 
   return (
     <div>
-      <Header/>
+      <Header />
       <Wrapper>
         <form>
           <div className="container">
             <InputStoreInfo onChange={setStoreInfo} />
             <InputOwnerInfo onChange={setOwnerInfo} />
           </div>
-          <div>
-            <InputStoreIssue onChange={setStoreIssue} />
+          <InputStoreIssue onChange={setStoreIssue} />
+          <div style={{display:"flex", width:"80%"}}>
             <FileUpload onChange={setStoreImageUrl} />
           </div>
-          <Button onClick={handleSignup}>회원가입</Button>
+          <Button style={{ width: "80%", marginTop: 10, marginBottom: 15 }} variant="outline-primary" onClick={handleSignup}>회원가입</Button>
         </form>
       </Wrapper>
     </div>

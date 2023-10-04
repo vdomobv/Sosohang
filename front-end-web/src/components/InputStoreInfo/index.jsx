@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, InputGroup, Button } from "react-bootstrap";
+import { Modal, Form, InputGroup, Button } from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 import ModalStoreRegNum from "../../components/ModalStoreRegNum";
@@ -14,6 +14,16 @@ function InputStoreInfo({ onChange }) {
   const [isValidRegNum, setIsValidRegNum] = useState(false); // 사업자등록번호 유효성 검사 결과
   const [isOpenRegNum, setIsOpenRegNum] = useState(false); // 사업자등록번호 인증 모달창 여부
   const [isVerifiedRegNum, setIsVerifiedRegNum] = useState(false); // 사업자 등록번호 인증여부
+
+  // 모달
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  // 국세청
+  const redirectToHomeTax = () => {
+    window.location.href = "https://hometax.go.kr/";
+  };
 
   // 사업자등록번호 형식 - 숫자 10자리
   const storeRegNumEx = /^[0-9]{10}$/;
@@ -48,9 +58,7 @@ function InputStoreInfo({ onChange }) {
         ) {
           setIsOpenRegNum(!isOpenRegNum);
         } else {
-          return alert(
-            "존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요."
-          );
+          handleShow();
         }
       })
       .catch((err) => {
@@ -127,9 +135,9 @@ function InputStoreInfo({ onChange }) {
   ]);
 
   return (
-    <div>
+    <div style={{ width: "45%" }}>
       <h4>상점 정보</h4>
-      <div style={{ outline: "none" }}>
+      <div style={{ outline: "none", marginBottom: 30 }}>
         <Form.Label>상점 이름*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -141,7 +149,7 @@ function InputStoreInfo({ onChange }) {
         </InputGroup>
       </div>
 
-      <div style={{ height: "70px" }}>
+      <div style={{ height: "70px", marginBottom: 30 }}>
         <Form.Label>사업자등록번호*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -160,14 +168,15 @@ function InputStoreInfo({ onChange }) {
           <Button
             id="regNum-button-addon2"
             onClick={onChangeOpenRegNum}
-            disabled={!isValidRegNum}>
+            disabled={!isValidRegNum}
+          >
             인증하기
           </Button>
         </InputGroup>
         <Form.Label className="waringMessage">{regNumWarnig}</Form.Label>
       </div>
 
-      <div>
+      <div style={{ marginBottom: 30 }}>
         <Form.Label>상점 위치*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -186,7 +195,7 @@ function InputStoreInfo({ onChange }) {
             aria-label="상점의 상세주소를 입력하세요"
             value={extraAddress}
             onChange={(e) => {
-              setExtraAddress(e.target.value.replace(/\s{2,}/gi, ' '));
+              setExtraAddress(e.target.value.replace(/\s{2,}/gi, " "));
               setStoreAddres(mainAddress + " " + " " + e.target.value);
             }}
           />
@@ -197,20 +206,23 @@ function InputStoreInfo({ onChange }) {
         <Form.Label>상점 카테고리*</Form.Label>
         <Form.Select
           aria-label="상점 카테고리를 선택해 주세요."
-          onChange={(e) => setStoreCategory(e.target.value)}>
+          onChange={(e) => setStoreCategory(e.target.value)}
+        >
           <option>상점카테고리</option>
-          <option value="1">One</option>
-          <option value="2">two</option>
-          <option value="3">three</option>
+          <option value="1">카페/제과</option>
+          <option value="2">음식점</option>
+          <option value="3">생활/소품</option>
+          <option value="4">여가/체험</option>
+          <option value="5">건강/뷰티</option>
         </Form.Select>
       </div>
       {isOpenPost ? (
         <ModalStorePostcode
-        show={isOpenPost}
-        onHide={() => setIsOpenPost(false)}
-        onCompletePost={onCompletePost}
-        setIsOpenPost={setIsOpenPost}
-      />
+          show={isOpenPost}
+          onHide={() => setIsOpenPost(false)}
+          onCompletePost={onCompletePost}
+          setIsOpenPost={setIsOpenPost}
+        />
       ) : null}
       {isOpenRegNum ? (
         <ModalStoreRegNum
@@ -218,6 +230,32 @@ function InputStoreInfo({ onChange }) {
           setIsOpenRegNum={setIsOpenRegNum}
           setIsVerifiedRegNum={setIsVerifiedRegNum}
         />
+      ) : null}
+      {show ? (
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+          size="md"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>사업자등록번호 확인</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            존재하지 않는 사업자 입니다. 사업자 번호를 확인해 주세요.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="light" onClick={redirectToHomeTax}>
+              국세청
+            </Button>
+            <Button variant="light" onClick={handleClose}>
+              닫기
+            </Button>
+          </Modal.Footer>
+        </Modal>
       ) : null}
     </div>
   );

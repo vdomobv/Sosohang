@@ -9,7 +9,7 @@ export const getReviewKeywordListByCategorySeq = async (categorySeq) => {
   }
 };
 
-export const createReview = async (storeSeq, selectedKeywords) => {
+export const createReview = async (storeSeq, sosoticonSeq, selectedKeywords) => {
 
   const selectedKeywordsToQueryString = (selectedKeywords) => {
     return selectedKeywords.map(seq => `selectedKeywordSeqList=${seq}`).join('&');
@@ -17,7 +17,7 @@ export const createReview = async (storeSeq, selectedKeywords) => {
   const query = selectedKeywordsToQueryString(selectedKeywords);
   
   try {
-    const response = await axios.post(`https://j9c109.p.ssafy.io/api/v1/review/create?storeSeq=${storeSeq}&${query}`);
+    const response = await axios.post(`https://j9c109.p.ssafy.io/api/v1/review/create?storeSeq=${storeSeq}&sosoticonSeq=${sosoticonSeq}&${query}`);
     return response.data;
   } catch (e) {
     console.log(e);

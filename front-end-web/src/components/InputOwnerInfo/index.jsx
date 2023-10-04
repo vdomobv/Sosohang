@@ -12,6 +12,9 @@ function InputOwnerInfo({ onChange }) {
   const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이는지 여부
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 비밀번호확인 보이는지 여부
 
+  // 휴대폰 인증번호 입력 칸 보일지 말지 결정해보자.
+  const [showVerificationForm, setShowVerificationForm] = useState(false);
+
   // 상점비밀번호 형식 - 영어 대/소문자, 숫자, 특수문자를 포함하여 8~20글자
   const storePasswordRegEx =
     /^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*()\-_=+{}[\]|\\;:'",.<>/?]).{8,20}$/;
@@ -57,11 +60,15 @@ function InputOwnerInfo({ onChange }) {
   const sendVerifiedNum = () => {
     // 인증번호 요청
     console.log("인증번호 요청");
+    setShowVerificationForm(true);
+
   };
 
   const verifieNumCheck = () => {
     // 인증번호 확인
     console.log("인증번호 확인");
+    setShowVerificationForm(false);
+
   };
 
   useEffect(() => {
@@ -77,9 +84,9 @@ function InputOwnerInfo({ onChange }) {
   }, [storePassword, storePhoneNum, confirmOwnerInfo, onChange]);
 
   return (
-    <div>
+    <div style={{ width: "45%" }}>
       <h4>사장님 정보</h4>
-      <div>
+      <div style={{marginBottom: 30}}>
         <Form.Label>휴대전화번호*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -98,26 +105,28 @@ function InputOwnerInfo({ onChange }) {
             전송하기
           </Button>
         </InputGroup>
-        <InputGroup style={{ marginTop: "15px" }}>
-          <InputGroup.Text>인증번호</InputGroup.Text>
-          <Form.Control
-            placeholder="인증번호"
-            aria-label="인증번호를 입력하세요"
-            maxLength={6}
-            onChange={(e) => {
-              const numExp = /[^0-9]/g;
-              if (numExp.test(e.target.value)) {
-                e.target.value = e.target.value.replace(numExp, "");
-              }
-              setVerifiedNum(e.target.value);
-            }}
-          />
-          <Button id="verified-button-addon2" onClick={verifieNumCheck}>
-            인증하기
-          </Button>
-        </InputGroup>
+        {showVerificationForm && (
+          <InputGroup style={{ marginTop: "15px" }}>
+            <InputGroup.Text>인증번호</InputGroup.Text>
+            <Form.Control
+              placeholder="인증번호"
+              aria-label="인증번호를 입력하세요"
+              maxLength={6}
+              onChange={(e) => {
+                const numExp = /[^0-9]/g;
+                if (numExp.test(e.target.value)) {
+                  e.target.value = e.target.value.replace(numExp, "");
+                }
+                setVerifiedNum(e.target.value);
+              }}
+            />
+            <Button id="verified-button-addon2" onClick={verifieNumCheck}>
+              인증하기
+            </Button>
+          </InputGroup>
+        )}
       </div>
-      <div style={{ height: "70px" }}>
+      <div style={{ height: "70px", marginBottom: 30 }}>
         <Form.Label>비밀번호*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -131,11 +140,13 @@ function InputOwnerInfo({ onChange }) {
           />
           <InputGroup.Text
             onClick={onChangeShowPassword}
-            style={{ cursor: "pointer" }}>
+            style={{ cursor: "pointer" }}
+          >
             <i
               className={
                 showPassword ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"
-              }></i>
+              }
+            ></i>
           </InputGroup.Text>
         </InputGroup>
         <Form.Label className="waringMessage">{passwordWarning}</Form.Label>
@@ -154,13 +165,15 @@ function InputOwnerInfo({ onChange }) {
           />
           <InputGroup.Text
             onClick={onChangeShowConfirmPassword}
-            style={{ cursor: "pointer" }}>
+            style={{ cursor: "pointer" }}
+          >
             <i
               className={
                 showConfirmPassword
                   ? "fa-solid fa-eye"
                   : "fa-solid fa-eye-slash"
-              }></i>
+              }
+            ></i>
           </InputGroup.Text>
         </InputGroup>
         <Form.Label className="waringMessage">

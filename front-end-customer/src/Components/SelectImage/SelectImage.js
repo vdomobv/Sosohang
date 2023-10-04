@@ -10,6 +10,9 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { uploadImageToNCP } from '../../Utils/UploadImage.js';
+import ImageResizer from 'react-native-image-resizer';
+
 
 export default function SelectImage({
   selectedButton,
@@ -28,7 +31,16 @@ export default function SelectImage({
     });
     return byteCharacters;
   };
-
+  const resizeImage = async (uri, maxWidth = 400, maxHeight = 350) => {
+    const response = await ImageResizer.createResizedImage(
+      uri,
+      maxWidth,
+      maxHeight,
+      'JPEG',
+      100
+    );
+    return response.uri;
+  };
   // "+" 버튼을 눌렀을 때 갤러리 열기
   const openImagePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -42,11 +54,15 @@ export default function SelectImage({
         allowsEditing: true,
       });
       if (!result.canceled) {
-        const base64Image = await uriToBase64(result.assets[0].uri);
+        const resizedImageUri = await resizeImage(result.assets[0].uri);
+        const base64Image = await uriToBase64(resizedImageUri);
+
+        // const base64Image = await uriToBase64(result.assets[0].uri);
         // console.log("Base64 이미지값 : ", base64Image);
 
         // 이미지의 base64 값을 result.assets의 첫 번째 아이템에 할당
         result.assets[0].base64 = base64Image;
+        console.log(base64Image);
 
         setSelectedButton(null);
         setSelectedImage(result.assets);

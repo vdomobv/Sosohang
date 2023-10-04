@@ -6,6 +6,9 @@ import {
   NCP_SECRET_KEY,
   NCP_SERVICE_ID,
 } from "@env";
+import CryptoJS from 'crypto-js';
+import * as ImageManipulator from 'expo-image-manipulator';
+
 
 function makeSignature(url, timestamp, method) {
   const space = " ";
@@ -13,10 +16,7 @@ function makeSignature(url, timestamp, method) {
   const message =
     method + space + url + newLine + timestamp + newLine + NCP_ACCESS_KEY;
   const secretKey = NCP_SECRET_KEY;
-  const hash = crypto
-    .createHmac("sha256", secretKey)
-    .update(message)
-    .digest("base64");
+  const hash = CryptoJS.HmacSHA256(message, secretKey).toString(CryptoJS.enc.Base64);
   return hash;
 }
 
@@ -27,18 +27,20 @@ async function uploadImageToNCP(base64Image, fileName) {
   const timestamp = "" + Date.now();
 
   const signature = makeSignature(requestUrl, timestamp, method);
-
+console.log("표시!!!", base64Image[0].base64);
   const bodyJson = {
     fileName: fileName,
-    fileBody: base64Image,
+    fileBody: base64Image[0].base64,
   };
 
   const headers = {
-    "content-type": "application/json",
+    "content-type": "application/json; charset=utf-8",
     "x-ncp-apigw-timestamp": timestamp,
-    "x-ncp-iam-access-key": NCP.ACCESS_KEY,
+    "x-ncp-iam-access-key": NCP_ACCESS_KEY,
     "x-ncp-apigw-signature-v2": signature,
   };
+  console.log("Request Headers:", headers);
+  console.log("Request Body:", JSON.stringify(bodyJson));
 
   const response = await fetch(apiUrl, {
     method: "POST",
@@ -47,6 +49,7 @@ async function uploadImageToNCP(base64Image, fileName) {
   });
 
   if (!response.ok) {
+    console.error('Server Response:', await response.text());  // 서버 응답 내용 로깅
     throw new Error("Failed to upload image");
   }
 
@@ -90,3 +93,4 @@ async function uploadImageToNCP(base64Image, fileName) {
 //         console.error("Error uploading file to S3:", error);
 //     }
 // };
+export { uploadImageToNCP };

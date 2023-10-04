@@ -71,7 +71,7 @@ export default function MyGift({ navigation }) {
     .map((d, index) => {
       return (
         <ReceivedGift
-          onPress={() => handleGiftClickr(d)}
+          onPress={() => handleGiftClick(d)}
           data={d}
           key={index}
           usable={false}

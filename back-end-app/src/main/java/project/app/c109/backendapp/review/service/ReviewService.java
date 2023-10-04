@@ -9,6 +9,8 @@ import project.app.c109.backendapp.review.repository.ReviewRepository;
 import project.app.c109.backendapp.reviewkeyword.entity.ReviewKeyword;
 import project.app.c109.backendapp.reviewkeyword.repository.ReviewKeywordRepository;
 import project.app.c109.backendapp.reviewkeyword.service.ReviewKeywordService;
+import project.app.c109.backendapp.sosoticon.domain.entity.Sosoticon;
+import project.app.c109.backendapp.sosoticon.repository.SosoticonRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Comparator;
@@ -22,13 +24,16 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     private final ReviewKeywordRepository reviewKeywordRepository;
+    private final SosoticonRepository sosoticonRepository;
+
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, ReviewKeywordRepository reviewKeywordRepository) {
+    public ReviewService(SosoticonRepository sosoticonRepository, ReviewRepository reviewRepository, ReviewKeywordRepository reviewKeywordRepository) {
+        this.sosoticonRepository = sosoticonRepository;
         this.reviewRepository = reviewRepository;
         this.reviewKeywordRepository = reviewKeywordRepository;
     }
 
-    public void createReview(Integer storeSeq, List<Integer> selectedKeywordSeqList) {
+    public void createReview(Integer storeSeq, Integer sosoticonSeq, List<Integer> selectedKeywordSeqList) {
         for (Integer keywordSeq : selectedKeywordSeqList) {
 
             ReviewKeyword reviewKeyword = reviewKeywordRepository.findByReviewKeywordSeq(keywordSeq)
@@ -51,6 +56,10 @@ public class ReviewService {
                 reviewRepository.save(review);
             }
         }
+
+        Sosoticon sosoticon = sosoticonRepository.findBySosoticonSeq(sosoticonSeq).get();
+        sosoticon.setSosoticonReviewStatus(2);
+        sosoticonRepository.save(sosoticon);
     }
 
     public List<Review> getReviewsByStoreSeqOrderByReviewKeywordCount(Integer storeSeq) {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import AWS from "aws-sdk";
 import styles from "./styles";
 
@@ -38,29 +38,17 @@ function FileUpload({ onChange }) {
 
   return (
     <div>
-      <Form.Label>이미지</Form.Label>
-      <div className="filebox">
-        <input
-          type="file"
-          className="custom-file-input"
-          variant="primary"
-          id="customFile"
-          onChange={handleFileChange}
-        />
-        <label className="custom-file-label" htmlFor="customFile">
-          파일 선택
-        </label>
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            handleUpload();
-          }}
-          variant = "light"
-          style = {{marginLeft: 10}}
-        >
-          이미지 업로드
-        </Button>
-      </div>
+      <input type="file" onChange={handleFileChange}
+      style={{ marginLeft: '20px' }}
+      />
+      <Button
+        style={{ backgroundColor: "#46C27D", borderColor: '#46C27D' }}
+        onClick={(e) => {
+          e.preventDefault();
+          handleUpload();
+        }}>
+        업로드
+      </Button>
     </div>
   );
 }

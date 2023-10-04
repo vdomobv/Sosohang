@@ -103,17 +103,21 @@ function TableProductActive() {
   };
 
   return (
-    <div style={{ margin: "50px" }}>
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-        <h1>기본 상품 목록</h1>
-        <Button onClick={() => setShowAddModal(true)}>상품 추가</Button>
+    // 기본 상품 목록
+    <div style={{ margin: "80px 100px" }}>
+      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+        <h2>기본 상품 목록</h2>
+        <Button
+          style={{ padding: "10px 16px", backgroundColor: "#46C27D", border: "none" }}
+          onClick={() => setShowAddModal(true)}>상품 추가</Button>
       </div>
       <Button
         variant="danger"
         onClick={() => openDeleteModal(selectedProducts)}
         disabled={selectedProducts.length === 0} // 선택한 항목이 없을 때 비활성화
+        style={{ margin: "15px 0 10px 0", padding: "8px 17px" }}
       >
-        선택한 항목 삭제
+        선택 항목 삭제
       </Button>
       <Table striped bordered hover>
         <thead>

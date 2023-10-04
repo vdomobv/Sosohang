@@ -232,20 +232,20 @@ export default function Shop({ navigation, route }) {
   }, [shouldNavigate]);
 
   // 버튼 스크롤 시 표시
-  useEffect(() => {
-    if (scrollY >= 100) {
-      setShowButton(true);
-    } else {
-      setShowButton(false);
-    }
-  }, [scrollY]);
+  // useEffect(() => {
+  //   if (scrollY >= 60) {
+  //     setShowButton(true);
+  //   } else {
+  //     setShowButton(false);
+  //   }
+  // }, [scrollY]);
 
   return (
     <>
       <ScrollView
-        onScroll={(e) => {
-          setScrollY(e.nativeEvent.contentOffset.y);
-        }}
+        // onScroll={(e) => {
+        //   setScrollY(e.nativeEvent.contentOffset.y);
+        // }}
         showsVerticalScrollIndicator={false}
         style={styles.container}
       >
@@ -333,38 +333,39 @@ export default function Shop({ navigation, route }) {
         </View>
         <View style={styles.blank}></View>
       </ScrollView>
-      {showButton && (
-        <View style={styles.buttons}>
-          <CustomButton
-            customStyles={{ backgroundColor: "#FFBF46" }}
-            content={<Text style={styles.text}>장바구니</Text>}
-            pressFuction={putInCart}
-          />
-          <CustomButton
-            content={<Text style={styles.text}>선물하기</Text>}
-            pressFuction={orderProducts}
-          />
-        </View>
-      )}
+      {/* {showButton && ( */}
+      <View style={styles.buttons}>
+        <CustomButton
+          customStyles={{ backgroundColor: "#FFBF46" }}
+          content={<Text style={styles.text}>장바구니</Text>}
+          pressFuction={putInCart}
+        />
+        <CustomButton
+          content={<Text style={styles.text}>선물하기</Text>}
+          pressFuction={orderProducts}
+        />
+      </View>
+      {/* )} */}
 
       <CustomModal modalState={modalState}
         content={
           <View>
             <View>
-              <SectionTitle content={<Text>장바구니에 상품을 담았습니다.</Text>} />
-              <SectionTitle content={<Text>장바구니로 이동하시겠습니까?</Text>} />
+              <SectionTitle content={<Text>장바구니에 상품을 담았어요.</Text>} />
+              <SectionTitle content={<Text>장바구니로 이동할까요?</Text>} />
+              <Text></Text>
             </View>
             <View style={styles.modalButtons}>
+              <CustomButton
+                content={<Text style={styles.modalText}>계속 쇼핑하기</Text>}
+                pressFuction={() => { setModalState(false) }}
+              />
               <CustomButton
                 customStyles={{ backgroundColor: "#FFBF46" }}
                 content={<Text style={styles.modalText}>이동하기</Text>}
                 pressFuction={() => { 
                   setModalState(false)
                   navigation.navigate('Cart') }}
-              />
-              <CustomButton
-                content={<Text style={styles.modalText}>계속 쇼핑하기</Text>}
-                pressFuction={() => { setModalState(false) }}
               />
             </View>
           </View>

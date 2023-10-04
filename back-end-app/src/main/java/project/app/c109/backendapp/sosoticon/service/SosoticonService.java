@@ -1,9 +1,5 @@
 package project.app.c109.backendapp.sosoticon.service;
 
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.exception.ApiException;
-import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -11,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import project.app.c109.backendapp.member.repository.MemberRepository;
 import project.app.c109.backendapp.sosoticon.domain.dto.request.SosoticonRequestDTO;
 import project.app.c109.backendapp.sosoticon.domain.dto.request.SosoticonDeductRequestDTO;
-
 import project.app.c109.backendapp.sosoticon.domain.dto.response.SosoticonResponseDTO;
 import project.app.c109.backendapp.sosoticon.domain.entity.Sosoticon;
 import project.app.c109.backendapp.sosoticon.repository.SosoticonRepository;
@@ -20,21 +15,13 @@ import project.app.c109.backendapp.member.repository.MemberRepository;
 import project.app.c109.backendapp.sosoticon.util.QRCodeUtil_Image;
 import project.app.c109.backendapp.store.domain.entity.Store;
 import project.app.c109.backendapp.store.repository.StoreRepository;
-
-//import project.app.c109.backendapp.sosoticon.util.QRCodeUtil;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
-
 import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.util.*;
-
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
-
 
 @Service
 public class SosoticonService {
@@ -43,34 +30,34 @@ public class SosoticonService {
     private SosoticonRepository sosoticonRepository;
 
     @Autowired
-    private MemberRepository memberRepository; // 멤버 엔터티에 접근하기 위한 레포지토리
+    private MemberRepository memberRepository;
 
     @Autowired
-    private StoreRepository storeRepository; // 상점 엔터티에 접근하기 위한 레포지토리
+    private StoreRepository storeRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-////     QRCodeUtil 빈 주입
-//    @Autowired
-//    private QRCodeUtil qrCodeUtil;
+    @Autowired
+    private NcpSensService ncpSensService;
 
-//     QRCodeUtil_Image 빈 주입
     @Autowired
     private QRCodeUtil_Image qrCodeUtil_image;
 
     @Autowired
     private Environment env;
 
-    private String twilioAccountSid;
-    private String twilioAuthToken;
-    private String twilioPhoneNumber;
+    private String ncpApiUrl;
+    private String ncpAccessKey;
+    private String ncpSecretKey;
+    private String ncpServiceId;
 
     @PostConstruct
     public void init() {
-        twilioAccountSid = env.getProperty("twilio.accountSid");
-        twilioAuthToken = env.getProperty("twilio.authToken");
-        twilioPhoneNumber = env.getProperty("twilio.phoneNumber");
+        ncpApiUrl = env.getProperty("ncp.apiUrl");
+        ncpAccessKey = env.getProperty("ncp.accessKey");
+        ncpSecretKey = env.getProperty("ncp.secretKey");
+        ncpServiceId = env.getProperty("ncp.serviceId");
     }
     @Transactional
     public Sosoticon createSosoticon(SosoticonRequestDTO requestDTO) {
@@ -109,7 +96,7 @@ public class SosoticonService {
                     .orElseThrow(() -> new RuntimeException("Store not found with ID: " + requestDTO.getStoreSeq()));
             sosoticon.setStore(storeEntity);
             sosoticon.setSosoticonTakerName(requestDTO.getSosoticonTakerName());
-            sosoticon.setSosoticonTaker("+82" + requestDTO.getSosoticonTaker().substring(1));
+            sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
             sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
             sosoticon.setSosoticonUrl(requestDTO.getSosoticonUrl());
@@ -120,20 +107,7 @@ public class SosoticonService {
 
             // MMS 보내기
             try {
-                sendMMSWithImageLink(
-                        // 발신자 이름
-                        requestDTO.getSosoticonGiverName(),
-                        // 수신자 이름
-                        requestDTO.getSosoticonTakerName(),
-                        // 수신자 전화번호
-                        "+82" + requestDTO.getSosoticonTaker().substring(1),
-                        // 메시지 텍스트
-                        requestDTO.getSosoticonText(),
-                        // qr URL
-                        qrImageUrl,
-                        // 사용자 첨부 이미지
-                        requestDTO.getSosoticonImage()
-                );
+                ncpSensService.sendSMS(requestDTO, qrImageUrl);
             } catch (RuntimeException e) {
                 System.err.println("MMS 전송에 실패했지만 소소티콘은 정상적으로 발행됩니다.");
             }
@@ -248,29 +222,6 @@ public class SosoticonService {
     }
 
 
-public void sendMMSWithImageLink(String sosoticonGiverName, String sosoticonTakerName, String phoneNumber, String messageText, String qrUrl, String userImage) {
-    try {
-        Twilio.init(twilioAccountSid, twilioAuthToken);
-
-        List<URI> mediaUrl = new ArrayList<>();
-        mediaUrl.add(URI.create(qrUrl));
-        String customizedMessage = sosoticonGiverName+ " 님이 " + sosoticonTakerName + " 님께 보내신 선물입니다.\n"
-                + messageText + "\n"+ "동네 상점 모바일 쿠폰 서비스 '소소행'에서 발송 되었습니다. :)";
-
-        Message sentMessage = Message.creator(
-                        new PhoneNumber(phoneNumber), // to
-                        new PhoneNumber(twilioPhoneNumber), // from
-                        customizedMessage)
-                .setMediaUrl(mediaUrl)
-                .create();
-
-    } catch (ApiException e) {
-        System.err.println(e.getMessage());
-        throw new RuntimeException("Failed to send MMS", e);
-    }
-}
-
-
     public List<Member> findYouAndMeList(Integer memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with seq: " + memberSeq));
@@ -282,7 +233,7 @@ public void sendMMSWithImageLink(String sosoticonGiverName, String sosoticonTake
             takerOpt.ifPresent(youAndMeSet::add); // Set에 추가
         }
 
-        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker("+82" + member.getMemberPhone().substring(1));
+        List<Sosoticon> receiveSosoticons = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
         for (Sosoticon sosoticon : receiveSosoticons) {
             Member giver = sosoticon.getMember();
             if (giver != null) {
@@ -295,11 +246,11 @@ public void sendMMSWithImageLink(String sosoticonGiverName, String sosoticonTake
 
     public List<Sosoticon> findYouAndMeSosoticonList(Integer mySeq, Integer yourSeq) {
         String memberPhone = memberRepository.findByMemberSeq(yourSeq).get().getMemberPhone();
-        memberPhone = "+82" + memberPhone.substring(1);
+        memberPhone = memberPhone;
         Integer memberSeq = mySeq;
         List<Sosoticon> sosoticonList = sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone);
 
-        memberPhone = "+82" + memberRepository.findByMemberSeq(mySeq).get().getMemberPhone().substring(1);
+        memberPhone = memberRepository.findByMemberSeq(mySeq).get().getMemberPhone();
         memberSeq = yourSeq;
         sosoticonList.addAll(sosoticonRepository.findByMemberMemberSeqAndSosoticonTaker(memberSeq, memberPhone));
 
@@ -309,7 +260,7 @@ public void sendMMSWithImageLink(String sosoticonGiverName, String sosoticonTake
 
     public List<Sosoticon> getReceivedList(Integer memberSeq) {
         Member member = memberRepository.findByMemberSeq(memberSeq).get();
-        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker("+82" + member.getMemberPhone().substring(1));
+        List<Sosoticon> sosoticonList = sosoticonRepository.findBySosoticonTaker(member.getMemberPhone());
         return sosoticonList;
     }
 

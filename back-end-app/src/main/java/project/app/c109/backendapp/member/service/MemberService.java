@@ -1,9 +1,6 @@
 package project.app.c109.backendapp.member.service;
 
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.exception.ApiException;
-import com.twilio.type.PhoneNumber;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -17,6 +14,7 @@ import project.app.c109.backendapp.member.domain.dto.request.MemberRegisterReque
 import project.app.c109.backendapp.member.domain.dto.response.LoginResponse;
 import project.app.c109.backendapp.member.domain.entity.Member;
 import project.app.c109.backendapp.member.repository.MemberRepository;
+import project.app.c109.backendapp.sosoticon.service.NcpSensService;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityExistsException;
@@ -30,18 +28,24 @@ public class MemberService {
     private StringRedisTemplate stringRedisTemplate;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+
+    @Autowired
+    private NcpSensService ncpSensService;
+
     @Autowired
     private Environment env;
 
-    private String twilioAccountSid;
-    private String twilioAuthToken;
-    private String twilioPhoneNumber;
+    private String ncpApiUrl;
+    private String ncpAccessKey;
+    private String ncpSecretKey;
+    private String ncpServiceId;
 
     @PostConstruct
     public void init() {
-        twilioAccountSid = env.getProperty("twilio.accountSid");
-        twilioAuthToken = env.getProperty("twilio.authToken");
-        twilioPhoneNumber = env.getProperty("twilio.phoneNumber");
+        ncpApiUrl = env.getProperty("ncp.apiUrl");
+        ncpAccessKey = env.getProperty("ncp.accessKey");
+        ncpSecretKey = env.getProperty("ncp.secretKey");
+        ncpServiceId = env.getProperty("ncp.serviceId");
     }
 
     public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, StringRedisTemplate stringRedisTemplate) {
@@ -104,19 +108,13 @@ public class MemberService {
 
     private void sendVerificationCodeViaSMS(String phoneNumber, String authCode) {
         try {
-            Twilio.init(twilioAccountSid, twilioAuthToken);
-            String messageBody = "인증번호를 입력하세요: " + authCode;
-
-            Message message = Message.creator(
-                    new PhoneNumber(phoneNumber),
-                    new PhoneNumber(twilioPhoneNumber),
-                    messageBody
-            ).create();
-        } catch (ApiException e) {
+            ncpSensService.sendVerificationSMS(phoneNumber, authCode);
+        } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             throw new RuntimeException("Failed to send SMS", e);
         }
     }
+
 
     public boolean verifyAuthCode(String phoneNumber, String inputAuthCode) {
         String storedAuthCode = stringRedisTemplate.opsForValue().get(phoneNumber);

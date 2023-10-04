@@ -37,7 +37,7 @@ export default function Product({ data, checked, amount, onCheckChange, onAmount
             <View style={styles.content}>
                 <SectionTitle content={data.productName} />
                 {data.productDcrate ? <Text style={styles.prevPrice}>{`${data.productPrice}원`}</Text> : null}
-                <SectionTitle content={`${data.productDcrate ? (1 - data.productDcrate) * data.productPrice : data.productPrice}원`} customStyles={{ color: '#FF4646' }} />
+                <SectionTitle content={`${(1 - data.productDcrate) * data.productPrice }원`} customStyles={{ color: '#FF4646' }} />
                 <View style={styles.amount}>
                     <Amount onCheckChange={(productAmount) => {
                         setProductAmount(productAmount);

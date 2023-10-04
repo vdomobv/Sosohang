@@ -73,6 +73,11 @@ public class Sosoticon {
     @Column
     private LocalDateTime createdAt;
 
+    @Column
+    @Getter
+    @Setter
+    private Integer sosoticonReviewStatus;
+
     // Default constructor
     public Sosoticon() {
         this.sosoticonCode = UUID.randomUUID().toString();

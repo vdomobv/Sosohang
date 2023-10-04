@@ -2,12 +2,9 @@ import styles from "./styles";
 import { View, Text } from "react-native";
 
 import Title from "../../Components/Title/Title";
-import Carousel from "../../Components/Carousel/Carousel"
-import HashTag from "../../Components/HashTag/HashTag";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
 import Shop from "../../Components/Shop/Shop";
 
-import CategoryData from "../../Dummys/Main/CategoryData";
 import { getDibData } from "../../Utils/DibAPI";
 import { useEffect, useState } from "react";
 import { getMemberSeq } from "../../Utils/MemberAPI";

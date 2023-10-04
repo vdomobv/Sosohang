@@ -258,7 +258,7 @@ export default function Shop({ navigation, route }) {
             : undefined}
         </View>
 
-        <Image src={storeData ? storeData.storeImage : "assets/images/bread.png"} style={styles.image} />
+        <Image src={storeData ? storeData.storeImage : "assets/images/no_img.png"} style={styles.image} />
         <View style={styles.content}>
           <View style={styles.head}>
             <SectionTitle content={storeData ? storeData.category.categoryName : 'Loading...'} />

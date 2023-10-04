@@ -174,7 +174,7 @@ function TableProductActive() {
         </tbody>
       </Table>
       <ModalProdctAdd
-        style={{ Top: "200px" }}
+        // style={{ Top: "200px" }}
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
         onAddProduct={handleAddProduct}

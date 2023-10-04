@@ -1,8 +1,6 @@
 import styles from "./styles";
 import { View } from "react-native";
 
-import shopListDummy from "../../Dummys/Shop/ShopListDummy";
-
 import Title from "../../Components/Title/Title";
 import Shop from "../../Components/Shop/Shop";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";

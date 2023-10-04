@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import AWS from "aws-sdk";
+import styles from "./styles";
 
 function FileUpload({ onChange }) {
   const [file, setFile] = useState(null);

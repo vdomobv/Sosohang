@@ -1,13 +1,15 @@
 import styles from "./styles";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import CustomModal from "../../Components/CustomModal/CustomModal";
 import SubTitle from "../SubTitle/SubTitle";
 
 export default function ReceivedGift({ data, usable, onPress }) {
+  const isReviewAlready = data.sosoticonReviewStatus;
+  console.log("여기다", data.sosoticonReviewStatus);
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
 
@@ -17,9 +19,13 @@ export default function ReceivedGift({ data, usable, onPress }) {
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.person}>
-              {data["sosoticonTakerName"] ? " from. " + data.sosoticonTakerName : " to. " + data.to}{" "}
+              {data["sosoticonTakerName"]
+                ? " from. " + data.sosoticonTakerName
+                : " to. " + data.to}{" "}
             </Text>
-            <Text style={styles.date}>{new Date(data.createdAt).toLocaleString()}</Text>
+            <Text style={styles.date}>
+              {new Date(data.createdAt).toLocaleString()}
+            </Text>
           </View>
           <View style={styles.body}>
             <Image style={styles.image} src={data.store.storeImage} />
@@ -63,14 +69,20 @@ export default function ReceivedGift({ data, usable, onPress }) {
             </View>
           ) : (
             <View style={styles.buttons}>
-              {usable ? ("") : (
-                <CustomButton
-                  content={"후기 남기기"} 
-                  pressFuction={() => {
-                    navigation.navigate("Review", { giftData: data });
-                  }}
-                />
-              )}
+              {!usable &&
+                (isReviewAlready === 1 ? (
+                  <CustomButton
+                    content={"후기 남기기"}
+                    pressFuction={() => {
+                      navigation.navigate("Review", { giftData: data });
+                    }}
+                  />
+                ) : (
+                  <CustomButton
+                    content={"후기 작성 완료"}
+                    // 필요한 경우 pressFunction 또는 다른 props 추가
+                  />
+                ))}
             </View>
           )}
         </View>

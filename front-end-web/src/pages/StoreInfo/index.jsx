@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import Cookies from "js-cookie";
 import Header from "../../components/Header";
@@ -15,8 +15,8 @@ function StoreInfo() {
   // console.log(tokenCookie);
   // useEffect(() => {
   //   if (tokenCookie === undefined) return navigate("/")
-  // }, [tokenCookie])  
-  
+  // }, [tokenCookie])
+
   const [storeKeywords, setStoreKeywords] = useState([]);
   const [storeInfo, setStoreInfo] = useState({});
   const [storeEditInfo, setStoreEditInfo] = useState({});
@@ -38,7 +38,7 @@ function StoreInfo() {
           })
           .catch((err) => {
             console.error(err);
-          });        
+          });
         setStoreInfo({
           storeName: res.data.store.storeName,
           storeRegNum: res.data.registartionNumber,
@@ -57,7 +57,7 @@ function StoreInfo() {
           storeExtraInfo: res.data.store.storeExtraInfo,
           storeUrl: res.data.store.storeUrl,
           storeKeywords: storeKeywords,
-          storeImage: res.data.store.storeImage
+          storeImage: res.data.store.storeImage,
         });
         setStoreImage(res.data.store.storeImage);
       })
@@ -67,7 +67,7 @@ function StoreInfo() {
   }, []);
 
   const handleEditStoreInfo = async () => {
-    if (!(storeEditInfo.confirmStoreInfo)) {
+    if (!storeEditInfo.confirmStoreInfo) {
       return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
     }
 
@@ -86,11 +86,11 @@ function StoreInfo() {
         storeExtraInfo: storeEditIssue.storeExtraInfo,
         selectedKeywordSeqList: storeEditIssue.storeKeywords,
         storeUrl: storeEditIssue.storeUrl,
-        storeImage: storeEditImage === "" ? storeImage:storeEditImage,
+        storeImage: storeEditImage === "" ? storeImage : storeEditImage,
       })
       .then((res) => {
         console.log(res);
-        alert("상점정보가 수정되었습니다.")
+        alert("상점정보가 수정되었습니다.");
         navigate("/");
       })
       .catch((err) => {
@@ -100,17 +100,47 @@ function StoreInfo() {
 
   return (
     <div>
-      <Header/>
-      <h1>상점정보</h1>
-      <form>
+      <Header />
+      <form
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          // alignItems: "center",
+          justifyContent: "center",
+        }}>
         <div>
-          <EditStoreInfo onChange={setStoreEditInfo} info={storeInfo}/>
+          <EditStoreInfo onChange={setStoreEditInfo} info={storeInfo} />
         </div>
-        <div>
-          <EditStoreIssue onChange={setStoreEditIssue} info={storeIssue}/>
+        <div
+          style={{
+            marginTop: "50px",
+            marginLeft: "100px",
+            marginRight: "100px",
+          }}>
+          <EditStoreIssue onChange={setStoreEditIssue} info={storeIssue} />
+        </div>
+        <div style={{ marginLeft: "100px", marginRight: "100px" }}>
           <FileUpload onChange={setStoreEditImage} />
         </div>
-        <Button onClick={handleEditStoreInfo}>정보수정</Button>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}>
+          <div></div>
+          <Button
+            style={{
+              marginLeft: "100px",
+              marginRight: "100px",
+              width: "10vw",
+              height: "5vh",
+            }}
+            onClick={handleEditStoreInfo}>
+            정보수정
+          </Button>
+          <div></div>
+        </div>
       </form>
     </div>
   );

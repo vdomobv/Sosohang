@@ -17,6 +17,7 @@ public interface SosoticonRepository extends JpaRepository<Sosoticon, Integer> {
     List<Sosoticon> findBySosoticonTaker(String sosoticonTaker);
 
     List<Sosoticon> findByMemberMemberSeqAndSosoticonTaker(Integer memberSeq, String memberPhone);
+    Optional<Sosoticon> findBySosoticonSeq(Integer sosoticonSeq);
 
 
 }

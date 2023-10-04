@@ -5,37 +5,49 @@ import Wrapper from './styles';
 import axios from 'axios';
 
 function Header() {
-  const [auth, setAuth] = useState(false);
-  const navigate = useNavigate();
+  const [isAuth, setIsAuth] = useState(false);
+
+  const auth = Cookies.get("jwtToken");
+  const navigate = useNavigate();  
 
   useEffect(() => {
-    axios
-      .get("/api/v1/store/token_test")
-      .then((res) => {
-        if(res.data !== false) {
-          setAuth(true);
-        } else {
-          setAuth(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }, [])
+    if (auth === undefined) {
+      setIsAuth(false);
+    } else {
+      setIsAuth(true);
+    }
+  }, [auth, navigate]);
+  // const [auth, setAuth] = useState(false);
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   axios
+  //     .get("/api/v1/store/token_test")
+  //     .then((res) => {
+  //       if(res.data !== false) {
+  //         setAuth(true);
+  //       } else {
+  //         setAuth(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     })
+  // }, [])
 
   const handleLogout = () => {
     axios
       .get("/api/v1/store/logout")
       .then((res) => {
         navigate("/")
-        setAuth(false);
+        setIsAuth(false);
       })
       .catch((err) => {
         console.log(err);
       })
   }
 
-  console.log(auth);
+  // console.log(auth);
 
   return (
     <Wrapper>
@@ -47,7 +59,7 @@ function Header() {
           style={{  width: '130px', height: '50px' }}
         />
       </Link>
-      {auth ?
+      {isAuth ?
       <div className="links"> 
         <NavLink to="/storeManage" className={({ isActive }) => isActive ? 'active' : undefined}>
           판매내역

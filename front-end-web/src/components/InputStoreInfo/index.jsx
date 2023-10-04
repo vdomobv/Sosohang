@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, InputGroup, Button } from "react-bootstrap";
+import { Modal, Form, InputGroup, Button, ToggleButton } from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 import ModalStoreRegNum from "../../components/ModalStoreRegNum";
@@ -104,6 +104,23 @@ function InputStoreInfo({ onChange }) {
   };
 
   const [storeCategory, setStoreCategory] = useState("1"); // 상점 카테고리
+
+  const [categoryKeywords, setCategoryKeyWords] = useState([]);
+
+  const selectedCategory = (category) => {
+    // console.log(storeCategory);
+    axios
+      .get(
+        `https://j9c109.p.ssafy.io/api/v1/keywords/category/${category}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setCategoryKeyWords(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     if (
@@ -215,6 +232,23 @@ function InputStoreInfo({ onChange }) {
           <option value="4">여가/체험</option>
           <option value="5">건강/뷰티</option>
         </Form.Select>
+      </div>
+      <div style={{ outline: "none", margin: "20px" }}>
+        <Form.Label>상점 키워드</Form.Label>
+        {categoryKeywords?.map((keyword, index) => (
+          <ToggleButton
+            key={keyword.keywordSeq}
+            id={`${keyword.keywordSeq}-toggle-check`}
+            type="checkbox"
+            variant="outline-primary"
+            checked={false}
+            value={keyword.keywordSeq}
+            onChange={(e) => {
+              console.log("HERE");
+            }}>
+            {keyword.keywordName}
+          </ToggleButton>
+        ))}
       </div>
       {isOpenPost ? (
         <ModalStorePostcode

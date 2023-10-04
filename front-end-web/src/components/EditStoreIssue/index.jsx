@@ -880,9 +880,9 @@ function EditStoreIssue(props) {
           />
         </InputGroup>
       </div>
-      <div style={{ outline: "none", margin: "20px"}}>
+      {/* <div style={{ outline: "none", margin: "20px"}}>
         <Form.Label>상점 키워드</Form.Label>
-      </div>
+      </div> */}
     </div>
   );
 }

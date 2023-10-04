@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, InputGroup, Button } from "react-bootstrap";
+import { Form, InputGroup, Button, ToggleButton } from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 
@@ -50,6 +50,24 @@ function EditStoreInfo(props) {
 
   const [storeCategory, setStoreCategory] = useState(""); // 상점 카테고리
 
+  const [categoryKeywords, setCategoryKeyWords] = useState([]);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+
+  const selectedCategory = (category) => {
+    // console.log(storeCategory);
+    axios
+      .get(
+        `https://j9c109.p.ssafy.io/api/v1/keywords/category/${category}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setCategoryKeyWords(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     setStoreName(info.storeName);
     setStoreRegNum(info.storeRegNum);
@@ -82,9 +100,10 @@ function EditStoreInfo(props) {
   }, [storeName, storeAddress, storeCategory, onChange]);
 
   return (
-    <div style={{marginTop:"50px", marginLeft:"100px", marginRight:"100px"}}>
+    <div
+      style={{ marginTop: "50px", marginLeft: "100px", marginRight: "100px" }}>
       <h4>상점 정보</h4>
-      <div style={{ outline: "none", margin: "10px"}}>
+      <div style={{ outline: "none", margin: "10px" }}>
         <Form.Label>상점 이름*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -96,7 +115,7 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>사업자등록번호*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -107,7 +126,7 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 위치*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -133,17 +152,38 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 카테고리*</Form.Label>
         <Form.Select
           aria-label="상점 카테고리를 선택해 주세요."
-          value={storeCategory}
-          onChange={(e) => setStoreCategory(e.target.value)}>
+          onChange={(e) => {
+            setStoreCategory(e.target.value);
+            selectedCategory(e.target.value);
+          }}>
           <option>상점카테고리</option>
-          <option value="1">One</option>
-          <option value="2">two</option>
-          <option value="3">three</option>
+          <option value="1">카페/제과</option>
+          <option value="2">음식점</option>
+          <option value="3">생활/소품</option>
+          <option value="4">여가/체험</option>
+          <option value="5">건강/뷰티</option>
         </Form.Select>
+      </div>
+      <div style={{ outline: "none", margin: "20px" }}>
+        <Form.Label>상점 키워드</Form.Label>
+        {categoryKeywords?.map((keyword, index) => (
+          <ToggleButton
+            key={keyword.keywordSeq}
+            id={`${keyword.keywordSeq}-toggle-check`}
+            type="checkbox"
+            variant="outline-primary"
+            checked={false}
+            value={keyword.keywordSeq}
+            onChange={(e) => {
+              console.log("HERE");
+            }}>
+            {keyword.keywordName}
+          </ToggleButton>
+        ))}
       </div>
       {isOpenPost ? (
         <ModalStorePostcode

@@ -6,8 +6,13 @@ import styles from "./styles";
 function FileUpload({ onChange }) {
   const [file, setFile] = useState(null);
 
+  const [fileName, setFileName] = useState("파일 선택"); // 선택된 파일의 이름을 상태로 관리
+
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files[0]; // 선택된 파일을 변수에 할당
+    console.log(selectedFile);  // 여기에서 선택된 파일 로그 출력
+    setFile(selectedFile);
+    setFileName(selectedFile.name); // 추가: 선택된 파일의 이름 상태 업데이트
   };
 
   const handleUpload = async () => {
@@ -48,15 +53,15 @@ function FileUpload({ onChange }) {
           onChange={handleFileChange}
         />
         <label className="custom-file-label" htmlFor="customFile">
-          파일 선택
+          {fileName}
         </label>
         <Button
           onClick={(e) => {
             e.preventDefault();
             handleUpload();
           }}
-          variant = "light"
-          style = {{marginLeft: 10}}
+          variant="light"
+          style={{ marginLeft: 10 }}
         >
           이미지 업로드
         </Button>

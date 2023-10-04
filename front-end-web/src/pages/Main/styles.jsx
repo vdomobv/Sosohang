@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
 
   .img-container {
     display: flex;
@@ -18,8 +18,9 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    margin-top: -100px;
   }
-
+  
   .img-container3 {
     // background-color: #e5e1db;
     display: flex;
@@ -31,23 +32,37 @@ const Wrapper = styled.div`
     align-items: center;
   }
 
-  // .kid-img {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   width: 100%;
-  //   height: 110%;
-  //   object-fit: cover;
-  //   opacity: 0.5;
-  // }
+  .main-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 110%;
+    object-fit: cover;
+    opacity: 0.5;
+  }
 
   .text-overlay {
     position: absolute;
-    top: 50%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-family: 'Pretendard-Regular';
+    font-family: "Pretendard-Regular";
     text-align: center;
+  }
+
+  .text-overlay-top {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Pretendard-Regular";
+    text-align: center;
+  }
+
+  .footer-container {
+    background-color: #dff1f3;
+    padding : 100px;
   }
 
   .text-overlay2 {
@@ -88,13 +103,11 @@ const Wrapper = styled.div`
   }
 
   .text-overlay_h2 {
-    text-align: center;
     font-size: 40px;
     color: black;
     // line-height: 1;
     font-weight: bold;
   }
-
 
   .text-overlay_h3,
   .text-overlay_h4 {
@@ -120,7 +133,6 @@ const Wrapper = styled.div`
     margin: 0;
     padding: 5px;
   }
-
 
   .message-box2 p {
     font-size: 23px;
@@ -168,26 +180,41 @@ const Wrapper = styled.div`
   .arrow-container {
     position: absolute;
     left: 45%;
-    top : 130%;
-}
+    top: 130%;
+  }
 
-.down-arrow {
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .logo {
+    width: 10%; // 원하는 비율로 조정
+    height: auto; 
+  }
+
+  .down-arrow {
     width: 50px; // 원하는 크기로 설정
     height: auto; // 비율 유지
     animation: bounce 1s infinite; // 부드러운 애니메이션 효과
-}
+  }
 
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
+  @keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
     }
     40% {
-        transform: translateY(-10px);
+      transform: translateY(-10px);
     }
     60% {
-        transform: translateY(-5px);
+      transform: translateY(-5px);
     }
-}
+  }
 `;
 
 export default Wrapper;

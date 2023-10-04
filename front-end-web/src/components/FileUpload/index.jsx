@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button, Form } from "react-bootstrap";
 import AWS from "aws-sdk";
 
 function FileUpload({ onChange }) {
@@ -36,14 +37,17 @@ function FileUpload({ onChange }) {
 
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          handleUpload();
-        }}>
-        Upload to S3
-      </button>
+      <Form.Label>이미지</Form.Label>
+      <div>
+        <input type="file" onChange={handleFileChange} />
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            handleUpload();
+          }}>
+          이미지 업로드
+        </Button>
+      </div>
     </div>
   );
 }

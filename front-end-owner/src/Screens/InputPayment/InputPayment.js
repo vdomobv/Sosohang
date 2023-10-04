@@ -26,12 +26,18 @@ export default function InputPayment({ navigation, route }) {
             amount: parseInt(payment.toString().replace(/[^0-9]/g, "")),
           }
         )
-        .then((res) => {
-          navigation.navigate("DonePayment", {storeSeq: storeSeq});
+        .post("https://j9c109.p.ssafy.io/app/settlement/create", {
+          storeSeq: storeSeq,
+          settlementPrice: parseInt(payment.toString().replace(/[^0-9]/g, "")),
+        })
+        .then(() => {
+          navigation.navigate("DonePayment", { storeSeq: storeSeq });
         })
         .catch((err) => {
           console.error(err);
         });
+
+      axios.post("https://j9c109.p.ssafy.io/app/settlement/create", {});
     }
   };
 
@@ -59,7 +65,10 @@ export default function InputPayment({ navigation, route }) {
           <TextInput
             style={[styles.textInput, { width: 240 }]}
             keyboardType="numeric"
-            value={payment.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            value={payment
+              .toString()
+              .replace(/\D/g, "")
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             onChange={(e) => setPayment(e.nativeEvent.text)}></TextInput>
           <Text style={styles.text}>원</Text>
         </View>

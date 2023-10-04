@@ -322,7 +322,11 @@ export default function Shop({ navigation, route }) {
         </View>
 
         <Image
-          src={storeData ? storeData.storeImage : "assets/images/no_img.png"}
+          source={
+            storeData !== undefined && storeData.storeImage !== null
+              ? { uri: storeData.storeImage }
+              : require("assets/images/no_img.jpg")
+          }
           style={styles.image}
         />
         <View style={styles.content}>

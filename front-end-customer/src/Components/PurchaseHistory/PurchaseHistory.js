@@ -5,7 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 import Title from "../../Components/Title/Title";
 // import CustomSearchBar from "../../Components/CustomSearchBar/CustomSearchBar";
 import ScrollBox from "../../Components/ScrollBox/ScrollBox";
-import Gift from "../../Components/Gift/Gift";
 import Store from"../../Components/Store/Store";
 
 export default function PurchaseHistory({ data }) {

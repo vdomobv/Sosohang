@@ -9,9 +9,6 @@ import { getYouList } from "../../Utils/YouAndMeAPI";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
 
-// import BuyDummy from "../../Dummys/MyPage/BuyDummy";
-// const toNameData = BuyDummy
-
 export default function YouAndMe({ navigation }) {
   const [tempUser, setTempUser] = useState();
   const [toNameData, setToNameData] = useState();

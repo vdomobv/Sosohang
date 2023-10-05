@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Form, InputGroup, Button, Collapse } from "react-bootstrap";
 
@@ -5,6 +6,7 @@ function InputOwnerInfo({ onChange }) {
   const [confirmOwnerInfo, setConfirmOwnerInfo] = useState(false); // ownerInfo 유효성여부
 
   const [storePassword, setStorePassword] = useState(""); // 상점비밀번호
+  const [storeConfirmPassword, setStoreConfirmPassword] = useState(""); // 상점비밀번호
   const [passwordWarning, setPasswordWarning] = useState(""); // 상점비밀번호 유효성 검사 경고문구
   const [comfirmPasswordWarning, setComfirmPasswordWarning] = useState(""); // 상점비밀번호 확인 유효성 검사 경고문구
   const [isValidPassword, setIsValidPassword] = useState(false); // 상점비밀번호 유효성 검사 결과
@@ -14,7 +16,6 @@ function InputOwnerInfo({ onChange }) {
 
   // 휴대폰 인증번호 입력 칸 보일지 말지 결정해보자.
   const [open, setOpen] = useState(false);
-
 
   // 상점비밀번호 형식 - 영어 대/소문자, 숫자, 특수문자를 포함하여 8~20글자
   const storePasswordRegEx =
@@ -36,7 +37,7 @@ function InputOwnerInfo({ onChange }) {
   };
 
   // 상점비밀번호 확인 비교검사
-  const confirmPassword = (confirmPassword) => {
+  const isConfirmPassword = (confirmPassword) => {
     if (confirmPassword !== storePassword && confirmPassword !== "") {
       setComfirmPasswordWarning("비밀번호가 일치하지 않습니다.");
     } else {
@@ -58,15 +59,42 @@ function InputOwnerInfo({ onChange }) {
   const [verifiedNum, setVerifiedNum] = useState(""); // 인증번호
   const [isVerifiedNum, setIsVerifiedNum] = useState(false); // 인증번호 인증 여부
 
-  const sendVerifiedNum = () => {
-    // 인증번호 요청
-    // console.log("인증번호 요청");
+  const sendVerifiedNum = async () => {
+    if(storePhoneNum.length < 10) {
+      return alert("휴대전화번호를 확인해주세요")
+    }
+    await axios
+      .post(`/api/v1/store/register/phone-check?ownerPhone=${storePhoneNum}`)
+      .then((res) => {
+        console.log(res);
+        alert("인증번호가 발송되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("인증번호 발송 x");
+
+      });
     setOpen(true);
   };
 
-  const verifieNumCheck = () => {
+  const verifieNumCheck = async () => {
     // 인증번호 확인
     // console.log("인증번호 확인");
+    await axios
+      .post(
+        `/api/v1/member/register/verify-code?memberPhone=${storePhoneNum}&authCode=${verifiedNum}`
+      )
+      .then((res) => {
+        if(res.data.status === "success") {
+          console.log(res);
+          setIsVerifiedNum(true);
+          alert("인증이 완료되었습니다.")
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+
     setOpen(false);
   };
 
@@ -74,13 +102,13 @@ function InputOwnerInfo({ onChange }) {
     if (
       storePassword !== "" &&
       isValidPassword &&
-      storePassword === confirmPassword &&
+      storePassword === storeConfirmPassword &&
       isVerifiedNum
     ) {
       setConfirmOwnerInfo(true);
     }
     onChange({ storePassword, storePhoneNum, confirmOwnerInfo });
-  }, [storePassword, storePhoneNum, confirmOwnerInfo, onChange]);
+  }, [storePassword, storePhoneNum, confirmOwnerInfo, isVerifiedNum, isValidPassword, onChange]);
 
   return (
     <div style={{ width: "45%" }}>
@@ -166,7 +194,9 @@ function InputOwnerInfo({ onChange }) {
             aria-label="비밀번호를 한 번 더 입력하세요"
             maxLength={20}
             onChange={(e) => {
-              confirmPassword(e.target.value);
+              isConfirmPassword(e.target.value);  
+              setStoreConfirmPassword(e.target.value);
+
             }}
           />
           <InputGroup.Text

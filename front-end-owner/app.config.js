@@ -8,10 +8,6 @@ module.exports = {
         },
       },
     },
-    extra: {
-      eas: {
-        projectId: "baff951f-d87e-46e1-9c07-10d7173b8e41",
-      },
-    },
+    extra: {},
   },
 };

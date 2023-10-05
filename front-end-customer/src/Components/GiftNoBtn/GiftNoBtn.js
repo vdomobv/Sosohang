@@ -5,6 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Gift({ data, onPress }) {
   const navigation = useNavigation();
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
 
   return (
     <>
@@ -24,8 +27,8 @@ export default function Gift({ data, onPress }) {
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
                 {data["from"]
-                  ? "남은 금액 : " + data.currentPrice
-                  : data.totalPrice}{" "}
+                  ? "남은 금액 : " + numberWithCommas(data.currentPrice)
+                  : numberWithCommas(data.totalPrice)}{" "}
                 원
               </Text>
             </View>

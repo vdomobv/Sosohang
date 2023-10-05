@@ -18,6 +18,10 @@ export default function Product({
   const [productAmount, setProductAmount] = useState();
   console.log(data);
 
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
+
   useEffect(() => {
     setIsChecked(checked);
     setProductAmount(amount);
@@ -41,16 +45,18 @@ export default function Product({
           onCheckChange(isChecked);
         }}
       />
-      <SquareImage
-        imageSrc={{ uri: data.productImage }}
-      />
+      <SquareImage imageSrc={{ uri: data.productImage }} />
       <View style={styles.content}>
         <SectionTitle content={data.productName} />
         {data.productDcrate ? (
-          <Text style={styles.prevPrice}>{`${data.productPrice}원`}</Text>
+          <Text style={styles.prevPrice}>{`${numberWithCommas(
+            data.productPrice
+          )}원`}</Text>
         ) : null}
         <SectionTitle
-          content={`${(1 - data.productDcrate) * data.productPrice}원`}
+          content={`${numberWithCommas(
+            (1 - data.productDcrate) * data.productPrice
+          )}원`}
           customStyles={{ color: "#FF4646" }}
         />
         <View style={styles.amount}>

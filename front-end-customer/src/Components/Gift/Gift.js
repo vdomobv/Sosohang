@@ -11,6 +11,10 @@ export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
   console.log("여기", data)
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
+
   return (
     <>
       <TouchableOpacity onPress={onPress}>
@@ -28,8 +32,8 @@ export default function Gift({ data, usable, onPress }) {
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
                 {data["from"]
-                  ? "남은 금액 : " + data.currentPrice
-                  : data.totalPrice}{" "}
+                  ? "남은 금액 : " + numberWithCommas(data.currentPrice)
+                  : numberWithCommas(data.totalPrice)}{" "}
                 원
               </Text>
             </View>

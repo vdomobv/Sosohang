@@ -123,6 +123,10 @@ export default function MakeCard({ route, navigation }) {
     });
   };
 
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
+  
   return (
     <>
       <ScrollView>
@@ -220,7 +224,7 @@ export default function MakeCard({ route, navigation }) {
             <View style={styles.total}>
               <View style={styles.price}>
                 <Text style={styles.priceText}> 총 결제 금액</Text>
-                <Text style={styles.priceText}>{totalPrice} 원</Text>
+                <Text style={styles.priceText}>{numberWithCommas(totalPrice)} 원</Text>
               </View>
             </View>
           </View>
@@ -230,24 +234,32 @@ export default function MakeCard({ route, navigation }) {
     if (contactName === "" || contactPhoneNumber === "") {
       Alert.alert("받는 사람을 선택해주세요.");
     } else {
-      // NCP에 이미지를 업로드
-      const fileId = await uploadImageToNCP(selectedImage, `${Date.now()}test.jpg`);
+      let fileId = null;
+      try {
+        // NCP에 이미지를 업로드
+        fileId = await uploadImageToNCP(selectedImage, `${Date.now()}test.jpg`);
+      } catch (error) {
+        console.error("Error uploading image to NCP:", error);
+        // 여기에 알림 추가하면 이미지 업로드 실패시 사용자에게 알림을 줄 수 있습니다.
+        // Alert.alert("Image upload failed. Proceeding without image.");
+      }
       navigation.navigate("WaitingPayment", {
         groupedByStore,
         totalPrice,
         result: false,
-        to : contactName,
+        to: contactName,
         sosoticonData: {
           sosoticonTakerName: contactName,
           sosoticonGiverName: giverName,
-          sosoticonTaker: contactPhoneNumber.replaceAll("-",""),
+          sosoticonTaker: contactPhoneNumber.replaceAll("-", ""),
           sosoticonText: message,
           sosoticonStatus: 1,
-          sosoticonImage : fileId
-        }
+          sosoticonImage: fileId,
+        },
       });
     }
   }}
+  
 >
   <Text style={[styles.priceText, { color: "white" }]}>결제하기</Text>
 </TouchableOpacity>

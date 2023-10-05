@@ -50,9 +50,9 @@ export default function LogIn({ navigation }) {
       <View style={styles.container}>
         <Title title={"사장님 로그인"} />
 
-        <Text style={styles.info}>
+        {/* <Text style={styles.info}>
           비밀번호 찾기는 웹사이트에서 가능합니다.
-        </Text>
+        </Text> */}
         <View style={{ alignItems: "center" }}>
           <TextInput
             style={styles.input}

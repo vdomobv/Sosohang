@@ -133,7 +133,7 @@ function EditStoreInfo(props) {
         marginRight: "100px",
       }}
     >
-      <h4>상점 정보</h4>
+      <h2>상점 정보</h2>
       <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 이름*</Form.Label>
         <InputGroup>
@@ -166,7 +166,7 @@ function EditStoreInfo(props) {
             readOnly={true}
             value={mainAddress}
           />
-          <Button id="postcode-button-addon2" onClick={onChangeOpenPost}>
+          <Button variant="outline-primary" style={{borderWidth: 2}} id="postcode-button-addon2" onClick={onChangeOpenPost}>
             검색하기
           </Button>
         </InputGroup>

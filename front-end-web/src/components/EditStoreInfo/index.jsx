@@ -82,16 +82,17 @@ function EditStoreInfo(props) {
     setStoreLatitude(info.storeLatitude);
     setStoreLongitude(info.storeLongitude);
     setStoreCategory(info.storeCategory);
-    // setKeywordList(info.storeKeywords);
+    setSelectedKeywords(info.storeKeywords);
     if (info.storeKeywords?.length > 0) {
       // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
       setOpen(true);
       handleCategorySeq(info.storeCategory);
-      // let temp = new Array(keywordList.length).fill(false);
-      // keywordList.map((keyeord, index) => {
-      //   temp[index]
-      // })
-      // setKeywordChecklist(); 
+      const newChecklist = new Array(keywordList?.length).fill(false);
+      info.storeKeywords.map((keywordSeq, index) => {
+        newChecklist[keywordSeq] = true;
+      })
+      console.log(newChecklist);
+      setKeywordChecklist(newChecklist);
     }
   }, [info]);
 
@@ -99,10 +100,9 @@ function EditStoreInfo(props) {
     if (keywordList.length > 0) {
       // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
       setOpen(true);
-      setKeywordChecklist(new Array(keywordList.length).fill(false));     
+      // setKeywordChecklist(new Array(keywordList.length).fill(false));     
     }
   }, [keywordList]);
-
 
   useEffect(() => {
     if (
@@ -131,8 +131,9 @@ function EditStoreInfo(props) {
         marginTop: "50px",
         marginLeft: "100px",
         marginRight: "100px",
-      }}>
-      <h4>상점 정보</h4>
+      }}
+    >
+      <h2>상점 정보</h2>
       <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 이름*</Form.Label>
         <InputGroup>
@@ -165,7 +166,7 @@ function EditStoreInfo(props) {
             readOnly={true}
             value={mainAddress}
           />
-          <Button id="postcode-button-addon2" onClick={onChangeOpenPost}>
+          <Button variant="outline-primary" style={{borderWidth: 2}} id="postcode-button-addon2" onClick={onChangeOpenPost}>
             검색하기
           </Button>
         </InputGroup>
@@ -188,6 +189,7 @@ function EditStoreInfo(props) {
           aria-label="상점 카테고리를 선택해 주세요."
           value={storeCategory}
           onChange={(e) => {
+            setSelectedKeywords([]);
             if (e.target.value === "0") {
               setKeywordList([]);
               setStoreCategory("");
@@ -195,7 +197,8 @@ function EditStoreInfo(props) {
               setStoreCategory(e.target.value);
               handleCategorySeq(e.target.value);
             }
-          }}>
+          }}
+        >
           <option value="0">상점카테고리</option>
           <option value="1">카페/제과</option>
           <option value="2">음식점</option>
@@ -205,48 +208,54 @@ function EditStoreInfo(props) {
         </Form.Select>
       </div>
       <div style={{ outline: "none", margin: "20px" }}>
-        <Collapse in={open}>
-          <div>
-            <Form.Label>상점 키워드</Form.Label>
-            {keywordList?.map((keyword, index) => (
-              <ToggleButton
-                key={keyword.keywordSeq}
-                id={`${keyword.keywordSeq}-toggle-check`}
-                type="checkbox"
-                variant="outline-primary"
-                checked={keywordChecklist[keyword.keywordSeq]}
-                value={keyword.keywordSeq}
-                onChange={(e) => {
-                  const newChecklist = [...keywordChecklist];
-                  newChecklist[keyword.keywordSeq] = e.currentTarget.checked;
+        <Form.Label>상점 키워드</Form.Label>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(8, 1fr)",
+            gap: "5px",
+            alignItems: "center",
+          }}
+        >
+          {keywordList?.map((keyword, index) => (
+            <ToggleButton
+              key={keyword.keywordSeq}
+              id={`${keyword.keywordSeq}-toggle-check`}
+              type="checkbox"
+              variant="outline-primary"
+              checked={keywordChecklist[keyword.keywordSeq]}
+              value={keyword.keywordSeq}
+              onChange={(e) => {
+                const newChecklist = [...keywordChecklist];
+                newChecklist[keyword.keywordSeq] = e.currentTarget.checked;
 
-                  if (e.currentTarget.checked) {
-                    // 최대 3개의 키워드만 선택 가능하도록 검사
-                    if (selectedKeywords.length < 3) {
-                      setSelectedKeywords([
-                        ...selectedKeywords,
-                        keyword.keywordSeq,
-                      ]);
-                    } else {
-                      // 이미 3개 이상 선택된 경우, 체크를 해제합니다.
-                      newChecklist[keyword.keywordSeq] = false;
-                    }
+                if (e.currentTarget.checked) {
+                  // 최대 3개의 키워드만 선택 가능하도록 검사
+                  if (selectedKeywords.length < 3) {
+                    setSelectedKeywords([
+                      ...selectedKeywords,
+                      keyword.keywordSeq,
+                    ]);
                   } else {
-                    setSelectedKeywords(
-                      selectedKeywords.filter(
-                        (selected) => selected !== keyword.keywordSeq
-                      )
-                    );
+                    // 이미 3개 이상 선택된 경우, 체크를 해제합니다.
+                    newChecklist[keyword.keywordSeq] = false;
                   }
-                  setKeywordChecklist(newChecklist);
+                } else {
+                  setSelectedKeywords(
+                    selectedKeywords.filter(
+                      (selected) => selected !== keyword.keywordSeq
+                    )
+                  );
+                }
+                setKeywordChecklist(newChecklist);
 
-                  console.log(selectedKeywords);
-                }}>
-                {keyword.keywordName}
-              </ToggleButton>
-            ))}
-          </div>
-        </Collapse>
+                console.log(selectedKeywords);
+              }}
+            >
+              {keyword.keywordName}
+            </ToggleButton>
+          ))}
+        </div>
       </div>
       {isOpenPost ? (
         <ModalStorePostcode

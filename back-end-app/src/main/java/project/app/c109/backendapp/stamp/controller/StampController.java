@@ -72,14 +72,13 @@ public class StampController {
     }
 
     @GetMapping("/{memberPhone}/{storeSeq}")
-    public ResponseEntity<List<Stamp>> getStampByMemberAndStoreAndStampStatus(@PathVariable String memberPhone, @PathVariable Integer storeSeq, @RequestParam Integer stampStatus) {
+    public ResponseEntity<List<?>> getStampByMemberAndStoreAndStampStatus(@PathVariable String memberPhone, @PathVariable Integer storeSeq, @RequestParam Integer stampStatus) {
         try {
-            List<Stamp> stamps = stampService.getStampByMemberAndStoreAndStampStatus(memberPhone, storeSeq, stampStatus);
+            List<?> stamps = stampService.getStampByMemberAndStoreAndStampStatus(memberPhone, storeSeq, stampStatus);
             return ResponseEntity.ok(stamps);
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }
-
     }
 
 }

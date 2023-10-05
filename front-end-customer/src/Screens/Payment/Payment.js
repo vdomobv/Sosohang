@@ -4,6 +4,7 @@ import { Image, View, Text, Alert } from "react-native";
 import Loading from "../../Components/Loading/Loading";
 import { EXPO_PG_USER_CODE } from "@env";
 import { useEffect, useState } from "react";
+import { makeSosoticon } from "../../Utils/PaymentAPI";
 
 export default function Payment({ navigation, route }) {
   const userCode = EXPO_PG_USER_CODE;
@@ -12,8 +13,9 @@ export default function Payment({ navigation, route }) {
   const to = route.params.to;
   const sosoticonData = route.params.sosoticonData;
 
-  console.log(sosoticonData)
+  console.log("소소티콘 제이쓴",sosoticonData)
   console.log(userCode)
+
 
   return (
     <View style={styles.container}>
@@ -24,7 +26,7 @@ export default function Payment({ navigation, route }) {
         
         callback={(response) => {
           if (response.error_code) {
-            console.log(response);
+            console.log("소소티콘정보",response);
             console.log("error_code : ", response.error_code);
             navigation.goBack(); // error_code가 있을 때 이전 페이지로 돌아갑니다.
             Alert.alert("알림", "사용자가 결제를 취소하셨습니다.", [
@@ -34,10 +36,10 @@ export default function Payment({ navigation, route }) {
               },
             ]);
           } else {
-            console.log("여기 : ", productList)
+            console.log("여기 : ", route.params.productList)
             navigation.replace("PaymentResult", {
               paymentData: data,
-              productList: productList,
+              productList: route.params?.productList,
               to: to,
               sosoticonData: sosoticonData
             });

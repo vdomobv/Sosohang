@@ -1,5 +1,6 @@
 package project.app.c109.backendapp.sosoticon.util;
 
+import org.springframework.beans.factory.annotation.Value;
 import project.app.c109.backendapp.sosoticon.domain.dto.request.SosoticonRequestDTO;
 import project.app.c109.backendapp.sosoticon.service.S3UploadService;
 import com.google.zxing.*;
@@ -12,16 +13,38 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.UUID;
+import java.io.ByteArrayInputStream;
+import java.util.Base64;
 
 @Component
 public class QRCodeUtil_Image {
 
     @Autowired
     private S3UploadService s3UploadService;
+
+    @Value("${ncp.sens.accessKey}")
+    private String ACCESS_KEY;
+    public BufferedImage getImageFromNCP(String fileId) {
+        String endpoint = "https://sosoticon.kr-standard.storage.ncloud.com";  // NCP Object Storage의 엔드포인트 URL
+        try {
+            URL url = new URL(endpoint + "/" + fileId);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("x-ncp-apigw-timestamp", String.valueOf(System.currentTimeMillis()));
+            connection.setRequestProperty("x-ncp-iam-access-key", ACCESS_KEY);
+            // 추가적인 헤더 및 인증 정보 설정이 필요할 수 있습니다.
+            BufferedImage image = ImageIO.read(connection.getInputStream());
+            return image;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     private BufferedImage overlayQRCodeOnTemplate(BufferedImage qrCode, SosoticonRequestDTO requestDTO) throws Exception {
         // 템플릿 이미지를 리소스에서 읽어옴
@@ -38,7 +61,7 @@ public class QRCodeUtil_Image {
         int desiredHeight = 150;  // 원하는 높이
 
         // 사용자 첨부 이미지 (이미지 URL 또는 경로에서 이미지를 읽어와야 함)
-        BufferedImage attachedImage = ImageIO.read(new URL(requestDTO.getSosoticonImage()));  // 만약 경로라면, new File()을 사용
+        BufferedImage attachedImage = getImageFromNCP(requestDTO.getSosoticonImage());
 
         graphics.drawImage(attachedImage, 25, 40, desiredWidth, desiredHeight, null); // 예시 위치 및 크기
 

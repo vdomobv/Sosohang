@@ -27,6 +27,7 @@ export default function MakeCard({ route, navigation }) {
   const [giverName, setGiverName] = useState("");
   const [contactStartIndex, setContactStartIndex] = useState(0);
   const [isContactBoxVisible, setIsContactBoxVisible] = useState(false);
+  const [sosoStoreSeq, setSosostoreSeq] = useState("");
 
   // 연락처 가져오기 함수
   const getContacts = async () => {
@@ -95,6 +96,7 @@ export default function MakeCard({ route, navigation }) {
   const renderGroupedProducts = () => {
     return Object.keys(groupedByStore).map((storeSeq) => {
       const productsInShop = groupedByStore[storeSeq];
+
       return (
         <View key={storeSeq}>
           <Text style={styles.shopName}>
@@ -234,6 +236,7 @@ export default function MakeCard({ route, navigation }) {
       try {
         // NCP에 이미지를 업로드
         fileId = await uploadImageToNCP(selectedImage, `${Date.now()}test.jpg`);
+        console.log("업로드되는 이미지URI 나오나??", fileId)
       } catch (error) {
         console.error("Error uploading image to NCP:", error);
         // 여기에 알림 추가하면 이미지 업로드 실패시 사용자에게 알림을 줄 수 있습니다.
@@ -251,10 +254,30 @@ export default function MakeCard({ route, navigation }) {
           sosoticonText: message,
           sosoticonStatus: 1,
           sosoticonImage: fileId,
+          sosoticonValue:  50000,
+          memberSeq: 10,
+          orderSeq: 1,
+          storeSeq: 7,
+          sosoticonUrl: "string",
+
         },
       });
     }
   }}
+
+  /*{
+  "memberSeq": 0,*
+  "orderSeq": 0,*
+  "storeSeq": 0,*
+  "sosoticonGiverName": "string",/
+  "sosoticonTakerName": "string",/
+  "sosoticonTaker": "string",/
+  "sosoticonText": "string",/
+  "sosoticonUrl": "string",*
+  "sosoticonImage": "string",/
+  "sosoticonStatus": 0,/
+  "sosoticonValue": 0*
+}*/
   
 >
   <Text style={[styles.priceText, { color: "white" }]}>결제하기</Text>

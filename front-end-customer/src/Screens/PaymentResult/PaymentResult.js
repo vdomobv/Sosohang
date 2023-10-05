@@ -9,7 +9,7 @@ import Box from "../../Components/Box/Box";
 import { useEffect, useState } from "react";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 import { makeOrder, makeSosoticon } from "../../Utils/PaymentAPI";
-import { handleUpload } from "../../Utils/UploadImage"
+import { uploadImageToNCP } from "../../Utils/UploadImage"
 
 export default function PaymentResult({ navigation, route }) {
   const paymentData = route.params.paymentData;
@@ -32,7 +32,7 @@ export default function PaymentResult({ navigation, route }) {
 
     fetchMemberSeq();
 
-    handleUpload(sosoticonData)
+    // uploadImageToNCP(sosoticonData);
   }, [])
 
 
@@ -118,7 +118,7 @@ export default function PaymentResult({ navigation, route }) {
 
     return (
       <View style={{ marginVertical: 5 }}>
-        <Box key={storeSeq} content={<Gift data={productsInShop} key={storeSeq} navigation={navigation} />} />
+        <Box content={<Gift data={productsInShop} key={storeSeq} navigation={navigation} />} />
       </View>
     );
   });

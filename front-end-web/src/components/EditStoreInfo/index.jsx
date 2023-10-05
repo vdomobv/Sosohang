@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Form, InputGroup, Button, ToggleButton } from "react-bootstrap";
+import {
+  Form,
+  InputGroup,
+  Button,
+  ToggleButton,
+  Collapse,
+} from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 
@@ -49,22 +55,21 @@ function EditStoreInfo(props) {
   };
 
   const [storeCategory, setStoreCategory] = useState(""); // 상점 카테고리
-
-  const [categoryKeywords, setCategoryKeyWords] = useState([]);
+  const [keywordList, setKeywordList] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [keywordChecklist, setKeywordChecklist] = useState([]);
 
-  const selectedCategory = (category) => {
-    // console.log(storeCategory);
+  const [open, setOpen] = useState(false);
+
+  const handleCategorySeq = (categorySeq) => {
     axios
-      .get(
-        `https://j9c109.p.ssafy.io/api/v1/keywords/category/${category}`
-      )
+      .get(`https://j9c109.p.ssafy.io/api/v1/keywords/category/${categorySeq}`)
       .then((res) => {
         console.log(res.data);
-        setCategoryKeyWords(res.data);
+        setKeywordList(res.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((e) => {
+        console.log(e);
       });
   };
 
@@ -77,7 +82,27 @@ function EditStoreInfo(props) {
     setStoreLatitude(info.storeLatitude);
     setStoreLongitude(info.storeLongitude);
     setStoreCategory(info.storeCategory);
+    // setKeywordList(info.storeKeywords);
+    if (info.storeKeywords?.length > 0) {
+      // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
+      setOpen(true);
+      handleCategorySeq(info.storeCategory);
+      // let temp = new Array(keywordList.length).fill(false);
+      // keywordList.map((keyeord, index) => {
+      //   temp[index]
+      // })
+      // setKeywordChecklist(); 
+    }
   }, [info]);
+
+  useEffect(() => {
+    if (keywordList.length > 0) {
+      // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
+      setOpen(true);
+      setKeywordChecklist(new Array(keywordList.length).fill(false));     
+    }
+  }, [keywordList]);
+
 
   useEffect(() => {
     if (
@@ -106,8 +131,7 @@ function EditStoreInfo(props) {
         marginTop: "50px",
         marginLeft: "100px",
         marginRight: "100px",
-      }}
-    >
+      }}>
       <h4>상점 정보</h4>
       <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 이름*</Form.Label>
@@ -162,11 +186,17 @@ function EditStoreInfo(props) {
         <Form.Label>상점 카테고리*</Form.Label>
         <Form.Select
           aria-label="상점 카테고리를 선택해 주세요."
+          value={storeCategory}
           onChange={(e) => {
-            setStoreCategory(e.target.value);
-            selectedCategory(e.target.value);
+            if (e.target.value === "0") {
+              setKeywordList([]);
+              setStoreCategory("");
+            } else {
+              setStoreCategory(e.target.value);
+              handleCategorySeq(e.target.value);
+            }
           }}>
-          <option>상점카테고리</option>
+          <option value="0">상점카테고리</option>
           <option value="1">카페/제과</option>
           <option value="2">음식점</option>
           <option value="3">생활/소품</option>
@@ -175,21 +205,48 @@ function EditStoreInfo(props) {
         </Form.Select>
       </div>
       <div style={{ outline: "none", margin: "20px" }}>
-        <Form.Label>상점 키워드</Form.Label>
-        {categoryKeywords?.map((keyword, index) => (
-          <ToggleButton
-            key={keyword.keywordSeq}
-            id={`${keyword.keywordSeq}-toggle-check`}
-            type="checkbox"
-            variant="outline-primary"
-            checked={false}
-            value={keyword.keywordSeq}
-            onChange={(e) => {
-              console.log("HERE");
-            }}>
-            {keyword.keywordName}
-          </ToggleButton>
-        ))}
+        <Collapse in={open}>
+          <div>
+            <Form.Label>상점 키워드</Form.Label>
+            {keywordList?.map((keyword, index) => (
+              <ToggleButton
+                key={keyword.keywordSeq}
+                id={`${keyword.keywordSeq}-toggle-check`}
+                type="checkbox"
+                variant="outline-primary"
+                checked={keywordChecklist[keyword.keywordSeq]}
+                value={keyword.keywordSeq}
+                onChange={(e) => {
+                  const newChecklist = [...keywordChecklist];
+                  newChecklist[keyword.keywordSeq] = e.currentTarget.checked;
+
+                  if (e.currentTarget.checked) {
+                    // 최대 3개의 키워드만 선택 가능하도록 검사
+                    if (selectedKeywords.length < 3) {
+                      setSelectedKeywords([
+                        ...selectedKeywords,
+                        keyword.keywordSeq,
+                      ]);
+                    } else {
+                      // 이미 3개 이상 선택된 경우, 체크를 해제합니다.
+                      newChecklist[keyword.keywordSeq] = false;
+                    }
+                  } else {
+                    setSelectedKeywords(
+                      selectedKeywords.filter(
+                        (selected) => selected !== keyword.keywordSeq
+                      )
+                    );
+                  }
+                  setKeywordChecklist(newChecklist);
+
+                  console.log(selectedKeywords);
+                }}>
+                {keyword.keywordName}
+              </ToggleButton>
+            ))}
+          </div>
+        </Collapse>
       </div>
       {isOpenPost ? (
         <ModalStorePostcode

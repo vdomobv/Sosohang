@@ -61,12 +61,13 @@ public class QRCodeUtil_Image {
         int desiredHeight = 150;  // 원하는 높이
 
         // 사용자 첨부 이미지 (이미지 URL 또는 경로에서 이미지를 읽어와야 함)
-        BufferedImage attachedImage = getImageFromNCP(requestDTO.getSosoticonImage());
-
-        graphics.drawImage(attachedImage, 25, 40, desiredWidth, desiredHeight, null); // 예시 위치 및 크기
+//        BufferedImage attachedImage = getImageFromNCP(requestDTO.getSosoticonImage());
+//
 
         // 사용자 첨부 이미지 (이미지 URL 또는 경로에서 이미지를 읽어와야 함)
-//        BufferedImage attachedImage = ImageIO.read(new URL(requestDTO.getSosoticonImage()));  // 만약 경로라면, new File()을 사용
+        BufferedImage attachedImage = ImageIO.read(new URL(requestDTO.getSosoticonImage()));  // 만약 경로라면, new File()을 사용
+        graphics.drawImage(attachedImage, 25, 40, desiredWidth, desiredHeight, null); // 예시 위치 및 크기
+
 //        graphics.drawImage(attachedImage, 80, 80, null); // 예시 위치
         // 메세지 그리기
         graphics.drawString(requestDTO.getSosoticonText(), 85, 270);

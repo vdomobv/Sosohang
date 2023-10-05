@@ -91,7 +91,7 @@ export const getKeywords = async () => {
 export const getReviewData = async (storeSeq) => {
   try {
     const response = await axios.get(
-      `http://j9c109.p.ssafy.io:8081/api/v1/review/${storeSeq}`
+      `https://j9c109.p.ssafy.io/api/v1/review/${storeSeq}`
     );
 
     const temp = response.data;

@@ -99,7 +99,7 @@ public class SosoticonService {
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
             sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
-            sosoticon.setSosoticonUrl(requestDTO.getSosoticonUrl());
+//            sosoticon.setSosoticonUrl(requestDTO.getSosoticonUrl());
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());

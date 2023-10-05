@@ -1,6 +1,7 @@
 {
   "expo": {
-    "extra": {},
+    "extra": {
+    },
     "name": "소소행",
     "slug": "front-end-customer",
     "version": "1.0.0",
@@ -22,13 +23,16 @@
           "apiKey": ""
         }
       },
-      "hermes": false,
       "package": "com.sosohang.sosohang",
       "adaptiveIcon": {
         "foregroundImage": "./assets/soso_logo.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "READ_CONTACTS"]
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "READ_CONTACTS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

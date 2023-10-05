@@ -19,7 +19,7 @@ form {
   flex-direction: row;
   justify-content: space-around;
   align-items: stretch;
-  height: 500px;
+  // height: 500px;
 
 }
 

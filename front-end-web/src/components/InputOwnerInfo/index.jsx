@@ -84,7 +84,7 @@ function InputOwnerInfo({ onChange }) {
 
   return (
     <div style={{ width: "45%" }}>
-      <h4>사장님 정보</h4>
+      <h2 style={{ marginBottom: 30 }}>사장님 정보</h2>
       <div style={{ marginBottom: 30 }}>
         <Form.Label>휴대전화번호*</Form.Label>
         <InputGroup>

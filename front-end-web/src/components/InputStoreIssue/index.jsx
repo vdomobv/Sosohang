@@ -95,7 +95,8 @@ function InputStoreIssue({ onChange }) {
 
   return (
     <div className="optionalInputBox">
-      <h4>부가 정보</h4>
+      <hr />
+      <h2 style={{ margin: '30px 0' }}>부가 정보</h2>
       <div style={{ marginTop: 10, marginBottom: 20 }}>
         <Form.Label>상점 전화번호</Form.Label>
         <InputGroup>
@@ -859,7 +860,7 @@ function InputStoreIssue({ onChange }) {
         <Form.Label>상점 설명</Form.Label>
         <InputGroup>
           <Form.Control
-            placeholder="짱큰거 필요"
+            // placeholder="짱큰거 필요"
             aria-label="storeInfo"
             onChange={(e) => setStoreExtraInfo(e.target.value)}
           />

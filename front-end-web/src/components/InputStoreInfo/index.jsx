@@ -169,8 +169,8 @@ function InputStoreInfo({ onChange }) {
   ]);
 
   return (
-    <div style={{ width: "45%", marginBottom: 30 }}>
-      <h4>상점 정보</h4>
+    <div style={{ width: "45%", marginBottom: 50 }}>
+      <h2 style={{ marginBottom: 30 }}>상점 정보</h2>
       <div style={{ outline: "none", marginBottom: 30 }}>
         <Form.Label>상점 이름*</Form.Label>
         <InputGroup>

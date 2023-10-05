@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Table, Button } from "react-bootstrap";
+import { StyledTable } from './styles.jsx';
+
 import axios from "axios";
 import {
   Chart as ChartJS,
@@ -122,7 +124,7 @@ function TableStoreSettlement() {
 
   const handleSettlements = () => {
     if (startDate === "" || endDate === "") {
-      alert("날자를 올바르게 입력하세요");
+      alert("날짜를 올바르게 입력하세요");
     } else {
       axios
         .get("api/v1/settlement/store/date", {
@@ -154,7 +156,7 @@ function TableStoreSettlement() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-around",
-          marginTop: 30
+          marginTop: 30,
         }}
       >
         {saleData?.labels ? (
@@ -166,31 +168,33 @@ function TableStoreSettlement() {
         ) : (
           <></>
         )}
-        <div style={{ width: "50vw" }}>
+        <div style={{ width: "50vw", }}>
           <div
             style={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              marginBottom: 10
             }}
           >
-            <Form.Group>
+            <Form.Group style = {{marginRight: 10}}>
               <Form.Control
                 type="date"
                 onChange={(e) => setStartDate(e.target.value)}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group style = {{marginRight: 10}}>
+
               <Form.Control
                 type="date"
                 onChange={(e) => setEndDate(e.target.value)}
               />
             </Form.Group>
-            <Button onClick={handleSettlements}>조회하기</Button>
+            <Button variant = "outline-primary" style = {{marginRight: 10, borderWidth: 2}} onClick={handleSettlements}>조회하기</Button>
             <Form.Label
               style={{
                 margin: 10,
-                marginLeft: "auto"
+                marginLeft: "auto",
               }}
             >
               판매건수: {settlementCount}
@@ -204,7 +208,7 @@ function TableStoreSettlement() {
             </Form.Label>
           </div>
 
-          <Table striped bordered hover>
+          <StyledTable striped bordered hover style={{ borderRadius: "10px", overFlow: "hidden" }}>
             <thead>
               <tr>
                 <th>사용일</th>
@@ -223,7 +227,7 @@ function TableStoreSettlement() {
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </StyledTable>
         </div>
         {/* {saleData?.labels ? (
         <Doughnut

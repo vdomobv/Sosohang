@@ -82,16 +82,17 @@ function EditStoreInfo(props) {
     setStoreLatitude(info.storeLatitude);
     setStoreLongitude(info.storeLongitude);
     setStoreCategory(info.storeCategory);
-    // setKeywordList(info.storeKeywords);
+    setSelectedKeywords(info.storeKeywords);
     if (info.storeKeywords?.length > 0) {
       // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
       setOpen(true);
       handleCategorySeq(info.storeCategory);
-      // let temp = new Array(keywordList.length).fill(false);
-      // keywordList.map((keyeord, index) => {
-      //   temp[index]
-      // })
-      // setKeywordChecklist(); 
+      const newChecklist = new Array(keywordList?.length).fill(false);
+      info.storeKeywords.map((keywordSeq, index) => {
+        newChecklist[keywordSeq] = true;
+      })
+      console.log(newChecklist);
+      setKeywordChecklist(newChecklist);
     }
   }, [info]);
 
@@ -99,7 +100,7 @@ function EditStoreInfo(props) {
     if (keywordList.length > 0) {
       // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
       setOpen(true);
-      setKeywordChecklist(new Array(keywordList.length).fill(false));     
+      // setKeywordChecklist(new Array(keywordList.length).fill(false));     
     }
   }, [keywordList]);
 
@@ -188,6 +189,7 @@ function EditStoreInfo(props) {
           aria-label="상점 카테고리를 선택해 주세요."
           value={storeCategory}
           onChange={(e) => {
+            setSelectedKeywords([]);
             if (e.target.value === "0") {
               setKeywordList([]);
               setStoreCategory("");

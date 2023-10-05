@@ -118,25 +118,28 @@ export default function SelectImage({
     } else {
       setSelectedButton(button);
 
-      if (button === "+") {
-        openImagePicker(); // "+" 버튼을 눌렀을 때 갤러리 열기
-      } else {
-        // 해당 버튼에 따라 이미지 업데이트
-        switch (button) {
-          case "생일":
-            setSelectedImage(require("assets/images/bday.png"));
-            break;
-          case "감사":
-            setSelectedImage(require("assets/images/thx.png"));
-            break;
-          case "응원":
-            setSelectedImage(require("assets/images/cheerup.png"));
-            break;
-          default:
-            setSelectedImage(null); // 다른 버튼인 경우 이미지 초기화
-            break;
-        }
+      // if (button === "+") {
+      //   openImagePicker(); // "+" 버튼을 눌렀을 때 갤러리 열기
+      // } else {
+      // 해당 버튼에 따라 이미지 업데이트
+      switch (button) {
+        case "생일":
+          setSelectedImage(require("assets/images/bday.png"));
+          break;
+        case "감사":
+          setSelectedImage(require("assets/images/thx.png"));
+          break;
+        case "응원":
+          setSelectedImage(require("assets/images/cheerup.png"));
+          break;
+        case "위로":
+          setSelectedImage(require("assets/images/encourage.png"));
+          break;
+        default:
+          setSelectedImage(null); // 다른 버튼인 경우 이미지 초기화
+          break;
       }
+      // }
     }
   };
   // const messageValue = message || "";
@@ -144,7 +147,7 @@ export default function SelectImage({
     <View>
       <Text style={styles.subtitle}>📝 메시지카드 작성</Text>
       <View style={styles.buttonContainer}>
-        {["+", "생일", "감사", "응원"].map((button, index) => (
+        {["생일", "감사", "응원", "위로"].map((button, index) => (
           <TouchableOpacity
             key={index}
             style={[
@@ -167,7 +170,7 @@ export default function SelectImage({
 
         <View style={[styles.innerBox, { top: 35, height: 200 }]}>
           <Text style={styles.title}>
-            + 버튼을 눌러 핸드폰 앨범의 사진을 선택할 수 있어요.
+            상단의 이미지 카드 키워드를 {'\n'}선택해 주세요.
           </Text>
           <Image
             source={selectedImage} // 선택된 이미지 표시

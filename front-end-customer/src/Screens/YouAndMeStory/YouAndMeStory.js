@@ -28,7 +28,7 @@ export default function YouAndMeStory({ route, navigation }) {
 
   return (
     <>
-      <ScrollView>
+      <ScrollView style={{marginTop: 50}}>
         {sosoticonList.map((sosoticon) =>
           sosoticon.member.memberSeq === mySeq ? (
             <Give key={sosoticon.sosoticonSeq} data={sosoticon} />

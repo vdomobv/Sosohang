@@ -44,7 +44,7 @@ function SignUp() {
         storeWorkhour: storeIssue.storeWorkDay,
         storeHoliday: storeIssue.storeHoliday,
         storeExtraInfo: storeIssue.storeExtraInfo,
-        selectedKeywordSeqList: storeIssue.storeKeywords,
+        selectedKeywordSeqList: storeInfo.selectedKeywords,
         storeUrl: storeIssue.storeUrl,
         storeImage: storeImageUrl,
       })

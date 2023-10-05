@@ -27,10 +27,9 @@ export default function ShowStamp({ navigation, route }) {
         );
 
         const { data } = response;
-        console.log(data[1].storeSeq);
 
         if (data[0].stampSeq) {
-          console.log(data);
+
           setStampData(data);
           setMemberNickname(data[0].member.memberNickname);
           setModalVisible(true);
@@ -40,7 +39,6 @@ export default function ShowStamp({ navigation, route }) {
           setModalVisible(true);
         }
       } catch (error) {
-        console.error('데이터를 가져오는 중에 오류가 발생했습니다:', error);
         Alert.alert('알림', '데이터를 불러오는 중에 오류가 발생했습니다.');
       }
     } else {

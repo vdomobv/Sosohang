@@ -18,9 +18,6 @@ export default function NewStamp({ route, navigation }) {
   const storeSeq = noStamp[0][1].storeSeq;
   const phoneNumber = noStamp[0][0].memberPhone;
 
-  console.log(storeSeq, phoneNumber)
-  console.log(noStamp);
-
   const [stampCount, setStampCount] = useState(1);
 
   const incrementStampCount = () => {
@@ -40,8 +37,6 @@ export default function NewStamp({ route, navigation }) {
       const response = await axios
         .post(`https://j9c109.p.ssafy.io/api/v1/stamp/earn?storeSeq=${storeSeq}&memberPhone=${phoneNumber}&stampCount=${count}`);
 
-      console.log('응답 데이터:', response.data);
-
       const { data } = response;
 
       if (data) {
@@ -54,7 +49,6 @@ export default function NewStamp({ route, navigation }) {
       }
 
     } catch (error) {
-      console.error('오류 발생:', error);
       setModalVisible(false);
     }
   };

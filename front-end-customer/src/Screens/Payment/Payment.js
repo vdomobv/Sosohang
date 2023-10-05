@@ -19,6 +19,7 @@ export default function Payment({ navigation, route }) {
   console.log(sosoticonData);
 
 
+
   return (
     <View style={styles.container}>
       <IMP.Payment

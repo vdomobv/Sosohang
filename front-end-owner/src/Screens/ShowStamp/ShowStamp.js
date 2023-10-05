@@ -29,7 +29,6 @@ export default function ShowStamp({ navigation, route }) {
         const { data } = response;
 
         if (data[0].stampSeq) {
-
           setStampData(data);
           setMemberNickname(data[0].member.memberNickname);
           setModalVisible(true);

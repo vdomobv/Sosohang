@@ -27,7 +27,7 @@ export default function InputPayment({ navigation, route }) {
           }
         )        
         .then(() => {
-          axios.post("https://j9c109.p.ssafy.io/app/settlement/create", {
+          axios.post("https://j9c109.p.ssafy.io/app/v1/settlement/create", {
             storeSeq: storeSeq,
             settlementPrice: parseInt(payment.toString().replace(/[^0-9]/g, "")),
           })

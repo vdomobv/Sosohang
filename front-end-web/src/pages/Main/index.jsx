@@ -41,9 +41,11 @@ function Main() {
         </div>
         <div className="text-overlay">
           <Fade cascade damping={0.2}>
+<div style={{ backgroundColor: 'white', borderRadius: 30, padding: '6px 20px', opacity: 0.7 }}>
             <h3 className="text-overlay_h3">
               우리 동네 상점 '소소티콘'으로 선물하기
             </h3>
+            </div>       
             <div className="arrow-container">
               <img
                 src="/assets/down_arrow.png"
@@ -57,14 +59,14 @@ function Main() {
       </div>
       <Slide direction="up" triggerOnce>
         <Fade cascade damping={0.2}>
-          <div className="logo-container">
+          {/* <div className="logo-container">
             <img
               className="logo"
-              style={{ width: "30%" }}
+              style={{ width: "20%" }}
               src="/assets/sosohang.png"
               alt=""
             ></img>
-          </div>
+          </div> */}
         </Fade>
         <div ref={secondSlideRef} className="img-container2">
           <div className="text-overlay_ballon">
@@ -296,19 +298,49 @@ function Main() {
           </div>
         </Slide>
       </div>
-        <div className="footer-container">
-          <div className="text-overlay-footer">
-            <Fade cascade damping={0.2}>
-              <h2
+      <div className="footer-container">
+        <div className="text-overlay-footer">
+          <Fade cascade damping={0.2}>
+            {/* <h2
                 className="text-overlay_h2"
                 style={{ letterSpacing: "-2.5px" }}
-              >
-                푸터를 넣을까 말까
-              </h2>
-             
-            </Fade>
+              > */}
+            {/* </h2> */}
+
+            <div className="logo-container">
+            <img
+              className="logo"
+              style={{ width: "7%", padding: '2px' }}
+              src="/assets/soso_owner.png"
+              alt=""
+            ></img>
+            <img
+              className="logo"
+              style={{ width: "7%" }}
+              src="/assets/soso_mem.png"
+              alt=""
+            ></img>
           </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <hr style={{ width: '90%' }} />
+            </div>
+            <div style={{ marginTop: '10px', marginLeft: '100px', paddingBottom: '10px' }}>
+
+              <p style={{ fontWeight: 'bold', fontSize: '20px' }}>(주) 소소행</p>
+              주소 : 광주시 광산구 장덕동 삼성사업장
+              <br />
+              <br />
+              사업자 번호 : 2222-888888
+              <br />
+              Tel : 010-0000-0000   Fax : 050-0000-0000
+              E-mail : haebojagu@ssafy.com
+              <br />
+              All Photo by ⓒ C109 Crew on Unsplash view
+            </div>
+          </Fade>
         </div>
+      </div>
     </Wrapper>
   );
 }

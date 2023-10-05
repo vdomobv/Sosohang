@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     flex: 1,
-    marginTop: 25,
+    // marginTop: 25,
   },
 
   button: {

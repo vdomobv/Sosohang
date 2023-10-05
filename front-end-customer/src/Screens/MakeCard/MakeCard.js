@@ -123,6 +123,10 @@ export default function MakeCard({ route, navigation }) {
     });
   };
 
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
+  
   return (
     <>
       <ScrollView>
@@ -220,7 +224,7 @@ export default function MakeCard({ route, navigation }) {
             <View style={styles.total}>
               <View style={styles.price}>
                 <Text style={styles.priceText}> 총 결제 금액</Text>
-                <Text style={styles.priceText}>{totalPrice} 원</Text>
+                <Text style={styles.priceText}>{numberWithCommas(totalPrice)} 원</Text>
               </View>
             </View>
           </View>

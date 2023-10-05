@@ -123,11 +123,14 @@ function StoreInfo() {
         >
           <div></div>
           <Button
+            variant="outline-primary"
             style={{
               marginLeft: "100px",
               marginRight: "100px",
               width: "10vw",
               height: "5vh",
+              borderWidth: 2,
+              marginBottom: 30
             }}
             onClick={handleEditStoreInfo}
           >

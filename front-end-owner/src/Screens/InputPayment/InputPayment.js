@@ -25,12 +25,12 @@ export default function InputPayment({ navigation, route }) {
             sosoticonCode: sosoticon,
             amount: parseInt(payment.toString().replace(/[^0-9]/g, "")),
           }
-        )
-        .post("https://j9c109.p.ssafy.io/app/settlement/create", {
-          storeSeq: storeSeq,
-          settlementPrice: parseInt(payment.toString().replace(/[^0-9]/g, "")),
-        })
+        )        
         .then(() => {
+          axios.post("https://j9c109.p.ssafy.io/app/settlement/create", {
+            storeSeq: storeSeq,
+            settlementPrice: parseInt(payment.toString().replace(/[^0-9]/g, "")),
+          })
           navigation.navigate("DonePayment", { storeSeq: storeSeq });
         })
         .catch((err) => {

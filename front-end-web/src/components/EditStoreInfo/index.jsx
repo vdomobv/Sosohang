@@ -104,7 +104,6 @@ function EditStoreInfo(props) {
     }
   }, [keywordList]);
 
-
   useEffect(() => {
     if (
       storeName !== "" &&
@@ -132,7 +131,8 @@ function EditStoreInfo(props) {
         marginTop: "50px",
         marginLeft: "100px",
         marginRight: "100px",
-      }}>
+      }}
+    >
       <h4>상점 정보</h4>
       <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 이름*</Form.Label>
@@ -197,7 +197,8 @@ function EditStoreInfo(props) {
               setStoreCategory(e.target.value);
               handleCategorySeq(e.target.value);
             }
-          }}>
+          }}
+        >
           <option value="0">상점카테고리</option>
           <option value="1">카페/제과</option>
           <option value="2">음식점</option>
@@ -207,48 +208,54 @@ function EditStoreInfo(props) {
         </Form.Select>
       </div>
       <div style={{ outline: "none", margin: "20px" }}>
-        <Collapse in={open}>
-          <div>
-            <Form.Label>상점 키워드</Form.Label>
-            {keywordList?.map((keyword, index) => (
-              <ToggleButton
-                key={keyword.keywordSeq}
-                id={`${keyword.keywordSeq}-toggle-check`}
-                type="checkbox"
-                variant="outline-primary"
-                checked={keywordChecklist[keyword.keywordSeq]}
-                value={keyword.keywordSeq}
-                onChange={(e) => {
-                  const newChecklist = [...keywordChecklist];
-                  newChecklist[keyword.keywordSeq] = e.currentTarget.checked;
+        <Form.Label>상점 키워드</Form.Label>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(8, 1fr)",
+            gap: "5px",
+            alignItems: "center",
+          }}
+        >
+          {keywordList?.map((keyword, index) => (
+            <ToggleButton
+              key={keyword.keywordSeq}
+              id={`${keyword.keywordSeq}-toggle-check`}
+              type="checkbox"
+              variant="outline-primary"
+              checked={keywordChecklist[keyword.keywordSeq]}
+              value={keyword.keywordSeq}
+              onChange={(e) => {
+                const newChecklist = [...keywordChecklist];
+                newChecklist[keyword.keywordSeq] = e.currentTarget.checked;
 
-                  if (e.currentTarget.checked) {
-                    // 최대 3개의 키워드만 선택 가능하도록 검사
-                    if (selectedKeywords.length < 3) {
-                      setSelectedKeywords([
-                        ...selectedKeywords,
-                        keyword.keywordSeq,
-                      ]);
-                    } else {
-                      // 이미 3개 이상 선택된 경우, 체크를 해제합니다.
-                      newChecklist[keyword.keywordSeq] = false;
-                    }
+                if (e.currentTarget.checked) {
+                  // 최대 3개의 키워드만 선택 가능하도록 검사
+                  if (selectedKeywords.length < 3) {
+                    setSelectedKeywords([
+                      ...selectedKeywords,
+                      keyword.keywordSeq,
+                    ]);
                   } else {
-                    setSelectedKeywords(
-                      selectedKeywords.filter(
-                        (selected) => selected !== keyword.keywordSeq
-                      )
-                    );
+                    // 이미 3개 이상 선택된 경우, 체크를 해제합니다.
+                    newChecklist[keyword.keywordSeq] = false;
                   }
-                  setKeywordChecklist(newChecklist);
+                } else {
+                  setSelectedKeywords(
+                    selectedKeywords.filter(
+                      (selected) => selected !== keyword.keywordSeq
+                    )
+                  );
+                }
+                setKeywordChecklist(newChecklist);
 
-                  console.log(selectedKeywords);
-                }}>
-                {keyword.keywordName}
-              </ToggleButton>
-            ))}
-          </div>
-        </Collapse>
+                console.log(selectedKeywords);
+              }}
+            >
+              {keyword.keywordName}
+            </ToggleButton>
+          ))}
+        </div>
       </div>
       {isOpenPost ? (
         <ModalStorePostcode

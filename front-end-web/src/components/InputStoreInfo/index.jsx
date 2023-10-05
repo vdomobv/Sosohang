@@ -129,7 +129,7 @@ function InputStoreInfo({ onChange }) {
       });
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (keywordList.length > 0) {
       // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
       setOpen(true);
@@ -155,7 +155,7 @@ function InputStoreInfo({ onChange }) {
       confirmStoreInfo,
       storeLatitude,
       storeLongitude,
-      selectedKeywords
+      selectedKeywords,
     });
   }, [
     storeName,
@@ -169,7 +169,7 @@ function InputStoreInfo({ onChange }) {
   ]);
 
   return (
-    <div style={{ width: "45%" }}>
+    <div style={{ width: "45%", marginBottom: 30 }}>
       <h4>상점 정보</h4>
       <div style={{ outline: "none", marginBottom: 30 }}>
         <Form.Label>상점 이름*</Form.Label>
@@ -202,7 +202,8 @@ function InputStoreInfo({ onChange }) {
           <Button
             id="regNum-button-addon2"
             onClick={onChangeOpenRegNum}
-            disabled={!isValidRegNum}>
+            disabled={!isValidRegNum}
+          >
             인증하기
           </Button>
         </InputGroup>
@@ -235,7 +236,7 @@ function InputStoreInfo({ onChange }) {
         </InputGroup>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ display: "flex", flexDirection: "row", marginBottom: 30 }}>
         <div style={{ width: "50%", marginRight: 30 }}>
           <Form.Label>상점 카테고리*</Form.Label>
           <Form.Select
@@ -249,7 +250,8 @@ function InputStoreInfo({ onChange }) {
                 setStoreCategory(e.target.value);
                 handleCategorySeq(e.target.value);
               }
-            }}>
+            }}
+          >
             <option value="0">상점카테고리</option>
             <option value="1">카페/제과</option>
             <option value="2">음식점</option>
@@ -259,10 +261,19 @@ function InputStoreInfo({ onChange }) {
           </Form.Select>
         </div>
       </div>
-      <div style={{ outline: "none", margin: "20px" }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div>
+          <Form.Label>상점 키워드 (최대 3개 선택 가능합니다)</Form.Label>
+        </div>
         <Collapse in={open}>
-          <div>
-            <Form.Label>상점 키워드</Form.Label>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "5px",
+              alignItems: "center",
+            }}
+          >
             {keywordList?.map((keyword, index) => (
               <ToggleButton
                 key={keyword.keywordSeq}
@@ -272,26 +283,32 @@ function InputStoreInfo({ onChange }) {
                 checked={keywordChecklist[index]}
                 value={keyword.keywordSeq}
                 onChange={(e) => {
-                  
                   const newChecklist = [...keywordChecklist];
                   newChecklist[index] = e.currentTarget.checked;
 
                   if (e.currentTarget.checked) {
                     // 최대 3개의 키워드만 선택 가능하도록 검사
                     if (selectedKeywords.length < 3) {
-                      setSelectedKeywords([...selectedKeywords, keyword.keywordSeq]);
+                      setSelectedKeywords([
+                        ...selectedKeywords,
+                        keyword.keywordSeq,
+                      ]);
                     } else {
                       // 이미 3개 이상 선택된 경우, 체크를 해제합니다.
                       newChecklist[index] = false;
                     }
                   } else {
-                    setSelectedKeywords(selectedKeywords.filter((selected) => selected !== keyword.keywordSeq));
+                    setSelectedKeywords(
+                      selectedKeywords.filter(
+                        (selected) => selected !== keyword.keywordSeq
+                      )
+                    );
                   }
                   setKeywordChecklist(newChecklist);
 
-
                   console.log(selectedKeywords);
-                }}>
+                }}
+              >
                 {keyword.keywordName}
               </ToggleButton>
             ))}
@@ -320,7 +337,8 @@ function InputStoreInfo({ onChange }) {
           keyboard={false}
           size="md"
           aria-labelledby="contained-modal-title-vcenter"
-          centered>
+          centered
+        >
           <Modal.Header closeButton>
             <Modal.Title>사업자등록번호 확인</Modal.Title>
           </Modal.Header>

@@ -147,54 +147,85 @@ function TableStoreSettlement() {
   };
 
   return (
-    <div style={{ margin: "50px" }}>
-      <h1>상점관리페이지</h1>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <Form.Group>
-          <Form.Control
-            type="date"
-            onChange={(e) => setStartDate(e.target.value)}
+    <div style={{ margin: "80px 100px" }}>
+      <h2>상점관리페이지</h2>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          marginTop: 30
+        }}
+      >
+        {saleData?.labels ? (
+          <Bar
+            options={{ responsive: false }}
+            style={{ width: "30vw", height: "250px" }}
+            data={saleData}
           />
-        </Form.Group>
-        <Form.Group>
-          <Form.Control
-            type="date"
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-        </Form.Group>
-        <Button onClick={handleSettlements}>조회하기</Button>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            flex: "1",
-          }}>
-          <Form.Label>판매건수: {settlementCount}</Form.Label>
-          <Form.Label>판매금액: {settlementAmount}</Form.Label>
+        ) : (
+          <></>
+        )}
+        <div style={{ width: "50vw" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Form.Group>
+              <Form.Control
+                type="date"
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control
+                type="date"
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </Form.Group>
+            <Button onClick={handleSettlements}>조회하기</Button>
+            <Form.Label
+              style={{
+                margin: 10,
+                marginLeft: "auto"
+              }}
+            >
+              판매건수: {settlementCount}
+            </Form.Label>
+            <Form.Label
+              style={{
+                margin: 10,
+              }}
+            >
+              판매금액: {settlementAmount}
+            </Form.Label>
+          </div>
+
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>사용일</th>
+                <th>사용시각</th>
+                <th>사용금액</th>
+              </tr>
+            </thead>
+            <tbody>
+              {settlements.map((settlement, index) => (
+                <tr key={index}>
+                  <td>{settlement.settlementAddedDate.substr(0, 10)}</td>
+                  <td>{settlement.settlementAddedDate.substr(11, 8)}</td>
+                  <td>{`${settlement.settlementPrice
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원`}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </div>
-      </div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>사용일</th>
-            <th>사용시각</th>
-            <th>사용금액</th>
-          </tr>
-        </thead>
-        <tbody>
-          {settlements.map((settlement, index) => (
-            <tr key={index}>
-              <td>{settlement.settlementAddedDate.substr(0, 10)}</td>
-              <td>{settlement.settlementAddedDate.substr(11, 8)}</td>
-              <td>{`${settlement.settlementPrice
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 원`}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      {saleData?.labels ? (
+        {/* {saleData?.labels ? (
         <Doughnut
           options={{ responsive: false }}
           style={{ width: "30vw" }}
@@ -202,16 +233,8 @@ function TableStoreSettlement() {
         />
       ) : (
         <></>
-      )}
-      {saleData?.labels ? (
-        <Bar
-          options={{ responsive: false }}
-          style={{ width: "30vw" }}
-          data={saleData}
-        />
-      ) : (
-        <></>
-      )}
+      )} */}
+      </div>
     </div>
   );
 }

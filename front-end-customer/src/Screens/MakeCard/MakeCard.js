@@ -61,7 +61,13 @@ export default function MakeCard({ route, navigation }) {
   };
 
   const renderContacts = () => {
-    const visibleContacts = contacts.slice(contactStartIndex, contactStartIndex + 4);
+    // 연락처를 이름에 따라 정렬합니다.
+    const sortedContacts = contacts.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+  
+    const visibleContacts = sortedContacts.slice(contactStartIndex, contactStartIndex + 4);
+  
     return (
       <View style={{ marginLeft: 20 }}>
         {visibleContacts.map((contact, index) => (
@@ -77,6 +83,24 @@ export default function MakeCard({ route, navigation }) {
       </View>
     );
   };
+
+  // const renderContacts = () => {
+  //   const visibleContacts = contacts.slice(contactStartIndex, contactStartIndex + 4);
+  //   return (
+  //     <View style={{ marginLeft: 20 }}>
+  //       {visibleContacts.map((contact, index) => (
+  //         <TouchableOpacity
+  //           key={index}
+  //           onPress={() => handleContactSelection(contact)}
+  //         >
+  //           <Text style={{ marginVertical: 4, fontSize: 20 }}>
+  //             {contact.name}
+  //           </Text>
+  //         </TouchableOpacity>
+  //       ))}
+  //     </View>
+  //   );
+  // };
 
   // 상품을 storeSeq를 기준으로 그룹화
   const groupedByStore = selectedProducts.reduce((acc, product) => {

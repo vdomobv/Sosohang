@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Form, InputGroup, Button, Collapse } from "react-bootstrap";
 
@@ -14,7 +15,6 @@ function InputOwnerInfo({ onChange }) {
 
   // 휴대폰 인증번호 입력 칸 보일지 말지 결정해보자.
   const [open, setOpen] = useState(false);
-
 
   // 상점비밀번호 형식 - 영어 대/소문자, 숫자, 특수문자를 포함하여 8~20글자
   const storePasswordRegEx =
@@ -58,15 +58,37 @@ function InputOwnerInfo({ onChange }) {
   const [verifiedNum, setVerifiedNum] = useState(""); // 인증번호
   const [isVerifiedNum, setIsVerifiedNum] = useState(false); // 인증번호 인증 여부
 
-  const sendVerifiedNum = () => {
-    // 인증번호 요청
-    // console.log("인증번호 요청");
+  const sendVerifiedNum = async () => {
+    await axios
+      .post(`/api/v1/store/register/phone-check?ownerPhone=${storePhoneNum}`)
+      .then((res) => {
+        console.log(res);
+        alert("인증번호가 발송되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("인증번호 발송 x");
+
+      });
     setOpen(true);
   };
 
-  const verifieNumCheck = () => {
+  const verifieNumCheck = async () => {
     // 인증번호 확인
     // console.log("인증번호 확인");
+    await axios
+      .post(
+        `/api/v1/member/register/verify-code?memberPhone=${storePhoneNum}&authCode=${verifiedNum}`
+      )
+      .then((res) => {
+        console.log(res);
+        alert("인증이 완료되었습니다.")
+        setIsVerifiedNum(true);
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+
     setOpen(false);
   };
 

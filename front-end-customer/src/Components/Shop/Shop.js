@@ -19,7 +19,7 @@ export default function Shop({ data, PressFunction, dibSeq, tempUser }) {
         const result = await getStoreDibData(tempUser, data.storeSeq);
         setDibState(result);
       } catch (error) {
-        console.error("Error fetching member data:", error);
+        // console.error("Error fetching member data:", error);
       }
     }
   };

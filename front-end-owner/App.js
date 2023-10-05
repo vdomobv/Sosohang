@@ -19,14 +19,14 @@ export default function App() {
       {/* 초기 화면 설정 */}
       <Stack.Navigator
         initialRouteName="LogIn"
-        screenOptions={{ headerShown: true }}>
-        <Stack.Screen name="로그인" component={LogIn} />
-        <Stack.Screen name="QR코드 조화" component={QrReader} />
-        <Stack.Screen name="결제" component={InputPayment} />
-        <Stack.Screen name="결제완료" component={DonePayment} />
-        <Stack.Screen name="소복소복 조회" component={ShowStamp} />
-        <Stack.Screen name="소복보속 적립" component={AddStamp} />
-        <Stack.Screen name="소복소복 생성" component={NewStamp} />
+        screenOptions={{ headerShown: true, title: "소소행 사장님" }}>
+        <Stack.Screen name="LogIn" component={LogIn} />
+        <Stack.Screen name="QrReader" component={QrReader} />
+        <Stack.Screen name="InputPayment" component={InputPayment} />
+        <Stack.Screen name="DonePayment" component={DonePayment} />
+        <Stack.Screen name="ShowStamp" component={ShowStamp} />
+        <Stack.Screen name="AddStamp" component={AddStamp} />
+        <Stack.Screen name="NewStamp" component={NewStamp} />
       </Stack.Navigator>
     </NavigationContainer>
   )

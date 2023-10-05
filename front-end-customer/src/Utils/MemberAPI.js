@@ -21,7 +21,7 @@ export const login = (navigation, loginPhoneNumber, loginPassword) => {
         .catch((error) => {
             // 로그인 실패 시 처리
             Alert.alert("알림", "로그인에 실패하였습니다. 다시 시도해 주세요.");
-            console.log(error)
+            // console.log(error)
         });
 }
 
@@ -32,7 +32,7 @@ export const setMemberSeq = async (memberSeq) => {
         );
 
     } catch (e) {
-        console.log("SetMemberSeq Error: ", e);
+        // console.log("SetMemberSeq Error: ", e);
     }
 };
 
@@ -41,14 +41,14 @@ export const getMemberSeq = async () => {
         const storedValue = JSON.parse(await AsyncStorage.getItem("memberSeq"));
 
         if (storedValue === null || storedValue === undefined) {
-            console.log('저장된 사용자 없음.')
+            // console.log('저장된 사용자 없음.')
             return undefined;
         }
 
         const memberSeq = JSON.parse(storedValue);
         return memberSeq;
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         return undefined;
     }
 };
@@ -57,7 +57,7 @@ export const logout = async () => {
     try {
         await AsyncStorage.removeItem("memberSeq");
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 }
 
@@ -69,7 +69,7 @@ export const getMemberData = async (memberSeq) => {
 
         return response.data;
     } catch (error) {
-        console.error("Error fetching store data in getMemberData:", error);
+        // console.error("Error fetching store data in getMemberData:", error);
     }
 }
 
@@ -81,7 +81,7 @@ export const updateMemberNickname = async (memberSeq, newNickname) => {
 
         return response.data;
     } catch (error) {
-        console.error("Error fetching store data in getMemberData:", error);
+        // console.error("Error fetching store data in getMemberData:", error);
     }
 }
 
@@ -101,6 +101,6 @@ export const handlePhoneVerification = (phoneNumber) => {
         })
         .catch((error) => {
             Alert.alert("알림", "오류가 발생했습니다. 다시 시도해 주세요.");
-            console.error(error);
+            // console.error(error);
         });
 }

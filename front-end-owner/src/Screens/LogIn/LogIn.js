@@ -7,52 +7,33 @@ import Title from "../../Components/Title/Title";
 import Tabs from "../../Components/Tabs/Tabs";
 
 export default function LogIn({ navigation }) {
-  const [loginPhoneNumber, setLoginPhoneNumber] = useState("");
+  const [loginRegisterNumber, setLoginRegisterNumber] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
   const handleLogIn = () => {
     // 전화번호가 11자리인지 확인
-    if (loginPhoneNumber.length === 10) {
+    if (loginRegisterNumber.length === 10) {
       // 비밀번호가 조건에 맞는지 확인
-      if (true
-        // loginPassword.match(
-        //   /^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/
-        // )
+      if (
+        loginPassword.match(
+          /^(?=.*?[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,15}$/
+        )
       ) {
         axios
           .post("https://j9c109.p.ssafy.io/api/v1/store/login", {
-            registrationNumber: loginPhoneNumber,
+            registrationNumber: loginRegisterNumber,
             storePassword: loginPassword,
           })
           .then((res) => {
             if (res.data.isLogin === "success") {
               navigation.navigate("QrReader");
+            } else {
+              Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");
             }
           })
           .catch((err) => {
-            // console.error(err);
-            alert("로그인 실패");
+            Alert.alert("로그인 실패");
           });
-        // 로그인 로직 작성
-        // axios
-        //   .post('http://172.30.1.74:8080/api/v1/member/login', {
-        //       memberPhone: loginPhoneNumber,
-        //       memberPassword: loginPassword
-        //   })
-        //   .then((response) => {
-        //     // 로그인 성공 시 처리
-        //     if (response.data) {
-        //       Alert.alert("알림", "로그인 성공!");
-        //       console.log(response.data.token);
-        //     } else {
-        //       Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     // 로그인 실패 시 처리
-        //     Alert.alert("알림", "로그인에 실패하였습니다. 다시 시도해 주세요.");
-        //     console.log(error)
-        //   });
       } else {
         Alert.alert(
           "알림",
@@ -68,11 +49,10 @@ export default function LogIn({ navigation }) {
     <>
       <View style={styles.container}>
         <Title title={"사장님 로그인"} />
-        {/* <View style={styles.loginContainer}> */}
 
-        <Text style={styles.info}>
+        {/* <Text style={styles.info}>
           비밀번호 찾기는 웹사이트에서 가능합니다.
-        </Text>
+        </Text> */}
         <View style={{ alignItems: "center" }}>
           <TextInput
             style={styles.input}
@@ -84,14 +64,14 @@ export default function LogIn({ navigation }) {
               if (/^[0-9]*$/.test(text)) {
                 // 숫자인 경우에만 상태 업데이트
                 if (text.length <= 10) {
-                  setLoginPhoneNumber(text);
+                  setLoginRegisterNumber(text);
                 }
               } else {
                 // 숫자가 아닌 경우 경고창 표시
                 Alert.alert("알림", "사업자등록번호를 바르게 입력해 주세요.");
               }
             }}
-            value={loginPhoneNumber}
+            value={loginRegisterNumber}
           />
           <TextInput
             style={styles.input}

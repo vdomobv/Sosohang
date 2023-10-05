@@ -50,7 +50,7 @@ function EditStoreInfo(props) {
         setIsOpenPost(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -65,11 +65,11 @@ function EditStoreInfo(props) {
     axios
       .get(`https://j9c109.p.ssafy.io/api/v1/keywords/category/${categorySeq}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setKeywordList(res.data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 
@@ -91,7 +91,7 @@ function EditStoreInfo(props) {
       info.storeKeywords.map((keywordSeq, index) => {
         newChecklist[keywordSeq] = true;
       })
-      console.log(newChecklist);
+      // console.log(newChecklist);
       setKeywordChecklist(newChecklist);
     }
   }, [info]);
@@ -249,7 +249,7 @@ function EditStoreInfo(props) {
                 }
                 setKeywordChecklist(newChecklist);
 
-                console.log(selectedKeywords);
+                // console.log(selectedKeywords);
               }}
             >
               {keyword.keywordName}

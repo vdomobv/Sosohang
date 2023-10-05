@@ -25,7 +25,7 @@ export default function PaymentResult({ navigation, route }) {
       const memberSeq = await getMemberSeq();
 
       if (memberSeq !== undefined) {
-        console.log(memberSeq);
+        // console.log(memberSeq);
         setTempUser(memberSeq);
       }
     };
@@ -40,6 +40,7 @@ export default function PaymentResult({ navigation, route }) {
 
       Object.keys(productList).map((key) => {
         productList[key].map((d) => {
+          // console.log("확인 :", d);
           temp.push({
             productSeq: d.productSeq,
             count: d.count,

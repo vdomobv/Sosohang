@@ -16,7 +16,7 @@ function TableStoreSettlementDate() {
         setProducts(res.data);
       })
       .catch((err) => {
-        return console.error(err);
+        // return console.error(err);
       });
   }, []);
 
@@ -87,7 +87,9 @@ function TableStoreSettlementDate() {
     selectedProducts.forEach((ele) => {
       axios
         .delete(`/api/v1/products/${ele.productSeq}`)
-        .then(console.log(ele.productSeq))
+        .then(
+          // console.log(ele.productSeq)
+          )
         .catch();
     });
 

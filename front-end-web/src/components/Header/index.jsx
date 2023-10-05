@@ -44,7 +44,7 @@ function Header() {
         setIsAuth(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -88,11 +88,18 @@ function Header() {
             >
               상점정보
             </NavLink>
+            <NavLink>|</NavLink>
+            <NavLink
+              to="/signup"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              회원가입
+            </NavLink>
             <NavLink
               to="/login"
               className={({ isActive }) => (isActive ? "active" : undefined)}
             >
-              로그인 / 회원가입
+              로그인
             </NavLink>
           </>
         ) : (

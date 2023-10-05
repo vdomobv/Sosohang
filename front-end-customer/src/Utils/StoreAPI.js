@@ -58,9 +58,9 @@ export const getKeywordStoreByLocation = async (
     return response.data;
   } catch (error) {
     // console.error(
-      "Error fetching store data in getKeywordStoreByLocation:",
-      error
-    );
+    //   "Error fetching store data in getKeywordStoreByLocation:",
+    //   error
+    // );
   }
 };
 
@@ -82,9 +82,9 @@ export const getKeywords = async () => {
     return randomTenItems;
   } catch (error) {
     // console.error(
-      "Error fetching store data in getKeywordStoreByLocation:",
-      error
-    );
+    //   "Error fetching store data in getKeywordStoreByLocation:",
+    //   error
+    // );
   }
 };
 
@@ -99,8 +99,8 @@ export const getReviewData = async (storeSeq) => {
     return temp;
   } catch (error) {
     // console.error(
-      "Error fetching store data in getReviewData:",
-      error
-    );
+    //   "Error fetching store data in getReviewData:",
+    //   error
+    // );
   }
 };

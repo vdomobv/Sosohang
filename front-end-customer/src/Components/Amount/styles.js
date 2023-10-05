@@ -7,9 +7,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '80%',
     padding: 5,
-    borderRadius : 10
+    borderRadius : 10,
+    alignItems : 'center',
   },
 
+  circleIcon: {
+    color: 'gray',
+    fontSize: 28,
+  }
 });
 
 export default styles

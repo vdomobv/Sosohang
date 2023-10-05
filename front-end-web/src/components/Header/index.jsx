@@ -17,7 +17,7 @@ function Header() {
       setIsAuth(true);
     }
   }, [auth]);
-  
+
   // const [auth, setAuth] = useState(false);
   // const navigate = useNavigate();
 
@@ -51,8 +51,8 @@ function Header() {
   // console.log(auth);
 
   const handleImageClick = () => {
-    navigate('/'); // 메인 페이지로 이동
-  }
+    navigate("/"); // 메인 페이지로 이동
+  };
 
   return (
     <Wrapper>
@@ -66,41 +66,62 @@ function Header() {
         />
       </Link>
       {/* {isAuth ? */}
-      <div className="links">
-        <NavLink
-          to="/storeManage"
-          className={({ isActive }) => (isActive ? "active" : undefined)}
-        >
-          판매내역
-        </NavLink>
-        <NavLink
-          to="/productManage"
-          className={({ isActive }) => (isActive ? "active" : undefined)}
-        >
-          상품관리
-        </NavLink>
-        <NavLink
-          to="/storeInfo"
-          className={({ isActive }) => (isActive ? "active" : undefined)}
-        >
-          상점정보
-        </NavLink>
-      </div>
+      <div className="links"></div>
       <div className="links">
         {!isAuth ? (
-          <NavLink
-            to="/login"
-            className={({ isActive }) => (isActive ? "active" : undefined)}
-          >
-            로그인 / 회원가입
-          </NavLink>
+          <>
+            <NavLink
+              to="/login"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              판매내역
+            </NavLink>
+            <NavLink
+              to="/login"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              상품관리
+            </NavLink>
+            <NavLink
+              to="/login"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              상점정보
+            </NavLink>
+            <NavLink
+              to="/login"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              로그인 / 회원가입
+            </NavLink>
+          </>
         ) : (
-          <NavLink
-            onClick={handleLogout}
-            className={({ isActive }) => (isActive ? undefined : undefined)}
-          >
-            로그아웃
-          </NavLink>
+          <>
+            <NavLink
+              to="/storeManage"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              판매내역
+            </NavLink>
+            <NavLink
+              to="/productManage"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              상품관리
+            </NavLink>
+            <NavLink
+              to="/storeInfo"
+              className={({ isActive }) => (isActive ? "active" : undefined)}
+            >
+              상점정보
+            </NavLink>
+            <NavLink
+              onClick={handleLogout}
+              className={({ isActive }) => (isActive ? undefined : undefined)}
+            >
+              로그아웃
+            </NavLink>
+          </>
         )}
       </div>
     </Wrapper>

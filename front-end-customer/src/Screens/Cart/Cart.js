@@ -148,6 +148,10 @@ export default function Cart({ navigation }) {
       );
     });
   };
+  
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
 
   if (tempUser) {
     return (
@@ -193,7 +197,7 @@ export default function Cart({ navigation }) {
           <View style={styles.total}>
             <View style={styles.price}>
               <Text style={styles.priceText}> 총 결제 금액</Text>
-              <Text style={styles.priceText}>{totalPrice} 원</Text>
+              <Text style={styles.priceText}>{numberWithCommas(totalPrice)} 원</Text>
             </View>
             <TouchableOpacity
               style={styles.okay}

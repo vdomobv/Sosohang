@@ -104,14 +104,14 @@ function TableProductActive() {
 
   return (
     // 이벤트 상품 목록
-    <div  style={{margin:"100px"}}>
+    <div style={{ margin: "100px" }}>
       <h2>이벤트 상품 목록</h2>
       {/* <Button onClick={() => setShowAddModal(true)}>상품 추가</Button> */}
       <Button
-        variant="danger"
+        variant="outline-danger"
         onClick={() => openDeleteModal(selectedProducts)}
         disabled={selectedProducts.length === 0} // 선택한 항목이 없을 때 비활성화
-        style={{ margin: "15px 0 10px 0", padding: "8px 17px" }}
+        style={{ margin: "15px 0 10px 0", padding: "8px 17px", borderWidth: 2 }}
       >
         선택 항목 삭제
       </Button>
@@ -131,35 +131,42 @@ function TableProductActive() {
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
-            product.productDcrate !== 0 ? 
-            <tr key={index}>
-              <td>
-                <Form.Check
-                  type="checkbox"
-                  checked={selectedProducts.includes(product)}
-                  onChange={() => handleToggleSelect(product)}
-                />
-              </td>
-              <td>{product.productName}</td>
-              <td>{product.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "원"}</td>
-              <td>{product.productDcrate*100 + "%"}</td>
-              <td>{product.productInfo}</td>
-              <td>{product.productExp}</td>
-              <td>
-                <img
-                  src={product.productImage}
-                  alt={product.productName}
-                  width="100"
-                />
-              </td>
-              <td>{product.productCount}</td>
-              <td>{product.salesAmount}</td>
-              <td>
-                <Button onClick={() => openEditModal(product)}>수정</Button>
-              </td>
-            </tr> : <></>
-          ))}
+          {products.map((product, index) =>
+            product.productDcrate !== 0 ? (
+              <tr key={index}>
+                <td>
+                  <Form.Check
+                    type="checkbox"
+                    checked={selectedProducts.includes(product)}
+                    onChange={() => handleToggleSelect(product)}
+                  />
+                </td>
+                <td>{product.productName}</td>
+                <td>
+                  {product.productPrice
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원"}
+                </td>
+                <td>{product.productDcrate * 100 + "%"}</td>
+                <td>{product.productInfo}</td>
+                <td>{product.productExp}</td>
+                <td>
+                  <img
+                    src={product.productImage}
+                    alt={product.productName}
+                    width="100"
+                  />
+                </td>
+                <td>{product.productCount}</td>
+                <td>{product.salesAmount}</td>
+                <td>
+                  <Button onClick={() => openEditModal(product)}>수정</Button>
+                </td>
+              </tr>
+            ) : (
+              <></>
+            )
+          )}
         </tbody>
       </Table>
       <ModalProdctAdd

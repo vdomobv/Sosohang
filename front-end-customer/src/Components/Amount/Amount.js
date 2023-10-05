@@ -1,12 +1,12 @@
 import styles from "./styles";
 import { View, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import SectionSubTitle from '../SectionSubTitle/SectionSubTitle';
-import SectionTitle from "../SectionTitle/SectionTitle";
 
 export default function Amount({ productAmount, onCheckChange }) {
     const [amount, setAmount] = useState(productAmount);
-    
+
     useEffect(() => {
         setAmount(productAmount);
     }, [productAmount])
@@ -16,18 +16,20 @@ export default function Amount({ productAmount, onCheckChange }) {
     }, [amount])
 
     return <View style={styles.container}>
-        <TouchableOpacity onPress={() => {
-            if (amount > 1) {
-                setAmount(amount - 1);
-            }
-        }}>
-            <SectionTitle content={"─"} />
-        </TouchableOpacity>
+        <Ionicons
+            name="remove-circle-outline"
+            style={styles.circleIcon}
+            onPress={() => {
+                if (amount > 1) {
+                    setAmount(amount - 1);
+                }
+            }} />
         <SectionSubTitle content={amount} />
-        <TouchableOpacity onPress={() => {
-            setAmount(amount + 1);
-        }}>
-            <SectionTitle content={"┼"} />
-        </TouchableOpacity>
+        <Ionicons
+            name="add-circle-outline"
+            style={styles.circleIcon}
+            onPress={() => {
+                setAmount(amount + 1);
+            }} />
     </View>;
 }

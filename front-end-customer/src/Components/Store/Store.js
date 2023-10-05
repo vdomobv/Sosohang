@@ -10,6 +10,10 @@ export default function Store({ data, usable, onPress }) {
     0
   );
 
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
+
   return (
     <>
       <View
@@ -39,7 +43,7 @@ export default function Store({ data, usable, onPress }) {
           ))}
 
           <Text style={{ marginTop: 2, fontSize: 18, fontWeight: "bold"}}>
-            결제 금액: {totalOrderPrice} 원
+            결제 금액: {numberWithCommas(totalOrderPrice)} 원
           </Text>
         </View>
       </View>

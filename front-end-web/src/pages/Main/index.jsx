@@ -41,9 +41,11 @@ function Main() {
         </div>
         <div className="text-overlay">
           <Fade cascade damping={0.2}>
-            <h3 className="text-overlay_h3">
-              우리 동네 상점 '소소티콘'으로 선물하기
-            </h3>
+            <div style={{ backgroundColor: 'white', borderRadius: 30, padding: '6px 20px', opacity: 0.7 }}>
+              <h3 className="text-overlay_h3">
+                우리 동네 상점 '소소티콘'으로 선물하기
+              </h3>
+            </div>
             <div className="arrow-container">
               <img
                 src="/assets/down_arrow.png"
@@ -57,21 +59,21 @@ function Main() {
       </div>
       <Slide direction="up" triggerOnce>
         <Fade cascade damping={0.2}>
-          <div className="logo-container">
+          {/* <div className="logo-container">
             <img
               className="logo"
-              style={{ width: "30%" }}
+              style={{ width: "20%" }}
               src="/assets/sosohang.png"
               alt=""
             ></img>
-          </div>
+          </div> */}
         </Fade>
         <div ref={secondSlideRef} className="img-container2">
           <div className="text-overlay_ballon">
             <Fade cascade damping={0.2} delay={200}>
               <div className="message-container">
-                <div className="message-box">
-                  <p>소소행은 어떤 서비스인가요? 🧐</p>
+                <div className="message-box" style={{ display:'flex', alignItems:'center', }}>
+                  <p style={{ color: "#15E575", fontWeight:'bold', fontSize: '25px', marginRight: '-8px'}}>소소행</p><p>은 어떤 서비스인가요? 🧐</p>
                 </div>
               </div>
             </Fade>
@@ -97,7 +99,7 @@ function Main() {
             <Fade cascade damping={0.2} delay={600}>
               <div className="message-container">
                 <div className="message-box">
-                  <p>어떻게 시작하게 되었나요??</p>
+                  <p>어떻게 시작하게 되었나요?</p>
                 </div>
               </div>
             </Fade>
@@ -143,151 +145,179 @@ function Main() {
               <br></br>
               <div className="boxes-container">
                 <div className="box">
-                  <img
-                    src="/videos/dingdu.png"
-                    alt=""
-                    style={{ width: "130px", height: "150px" }}
-                  ></img>
+                  <div style={{ flexDirection: 'column', alignItems: 'center', marginTop: '8px' }}>
+                    <h3 style={{ fontWeight: "bold", textAlign: 'center', marginBottom: '-15px' }}>이지은</h3>
+                    <img
+                      src="/assets/teamImage/silver.png"
+                      alt=""
+                      style={{ width: "150px", height: "150px" }}
+                    ></img>
+                  </div>
                   <div className="name">
-                    <h3 style={{ fontWeight: "bold" }}>이지은</h3>
                     <p
                       style={{
-                        color: "#FFBF46",
+                        color: "#ECA826",
                         margin: "0px",
+                        marginTop: "20px",
                         fontWeight: "bold",
                       }}
                     >
-                      팀장·프론트엔드
+                      Leader | Front-end
                     </p>
+                    <br />
                     <p>
-                      장바구니/결제(PG)
-                      <br />
-                      지도 기능 구현
-                      <br />
-                      BE/FE 연결 전반
+                      회원 앱 기능 전반<br />
+                      PG사 아임포트 결제<br />
+                      위치 기반 지도 구축<br />
+                      파일 컴포넌트 구조화
                     </p>
                   </div>
                 </div>
                 <div className="box">
-                  <img
-                    src="/videos/chang.png"
-                    alt=""
-                    style={{ width: "130px", height: "150px" }}
-                  ></img>
+                  <div style={{ flexDirection: 'column', alignItems: 'center', marginTop: '8px' }}>
+                    <h3 style={{ fontWeight: "bold", textAlign: 'center', marginBottom: '-15px' }}>김진주</h3>
+                    <img
+                      src="/assets/teamImage/pearl.png"
+                      alt=""
+                      style={{ width: "150px", height: "150px" }}
+                    ></img>
+                  </div>
                   <div className="name">
-                    <h3 style={{ fontWeight: "bold" }}>김진주</h3>
                     <p
                       style={{
-                        color: "#FFBF46",
+                        color: "#ECA826",
                         margin: "0px",
+                        marginTop: "20px",
                         fontWeight: "bold",
                       }}
                     >
-                      프론트엔드 매니저
+                      Front-end
                     </p>
+                    <br />
                     <p>
-                      선물포장/리뷰
-                      <br></br>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ
+                      사장님 앱 기능 전반<br></br>
+                      (QR리더, 상점 스탬프)<br></br>
+                      소소티콘 레이아웃<br></br>
+                      회원 앱 UI/UX<br></br>
+
                     </p>
                   </div>
                 </div>
                 <div className="box">
-                  <img
-                    src="/videos/bean.png"
-                    alt=""
-                    style={{ width: "130px", height: "150px" }}
-                  ></img>
+                  <div style={{ flexDirection: 'column', alignItems: 'center', marginTop: '8px' }}>
+                    <h3 style={{ fontWeight: "bold", textAlign: 'center', marginBottom: '-15px' }}>서정빈</h3>
+                    <img
+                      src="/assets/teamImage/bin.png"
+                      alt=""
+                      style={{ width: "150px", height: "150px" }}
+                    ></img>
+                  </div>
                   <div className="name">
-                    <h3 style={{ fontWeight: "bold" }}>서정빈</h3>
                     <p
                       style={{
-                        color: "#FFBF46",
+                        color: "#ECA826",
                         margin: "0px",
+                        marginTop: "20px",
                         fontWeight: "bold",
                       }}
                     >
-                      프론트엔드
+                      Front-end
                     </p>
+                    <br />
                     <p>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ
+                      사장님 웹 기능 전반<br></br>
+                      (상품등록, 매출관리)<br></br>
+                      사장님 앱 분할 결제<br></br>
+                      보안 인증 로직 설계
                     </p>
                   </div>
                 </div>
               </div>
               <div className="boxes-container">
                 <div className="box">
-                  <img
-                    src="/videos/min.png"
-                    alt=""
-                    style={{ width: "130px", height: "150px" }}
-                  ></img>
+                  <div style={{ flexDirection: 'column', alignItems: 'center', marginTop: '8px' }}>
+                    <h3 style={{ fontWeight: "bold", textAlign: 'center', marginBottom: '-5px' }}>양지혜</h3>
+                    <img
+                      src="/assets/teamImage/wisdom.png"
+                      alt=""
+                      style={{ width: "150px", height: "140px" }}
+                    ></img>
+                  </div>
                   <div className="name">
-                    <h3 style={{ fontWeight: "bold" }}>양지혜</h3>
                     <p
                       style={{
-                        color: "#575761",
+                        color: "#31A967",
                         margin: "0px",
+                        marginTop: "20px",
                         fontWeight: "bold",
                       }}
                     >
-                      백엔드
+                      Back-end
                     </p>
+                    <br />
                     <p>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ
+                      QR 생성 및 소소티콘 제작<br></br>
+                      NCP 문자 발송 로직 설계<br></br>
+                      상품 및 주문 내역 관리<br></br>
+                      AWS-S3 연결
                     </p>
                   </div>
                 </div>
                 <div className="box">
-                  <img
-                    src="/videos/jieun.png"
-                    alt=""
-                    style={{ width: "130px", height: "150px" }}
-                  ></img>
+                  <div style={{ flexDirection: 'column', alignItems: 'center', marginTop: '8px' }}>
+                    <h3 style={{ fontWeight: "bold", textAlign: 'center', marginBottom: '-15px' }}>위효선</h3>
+                    <img
+                      src="/assets/teamImage/momo.png"
+                      alt=""
+                      style={{ width: "150px", height: "150px" }}
+                    ></img>
+                  </div>
                   <div className="name">
-                    <h3 style={{ fontWeight: "bold" }}>위효선</h3>
                     <p
                       style={{
-                        color: "#575761",
+                        color: "#31A967",
                         margin: "0px",
+                        marginTop: "20px",
                         fontWeight: "bold",
                       }}
                     >
-                      백엔드
+                      Back-end
                     </p>
+                    <br />
                     <p>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ
+                      상점 및 매출 관리<br />
+                      상점 스탬프 관리<br></br>
+                      보관함 및 스토리 제작<br></br>
+                      회원 보안 (JWT 토큰)
                     </p>
                   </div>
                 </div>
                 <div className="box">
-                  <img
-                    src="/videos/ikjo.png"
-                    alt=""
-                    style={{ width: "130px", height: "150px" }}
-                  ></img>
+                  <div style={{ flexDirection: 'column', alignItems: 'center', marginTop: '8px' }}>
+                    <h3 style={{ fontWeight: "bold", textAlign: 'center', marginBottom: '-15px' }}>이민규</h3>
+                    <img
+                      src="/assets/teamImage/gyu.png"
+                      alt=""
+                      style={{ width: "150px", height: "150px" }}
+                    ></img>
+                  </div>
                   <div className="name">
-                    <h3 style={{ fontWeight: "bold" }}>이민규</h3>
                     <p
                       style={{
-                        color: "#575761",
+                        color: "#31A967",
                         margin: "0px",
+                        marginTop: "20px",
                         fontWeight: "bold",
                       }}
                     >
-                      백엔드 매니저
+                      Back-end | Infra
                     </p>
+                    <br />
                     <p>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ<br></br>
-                      ㅇㅇ
+                      DB 설계 구조화<br></br>
+                      CI/CD 구축<br></br>
+                      Server 관리<br></br>
+                      React-Native 의존성 해결
                     </p>
                   </div>
                 </div>
@@ -296,19 +326,52 @@ function Main() {
           </div>
         </Slide>
       </div>
-        <div className="footer-container">
-          <div className="text-overlay-footer">
-            <Fade cascade damping={0.2}>
-              <h2
+      <div className="footer-container">
+        <div className="text-overlay-footer">
+          <Fade cascade damping={0.2}>
+            {/* <h2
                 className="text-overlay_h2"
                 style={{ letterSpacing: "-2.5px" }}
-              >
-                푸터를 넣을까 말까
-              </h2>
-             
-            </Fade>
-          </div>
+              > */}
+            {/* </h2> */}
+
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <hr style={{ width: '90%' }} />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+              <div style={{ marginTop: '10px', marginLeft: '30px', paddingBottom: '10px' }}>
+                <p style={{ fontWeight: 'bold', fontSize: '20px' }}>(주) 소소행</p>
+                주소 : 광주시 광산구 장덕동 삼성사업장
+                <br />
+                <br />
+                사업자 번호 : 2222-888888
+                <br />
+                Tel : 010-0000-0000   Fax : 050-0000-0000
+                E-mail : haebojagu@ssafy.com
+                <br />
+                All Photo by ⓒ C109 Crew on Unsplash view
+              </div>
+
+              <div className="logo-container" style={{ marginRight: '40px'}}>
+                <img
+                  className="logo"
+                  style={{ width: '110px', height: '110px', padding: '3px' }}
+                  src="/assets/soso_owner.png"
+                  alt=""
+                ></img>
+                <img
+                  className="logo"
+                  style={{ width: "110px", height: '110px' }}
+                  src="/assets/soso_mem.png"
+                  alt=""
+                ></img>
+              </div>
+            </div>
+
+          </Fade>
         </div>
+      </div>
     </Wrapper>
   );
 }

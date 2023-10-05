@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -44,7 +44,7 @@ function SignUp() {
         storeWorkhour: storeIssue.storeWorkDay,
         storeHoliday: storeIssue.storeHoliday,
         storeExtraInfo: storeIssue.storeExtraInfo,
-        selectedKeywordSeqList: storeIssue.storeKeywords,
+        selectedKeywordSeqList: storeInfo.selectedKeywords,
         storeUrl: storeIssue.storeUrl,
         storeImage: storeImageUrl,
       })

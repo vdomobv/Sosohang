@@ -19,7 +19,7 @@ form {
   flex-direction: row;
   justify-content: space-around;
   align-items: stretch;
-  height: 500px;
+  // height: 500px;
 
 }
 
@@ -69,32 +69,6 @@ form {
   flex-direction: column;
   justify-content: space-around;
   height: 150px;
-}
-
-// 이미지 업로드 버튼
-.filebox label {
-  display: inline-block;
-  padding: .5em .75em;
-  color: #999;
-  font-size: inherit;
-  line-height: normal;
-  vertical-align: middle;
-  background-color: #fdfdfd;
-  cursor: pointer;
-  border: 1px solid #ebebeb;
-  border-bottom-color: #e2e2e2;
-  border-radius: .25em;
-}
-
-.filebox input[type="file"] {  /* 파일 필드 숨기기 */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip:rect(0,0,0,0);
-  border: 0;
 }
 `;
 

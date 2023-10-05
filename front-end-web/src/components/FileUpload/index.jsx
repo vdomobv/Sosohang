@@ -10,7 +10,7 @@ function FileUpload({ onChange }) {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0]; // 선택된 파일을 변수에 할당
-    console.log(selectedFile);  // 여기에서 선택된 파일 로그 출력
+    console.log(selectedFile); // 여기에서 선택된 파일 로그 출력
     setFile(selectedFile);
     setFileName(selectedFile.name); // 추가: 선택된 파일의 이름 상태 업데이트
   };
@@ -48,11 +48,36 @@ function FileUpload({ onChange }) {
         <input
           type="file"
           className="custom-file-input"
-          variant="primary"
           id="customFile"
           onChange={handleFileChange}
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            padding: "0",
+            margin: "-1px",
+            overflow: "hidden",
+            clip: "rect(0, 0, 0, 0)",
+            border: "0",
+          }}
         />
-        <label className="custom-file-label" htmlFor="customFile">
+        <label
+          className="custom-file-label"
+          htmlFor="customFile"
+          style={{
+            display: "inline-block",
+            padding: ".5em .75em",
+            color: "#999",
+            fontSize: "inherit",
+            lineHeight: "normal",
+            verticalAlign: "middle",
+            backgroundColor: "#fdfdfd",
+            cursor: "pointer",
+            border: "1px solid #ebebeb",
+            borderBottomColor: "#e2e2e2",
+            borderRadius: ".25em",
+          }}
+        >
           {fileName}
         </label>
         <Button
@@ -66,7 +91,7 @@ function FileUpload({ onChange }) {
           이미지 업로드
         </Button>
       </div>
-      <input type="file" onChange={handleFileChange}
+      {/* <input type="file" onChange={handleFileChange}
       style={{ marginLeft: '20px' }}
       />
       <Button
@@ -76,7 +101,7 @@ function FileUpload({ onChange }) {
           handleUpload();
         }}>
         업로드
-      </Button>
+      </Button> */}
     </div>
   );
 }

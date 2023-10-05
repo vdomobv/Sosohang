@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, InputGroup, Button } from "react-bootstrap";
+import {
+  Modal,
+  Form,
+  InputGroup,
+  Button,
+  Collapse,
+  ToggleButton,
+} from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 import ModalStoreRegNum from "../../components/ModalStoreRegNum";
@@ -104,6 +111,31 @@ function InputStoreInfo({ onChange }) {
   };
 
   const [storeCategory, setStoreCategory] = useState("1"); // 상점 카테고리
+  const [keywordList, setKeywordList] = useState([]);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [keywordChecklist, setKeywordChecklist] = useState([]);
+
+  const [open, setOpen] = useState(false);
+
+  const handleCategorySeq = (categorySeq) => {
+    axios
+      .get(`https://j9c109.p.ssafy.io/api/v1/keywords/category/${categorySeq}`)
+      .then((res) => {
+        console.log(res.data);
+        setKeywordList(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    if (keywordList.length > 0) {
+      // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
+      setOpen(true);
+      setKeywordChecklist(new Array(keywordList.length).fill(false));
+    }
+  }, [keywordList]);
 
   useEffect(() => {
     if (
@@ -123,6 +155,7 @@ function InputStoreInfo({ onChange }) {
       confirmStoreInfo,
       storeLatitude,
       storeLongitude,
+      selectedKeywords,
     });
   }, [
     storeName,
@@ -131,11 +164,12 @@ function InputStoreInfo({ onChange }) {
     storeCategory,
     confirmStoreInfo,
     isVerifiedRegNum,
+    selectedKeywords,
     onChange,
   ]);
 
   return (
-    <div style={{ width: "45%" }}>
+    <div style={{ width: "45%", marginBottom: 30 }}>
       <h4>상점 정보</h4>
       <div style={{ outline: "none", marginBottom: 30 }}>
         <Form.Label>상점 이름*</Form.Label>
@@ -202,19 +236,84 @@ function InputStoreInfo({ onChange }) {
         </InputGroup>
       </div>
 
-      <div>
-        <Form.Label>상점 카테고리*</Form.Label>
-        <Form.Select
-          aria-label="상점 카테고리를 선택해 주세요."
-          onChange={(e) => setStoreCategory(e.target.value)}
-        >
-          <option>상점카테고리</option>
-          <option value="1">카페/제과</option>
-          <option value="2">음식점</option>
-          <option value="3">생활/소품</option>
-          <option value="4">여가/체험</option>
-          <option value="5">건강/뷰티</option>
-        </Form.Select>
+      <div style={{ display: "flex", flexDirection: "row", marginBottom: 30 }}>
+        <div style={{ width: "50%", marginRight: 30 }}>
+          <Form.Label>상점 카테고리*</Form.Label>
+          <Form.Select
+            aria-label="상점 카테고리를 선택해 주세요."
+            onChange={(e) => {
+              setSelectedKeywords([]);
+              if (e.target.value === "0") {
+                setKeywordList([]);
+                setStoreCategory("");
+              } else {
+                setStoreCategory(e.target.value);
+                handleCategorySeq(e.target.value);
+              }
+            }}
+          >
+            <option value="0">상점카테고리</option>
+            <option value="1">카페/제과</option>
+            <option value="2">음식점</option>
+            <option value="3">생활/소품</option>
+            <option value="4">여가/체험</option>
+            <option value="5">건강/뷰티</option>
+          </Form.Select>
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div>
+          <Form.Label>상점 키워드 (최대 3개 선택 가능합니다)</Form.Label>
+        </div>
+        <Collapse in={open}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "5px",
+              alignItems: "center",
+            }}
+          >
+            {keywordList?.map((keyword, index) => (
+              <ToggleButton
+                key={keyword.keywordSeq}
+                id={`${keyword.keywordSeq}-toggle-check`}
+                type="checkbox"
+                variant="outline-primary"
+                checked={keywordChecklist[index]}
+                value={keyword.keywordSeq}
+                onChange={(e) => {
+                  const newChecklist = [...keywordChecklist];
+                  newChecklist[index] = e.currentTarget.checked;
+
+                  if (e.currentTarget.checked) {
+                    // 최대 3개의 키워드만 선택 가능하도록 검사
+                    if (selectedKeywords.length < 3) {
+                      setSelectedKeywords([
+                        ...selectedKeywords,
+                        keyword.keywordSeq,
+                      ]);
+                    } else {
+                      // 이미 3개 이상 선택된 경우, 체크를 해제합니다.
+                      newChecklist[index] = false;
+                    }
+                  } else {
+                    setSelectedKeywords(
+                      selectedKeywords.filter(
+                        (selected) => selected !== keyword.keywordSeq
+                      )
+                    );
+                  }
+                  setKeywordChecklist(newChecklist);
+
+                  console.log(selectedKeywords);
+                }}
+              >
+                {keyword.keywordName}
+              </ToggleButton>
+            ))}
+          </div>
+        </Collapse>
       </div>
       {isOpenPost ? (
         <ModalStorePostcode

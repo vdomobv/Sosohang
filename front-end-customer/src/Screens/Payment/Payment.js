@@ -5,6 +5,7 @@ import Loading from "../../Components/Loading/Loading";
 import { EXPO_PG_USER_CODE } from "@env";
 import { useEffect, useState } from "react";
 import { makeSosoticon } from "../../Utils/PaymentAPI";
+import { WebView } from "react-native-webview";
 
 export default function Payment({ navigation, route }) {
   const userCode = EXPO_PG_USER_CODE;
@@ -15,6 +16,7 @@ export default function Payment({ navigation, route }) {
 
   console.log("소소티콘 제이쓴",sosoticonData)
   console.log(userCode)
+  console.log(sosoticonData);
 
 
   return (

@@ -43,8 +43,9 @@ export default function AddStamp({ route, navigation }) {
     });
   }, [nowStamp]);
 
-  const storeSeq = stampData[0].store.storeSeq;
+  const storeSeq = stampData[1].store.storeSeq;
   const phoneNumber = stampData[0].member.memberPhone;
+
 
   const incrementStampCount = () => {
     if (stampCount < 10) {

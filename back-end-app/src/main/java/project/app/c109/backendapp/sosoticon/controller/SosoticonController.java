@@ -17,7 +17,7 @@ import java.util.Map;
 @RequestMapping("/api/app/users/gift-cards") // 라우팅 경로 설정
 public class SosoticonController {
 
-
+    @Autowired
     private final SosoticonService sosoticonService; // 의존성 주입
 
     @Autowired

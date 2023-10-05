@@ -1,6 +1,7 @@
 package project.app.c109.backendapp.store.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,6 +13,7 @@ import project.app.c109.backendapp.category.repository.CategoryRepository;
 import project.app.c109.backendapp.keyword.domain.entity.Keyword;
 import project.app.c109.backendapp.keyword.repository.KeywordRepository;
 import project.app.c109.backendapp.member.domain.entity.Member;
+import project.app.c109.backendapp.sosoticon.service.NcpSensService;
 import project.app.c109.backendapp.store.domain.dto.request.StoreRegisterRequest;
 import project.app.c109.backendapp.store.domain.dto.request.StoreUpdateRequest;
 import project.app.c109.backendapp.store.domain.entity.Store;
@@ -19,6 +21,7 @@ import project.app.c109.backendapp.store.repository.StoreRepository;
 import project.app.c109.backendapp.storekeyword.domain.entity.StoreKeyword;
 import project.app.c109.backendapp.storekeyword.repository.StoreKeywordRepository;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.nio.file.attribute.UserPrincipal;
@@ -36,7 +39,24 @@ public class StoreService {
 	private final CategoryRepository categoryRepository;
 	private final PasswordEncoder passwordEncoder;
 	private StringRedisTemplate stringRedisTemplate;
+	@Autowired
+	private NcpSensService ncpSensService;
 
+	@Autowired
+	private Environment env;
+
+	private String ncpApiUrl;
+	private String ncpAccessKey;
+	private String ncpSecretKey;
+	private String ncpServiceId;
+
+	@PostConstruct
+	public void init() {
+		ncpApiUrl = env.getProperty("ncp.apiUrl");
+		ncpAccessKey = env.getProperty("ncp.accessKey");
+		ncpSecretKey = env.getProperty("ncp.secretKey");
+		ncpServiceId = env.getProperty("ncp.serviceId");
+	}
 	@Autowired
 	public StoreService(StoreRepository storeRepository, CategoryRepository categoryRepository, KeywordRepository keywordRepository, StoreKeywordRepository storeKeywordRepository, PasswordEncoder passwordEncoder, StringRedisTemplate stringRedisTemplate) {
 		this.storeRepository = storeRepository;
@@ -141,9 +161,18 @@ public class StoreService {
 	public String handlePhoneVerification(String phoneNumber) {
 		String authCode = String.format("%06d", (int)(Math.random() * 1000000));
 		stringRedisTemplate.opsForValue().set(phoneNumber, authCode, 3, TimeUnit.MINUTES);
-		return authCode;
+		// 인증 코드를 사용자의 휴대폰 번호로 전송
+		sendVerificationCodeViaSMS(phoneNumber, authCode);
+		return "인증번호 전송완료";
 	}
-
+	private void sendVerificationCodeViaSMS(String phoneNumber, String authCode) {
+		try {
+			ncpSensService.sendVerificationSMS(phoneNumber, authCode);
+		} catch (RuntimeException e) {
+			System.err.println(e.getMessage());
+			throw new RuntimeException("Failed to send SMS", e);
+		}
+	}
 	public boolean verifyAuthCode(String ownerPhone, String inputAuthCode) {
 		String storedAuthCode = stringRedisTemplate.opsForValue().get(ownerPhone);
 		if(storedAuthCode == null) {

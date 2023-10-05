@@ -16,6 +16,9 @@ export default function CartProduct({
     await updateQuantity(tempUser, productSeq, quantity);
     fetchData();
   };
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
 
   return (
     <View style={styles.container}>
@@ -33,7 +36,7 @@ export default function CartProduct({
           {data.product.productName}
         </Text>
         <Text style={styles.price}>
-          {data.product.productPrice * (1 - data.product.productDcrate)} 원
+          {numberWithCommas(data.product.productPrice * (1 - data.product.productDcrate))} 원
         </Text>
 
         <View style={styles.counter}>
@@ -60,7 +63,7 @@ export default function CartProduct({
         <Text
           style={[styles.textBold, { textAlign: "right", marginRight: 10 }]}
         >
-          {data.quantity * data.product.productPrice * (1 - data.product.productDcrate)} 원
+          {numberWithCommas(data.quantity * data.product.productPrice * (1 - data.product.productDcrate))} 원
         </Text>
       </View>
     </View>

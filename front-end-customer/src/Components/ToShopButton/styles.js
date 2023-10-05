@@ -1,14 +1,11 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    // marginTop: 25,
-  },
-
-  shops: {
-    flex: 1,
+  title: {
+    fontSize: 26,
+    marginVertical: 10,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

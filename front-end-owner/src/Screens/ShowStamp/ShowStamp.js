@@ -17,6 +17,8 @@ export default function ShowStamp({ navigation, route }) {
   const [stampData, setStampData] = useState([]);
   const [memberNickname, setMemberNickname] = useState("");
 
+  const [noStamp, setNoStamp] = useState([]);
+
   const handleShowStamp = async () => {
     if (stampPhoneNumber.length === 11) {
       try {
@@ -25,14 +27,17 @@ export default function ShowStamp({ navigation, route }) {
         );
 
         const { data } = response;
+        console.log(data[1].storeSeq);
 
-        if (data) {
-          console.log(typeof(data));
+        if (data[0].stampSeq) {
+          console.log(data);
           setStampData(data);
           setMemberNickname(data[0].member.memberNickname);
           setModalVisible(true);
         } else {
-          Alert.alert('알림', '해당 회원의 정보가 없습니다.');
+          setNoStamp([data]);
+          setMemberNickname(data[0].memberNickname);
+          setModalVisible(true);
         }
       } catch (error) {
         console.error('데이터를 가져오는 중에 오류가 발생했습니다:', error);
@@ -93,7 +98,11 @@ export default function ShowStamp({ navigation, route }) {
           alertTitle={'회원 정보 확인'}
           alertText={`${memberNickname} 회원님이 맞으신가요?`}
           onPress={() => {
-            navigation.navigate('AddStamp', { stampData });
+            if (stampData.length > 0) {
+              navigation.navigate('AddStamp', { stampData : stampData });
+            } else {
+              navigation.navigate('NewStamp', { noStamp : noStamp });
+            }
             setModalVisible(false);
           }}
         />

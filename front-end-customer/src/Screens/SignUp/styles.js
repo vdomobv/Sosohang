@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 25,
-    paddingVertical: 120,
+    // marginTop: 25,
+    paddingVertical: 50,
   },
 
   title: {

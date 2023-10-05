@@ -3,14 +3,13 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: 20,
+    marginTop: 20,
     backgroundColor: "#fff",
   },
 
   subtitle: {
     alignSelf: "center",
-    marginTop: 20,
-    marginBottom: 10,
+    margin: 10,
   },
 
   stampBox: {
@@ -24,7 +23,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
   },
 
-  stampCount: {
+  stampNow: {
     fontSize: 34,
     fontWeight: "bold",
     color: "#FFBF46",
@@ -48,6 +47,46 @@ const styles = StyleSheet.create({
 
   info: {
     marginVertical : 5,
+  },
+
+  buttonContainer: {
+    alignItems: "center",
+    marginTop : 10,
+  },
+
+  button: {
+    width: '80%',
+    borderRadius: 5,
+    padding: 12,
+    marginTop: 5,
+    backgroundColor: '#FFBF46',
+    elevation: 5
+  },
+
+  buttonText: {
+    color: '#ffffff', 
+    fontSize: 20, 
+    fontWeight: 'bold', 
+    textAlign: 'center', 
+  },
+
+  stampModalContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  stampCountText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+
+  stampButtons: {
+    flexDirection: 'row',
+  },
+  
+  stampButton: {
+    fontSize: 24,
+    marginHorizontal: 10,
   },
 });
 

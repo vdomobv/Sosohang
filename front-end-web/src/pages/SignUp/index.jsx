@@ -25,6 +25,8 @@ function SignUp() {
   const [storeImageUrl, setStoreImageUrl] = useState("");
 
   const handleSignup = async () => {
+    console.log("s", storeInfo.confirmStoreInfo)
+    console.log("o",ownerInfo.confirmOwnerInfo)
     if (!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
       return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
     }

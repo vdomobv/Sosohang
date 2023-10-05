@@ -10,7 +10,7 @@ import SubTitle from "../SubTitle/SubTitle";
 export default function Gift({ data, usable, onPress }) {
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
-  console.log("여기", data)
+  // console.log("여기", data)
   const numberWithCommas = (number) => {
     return number.toLocaleString();
   };
@@ -61,7 +61,7 @@ export default function Gift({ data, usable, onPress }) {
                 navigation={navigation}
                 content={"재주문"}
                 pressFuction={() => {
-                  navigation.navigate("Shop", { storeSeq: data.storeSeq });
+                  navigation.navigate("Shop", { storeSeq: data[0].store.storeSeq });
                 }}
               />
             </View>
@@ -130,7 +130,11 @@ export default function Gift({ data, usable, onPress }) {
                   content={"돌아가기"}
                   customStyles={{ backgroundColor: "#FFBF46" }}
                 />
-                <CustomButton content={"취소확인"} />
+                <CustomButton content={"취소확인"}
+                  pressFuction={() => {
+                    navigation.navigate("Shop")
+                  }}
+                />
               </View>
             </>
           }

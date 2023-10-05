@@ -9,11 +9,11 @@ import Box from "../../Components/Box/Box";
 import { useEffect, useState } from "react";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 import { makeOrder, makeSosoticon } from "../../Utils/PaymentAPI";
-import { uploadImageToNCP } from "../../Utils/UploadImage"
+import { uploadImageToNCP } from "../../Utils/UploadImage";
 
 export default function PaymentResult({ navigation, route }) {
   const paymentData = route.params.paymentData;
-  const productList = route.params.productList;
+  const productList = route.params?.productList;
   const sosoticonData = route.params.sosoticonData;
   const to = route.params.to;
   const [orderList, setOrderList] = useState([]);
@@ -25,7 +25,7 @@ export default function PaymentResult({ navigation, route }) {
       const memberSeq = await getMemberSeq();
 
       if (memberSeq !== undefined) {
-        console.log(memberSeq);
+        // console.log(memberSeq);
         setTempUser(memberSeq);
       }
     };
@@ -33,16 +33,14 @@ export default function PaymentResult({ navigation, route }) {
     fetchMemberSeq();
 
     // uploadImageToNCP(sosoticonData);
-  }, [])
-
-
+  }, []);
   useEffect(() => {
-    const fetchOrderData = async () => {
+    const createOrderAndSosoticon = async () => {
       let temp = [];
 
       Object.keys(productList).map((key) => {
         productList[key].map((d) => {
-          console.log("확인 :", d);
+          // console.log("확인 :", d);
           temp.push({
             productSeq: d.productSeq,
             count: d.count,
@@ -51,51 +49,97 @@ export default function PaymentResult({ navigation, route }) {
       });
 
       if (temp.length > 0) {
-        setOrderList(temp);
-      }
-    };
-
-    fetchOrderData();
-  }, [tempUser]);
-
-  useEffect(() => {
-    const fetchOrder = async () => {
-      if (orderList.length > 0) {
-        const response = await makeOrder(tempUser, orderList);
+        const response = await makeOrder(tempUser, temp);
         console.log("response", response);
-        if (response !== undefined) {
+
+        if (response && response.totalOrderSeq) {
           setTotalOrder(response);
+
+          Object.keys(productList).map((key) => {
+            const tempData = { ...sosoticonData };
+            tempData["memberSeq"] = tempUser;
+            tempData["orderSeq"] = response.totalOrderSeq;
+            tempData["storeSeq"] = parseInt(key);
+
+            const productsInShop = productList[key];
+            const totalProductPrice = productsInShop.reduce((acc, product) => {
+              return acc + product.productPrice * product.count;
+            }, 0);
+
+            tempData["sosoticonValue"] = totalProductPrice;
+            console.log("Here:", tempData);
+
+            makeSosoticon(tempData);
+          });
+        } else {
+          console.error("Error making order");
         }
       }
     };
 
-    fetchOrder();
-  }, [orderList]);
+    if (tempUser) createOrderAndSosoticon(); // `tempUser` 값이 설정된 경우에만 실행
+  }, [tempUser, productList, sosoticonData]);
 
-  useEffect(() => {
-    console.log("test : ", totalOrder);
-    console.log("소소티콘 이미지 : ", sosoticonData);
-    if (totalOrder !== undefined) {
-      Object.keys(productList).map((key) => {
-        console.log("상점 확인 : ", key);
-        const tempData = { ...sosoticonData };
-        tempData["memberSeq"] = tempUser;
-        tempData["orderSeq"] = totalOrder.totalOrderSeq;
-        tempData["storeSeq"] = parseInt(key);
-        tempData["sosoticonUrl"] = "https://j9c109.p.ssafy.io/webgift/";
+  // useEffect(() => {
+  //   const fetchOrderData = async () => {
+  //     let temp = [];
 
-        const productsInShop = productList[key];
-        const totalProductPrice = productsInShop.reduce((acc, product) => {
-          return acc + product.productPrice * product.count;
-        }, 0);
+  //     Object.keys(productList).map((key) => {
+  //       productList[key].map((d) => {
+  //         console.log("확인 :", d);
+  //         temp.push({
+  //           productSeq: d.productSeq,
+  //           count: d.count,
+  //         });
+  //       });
+  //     });
 
-        tempData["sosoticonValue"] = totalProductPrice;
-        console.log("여기여기", tempData);
+  //     if (temp.length > 0) {
+  //       setOrderList(temp);
+  //     }
+  //   };
 
-        makeSosoticon(tempData);
-      });
-    }
-  }, [totalOrder]);
+  //   fetchOrderData();
+  // }, [tempUser]);
+
+  // useEffect(() => {
+  //   const fetchOrder = async () => {
+  //     if (orderList.length > 0) {
+  //       const response = await makeOrder(tempUser, orderList);
+  //       console.log("response", response);
+  //       if (response !== undefined) {
+  //         setTotalOrder(response);
+  //       }
+  //     }
+  //   };
+
+  //   fetchOrder();
+  // }, [orderList]);
+
+  // useEffect(() => {
+  //   console.log("test : ", totalOrder);
+  //   console.log("소소티콘 이미지 : ", sosoticonData);
+  //   if (totalOrder !== undefined) {
+  //     Object.keys(productList).map((key) => {
+  //       console.log("상점 확인 : ", key);
+  //       const tempData = { ...sosoticonData };
+  //       tempData["memberSeq"] = tempUser;
+  //       tempData["orderSeq"] = totalOrder.totalOrderSeq;
+  //       tempData["storeSeq"] = parseInt(key);
+  //       // tempData["sosoticonUrl"] = "https://j9c109.p.ssafy.io/webgift/";
+
+  //       const productsInShop = productList[key];
+  //       const totalProductPrice = productsInShop.reduce((acc, product) => {
+  //         return acc + product.productPrice * product.count;
+  //       }, 0);
+
+  //       tempData["sosoticonValue"] = totalProductPrice;
+  //       console.log("여기여기", tempData);
+
+  //       makeSosoticon(tempData);
+  //     });
+  //   }
+  // }, [totalOrder]);
 
   const gifts = Object.keys(productList).map((storeSeq) => {
     const productsInShop = productList[storeSeq];
@@ -114,8 +158,8 @@ export default function PaymentResult({ navigation, route }) {
     productsInShop["currentPrice"] = totalProductPrice;
 
     return (
-      <View style={{ marginVertical: 5 }}>
-        <Box content={<Gift data={productsInShop} key={storeSeq} navigation={navigation} />} />
+      <View key={storeSeq} style={{ marginVertical: 5 }}>
+        <Box content={<Gift data={productsInShop} navigation={navigation} />} />
       </View>
     );
   });

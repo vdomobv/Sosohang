@@ -33,7 +33,7 @@ export default function YouAndMe({ navigation }) {
   const fetchMemberData = async () => {
     try {
       const result = await getYouList(tempUser);
-      console.log("여기", result);
+      // console.log("여기", result);
       setToNameData(result);
     } catch (error) {
       console.error("Error fetching member data:", error);
@@ -59,7 +59,7 @@ export default function YouAndMe({ navigation }) {
                       <TouchableOpacity
                         style={styles.youList}
                         onPress={() => {
-                          console.log(data);
+                          // console.log(data);
                           handleYouListClick(data.memberSeq, tempUser);
                         }}
                       >

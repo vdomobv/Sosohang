@@ -9,7 +9,7 @@ import SubTitle from "../SubTitle/SubTitle";
 
 export default function ReceivedGift({ data, usable, onPress }) {
   const isReviewAlready = data.sosoticonReviewStatus;
-  console.log("여기다", data.sosoticonReviewStatus);
+  // console.log("여기다", data.sosoticonReviewStatus);
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
 

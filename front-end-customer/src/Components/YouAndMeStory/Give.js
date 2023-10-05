@@ -2,7 +2,7 @@ import { View, Text, Image } from "react-native";
 import styles from "../../Screens/YouAndMeStory/styles"
 export default function Give(props) {
   const giftSendData = props.data;
-  console.log("보낸 이: " ,giftSendData);
+  // console.log("보낸 이: " ,giftSendData);
   return (
     <>
       {/* 보낸 선물 */}

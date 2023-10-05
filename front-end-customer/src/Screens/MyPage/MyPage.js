@@ -144,7 +144,7 @@ export default function MyPage({ navigation }) {
                 <TouchableOpacity onPress={() => {
                   logout()
                   Alert.alert("로그아웃 되었습니다.")
-                  console.log("로그아웃 되었습니다.")
+                  // console.log("로그아웃 되었습니다.")
                   navigation.navigate('Main')
                 }}>
                   <Text style={styles.logout}>로그아웃 하기</Text>
@@ -187,7 +187,7 @@ export default function MyPage({ navigation }) {
                 customStyles={{ marginVertical: 10 }}
                 subTitle={"💸 구매 내역"}
               />
-              <Text
+              {/* <Text
                 onPress={() => {
                   navigation.navigate("PurchaseHistory", {
                     buy: buyDummy,
@@ -195,7 +195,7 @@ export default function MyPage({ navigation }) {
                 }}
               >
                 상세보기 ＞{" "}
-              </Text>
+              </Text> */}
             </View>
             <ScrollBox content={buy} />
           </View>

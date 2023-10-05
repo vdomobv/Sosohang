@@ -22,7 +22,7 @@ export default function YouAndMeStory({ route, navigation }) {
       const result = await getYouAndMeStory(mySeq, yourSeq);
       setSosoticonList(result);
     } catch (error) {
-      console.error("Error fetching member data:", error);
+      // console.error("Error fetching member data:", error);
     }
   };
 

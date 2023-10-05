@@ -20,7 +20,7 @@ export default function StampList({ navigation, route }) {
         `https://j9c109.p.ssafy.io/api/v1/stamp/member/status?memberSeq=${tempUser}&stampStatus=0`
       );
 
-      console.log(response.data);
+      // console.log(response.data);
 
       const groupedData = customGroupBy(
         response.data,
@@ -30,7 +30,7 @@ export default function StampList({ navigation, route }) {
       setUserStamp(groupedData);
       setUserStampList(Object.keys(groupedData));
     } catch (error) {
-      console.error("Error fetching store data in getStampData:", error);
+      // console.error("Error fetching store data in getStampData:", error);
     }
   };
 

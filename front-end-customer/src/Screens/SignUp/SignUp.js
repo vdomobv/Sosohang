@@ -50,8 +50,8 @@ export default function SignUp({ navigation }) {
         })
         .then((response) => {
           if (response.data.status = "success") {
-            console.log(response.data)
-            Alert.alert("알림", "인증 성공!");
+            // console.log(response.data)
+            Alert.alert("알림", "인증번호가 발송되었습니다!");
             setShowInput(true); // 인증 성공 시 인증번호 입력 창을 표시
             setAuthCode(response.data.message); // 요놈을 문자로 보냄
             // Alert.alert("알림", "인증 번호를 발송했습니다.");
@@ -64,7 +64,7 @@ export default function SignUp({ navigation }) {
           // 인증 실패 시 처리
           Alert.alert("알림", "이미 가입된 전화번호입니다.");
           // Alert.alert("오류", "다시 시도해 주세요.");
-          console.log(error);
+          // console.log(error);
         });
     } else {
       Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
@@ -78,7 +78,7 @@ export default function SignUp({ navigation }) {
         .post(`https://j9c109.p.ssafy.io/api/v1/member/register/verify-code?memberPhone=${phoneNumber}&authCode=${authCode}`, {
         })
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           // 인증 확인 성공 시 처리
           if (response.data.status === "success") {
             Alert.alert("알림", "인증이 완료되었습니다.");
@@ -90,7 +90,7 @@ export default function SignUp({ navigation }) {
         .catch((error) => {
           // 인증 실패 시 처리
           Alert.alert("오류", "다시 시도해 주세요.");
-          console.log(error);
+          // console.log(error);
         });
     } else {
       Alert.alert("알림", "인증 번호를 바르게 입력해 주세요.");
@@ -121,16 +121,16 @@ export default function SignUp({ navigation }) {
                     // 회원가입 성공 시 처리
                     if (response) {
                       Alert.alert("알림", "회원가입이 완료되었습니다.");
-                      console.log(response)
+                      // console.log(response)
 
                     } else {
                       Alert.alert("알림", "다시 시도해 주세요.");
-                      console.log(response)
+                      // console.log(response)
                     }
                   })
                   .catch((error) => {
                     Alert.alert("에러 발생", "회원가입에 실패하였습니다. 다시 시도해 주세요.");
-                    console.log(error);
+                    // console.log(error);
                   });
               } else {
                 Alert.alert("알림", "비밀번호가 일치하지 않습니다.");

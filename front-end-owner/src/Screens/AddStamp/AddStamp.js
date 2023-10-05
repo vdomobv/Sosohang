@@ -12,6 +12,7 @@ import Tabs from "../../Components/Tabs/Tabs";
 
 export default function AddStamp({ route, navigation }) {
   const { stampData } = route.params;
+  // console.log(stampData);
   const [modalVisible, setModalVisible] = useState(false);
   const [stampCount, setStampCount] = useState(1);
   const [nowStamp, setNowStamp] = useState(stampData.length);
@@ -43,7 +44,7 @@ export default function AddStamp({ route, navigation }) {
     });
   }, [nowStamp]);
 
-  const storeSeq = stampData[1].store.storeSeq;
+  const storeSeq = stampData[0].store.storeSeq;
   const phoneNumber = stampData[0].member.memberPhone;
 
   const incrementStampCount = () => {

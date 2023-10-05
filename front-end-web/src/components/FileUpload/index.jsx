@@ -10,7 +10,7 @@ function FileUpload({ onChange }) {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0]; // 선택된 파일을 변수에 할당
-    console.log(selectedFile); // 여기에서 선택된 파일 로그 출력
+    // console.log(selectedFile); // 여기에서 선택된 파일 로그 출력
     setFile(selectedFile);
     setFileName(selectedFile.name); // 추가: 선택된 파일의 이름 상태 업데이트
   };
@@ -37,7 +37,7 @@ function FileUpload({ onChange }) {
         `https://sosoticon.s3.ap-northeast-2.amazonaws.com/${params.Key}`
       );
     } catch (error) {
-      console.error("Error uploading file to S3:", error);
+      // console.error("Error uploading file to S3:", error);
     }
   };
 

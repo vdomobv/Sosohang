@@ -32,7 +32,7 @@ function InputLogin() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         alert("로그인 실패");
       });
   };
@@ -98,12 +98,12 @@ function InputLogin() {
           </InputGroup.Text>
         </InputGroup>
 
-        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+        {/* <div style={{ display: "flex", flexDirection: "row-reverse" }}>
           <a href="#" className="label" >
             비밀번호 찾기
           </a>
-        </div>
-        <Button className="button" onClick={handleLogin}>
+        </div> */}
+        <Button className="button" onClick={handleLogin} style={{ marginTop: '30px'}}>
           로그인
         </Button>
       </div>

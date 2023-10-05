@@ -13,20 +13,21 @@ export const makeOrder = async (memberSeq, productList) => {
         );
         return response.data;
     } catch (error) {
-        console.error("Error fetching store data in makeOrder:", error);
+        // console.error("Error fetching store data in makeOrder:", error);
     }
 };
 
 export const makeSosoticon = async (requestBody) => {
+    console.log("bovdy", requestBody);
     try {
         const response = await axios.post(
-            // `http://j9c109.p.ssafy.io:8081/api/app/users/gift-cards/generateQR`,
-            `http://localhost:8081/api/app/users/gift-cards/generateQR`,
+            'https://j9c109.p.ssafy.io/api/app/users/gift-cards/generateQR',
+            // `http://localhost:8081/api/app/users/gift-cards/generateQR`,
             requestBody
         );
-        console.log(response, "hhh")
+        // console.log(response, "hhh")
         return response.data;
     } catch (error) {
-        console.error("Error fetching store data in makesosoticon:", error);
+        // console.error("Error fetching store data in makesosoticon:", error);
     }
 };

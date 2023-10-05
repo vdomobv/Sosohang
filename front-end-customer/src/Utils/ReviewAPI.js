@@ -5,7 +5,7 @@ export const getReviewKeywordListByCategorySeq = async (categorySeq) => {
     const response = await axios.get(`https://j9c109.p.ssafy.io/api/v1/review-keyword/${categorySeq}`);
     return response.data;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 };
 
@@ -20,6 +20,6 @@ export const createReview = async (storeSeq, sosoticonSeq, selectedKeywords) => 
     const response = await axios.post(`https://j9c109.p.ssafy.io/api/v1/review/create?storeSeq=${storeSeq}&sosoticonSeq=${sosoticonSeq}&${query}`);
     return response.data;
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 };

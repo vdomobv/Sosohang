@@ -49,12 +49,12 @@ function SignUp() {
         storeImage: storeImageUrl,
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         alert("회원가입이 완료되었습니다.");
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -71,7 +71,7 @@ function SignUp() {
           <div style={{display:"flex", width:"80%"}}>
             <FileUpload onChange={setStoreImageUrl} />
           </div>
-          <Button style={{ width: "80%", marginTop: 10, marginBottom: 15 }} variant="outline-primary" onClick={handleSignup}>회원가입</Button>
+          <Button style={{ width: "80%", marginTop: 20, marginBottom: 50 }} variant="outline-primary" onClick={handleSignup}>회원가입</Button>
         </form>
       </Wrapper>
     </div>

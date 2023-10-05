@@ -25,7 +25,7 @@ export default function PaymentResult({ navigation, route }) {
       const memberSeq = await getMemberSeq();
 
       if (memberSeq !== undefined) {
-        console.log(memberSeq);
+        // console.log(memberSeq);
         setTempUser(memberSeq);
       }
     };
@@ -42,7 +42,7 @@ export default function PaymentResult({ navigation, route }) {
 
       Object.keys(productList).map((key) => {
         productList[key].map((d) => {
-          console.log("확인 :", d);
+          // console.log("확인 :", d);
           temp.push({
             productSeq: d.productSeq,
             count: d.count,
@@ -62,7 +62,7 @@ export default function PaymentResult({ navigation, route }) {
     const fetchOrder = async () => {
       if (orderList.length > 0) {
         const response = await makeOrder(tempUser, orderList);
-        console.log("response", response);
+        // console.log("response", response);
         if (response !== undefined) {
           setTotalOrder(response);
         }
@@ -73,11 +73,11 @@ export default function PaymentResult({ navigation, route }) {
   }, [orderList]);
 
   useEffect(() => {
-    console.log("test : ", totalOrder);
-    console.log("소소티콘 이미지 : ", sosoticonData);
+    // console.log("test : ", totalOrder);
+    // console.log("소소티콘 이미지 : ", sosoticonData);
     if (totalOrder !== undefined) {
       Object.keys(productList).map((key) => {
-        console.log("상점 확인 : ", key);
+        // console.log("상점 확인 : ", key);
         const tempData = { ...sosoticonData };
         tempData["memberSeq"] = tempUser;
         tempData["orderSeq"] = totalOrder.totalOrderSeq;
@@ -90,7 +90,7 @@ export default function PaymentResult({ navigation, route }) {
         }, 0);
 
         tempData["sosoticonValue"] = totalProductPrice;
-        console.log("여기여기", tempData);
+        // console.log("여기여기", tempData);
 
         makeSosoticon(tempData);
       });

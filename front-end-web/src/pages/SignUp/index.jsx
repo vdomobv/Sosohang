@@ -49,12 +49,12 @@ function SignUp() {
         storeImage: storeImageUrl,
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         alert("회원가입이 완료되었습니다.");
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 

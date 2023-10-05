@@ -7,7 +7,7 @@ export const getStoreData = async (storeSeq) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching store data in getStoreData:", error);
+    // console.error("Error fetching store data in getStoreData:", error);
   }
 };
 
@@ -16,7 +16,7 @@ export const getAllStoreData = async () => {
     const response = await axios.get("https://j9c109.p.ssafy.io/api/v1/store");
     return response.data;
   } catch (error) {
-    console.error("Error fetching store data:", error);
+    // console.error("Error fetching store data:", error);
   }
 };
 
@@ -29,7 +29,7 @@ export const getRecentStoreByLocation = async (latitute, longitude) => {
     const result = response.data.sort((a, b) => b.storeSeq - a.storeSeq);
     return result;
   } catch (error) {
-    console.error("Error fetching store data in getStoreByLocation:", error);
+    // console.error("Error fetching store data in getStoreByLocation:", error);
   }
 };
 
@@ -41,7 +41,7 @@ export const getStoreByLocation = async (latitute, longitude) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching store data in getStoreByLocation:", error);
+    // console.error("Error fetching store data in getStoreByLocation:", error);
   }
 };
 
@@ -57,7 +57,7 @@ export const getKeywordStoreByLocation = async (
 
     return response.data;
   } catch (error) {
-    console.error(
+    // console.error(
       "Error fetching store data in getKeywordStoreByLocation:",
       error
     );
@@ -81,7 +81,7 @@ export const getKeywords = async () => {
     const randomTenItems = response.data.slice(0, 10);
     return randomTenItems;
   } catch (error) {
-    console.error(
+    // console.error(
       "Error fetching store data in getKeywordStoreByLocation:",
       error
     );
@@ -98,7 +98,7 @@ export const getReviewData = async (storeSeq) => {
     
     return temp;
   } catch (error) {
-    console.error(
+    // console.error(
       "Error fetching store data in getReviewData:",
       error
     );

@@ -32,7 +32,7 @@ export default function WaitingPayment({ navigation, route }) {
 
   useEffect(() => {
     if (!paymentResult) {
-      console.log("before navigate", productList);
+      // console.log("before navigate", productList);
       navigation.navigate("Payment", { data, productList, to, sosoticonData });
     } else {
       navigation.goback();

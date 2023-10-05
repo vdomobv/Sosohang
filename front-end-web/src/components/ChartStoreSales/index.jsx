@@ -8,7 +8,7 @@ function ChartStoreSales(props) {
   const {salesData} = props
   const [data, setData] = useState({})
 
-  console.log(salesData)
+  // console.log(salesData)
 
   return <div><h1>{salesData}</h1></div>
   // useEffect(()=> {

@@ -65,7 +65,7 @@ export default function Shop({ navigation, route }) {
       );
       setKeywords(response.data);
     } catch (error) {
-      console.error("Error fetching store data:", error);
+      // console.error("Error fetching store data:", error);
     }
   };
 
@@ -93,7 +93,7 @@ export default function Shop({ navigation, route }) {
     }
 
     setStoreData(storeResult);
-    console.log(storeResult);
+    // console.log(storeResult);
   };
 
   useEffect(() => {
@@ -157,7 +157,7 @@ export default function Shop({ navigation, route }) {
 
   // 할인 상품 목록
   const saleProductList = saleProduct.map((data, index) => {
-    console.log(data);
+    // console.log(data);
     return (
       <Product
         checked={checkedSaleProducts[index]}

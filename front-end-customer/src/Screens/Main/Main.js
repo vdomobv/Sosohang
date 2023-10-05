@@ -118,7 +118,7 @@ export default function Main({ navigation }) {
 
   // 현재 위치 근방의 데이터만 가져오기
   const fetchStoreByLocation = async () => {
-    console.log(coords);
+    // console.log(coords);
     const recentStores = await getRecentStoreByLocation(
       coords.latitude,
       coords.longitude

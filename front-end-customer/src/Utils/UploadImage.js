@@ -27,7 +27,7 @@ async function uploadImageToNCP(base64Image, fileName) {
   const timestamp = "" + Date.now();
 
   const signature = makeSignature(requestUrl, timestamp, method);
-console.log("표시!!!", base64Image[0].base64);
+// console.log("표시!!!", base64Image[0].base64);
   const bodyJson = {
     fileName: fileName,
     fileBody: base64Image[0].base64,
@@ -39,8 +39,8 @@ console.log("표시!!!", base64Image[0].base64);
     "x-ncp-iam-access-key": NCP_ACCESS_KEY,
     "x-ncp-apigw-signature-v2": signature,
   };
-  console.log("Request Headers:", headers);
-  console.log("Request Body:", JSON.stringify(bodyJson));
+  // console.log("Request Headers:", headers);
+  // console.log("Request Body:", JSON.stringify(bodyJson));
 
   const response = await fetch(apiUrl, {
     method: "POST",
@@ -49,7 +49,7 @@ console.log("표시!!!", base64Image[0].base64);
   });
 
   if (!response.ok) {
-    console.error('Server Response:', await response.text());  // 서버 응답 내용 로깅
+    // console.error('Server Response:', await response.text());  // 서버 응답 내용 로깅
     throw new Error("Failed to upload image");
   }
 

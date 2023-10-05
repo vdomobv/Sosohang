@@ -69,7 +69,7 @@ function InputStoreInfo({ onChange }) {
         }
       })
       .catch((err) => {
-        return console.log(err);
+        // return console.log(err);
       });
   };
 
@@ -106,7 +106,7 @@ function InputStoreInfo({ onChange }) {
         setIsOpenPost(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -121,11 +121,11 @@ function InputStoreInfo({ onChange }) {
     axios
       .get(`https://j9c109.p.ssafy.io/api/v1/keywords/category/${categorySeq}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setKeywordList(res.data);
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 
@@ -306,7 +306,7 @@ function InputStoreInfo({ onChange }) {
                   }
                   setKeywordChecklist(newChecklist);
 
-                  console.log(selectedKeywords);
+                  // console.log(selectedKeywords);
                 }}
               >
                 {keyword.keywordName}

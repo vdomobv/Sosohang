@@ -7,6 +7,6 @@ export const getProduct = async (storeId) => {
         );
         return response.data;
     } catch (error) {
-        console.error("Error fetching store data:", error);
+        // console.error("Error fetching store data:", error);
     }
 };

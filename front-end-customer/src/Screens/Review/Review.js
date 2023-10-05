@@ -16,7 +16,7 @@ export default function Review({ route, navigation }) {
   const { giftData } = route.params;
   const [reviewKeywordList, setReviewKeywordList] = useState([]);
   const sosoticonSeq = giftData.sosoticonSeq
-  console.log("데이타", giftData.sosoticonSeq);
+  // console.log("데이타", giftData.sosoticonSeq);
   const [storeSeq, setStoreSeq] = useState(0);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function Review({ route, navigation }) {
       const result = await getReviewKeywordListByCategorySeq(categorySeq);
       setReviewKeywordList(result);
     } catch (error) {
-      console.error("Error fetching member data:", error);
+      // console.error("Error fetching member data:", error);
     }
   };
 
@@ -64,7 +64,7 @@ export default function Review({ route, navigation }) {
 };
 
   const submitReview = (storeSeq, sosoticonSeq, selectedKeywords) => {
-    console.log("여기", selectedKeywords);
+    // console.log("여기", selectedKeywords);
     try {
       const result = createReview(storeSeq, sosoticonSeq, selectedKeywords);
       Alert.alert("알림", "리뷰가 생성되었습니다", [
@@ -76,7 +76,7 @@ export default function Review({ route, navigation }) {
         }
       ]);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 

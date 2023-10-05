@@ -76,7 +76,7 @@ function TableStoreSettlement() {
         },
       ],
     });
-    console.log(settlements);
+    // console.log(settlements);
   }, [settlements]);
 
   // const saleData = {
@@ -118,7 +118,7 @@ function TableStoreSettlement() {
         );
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
@@ -143,7 +143,7 @@ function TableStoreSettlement() {
           );
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
         });
     }
   };

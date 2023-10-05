@@ -7,6 +7,6 @@ export const getMyGiftList = (memberSeq) => {
           return response.data;     
         })
         .catch((error) => {
-            console.error(error);
+            // console.error(error);
         });
 };

@@ -23,7 +23,7 @@ export default function List({ navigation, route }) {
       );
       setStoreData(response.data);
     } catch (error) {
-      console.error("Error fetching store data:", error);
+      // console.error("Error fetching store data:", error);
     }
   };
 

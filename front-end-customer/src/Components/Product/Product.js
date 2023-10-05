@@ -16,7 +16,7 @@ export default function Product({
 }) {
   const [isChecked, setIsChecked] = useState();
   const [productAmount, setProductAmount] = useState();
-  console.log(data);
+  // console.log(data);
 
   const numberWithCommas = (number) => {
     return number.toLocaleString();

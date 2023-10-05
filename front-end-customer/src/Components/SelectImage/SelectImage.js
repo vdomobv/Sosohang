@@ -73,18 +73,18 @@ export default function SelectImage({
         // const base64Image = await uriToBase64(result.assets[0].uri);
         // console.log("Base64 이미지값 : ", base64Image);
         const resizedImageUri = await resizeImage(result.assets[0].uri);
-        console.log("리사이즈드이미지??", resizedImageUri);
+        // console.log("리사이즈드이미지??", resizedImageUri);
         const base64Image = await uriToBase64(resizedImageUri);
-        console.log("유알아이투베이스???", base64Image);
+        // console.log("유알아이투베이스???", base64Image);
 
         // 이미지의 base64 값을 result.assets의 첫 번째 아이템에 할당
         result.assets[0].base64 = base64Image;
-        console.log("Final Assets with Base64:", result.assets);
-        console.log("할당되었나?", base64Image);
+        // console.log("Final Assets with Base64:", result.assets);
+        // console.log("할당되었나?", base64Image);
 
         setSelectedButton(null);
         setSelectedImage(result.assets);
-        console.log("3번 result.assets : ", result.assets);
+        // console.log("3번 result.assets : ", result.assets);
       }
       // if (!result.canceled) {
       //   console.log("result.assets : ", result.assets);

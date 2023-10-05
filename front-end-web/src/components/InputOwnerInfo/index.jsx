@@ -60,13 +60,13 @@ function InputOwnerInfo({ onChange }) {
 
   const sendVerifiedNum = () => {
     // 인증번호 요청
-    console.log("인증번호 요청");
+    // console.log("인증번호 요청");
     setOpen(true);
   };
 
   const verifieNumCheck = () => {
     // 인증번호 확인
-    console.log("인증번호 확인");
+    // console.log("인증번호 확인");
     setOpen(false);
   };
 

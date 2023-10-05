@@ -12,7 +12,7 @@ import Tabs from "../../Components/Tabs/Tabs";
 
 export default function AddStamp({ route, navigation }) {
   const { stampData } = route.params;
-  console.log(stampData);
+  // console.log(stampData);
   const [modalVisible, setModalVisible] = useState(false);
   const [stampCount, setStampCount] = useState(1);
   const [nowStamp, setNowStamp] = useState(stampData.length);

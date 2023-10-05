@@ -144,7 +144,7 @@ export default function MyPage({ navigation }) {
                 <TouchableOpacity onPress={() => {
                   logout()
                   Alert.alert("로그아웃 되었습니다.")
-                  console.log("로그아웃 되었습니다.")
+                  // console.log("로그아웃 되었습니다.")
                   navigation.navigate('Main')
                 }}>
                   <Text style={styles.logout}>로그아웃 하기</Text>

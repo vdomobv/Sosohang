@@ -37,7 +37,7 @@ function StoreInfo() {
             });
           })
           .catch((err) => {
-            console.error(err);
+            // console.error(err);
           });
         setStoreInfo({
           storeName: res.data.store.storeName,
@@ -62,7 +62,7 @@ function StoreInfo() {
         setStoreImage(res.data.store.storeImage);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
@@ -89,12 +89,12 @@ function StoreInfo() {
         storeImage: storeEditImage === "" ? storeImage : storeEditImage,
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         alert("상점정보가 수정되었습니다.");
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 

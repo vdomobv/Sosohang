@@ -32,7 +32,7 @@ function InputLogin() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         alert("로그인 실패");
       });
   };

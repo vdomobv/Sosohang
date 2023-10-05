@@ -44,7 +44,7 @@ function Header() {
         setIsAuth(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 

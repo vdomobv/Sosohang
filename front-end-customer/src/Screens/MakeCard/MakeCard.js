@@ -89,7 +89,7 @@ export default function MakeCard({ route, navigation }) {
     acc[key].push(product);
     return acc;
   }, {});
-  console.log('groupedByStore : ', groupedByStore)
+  // console.log('groupedByStore : ', groupedByStore)
 
 
   // 그룹화된 상품을 렌더링
@@ -240,9 +240,9 @@ export default function MakeCard({ route, navigation }) {
       try {
         // NCP에 이미지를 업로드
         fileId = await uploadImageToNCP(selectedImage, `${Date.now()}test.jpg`);
-        console.log("업로드되는 이미지URI 나오나??", fileId)
+        // console.log("업로드되는 이미지URI 나오나??", fileId)
       } catch (error) {
-        console.error("Error uploading image to NCP:", error);
+        // console.error("Error uploading image to NCP:", error);
         // 여기에 알림 추가하면 이미지 업로드 실패시 사용자에게 알림을 줄 수 있습니다.
         // Alert.alert("Image upload failed. Proceeding without image.");
       }

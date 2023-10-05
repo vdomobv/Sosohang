@@ -2,6 +2,7 @@
   "expo": {
     "name": "소소행사장님",
     "slug": "sosohang-owner",
+    "displayName": "소소행",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/soso_logo.png",

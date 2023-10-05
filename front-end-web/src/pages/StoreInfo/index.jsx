@@ -48,6 +48,7 @@ function StoreInfo() {
           storeCategory: res.data.store.category.categorySeq,
           storeLatitude: res.data.store.storeLatitude,
           storeLongitude: res.data.store.storeLongitude,
+          storeKeywords: storeKeywords,
         });
         setStoreIssue({
           storeCallNum: res.data.store.storeTell,
@@ -56,7 +57,6 @@ function StoreInfo() {
           storeHoliday: res.data.store.storeHoliday,
           storeExtraInfo: res.data.store.storeExtraInfo,
           storeUrl: res.data.store.storeUrl,
-          storeKeywords: storeKeywords,
           storeImage: res.data.store.storeImage,
         });
         setStoreImage(res.data.store.storeImage);

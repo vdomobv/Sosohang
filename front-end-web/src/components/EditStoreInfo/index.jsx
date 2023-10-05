@@ -82,9 +82,16 @@ function EditStoreInfo(props) {
   }, [storeName, storeAddress, storeCategory, onChange]);
 
   return (
-    <div style={{marginTop:"50px", marginLeft:"100px", marginRight:"100px"}}>
+    <div
+      style={{
+        width: "80%",
+        marginTop: "50px",
+        marginLeft: "100px",
+        marginRight: "100px",
+      }}
+    >
       <h4>상점 정보</h4>
-      <div style={{ outline: "none", margin: "10px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 이름*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -96,7 +103,7 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>사업자등록번호*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -107,7 +114,7 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 위치*</Form.Label>
         <InputGroup>
           <Form.Control
@@ -133,16 +140,19 @@ function EditStoreInfo(props) {
         </InputGroup>
       </div>
 
-      <div style={{ outline: "none", margin: "20px"}}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 카테고리*</Form.Label>
         <Form.Select
           aria-label="상점 카테고리를 선택해 주세요."
           value={storeCategory}
-          onChange={(e) => setStoreCategory(e.target.value)}>
+          onChange={(e) => setStoreCategory(e.target.value)}
+        >
           <option>상점카테고리</option>
-          <option value="1">One</option>
-          <option value="2">two</option>
-          <option value="3">three</option>
+          <option value="1">카페/제과</option>
+          <option value="2">음식점</option>
+          <option value="3">생활/소품</option>
+          <option value="4">여가/체험</option>
+          <option value="5">건강/뷰티</option>
         </Form.Select>
       </div>
       {isOpenPost ? (

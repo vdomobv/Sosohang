@@ -105,21 +105,13 @@ function StoreInfo() {
         style={{
           display: "flex",
           flexDirection: "column",
-          // alignItems: "center",
-          justifyContent: "center",
-        }}>
-        <div>
-          <EditStoreInfo onChange={setStoreEditInfo} info={storeInfo} />
-        </div>
-        <div
-          style={{
-            marginTop: "50px",
-            marginLeft: "100px",
-            marginRight: "100px",
-          }}>
-          <EditStoreIssue onChange={setStoreEditIssue} info={storeIssue} />
-        </div>
-        <div style={{ marginLeft: "100px", marginRight: "100px" }}>
+          alignItems: "center",
+          // justifyContent: "center",
+        }}
+      >
+        <EditStoreInfo onChange={setStoreEditInfo} info={storeInfo} />
+        <EditStoreIssue onChange={setStoreEditIssue} info={storeIssue} />
+        <div style={{display:"flex", width:"80%", marginLeft: 40}}>
           <FileUpload onChange={setStoreEditImage} />
         </div>
         <div
@@ -127,7 +119,8 @@ function StoreInfo() {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-          }}>
+          }}
+        >
           <div></div>
           <Button
             style={{
@@ -136,7 +129,8 @@ function StoreInfo() {
               width: "10vw",
               height: "5vh",
             }}
-            onClick={handleEditStoreInfo}>
+            onClick={handleEditStoreInfo}
+          >
             정보수정
           </Button>
           <div></div>

@@ -60,7 +60,7 @@ export default function LogIn({ navigation }) {
         );
       }
     } else {
-      Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
+      Alert.alert("알림", "사업자등록번호를 바르게 입력해 주세요.");
     }
   };
 
@@ -88,7 +88,7 @@ export default function LogIn({ navigation }) {
                 }
               } else {
                 // 숫자가 아닌 경우 경고창 표시
-                Alert.alert("알림", "전화번호를 바르게 입력해 주세요.");
+                Alert.alert("알림", "사업자등록번호를 바르게 입력해 주세요.");
               }
             }}
             value={loginPhoneNumber}

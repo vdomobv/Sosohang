@@ -12,6 +12,7 @@ import project.app.c109.backendapp.store.repository.StoreRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -90,14 +91,23 @@ public class StampService {
                 .orElseThrow((() -> new EntityNotFoundException()));
         return stampRepository.findByMemberAndStampStatus(member, stampStatus);
     }
-    public List<Stamp> getStampByMemberAndStoreAndStampStatus(String memberPhone, Integer storeSeq, Integer stampStatus) {
+    public List<?> getStampByMemberAndStoreAndStampStatus(String memberPhone, Integer storeSeq, Integer stampStatus) {
         Member member = memberRepository.findByMemberPhone(memberPhone)
                 .orElseThrow(() -> new EntityNotFoundException("Member Not Found"));
 
         Store store = storeRepository.findByStoreSeq(storeSeq)
                 .orElseThrow(() -> new EntityNotFoundException("Store Not Found"));
 
-        return stampRepository.findByMemberAndStoreAndStampStatus(member, store, stampStatus);
+        List<Stamp> stamps = stampRepository.findByMemberAndStoreAndStampStatus(member, store, stampStatus);
+
+        if (!stamps.isEmpty()) {
+            return stamps;
+        } else {
+            List<Object> memberAndStoreInfo = new ArrayList<>();
+            memberAndStoreInfo.add(member);
+            memberAndStoreInfo.add(store);
+            return memberAndStoreInfo;
+        }
     }
 }
 

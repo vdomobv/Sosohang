@@ -9,6 +9,7 @@ import InputPayment from "./src/Screens/InputPayment/InputPayment";
 import DonePayment from "./src/Screens/DonePayment/DonePayment";
 import ShowStamp from "./src/Screens/ShowStamp/ShowStamp";
 import AddStamp from "./src/Screens/AddStamp/AddStamp";
+import NewStamp from "./src/Screens/NewStamp/NewStamp";
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="DonePayment" component={DonePayment} />
         <Stack.Screen name="ShowStamp" component={ShowStamp} />
         <Stack.Screen name="AddStamp" component={AddStamp} />
+        <Stack.Screen name="NewStamp" component={NewStamp} />
       </Stack.Navigator>
     </NavigationContainer>
   )

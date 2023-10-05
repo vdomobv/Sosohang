@@ -23,7 +23,7 @@ export default function ShowStamp({ navigation, route }) {
     if (stampPhoneNumber.length === 11) {
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/v1/stamp/${stampPhoneNumber}/${storeSeq}?stampStatus=0`
+          `https://j9c109.p.ssafy.io/api/v1/stamp/${stampPhoneNumber}/${storeSeq}?stampStatus=0`
         );
 
         const { data } = response;

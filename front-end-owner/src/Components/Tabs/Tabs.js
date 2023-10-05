@@ -15,7 +15,7 @@ export default function Tabs({ navigation }) {
 
   useEffect(() => {
     setActiveTab(route.name);
-  }, [route]);
+  }, [route, isAuth]);
 
   const [isAuth, setIsAuth] = useState(false);
 
@@ -23,7 +23,6 @@ export default function Tabs({ navigation }) {
     axios
       .get("https://j9c109.p.ssafy.io/api/v1/store/token_test")
       .then((res) => {
-        // console.log(res.data);
         if (res.data === false) {
           setIsAuth(false);
         } else {

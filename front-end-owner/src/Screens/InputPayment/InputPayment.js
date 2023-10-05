@@ -1,6 +1,6 @@
 // components
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import axios from "axios";
 import styles from "./styles";
 
@@ -34,7 +34,8 @@ export default function InputPayment({ navigation, route }) {
           navigation.navigate("DonePayment", { storeSeq: storeSeq });
         })
         .catch((err) => {
-          console.error(err);
+          Alert.alert(`결제과정에서 오류가 발생했습니다. 다시시도해주세요.
+          계속 오류가 발생한다면 고객센터로 문의주시기 바랍니다.`)
         });
 
       axios.post("https://j9c109.p.ssafy.io/app/settlement/create", {});

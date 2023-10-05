@@ -71,10 +71,10 @@
 
 ## ✨ 팀 소개
 
-|   **Name**   | 이지은 | 김진주 | 서정빈 | 이민규 | 위효선 | 양지혜 |
-| :---: | :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
-| **Profile**  | ![image](exec/images/profile/이지은.jpg) | ![image](exec/images/profile/김진주.jpg) | ![image](exec/images/profile/서정빈.jpg) | ![image](exec/images/profile/이민규.jpg) | ![image](exec/images/profile/위효선.jpg) | ![image](exec/images/profile/양지혜.jpg) |
-| **Position** | **Leader Frontend App** | **Frontend Web/App** | **Frontend Web/App** | **Backend Release** | **Backend** | **Backend** |
+|   **Name**   |                                              이지은                                              |                                              김진주                                              |                                              서정빈                                              |                                              이민규                                              |                                              위효선                                              |                                              양지혜                                              |
+| :----------: | :----------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: |
+| **Profile**  | <img src="exec/images/profile/이지은.jpg" width="100" height="130" style="border-radius: 10px;"> | <img src="exec/images/profile/김진주.jpg" width="100" height="130" style="border-radius: 10px;"> | <img src="exec/images/profile/서정빈.jpg" width="100" height="130" style="border-radius: 10px;"> | <img src="exec/images/profile/이민규.jpg" width="100" height="130" style="border-radius: 10px;"> | <img src="exec/images/profile/위효선.jpg" width="100" height="130" style="border-radius: 10px;"> | <img src="exec/images/profile/양지혜.jpg" width="100" height="130" style="border-radius: 10px;"> |
+| **Position** |                                  **Leader <br/> Frontend App**                                   |                                     **Frontend<br/>Web/App**                                     |                                     **Frontend<br/>Web/App**                                     |                                     **Backend<br/>Release**                                      |                                           **Backend**                                            |                                           **Backend**                                            |
 
 <br/>
 
@@ -149,7 +149,6 @@
 
 <br/>
 
-
 ## 사용기술스택
 
 - Front-End-App
@@ -184,25 +183,70 @@
 <br/>
 
 ## 시스템아키텍쳐
+
 <br/>
 
 ![image](exec/images/소소행_시스템아키텍처.jpg)
-
 
 <br/>
 
 ## 서비스화면
 
+1. 사용자 앱
+
+|                     메인                      |                  지도                   |                  검색                   |                카테고리<br/>목록                |
+| :-------------------------------------------: | :-------------------------------------: | :-------------------------------------: | :---------------------------------------------: |
+| ![image](exec/images/customer/메인페이지.png) | ![image](exec/images/customer/지도.png) | ![image](exec/images/customer/검색.png) | ![image](exec/images/customer/카테고리목록.png) |
+
+|                  키워드                   |                  장바구니                   |                  너랑나랑                   |                  받은 선물함                  |
+| :---------------------------------------: | :-----------------------------------------: | :-----------------------------------------: | :-------------------------------------------: |
+| ![image](exec/images/customer/키워드.png) | ![image](exec/images/customer/장바구니.png) | ![image](exec/images/customer/너랑나랑.png) | ![image](exec/images/customer/받은선물함.png) |
+
+|                  마이페이지                   |                  찜 목록                  |                  구매내역                   |                  상점상세                   |
+| :-------------------------------------------: | :---------------------------------------: | :-----------------------------------------: | :-----------------------------------------: |
+| ![image](exec/images/customer/마이페이지.png) | ![image](exec/images/customer/찜목록.png) | ![image](exec/images/customer/구매내역.png) | ![image](exec/images/customer/상점상세.png) |
+
+<br/>
+<br/>
+2. 사장님 앱
+
+| 큐알코드 | 큐알유효성검사 | 사용자조회 |
+| :---------: | :-----------: |:-----------: |
+|![image](exec/images/owner/큐알코드.png) | ![image](exec/images/owner/큐알유효성검사.png) | ![image](exec/images/owner/사용자조회.png) |
+
+| 소소티콘사용 | 스탬프조회 | 스탬프적립 |
+| :---------: | :---------: | :---------: |
+| ![image](exec/images/owner/소소티콘사용.png) | ![image](exec/images/owner/스탬프조회.png) | ![image](exec/images/owner/스탬프적립.png) |
+
+<br/>
+<br/>
+3. 사장님 웹
+
+| 메인페이지 | 상점정보수정 | 
+| :---------: | :-----------: |
+|![image](exec/images/web/메인페이지.png) | ![image](exec/images/web/상점정보수정.png) |
+
+|상품관리 | 매출관리 |
+| :---------: | :-----------: |
+| ![image](exec/images/web/상품관리.png) |![image](exec/images/web/매출관리.png) |
+<hr/>
+
+<br/>
+
 ## 산출물
+
+### PPT
+
+[공통PJT*광주\_1반\_C109*소소행.pptx](./공통PJT_광주_1반_C109_소소행.pptx) (\*.pptx)
+
+### 포팅 매뉴얼
 
 <br/>
 
 ## 협업툴
 
-<br/>
-
-| GITLAB | JIRA |
-| :---------: | :-----------: |
-|![image](exec/images/협업툴_깃랩.png) | ![image](exec/images/협업툴_지라.png) |
+|                GITLAB                 |                 JIRA                  |
+| :-----------------------------------: | :-----------------------------------: |
+| ![image](exec/images/협업툴_깃랩.png) | ![image](exec/images/협업툴_지라.png) |
 
 <hr>

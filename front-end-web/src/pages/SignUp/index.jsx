@@ -25,9 +25,9 @@ function SignUp() {
   const [storeImageUrl, setStoreImageUrl] = useState("");
 
   const handleSignup = async () => {
-    // if (!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
-    //   return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
-    // }
+    if (!(storeInfo.confirmStoreInfo && ownerInfo.confirmOwnerInfo)) {
+      return alert("필수정보가 입력되지 않거나 인증이 되지 않았습니다.");
+    }
 
     await axios
       .post("/api/v1/store/register", {

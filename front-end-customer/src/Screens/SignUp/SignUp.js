@@ -122,7 +122,7 @@ export default function SignUp({ navigation }) {
                     if (response) {
                       Alert.alert("알림", "회원가입이 완료되었습니다.");
                       // console.log(response)
-
+                      login(navigation, phoneNumber, confirmPassword);
                     } else {
                       Alert.alert("알림", "다시 시도해 주세요.");
                       // console.log(response)

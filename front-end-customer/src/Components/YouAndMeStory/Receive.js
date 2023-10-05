@@ -10,7 +10,7 @@ export default function Receive(props) {
       <View style={styles.dayLine}>
         <View style={styles.horizontalLine} />
         {/* 선물 날짜 */}
-        <Text style={styles.day}>2023년 9월 7일</Text>
+        <Text style={styles.day}>{giftCardData.createdAt.slice(0, 10)}</Text>
         <View style={styles.horizontalLine} />
       </View>
       <View style={styles.top}>
@@ -19,7 +19,7 @@ export default function Receive(props) {
             style={styles.profileImage}
             source={require("assets/images/bread.png")}
           />
-          {/* <Text style={[styles.name, { marginLeft: 15 }]}>{toName}</Text> */}
+          <Text style={[styles.name, { marginLeft: 15 }]}>{giftCardData.sosoticonGiverName}</Text>
         </View>
         {/* 선물 시간 */}
         {/* <Text style={styles.time}>{giftCardData.createdAt}</Text> */}
@@ -36,7 +36,7 @@ export default function Receive(props) {
         <View style={[styles.innerBox, { top: 20, height: 150 }]}>
           {/* 선물 카드 */}
           <Image
-            // source={giftCardData.cardImage}
+            source={{uri : giftCardData.sosoticonImage}}
             style={{ position: "absolute", width: 250, height: 150 }}
           />
         </View>

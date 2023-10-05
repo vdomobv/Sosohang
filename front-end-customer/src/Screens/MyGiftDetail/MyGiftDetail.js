@@ -11,11 +11,10 @@ import GiftCardBackground from "../../Components/GiftCardBackground/GiftCardBack
 
 export default function MyGiftDetail({ route, navigation }) {
   const { giftData } = route.params;
-
   const content = {
-    cardImage: giftData.cardImage,
-    cardMessage: giftData.message,
-    cardQr: giftData.qrImage,
+    // cardImage: giftData.sosoticonImage,
+    cardMessage: giftData.sosoticonText,
+    cardQr: giftData.qrImageUrl,
   };
 
   return (

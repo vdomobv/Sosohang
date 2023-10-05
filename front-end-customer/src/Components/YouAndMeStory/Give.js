@@ -2,14 +2,13 @@ import { View, Text, Image } from "react-native";
 import styles from "../../Screens/YouAndMeStory/styles"
 export default function Give(props) {
   const giftSendData = props.data;
-  // console.log("보낸 이: " ,giftSendData);
   return (
     <>
       {/* 보낸 선물 */}
       <View style={styles.dayLine}>
         <View style={styles.horizontalLine} />
         {/* 선물 날짜 */}
-        <Text style={styles.day}>2023년 9월 1일</Text>
+        <Text style={styles.day}>{giftSendData.createdAt.slice(0, 10)}</Text>
         <View style={styles.horizontalLine} />
       </View>
       <View style={styles.top}>
@@ -35,7 +34,7 @@ export default function Give(props) {
         <View style={[styles.innerBox, { top: 20, height: 150 }]}>
           {/* 선물 카드 */}
           <Image
-            // source={giftSendData.cardImage}
+            source={{uri: giftSendData.sosoticonImage}}
             style={{ position: "absolute", width: 250, height: 150 }}
           />
         </View>

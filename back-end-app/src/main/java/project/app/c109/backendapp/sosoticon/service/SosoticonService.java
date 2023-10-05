@@ -1,9 +1,13 @@
 package project.app.c109.backendapp.sosoticon.service;
 
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.app.c109.backendapp.member.controller.MemberController;
 import project.app.c109.backendapp.member.repository.MemberRepository;
 import project.app.c109.backendapp.sosoticon.domain.dto.request.SosoticonRequestDTO;
 import project.app.c109.backendapp.sosoticon.domain.dto.request.SosoticonDeductRequestDTO;
@@ -23,8 +27,11 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class SosoticonService {
+
+    private final Logger logger = LoggerFactory.getLogger(SosoticonService.class);
 
     @Autowired
     private SosoticonRepository sosoticonRepository;
@@ -99,7 +106,7 @@ public class SosoticonService {
             sosoticon.setSosoticonTaker(requestDTO.getSosoticonTaker());
             sosoticon.setSosoticonGiverName(requestDTO.getSosoticonGiverName());
             sosoticon.setSosoticonText(requestDTO.getSosoticonText());
-//            sosoticon.setSosoticonUrl(requestDTO.getSosoticonUrl());
+            sosoticon.setSosoticonUrl(requestDTO.getSosoticonUrl());
             sosoticon.setSosoticonImage(requestDTO.getSosoticonImage());
             sosoticon.setSosoticonStatus(requestDTO.getSosoticonStatus());
             sosoticon.setSosoticonValue(requestDTO.getSosoticonValue());
@@ -151,7 +158,7 @@ public class SosoticonService {
 
     @Transactional
     public SosoticonResponseDTO generateQRCode(SosoticonRequestDTO request) {
-//        logger.info("generateQRCode method started");
+        logger.info("sosoticon Request", request);
         // 위의 createSosoticon 로직을 이용하여 Sosoticon 엔터티 생성
         Sosoticon sosoticon = createSosoticon(request);
 //        logger.info("generateQRCode method ended");

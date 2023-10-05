@@ -194,6 +194,7 @@ function TableStoreSettlement() {
             <Form.Label
               style={{
                 margin: 10,
+                fontSize: 20,
                 marginLeft: "auto",
               }}
             >
@@ -202,6 +203,7 @@ function TableStoreSettlement() {
             <Form.Label
               style={{
                 margin: 10,
+                fontSize: 20,
               }}
             >
               판매금액: {settlementAmount}

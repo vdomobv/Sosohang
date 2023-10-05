@@ -71,7 +71,7 @@ function SignUp() {
           <div style={{display:"flex", width:"80%"}}>
             <FileUpload onChange={setStoreImageUrl} />
           </div>
-          <Button style={{ width: "80%", marginTop: 10, marginBottom: 15 }} variant="outline-primary" onClick={handleSignup}>회원가입</Button>
+          <Button style={{ width: "80%", marginTop: 20, marginBottom: 50 }} variant="outline-primary" onClick={handleSignup}>회원가입</Button>
         </form>
       </Wrapper>
     </div>

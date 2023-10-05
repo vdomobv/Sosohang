@@ -104,7 +104,7 @@ export default function AddStamp({ route, navigation }) {
                 {nowStamp}
                 <Text style={styles.stampTotal}>/10</Text>
               </Text>
-              <Image style={styles.stampImage} source={stampImages[nowStamp]} />
+              <Image style={styles.stampImage} source={stampImages[nowStamp % 11]} />
             </View>
           }
         />

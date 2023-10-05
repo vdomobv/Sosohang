@@ -101,9 +101,15 @@ function EditStoreInfo(props) {
 
   return (
     <div
-      style={{ marginTop: "50px", marginLeft: "100px", marginRight: "100px" }}>
+      style={{
+        width: "80%",
+        marginTop: "50px",
+        marginLeft: "100px",
+        marginRight: "100px",
+      }}
+    >
       <h4>상점 정보</h4>
-      <div style={{ outline: "none", margin: "10px" }}>
+      <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 이름*</Form.Label>
         <InputGroup>
           <Form.Control

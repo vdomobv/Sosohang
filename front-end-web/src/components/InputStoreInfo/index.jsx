@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, InputGroup, Button, ToggleButton } from "react-bootstrap";
+import {
+  Modal,
+  Form,
+  InputGroup,
+  Button,
+  Collapse,
+  ToggleButton,
+} from "react-bootstrap";
 import axios from "axios";
 import ModalStorePostcode from "../../components/ModalStorePostcode";
 import ModalStoreRegNum from "../../components/ModalStoreRegNum";
@@ -104,23 +111,28 @@ function InputStoreInfo({ onChange }) {
   };
 
   const [storeCategory, setStoreCategory] = useState("1"); // 상점 카테고리
+  const [keywordList, setKeywordList] = useState([]);
+  const [open, setOpen] = useState(false);
 
-  const [categoryKeywords, setCategoryKeyWords] = useState([]);
-
-  const selectedCategory = (category) => {
-    // console.log(storeCategory);
+  const handleCategorySeq = (categorySeq) => {
+    setStoreCategory(categorySeq);
     axios
-      .get(
-        `https://j9c109.p.ssafy.io/api/v1/keywords/category/${category}`
-      )
+      .get(`https://j9c109.p.ssafy.io/api/v1/keywords/category/${categorySeq}`)
       .then((res) => {
         console.log(res.data);
-        setCategoryKeyWords(res.data);
+        setKeywordList(res.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((e) => {
+        console.log(e);
       });
   };
+
+  useEffect(() => {
+    if (keywordList.length > 0) {
+      // 키워드 목록에 데이터가 있을 경우만 Collapse를 엽니다.
+      setOpen(true);
+    }
+  }, [keywordList]);
 
   useEffect(() => {
     if (
@@ -219,19 +231,21 @@ function InputStoreInfo({ onChange }) {
         </InputGroup>
       </div>
 
-      <div>
-        <Form.Label>상점 카테고리*</Form.Label>
-        <Form.Select
-          aria-label="상점 카테고리를 선택해 주세요."
-          onChange={(e) => setStoreCategory(e.target.value)}
-        >
-          <option>상점카테고리</option>
-          <option value="1">카페/제과</option>
-          <option value="2">음식점</option>
-          <option value="3">생활/소품</option>
-          <option value="4">여가/체험</option>
-          <option value="5">건강/뷰티</option>
-        </Form.Select>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <div style={{ width: "50%", marginRight: 30 }}>
+          <Form.Label>상점 카테고리*</Form.Label>
+          <Form.Select
+            aria-label="상점 카테고리를 선택해 주세요."
+            onChange={(e) => handleCategorySeq(e.target.value)}
+          >
+            <option>상점카테고리</option>
+            <option value="1">카페/제과</option>
+            <option value="2">음식점</option>
+            <option value="3">생활/소품</option>
+            <option value="4">여가/체험</option>
+            <option value="5">건강/뷰티</option>
+          </Form.Select>
+        </div>
       </div>
       <div style={{ outline: "none", margin: "20px" }}>
         <Form.Label>상점 키워드</Form.Label>

@@ -10,9 +10,8 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
-import { uploadImageToNCP } from '../../Utils/UploadImage.js';
-import ImageResizer from 'react-native-image-resizer';
-
+import { uploadImageToNCP } from "../../Utils/UploadImage.js";
+import * as ImageManipulator from 'expo-image-manipulator';
 
 export default function SelectImage({
   selectedButton,
@@ -22,6 +21,9 @@ export default function SelectImage({
   setMessage,
   message,
 }) {
+  // console.log("Props - selectedButton:", selectedButton);
+  // console.log("Props - selectedImage:", selectedImage);
+  // console.log("Props - setSelectedImage:", setSelectedImage);
   // const [selectedButton, setSelectedButton] = useState(null);
   // const [selectedImage, setSelectedImage] = useState(null);
   // const [message, setMessage] = useState(""); // 입력된 텍스트를 관리
@@ -31,15 +33,23 @@ export default function SelectImage({
     });
     return byteCharacters;
   };
-  const resizeImage = async (uri, maxWidth = 400, maxHeight = 350) => {
-    const response = await ImageResizer.createResizedImage(
-      uri,
-      maxWidth,
-      maxHeight,
-      'JPEG',
-      100
+  const resizeImage = async (uri) => {
+    const photo = { uri: uri, width: 500, height: 500 }; // 예시로 width와 height를 설정했습니다.
+    const resizedPhoto = await resizePhotoToMaxDimensionsAndCompressAsJPEG({ photo: photo });
+    console.log("resizeImage - Resized Image URI:", resizedPhoto.uri);
+    return resizedPhoto.uri;
+  };
+  const resizePhotoToMaxDimensionsAndCompressAsJPEG = async ({ photo }) => {
+    const largestDimension = (photo.width > photo.height) ? "width" : "height";
+    const initialValueOfLargestDimension = photo[largestDimension];
+    const maximalAllowedValueOfLargestDimension = 500; // 여기서 최대 허용 크기를 설정하면 됩니다.
+    const targetValueOfLargestDimension = (initialValueOfLargestDimension > maximalAllowedValueOfLargestDimension) ? maximalAllowedValueOfLargestDimension : initialValueOfLargestDimension;
+    const resizedPhoto = await ImageManipulator.manipulateAsync(
+      photo.uri,
+      [{ resize: { [largestDimension]: targetValueOfLargestDimension } }],
+      { compress: 0.7, format: 'jpeg' },
     );
-    return response.uri;
+    return resizedPhoto;
   };
   // "+" 버튼을 눌렀을 때 갤러리 열기
   const openImagePicker = async () => {
@@ -54,15 +64,23 @@ export default function SelectImage({
         allowsEditing: true,
       });
       if (!result.canceled) {
-        const resizedImageUri = await resizeImage(result.assets[0].uri);
-        const base64Image = await uriToBase64(resizedImageUri);
+        // console.log("Image Picker Result:", result);
+        // console.log("openImagePicker - Resized Image URI:", resizedImageUri);
+        // console.log("openImagePicker - Base64 Image:", base64Image);
+        // console.log("openImagePicker - Final Assets:", result.assets);
+        // console.log("openImagePicker - Final Assets에서 uri:", result.assets[0].uri);
 
         // const base64Image = await uriToBase64(result.assets[0].uri);
         // console.log("Base64 이미지값 : ", base64Image);
+        const resizedImageUri = await resizeImage(result.assets[0].uri);
+        console.log("리사이즈드이미지??", resizedImageUri);
+        const base64Image = await uriToBase64(resizedImageUri);
+        console.log("유알아이투베이스???", base64Image);
 
         // 이미지의 base64 값을 result.assets의 첫 번째 아이템에 할당
         result.assets[0].base64 = base64Image;
-        console.log(base64Image);
+        console.log("Final Assets with Base64:", result.assets);
+        console.log("할당되었나?", base64Image);
 
         setSelectedButton(null);
         setSelectedImage(result.assets);

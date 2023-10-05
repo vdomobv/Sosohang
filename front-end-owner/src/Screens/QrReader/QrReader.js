@@ -50,7 +50,6 @@ export default function QrReader({ navigation }) {
         .then((res) => {
           setScanned(true);
           setModalVisible(true);
-          // console.log(JSON.parse(qrData.data).storeSeq);
           if (storeSeq === parseInt(JSON.parse(qrData.data).storeSeq)) {
             setBalance(res.data);
             setScannedData(JSON.parse(qrData.data).uuid);

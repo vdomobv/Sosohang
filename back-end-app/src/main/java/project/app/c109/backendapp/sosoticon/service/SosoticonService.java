@@ -62,9 +62,6 @@ public class SosoticonService {
     @PostConstruct
     public void init() {
         ncpApiUrl = env.getProperty("ncp.apiUrl");
-        if (ncpApiUrl == null) {
-            throw new RuntimeException("Property 'ncp.apiUrl' is missing");
-        }
         ncpAccessKey = env.getProperty("ncp.accessKey");
         ncpSecretKey = env.getProperty("ncp.secretKey");
         ncpServiceId = env.getProperty("ncp.serviceId");

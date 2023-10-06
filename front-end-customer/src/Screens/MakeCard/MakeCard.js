@@ -265,7 +265,7 @@ export default function MakeCard({ route, navigation }) {
                 try {
                   // S3에 이미지를 업로드
                   imageUrl = await uploadImageToS3(
-                    selectedImage.uri, // selectedImage의 URI를 전달
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROAnhyeg4_lMFKbdi5vszeiDIdEXqCt6w22Q&usqp=CAU", // selectedImage의 URI를 전달
                     `${Date.now()}test.jpg`
                   );
                   // NCP Object Storage에 이미지를 업로드

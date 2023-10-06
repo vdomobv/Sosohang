@@ -1,7 +1,7 @@
 </br>
 
 <div align="left">
-<img width="300" src="front-end-web\public\assets\soso_logo_line.png">
+<img width="300" src="front-end-web/public/assets/soso_logo_line.png">
 </div>
 
 ### 소상공인에게 소소한 행복을,

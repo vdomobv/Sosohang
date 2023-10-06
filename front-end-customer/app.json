@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "extra": {
+    },
+    "name": "소소행",
+    "slug": "front-end-customer",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/soso_logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/soso_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
+      },
+      "package": "com.sosohang.sosohang",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/soso_logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "READ_CONTACTS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

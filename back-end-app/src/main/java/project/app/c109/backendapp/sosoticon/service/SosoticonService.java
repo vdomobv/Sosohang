@@ -62,6 +62,9 @@ public class SosoticonService {
     @PostConstruct
     public void init() {
         ncpApiUrl = env.getProperty("ncp.apiUrl");
+        if (ncpApiUrl == null) {
+            throw new RuntimeException("Property 'ncp.apiUrl' is missing");
+        }
         ncpAccessKey = env.getProperty("ncp.accessKey");
         ncpSecretKey = env.getProperty("ncp.secretKey");
         ncpServiceId = env.getProperty("ncp.serviceId");
@@ -73,7 +76,9 @@ public class SosoticonService {
 
 //            String uuid = qrCodeUtil.generateUUID(); // UUID 생성(QRCode만)
             String uuid = qrCodeUtil_image.generateUUID(); // UUID 생성(선물카드이미지로 합성되어)
-
+            if (uuid == null) {
+                throw new RuntimeException("Failed to generate UUID using qrCodeUtil_image");
+            }
             // qr이미지 주소값저장
             String qrImageUrl = "https://sosoticon.s3.ap-northeast-2.amazonaws.com/QRCode_" + uuid + ".png";
             sosoticon.setQrImageUrl(qrImageUrl);

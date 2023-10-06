@@ -17,25 +17,25 @@ public class QRCodeUtil {
     @Autowired
     private S3UploadService s3UploadService;
 
-    public String generateQRCode(String data, String uuid) throws Exception { // UUID 파라미터 추가
-        try {
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
-
-            String fileName = "QRCode_" + uuid + ".png";  // 이미 받은 UUID 사용
-            String userHome = System.getProperty("user.home");
-            Path path = FileSystems.getDefault().getPath(userHome + "\\Desktop\\" + fileName);
-
-            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-
-            // S3 업로드 로직
-            String fileUrl = s3UploadService.uploadImageToS3(fileName, path);
-
-            return fileUrl;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to generate QR code", e);
-        }
-    }
+//    public String generateQRCode(String data, String uuid) throws Exception { // UUID 파라미터 추가
+//        try {
+//            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
+//
+//            String fileName = "QRCode_" + uuid + ".png";  // 이미 받은 UUID 사용
+//            String userHome = System.getProperty("user.home");
+//            Path path = FileSystems.getDefault().getPath(userHome + "\\Desktop\\" + fileName);
+//
+//            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+//
+//            // S3 업로드 로직
+//            String fileUrl = s3UploadService.uploadImageToS3(fileName, path);
+//
+//            return fileUrl;
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to generate QR code", e);
+//        }
+//    }
 
     public String generateUUID() {
         return UUID.randomUUID().toString();

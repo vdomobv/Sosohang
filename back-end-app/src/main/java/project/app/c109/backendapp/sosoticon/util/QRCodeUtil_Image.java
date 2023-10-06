@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -65,10 +66,10 @@ public class QRCodeUtil_Image {
 
 
         // 사용자 첨부 이미지 (이미지 URL 또는 경로에서 이미지를 읽어와야 함)
-        // BufferedImage attachedImage = ImageIO.read(new URL(requestDTO.getSosoticonImage()));  // 만약 경로라면, new File()을 사용
+         BufferedImage attachedImage = ImageIO.read(new URL(requestDTO.getSosoticonImage()));
 
         // Tnx 이미지 합성하기
-        BufferedImage attachedImage = ImageIO.read(getClass().getResourceAsStream("/static/images/thx.png"));
+//        BufferedImage attachedImage = ImageIO.read(getClass().getResourceAsStream("/static/images/thx.png"));
 
         graphics.drawImage(attachedImage, 25, 40, desiredWidth, desiredHeight, null); // 예시 위치 및 크기
 
@@ -88,30 +89,56 @@ public class QRCodeUtil_Image {
         return templateImage;
     }
 
-    public String generateQRCode(String data, String uuid, SosoticonRequestDTO requestDTO) throws Exception {
-        try {
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
-            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+//    public String generateQRCode(String data, String uuid, SosoticonRequestDTO requestDTO) throws Exception {
+//        try {
+//            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
+//            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+//
+//            // 합쳐진 이미지 생성
+//            BufferedImage combinedImage = overlayQRCodeOnTemplate(qrImage, requestDTO);
+//
+//            String fileName = "QRCode_" + uuid + ".png";  // 이미 받은 UUID 사용
+//            String userHome = System.getProperty("user.home");
+//            Path path = FileSystems.getDefault().getPath(userHome + "\\Desktop\\" + fileName);
+//
+//            // 합쳐진 이미지를 파일로 저장
+//            ImageIO.write(combinedImage, "PNG", path.toFile());
+//
+//            // S3 업로드 로직
+//            String fileUrl = s3UploadService.uploadImageToS3(fileName, path);
+//
+//            return fileUrl;
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to generate QR code", e);
+//        }
+//    }
+public String generateQRCode(String data, String uuid, SosoticonRequestDTO requestDTO) throws Exception {
+    try {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200);
+        BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
 
-            // 합쳐진 이미지 생성
-            BufferedImage combinedImage = overlayQRCodeOnTemplate(qrImage, requestDTO);
+        // 합쳐진 이미지 생성
+        BufferedImage combinedImage = overlayQRCodeOnTemplate(qrImage, requestDTO);
 
-            String fileName = "QRCode_" + uuid + ".png";  // 이미 받은 UUID 사용
-            String userHome = System.getProperty("user.home");
-            Path path = FileSystems.getDefault().getPath(userHome + "\\Desktop\\" + fileName);
+        // BufferedImage를 Base64로 인코딩
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(combinedImage, "PNG", baos);
+        byte[] imageInByte = baos.toByteArray();
+        baos.close();
 
-            // 합쳐진 이미지를 파일로 저장
-            ImageIO.write(combinedImage, "PNG", path.toFile());
+        // 파일 이름
+        String fileName = "QRCode_" + uuid + ".png";  // 이미 받은 UUID 사용
 
-            // S3 업로드 로직
-            String fileUrl = s3UploadService.uploadImageToS3(fileName, path);
+        // S3 업로드 로직 - 바이트 배열을 사용해서 업로드
+        String fileUrl = s3UploadService.uploadImageToS3(fileName, imageInByte);  // s3UploadService를 수정해야할 수도 있습니다.
 
-            return fileUrl;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to generate QR code", e);
-        }
+        return fileUrl;
+    } catch (Exception e) {
+        throw new RuntimeException("Failed to generate QR code", e);
     }
+}
 
     public String generateUUID() {
         return UUID.randomUUID().toString();

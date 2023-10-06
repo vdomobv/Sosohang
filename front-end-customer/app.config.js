@@ -9,6 +9,9 @@ module.exports = {
       },
     },
     extra: {
+      eas: {
+        projectId: "0603cfd4-e70d-4b00-bb3a-dfffc9305187",
+      },
     },
   },
 };

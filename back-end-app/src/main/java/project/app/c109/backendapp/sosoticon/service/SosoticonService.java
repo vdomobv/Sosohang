@@ -155,16 +155,43 @@ public class SosoticonService {
         responseDTO.setMessage("QR Code generated successfully");
         return responseDTO;
     }
-
     @Transactional
     public SosoticonResponseDTO generateQRCode(SosoticonRequestDTO request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request data cannot be null");
+        }
+
+        if (request.getMemberSeq() == null ||
+                request.getOrderSeq() == null ||
+                request.getStoreSeq() == null ||
+                request.getSosoticonGiverName() == null ||
+                request.getSosoticonTakerName() == null ||
+                request.getSosoticonTaker() == null ||
+                request.getSosoticonText() == null ||
+                request.getSosoticonUrl() == null ||
+                request.getSosoticonImage() == null ||
+                request.getSosoticonStatus() == null ||
+                request.getSosoticonValue() == null) {
+            throw new IllegalArgumentException("Incomplete request data. Please ensure all fields are provided.");
+        }
+
         logger.info("sosoticon Request", request);
+
         // 위의 createSosoticon 로직을 이용하여 Sosoticon 엔터티 생성
         Sosoticon sosoticon = createSosoticon(request);
-//        logger.info("generateQRCode method ended");
+
         // Sosoticon 엔터티를 SosoticonResponseDTO로 변환
         return convertEntityToDto(sosoticon);
     }
+//    @Transactional
+//    public SosoticonResponseDTO generateQRCode(SosoticonRequestDTO request) {
+//        logger.info("sosoticon Request", request);
+//        // 위의 createSosoticon 로직을 이용하여 Sosoticon 엔터티 생성
+//        Sosoticon sosoticon = createSosoticon(request);
+////        logger.info("generateQRCode method ended");
+//        // Sosoticon 엔터티를 SosoticonResponseDTO로 변환
+//        return convertEntityToDto(sosoticon);
+//    }
 
     // QR 코드를 스캔한 데이터를 처리하는 메소드
     public void handleScannedQRCode(String scannedData) throws Exception {

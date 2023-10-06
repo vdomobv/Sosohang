@@ -244,6 +244,15 @@
 ### 포팅 매뉴얼
 
 
+### 빌드파일
+    1. [회원 앱](./exec/소소행-최종.apk) (\*.apk)  
+  ![image](exec/images/소소행_소비자_QR.png)
+
+    2. [사장님 앱](./exec/소소행-사장님.apk) (\*.apk)
+  ![image](exec/images/소소행_사장님_QR.png)
+  
+    3. 백 서버 빌드 : 
+
 <br/>
 
 ## 협업툴

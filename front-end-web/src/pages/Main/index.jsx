@@ -57,23 +57,91 @@ function Main() {
           </Fade>
         </div>
       </div>
-      <Slide direction="up" triggerOnce>
+
+      <div className="img-container" style={{ justifyContent: 'space-around', marginTop: '100px' }}>
+        {/* <div className="text-overlay-top"> */}
         <Fade cascade damping={0.2}>
-          {/* <div className="logo-container">
+          <div className="logo-container">
+            <img
+              className="logo"
+              style={{ width: "50%" }}
+              src="/assets/sosohang.png"
+              alt=""
+            ></img>
+          </div>
+        </Fade>
+        {/* </div> */}
+
+        <div>
+          <Fade cascade damping={0.2}>
+            <div>
+              <img style={{ height: '600px' }} src="/assets/app_main.png" alt=""></img>
+              <div style={{ backgroundColor: 'white', borderRadius: 30, padding: '6px 20px', opacity: 0.7 }}>
+                <h5 style={{ textAlign: 'center' }}>
+                  [ 회원 앱 메인화면 ]
+                </h5>
+              </div>
+            </div>
+          </Fade>
+        </div>
+        <div>
+          <Fade cascade damping={0.2}>
+            <img style={{ height: '600px' }} src="/assets/app_card1.png" alt=""></img>
+            <div>
+              <div style={{ backgroundColor: 'white', borderRadius: 30, padding: '6px 20px', opacity: 0.7 }}>
+                <h5 style={{ textAlign: 'center' }}>
+
+                  [ 소소티콘 포장하기 ]
+                </h5>
+              </div>
+            </div>
+          </Fade>
+        </div>
+        <div>
+          <Fade cascade damping={0.2}>
+            <img style={{ height: '600px' }} src="/assets/app_card2.png" alt=""></img>
+            <div>
+              <div style={{ backgroundColor: 'white', borderRadius: 30, padding: '6px 20px', opacity: 0.7 }}>
+                <h5 style={{ textAlign: 'center' }}>
+                  [ 소소티콘 포장하기 ]
+                </h5>
+              </div>
+            </div>
+          </Fade>
+        </div>
+        <div>
+          <Fade cascade damping={0.2}>
+            <img style={{ height: '600px' }} src="/assets/app_stamp.png" alt=""></img>
+            <div>
+              <div style={{ backgroundColor: 'white', borderRadius: 30, padding: '6px 20px', opacity: 0.7 }}>
+                <h5 style={{ textAlign: 'center' }}>
+                  [ 상점 스탬프 '소복소복' ]
+                </h5>
+              </div>
+            </div>
+          </Fade>
+        </div>
+
+      </div>
+
+
+      <Slide direction="up" triggerOnce>
+        {/* <Fade cascade damping={0.2}>
+          <div className="logo-container">
             <img
               className="logo"
               style={{ width: "20%" }}
               src="/assets/sosohang.png"
               alt=""
             ></img>
-          </div> */}
-        </Fade>
-        <div ref={secondSlideRef} className="img-container2">
+          </div>
+        </Fade> */}
+        <div ref={secondSlideRef} className="img-container2" style={{ marginBottom: '80px' }}>
           <div className="text-overlay_ballon">
             <Fade cascade damping={0.2} delay={200}>
               <div className="message-container">
-                <div className="message-box" style={{ display:'flex', alignItems:'center', }}>
-                  <p style={{ color: "#15E575", fontWeight:'bold', fontSize: '25px', marginRight: '-8px'}}>소소행</p><p>은 어떤 서비스인가요? 🧐</p>
+                <div className="message-box" style={{ display: 'flex', alignItems: 'center', }}>
+                  <p style={{ color: "#15E575", fontWeight: 'bold', fontSize: '25px', marginRight: '-8px' }}>소소행</p><p>은 어떤 서비스인가요? 🧐</p>
                 </div>
               </div>
             </Fade>
@@ -134,7 +202,7 @@ function Main() {
         </div>
       </Slide>
 
-      <div className="img-container3">
+      <div className="img-container3" style={{ backgroundColor: '#dff1f3' }}>
         <Slide direction="up" triggerOnce>
           <div className="text-overlay2">
             <Fade cascade damping={0.2}>
@@ -353,7 +421,7 @@ function Main() {
                 All Photo by ⓒ C109 Crew on Unsplash view
               </div>
 
-              <div className="logo-container" style={{ marginRight: '40px'}}>
+              <div className="logo-container" style={{ marginRight: '40px' }}>
                 <img
                   className="logo"
                   style={{ width: '110px', height: '110px', padding: '3px' }}

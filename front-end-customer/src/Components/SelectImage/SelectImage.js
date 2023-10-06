@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
-import { uploadImageToS3, uploadImageToNCP } from '../../Utils/UploadImage.js';
+import { uploadImageToS3, uploadImageToNCP } from "../../Utils/UploadImage.js";
 import * as ImageManipulator from "expo-image-manipulator";
 
 export default function SelectImage({
@@ -123,8 +123,8 @@ export default function SelectImage({
       // } else {
       // 해당 버튼에 따라 이미지 업데이트
       switch (button) {
-        case "생일":
-          setSelectedImage(require("assets/images/bday.png"));
+        case "안녕":
+          setSelectedImage(require("assets/images/hello.png"));
           break;
         case "감사":
           setSelectedImage(require("assets/images/thx.png"));
@@ -147,7 +147,7 @@ export default function SelectImage({
     <View>
       <Text style={styles.subtitle}>📝 메시지카드 작성</Text>
       <View style={styles.buttonContainer}>
-        {["생일", "감사", "응원", "위로"].map((button, index) => (
+        {["안녕", "감사", "응원", "위로"].map((button, index) => (
           <TouchableOpacity
             key={index}
             style={[
@@ -170,7 +170,7 @@ export default function SelectImage({
 
         <View style={[styles.innerBox, { top: 35, height: 200 }]}>
           <Text style={styles.title}>
-            상단의 이미지 카드 키워드를 {'\n'}선택해 주세요.
+            상단의 이미지 카드 키워드를 {"\n"}선택해 주세요.
           </Text>
           <Image
             source={selectedImage} // 선택된 이미지 표시

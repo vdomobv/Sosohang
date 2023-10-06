@@ -163,19 +163,19 @@ public class SosoticonService {
             throw new IllegalArgumentException("Request data cannot be null");
         }
 
-        if (request.getMemberSeq() == null ||
-                request.getOrderSeq() == null ||
-                request.getStoreSeq() == null ||
-                request.getSosoticonGiverName() == null ||
-                request.getSosoticonTakerName() == null ||
-                request.getSosoticonTaker() == null ||
-                request.getSosoticonText() == null ||
-                request.getSosoticonUrl() == null ||
-                request.getSosoticonImage() == null ||
-                request.getSosoticonStatus() == null ||
-                request.getSosoticonValue() == null) {
-            throw new IllegalArgumentException("Incomplete request data. Please ensure all fields are provided.");
-        }
+        // if (request.getMemberSeq() == null ||
+        //         request.getOrderSeq() == null ||
+        //         request.getStoreSeq() == null ||
+        //         request.getSosoticonGiverName() == null ||
+        //         request.getSosoticonTakerName() == null ||
+        //         request.getSosoticonTaker() == null ||
+        //         request.getSosoticonText() == null ||
+        //         request.getSosoticonUrl() == null ||
+        //         request.getSosoticonImage() == null ||
+        //         request.getSosoticonStatus() == null ||
+        //         request.getSosoticonValue() == null) {
+        //     throw new IllegalArgumentException("Incomplete request data. Please ensure all fields are provided.");
+        // }
 
         logger.info("sosoticon Request", request);
 

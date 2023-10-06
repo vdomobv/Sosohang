@@ -2,6 +2,8 @@
 FROM openjdk:11-jre-slim
 WORKDIR /app
 COPY .env /app/.env
+
+RUN apt-get update; apt-get install -y fontconfig libfreetype6
 # JAR 파일을 컨테이너에 복사
 
 COPY build/libs/back-end-app-0.0.1-SNAPSHOT.jar /app/back-end-app-0.0.1-SNAPSHOT.jar

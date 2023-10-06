@@ -62,7 +62,7 @@ const Wrapper = styled.div`
 
   .footer-container {
     background-color: #dff1f3;
-    padding : 120px 100px;
+    padding : 40px 100px;
   }
 
   .text-overlay2 {
@@ -156,7 +156,7 @@ const Wrapper = styled.div`
   .box {
     width: 350px;
     height: 200px;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     border: none;
     margin-right: 15px;
     margin-bottom: 15px;

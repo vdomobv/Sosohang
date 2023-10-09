@@ -25,7 +25,7 @@ export default function GiftNoBtn({ data, onPress }) {
               <Text style={styles.shopName}>{data.store.storeName}</Text>
               {/* <Text style={styles.shopName}>{data[0].storeName}</Text> */}
               <Text style={styles.price}>
-                {"남은 금액 : " + numberWithCommas(data.sosoticonValue)}원
+                {"남은 금액 : " + numberWithCommas(data.sosoticonPrice)}원
               </Text>
             </View>
           </View>

@@ -1,5 +1,5 @@
 import styles from "./styles";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, TouchableOpacity } from "react-native";
 
 import Title from "../../Components/Title/Title";
@@ -10,7 +10,7 @@ import Tabs from "../../Components/Tabs/Tabs";
 import { getMyGiftList } from "../../Utils/MyGiftAPI";
 import { getMemberSeq } from "../../Utils/MemberAPI";
 import LoginRequired from "../../Components/LoginRequired/LoginRequired";
-
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function MyGift({ navigation, route }) {
   // console.log("여기", route.params.activatedTabValue)
@@ -19,32 +19,33 @@ export default function MyGift({ navigation, route }) {
 
   // 더미 아님. 찐임.
   const [dummy, setDummy] = useState([]);
-
-
   const [tempUser, setTempUser] = useState();
 
   const fetchData = async () => {
     const memberSeq = await getMemberSeq();
     if (memberSeq !== undefined) {
       setTempUser(memberSeq);
+      fetchMemberData(memberSeq);
     }
   };
 
-  useEffect(() => {
-    if (tempUser !== undefined) {
-      fetchMemberData();
-    }
-  }, [tempUser]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+      console.log(tempUser);
+    }, [])
+  );
+
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const fetchMemberData = async () => {
+  const fetchMemberData = async (user) => {
     try {
-      const result = await getMyGiftList(tempUser);
+      const result = await getMyGiftList(user);
       setDummy(result);
-      // console.log('여기', result);
+      console.log("여기", result);
     } catch (error) {
       console.error("Error fetching member data:", error);
     }
@@ -53,6 +54,12 @@ export default function MyGift({ navigation, route }) {
   const handleGiftClick = (giftData) => {
     navigation.navigate("MyGiftDetail", { giftData });
   };
+
+  // useEffect(() => {
+  //   if (tempUser !== undefined) {
+  //     fetchMemberData();
+  //   }
+  // }, [tempUser]);
 
   const usableGifts = dummy
     .filter((d) => (d.sosoticonStatus === 1) === true)
@@ -66,6 +73,7 @@ export default function MyGift({ navigation, route }) {
         />
       );
     });
+
   const unusableGifts = dummy
     .filter((d) => (d.sosoticonStatus === 2) === true)
     .map((d, index) => {

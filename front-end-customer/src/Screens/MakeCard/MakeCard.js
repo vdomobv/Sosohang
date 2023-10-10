@@ -27,6 +27,7 @@ export default function MakeCard({ route, navigation }) {
   const [contactStartIndex, setContactStartIndex] = useState(0);
   const [isContactBoxVisible, setIsContactBoxVisible] = useState(false);
   const [sosoStoreSeq, setSosostoreSeq] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   // 연락처 가져오기 함수
   const getContacts = async () => {
@@ -64,9 +65,12 @@ export default function MakeCard({ route, navigation }) {
     const sortedContacts = contacts.sort((a, b) => {
       return a.name.localeCompare(b.name);
     });
-  
-    const visibleContacts = sortedContacts.slice(contactStartIndex, contactStartIndex + 4);
-  
+
+    const visibleContacts = sortedContacts.slice(
+      contactStartIndex,
+      contactStartIndex + 4
+    );
+
     return (
       <View style={{ marginLeft: 20 }}>
         {visibleContacts.map((contact, index) => (
@@ -159,6 +163,11 @@ export default function MakeCard({ route, navigation }) {
           <Text style={styles.title}>선물포장하기</Text>
 
           <SelectImage
+            imageUrl={imageUrl}
+            onchangeImageUrl={(image) => {
+              setImageUrl(image);
+              // console.log(image);
+            }}
             selectedButton={selectedButton}
             setSelectedButton={setSelectedButton}
             selectedImage={selectedImage}
@@ -261,27 +270,27 @@ export default function MakeCard({ route, navigation }) {
               if (contactName === "" || contactPhoneNumber === "") {
                 Alert.alert("받는 사람을 선택해주세요.");
               } else {
-                let imageUrl = null;
-                try {
-                  // S3에 이미지를 업로드
-                  imageUrl = await uploadImageToS3(
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROAnhyeg4_lMFKbdi5vszeiDIdEXqCt6w22Q&usqp=CAU", // selectedImage의 URI를 전달
-                    `${Date.now()}test.jpg`
-                  );
-                  // NCP Object Storage에 이미지를 업로드
-                  // const imageUrl = await uploadImageToNCP(
-                  //   selectedImage,
-                  //   `${Date.now()}test.jpg`
-                  // );
-                  // console.log("업로드된 이미지 URL:", imageUrl);
-                  // NCP에 이미지를 업로드
-                  // fileId = await uploadImageToNCP(selectedImage, `${Date.now()}test.jpg`);
-                  // console.log("업로드되는 이미지URI 나오나??", fileId)
-                } catch (error) {
-                  console.error("Error uploading image to S3:", error);
-                  // 여기에 알림 추가하면 이미지 업로드 실패시 사용자에게 알림을 줄 수 있습니다.
-                  // Alert.alert("Image upload failed. Proceeding without image.");
-                }
+                // let imageUrl = null;
+                // try {
+                //   // S3에 이미지를 업로드
+                //   imageUrl = await uploadImageToS3(
+                //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROAnhyeg4_lMFKbdi5vszeiDIdEXqCt6w22Q&usqp=CAU", // selectedImage의 URI를 전달
+                //     `${Date.now()}test.jpg`
+                //   );
+                //   // NCP Object Storage에 이미지를 업로드
+                //   // const imageUrl = await uploadImageToNCP(
+                //   //   selectedImage,
+                //   //   `${Date.now()}test.jpg`
+                //   // );
+                //   // console.log("업로드된 이미지 URL:", imageUrl);
+                //   // NCP에 이미지를 업로드
+                //   // fileId = await uploadImageToNCP(selectedImage, `${Date.now()}test.jpg`);
+                //   // console.log("업로드되는 이미지URI 나오나??", fileId)
+                // } catch (error) {
+                //   console.error("Error uploading image to S3:", error);
+                //   // 여기에 알림 추가하면 이미지 업로드 실패시 사용자에게 알림을 줄 수 있습니다.
+                //   // Alert.alert("Image upload failed. Proceeding without image.");
+                // }
                 navigation.navigate("WaitingPayment", {
                   groupedByStore,
                   totalPrice,

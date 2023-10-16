@@ -1,5 +1,5 @@
 import styles from "./styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -20,6 +20,8 @@ export default function SelectImage({
   setSelectedImage, // 여기에 추가
   setMessage,
   message,
+  imageUrl,
+  onchangeImageUrl
 }) {
   // console.log("Props - selectedButton:", selectedButton);
   // console.log("Props - selectedImage:", selectedImage);
@@ -111,6 +113,9 @@ export default function SelectImage({
     }
   };
 
+  useEffect(() => {
+    onchangeImageUrl(selectedImage)
+  }, [selectedImage])
   const handleButtonClick = (button) => {
     if (selectedButton === button) {
       setSelectedButton(null);
@@ -123,17 +128,17 @@ export default function SelectImage({
       // } else {
       // 해당 버튼에 따라 이미지 업데이트
       switch (button) {
-        case "안녕":
-          setSelectedImage(require("assets/images/hello.png"));
+        case "생일":
+          setSelectedImage("https://sosoticon.s3.ap-northeast-2.amazonaws.com/bday.png");
           break;
         case "감사":
-          setSelectedImage(require("assets/images/thx.png"));
+          setSelectedImage("https://sosoticon.s3.ap-northeast-2.amazonaws.com/thx.png");
           break;
         case "응원":
-          setSelectedImage(require("assets/images/cheerup.png"));
+          setSelectedImage("https://sosoticon.s3.ap-northeast-2.amazonaws.com/cheerup.png");
           break;
         case "위로":
-          setSelectedImage(require("assets/images/encourage.png"));
+          setSelectedImage("https://sosoticon.s3.ap-northeast-2.amazonaws.com/encourage.png");
           break;
         default:
           setSelectedImage(null); // 다른 버튼인 경우 이미지 초기화
@@ -147,7 +152,7 @@ export default function SelectImage({
     <View>
       <Text style={styles.subtitle}>📝 메시지카드 작성</Text>
       <View style={styles.buttonContainer}>
-        {["안녕", "감사", "응원", "위로"].map((button, index) => (
+        {["생일", "감사", "응원", "위로"].map((button, index) => (
           <TouchableOpacity
             key={index}
             style={[
@@ -173,7 +178,7 @@ export default function SelectImage({
             상단의 이미지 카드 키워드를 {"\n"}선택해 주세요.
           </Text>
           <Image
-            source={selectedImage} // 선택된 이미지 표시
+            source={{uri:selectedImage}} // 선택된 이미지 표시
             style={{ position: "absolute", width: 330, height: 200 }}
           />
         </View>

@@ -12,6 +12,9 @@ export default function ReceivedGift({ data, usable, onPress }) {
   // console.log("여기다", data.sosoticonReviewStatus);
   const [modalState, setModalState] = useState(false);
   const navigation = useNavigation();
+  const numberWithCommas = (number) => {
+    return number.toLocaleString();
+  };
 
   return (
     <>
@@ -20,7 +23,7 @@ export default function ReceivedGift({ data, usable, onPress }) {
           <View style={styles.header}>
             <Text style={styles.person}>
               {data["sosoticonTakerName"]
-                ? " from. " + data.sosoticonTakerName
+                ? " from. " + data.sosoticonGiverName
                 : " to. " + data.to}{" "}
             </Text>
             <Text style={styles.date}>
@@ -34,8 +37,8 @@ export default function ReceivedGift({ data, usable, onPress }) {
               <Text style={styles.name}>{data.name}</Text>
               <Text style={styles.price}>
                 {data["sosoticonTakerName"]
-                  ? "남은 금액 : " + data.sosoticonValue
-                  : data.sosoticonPrice}{" "}
+                  ? "남은 금액 : " + numberWithCommas(data.sosoticonValue)
+                  : numberWithCommas(data.sosoticonPrice)}{" "}
                 원
               </Text>
             </View>

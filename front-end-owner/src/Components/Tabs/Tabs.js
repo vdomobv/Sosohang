@@ -21,7 +21,7 @@ export default function Tabs({ navigation }) {
 
   useEffect(() => {
     axios
-      .get("https://j9c109.p.ssafy.io/api/v1/store/token_test")
+      .get("/api/v1/store/token_test")
       .then((res) => {
         if (res.data === false) {
           setIsAuth(false);
@@ -36,7 +36,7 @@ export default function Tabs({ navigation }) {
   }, []);
 
   const handleLogOut = () => {
-    axios.get("https://j9c109.p.ssafy.io/api/v1/store/logout");
+    axios.get("/api/v1/store/logout");
     setIsAuth(false);
     navigation.navigate("LogIn");
   };

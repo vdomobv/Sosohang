@@ -61,7 +61,7 @@ export default function Shop({ navigation, route }) {
   const getKeywords = async () => {
     try {
       const response = await axios.get(
-        `https://j9c109.p.ssafy.io/api/v1/store/keywordlist/${storeSeq}`
+        `/api/v1/store/keywordlist/${storeSeq}`
       );
       setKeywords(response.data);
     } catch (error) {

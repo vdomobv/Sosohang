@@ -63,7 +63,7 @@ function EditStoreInfo(props) {
 
   const handleCategorySeq = (categorySeq) => {
     axios
-      .get(`https://j9c109.p.ssafy.io/api/v1/keywords/category/${categorySeq}`)
+      .get(`/api/v1/keywords/category/${categorySeq}`)
       .then((res) => {
         // console.log(res.data);
         setKeywordList(res.data);

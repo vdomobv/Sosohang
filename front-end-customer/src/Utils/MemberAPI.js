@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const login = (navigation, loginPhoneNumber, loginPassword) => {
     axios
-        .post("https://j9c109.p.ssafy.io/api/v1/member/login", {
+        .post("/api/v1/member/login", {
             memberPhone: loginPhoneNumber,
             memberPassword: loginPassword,
         })
@@ -64,7 +64,7 @@ export const logout = async () => {
 export const getMemberData = async (memberSeq) => {
     try {
         const response = await axios.get(
-            `https://j9c109.p.ssafy.io/api/v1/member/${memberSeq}`
+            `/api/v1/member/${memberSeq}`
         );
 
         return response.data;
@@ -76,7 +76,7 @@ export const getMemberData = async (memberSeq) => {
 export const updateMemberNickname = async (memberSeq, newNickname) => {
     try {
         const response = await axios.put(
-            `https://j9c109.p.ssafy.io/api/v1/member/update/${memberSeq}?newMemberNickname=${newNickname}`
+            `api/v1/member/update/${memberSeq}?newMemberNickname=${newNickname}`
         );
 
         return response.data;
@@ -87,7 +87,7 @@ export const updateMemberNickname = async (memberSeq, newNickname) => {
 
 
 export const handlePhoneVerification = (phoneNumber) => {
-    axios.post("https://j9c109.p.ssafy.io/api/v1/member/handlePhoneVerification", { phoneNumber: phoneNumber })
+    axios.post("/api/v1/member/handlePhoneVerification", { phoneNumber: phoneNumber })
         .then((response) => {
             const responseData = response.data;
             if (responseData === "이미 가입된 사용자입니다.") {

@@ -126,7 +126,7 @@ export default function PaymentResult({ navigation, route }) {
   //       tempData["memberSeq"] = tempUser;
   //       tempData["orderSeq"] = totalOrder.totalOrderSeq;
   //       tempData["storeSeq"] = parseInt(key);
-  //       // tempData["sosoticonUrl"] = "https://j9c109.p.ssafy.io/webgift/";
+  //       // tempData["sosoticonUrl"] = "{/*도메인주소*/}/webgift/";
 
   //       const productsInShop = productList[key];
   //       const totalProductPrice = productsInShop.reduce((acc, product) => {

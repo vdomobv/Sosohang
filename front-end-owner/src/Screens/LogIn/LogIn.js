@@ -20,7 +20,7 @@ export default function LogIn({ navigation }) {
         )
       ) {
         axios
-          .post("https://j9c109.p.ssafy.io/api/v1/store/login", {
+          .post("/api/v1/store/login", {
             registrationNumber: loginRegisterNumber,
             storePassword: loginPassword,
           })

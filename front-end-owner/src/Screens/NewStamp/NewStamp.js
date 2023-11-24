@@ -35,7 +35,7 @@ export default function NewStamp({ route, navigation }) {
   const handlePress = async (count) => {
     try {
       const response = await axios
-        .post(`https://j9c109.p.ssafy.io/api/v1/stamp/earn?storeSeq=${storeSeq}&memberPhone=${phoneNumber}&stampCount=${count}`);
+        .post(`/api/v1/stamp/earn?storeSeq=${storeSeq}&memberPhone=${phoneNumber}&stampCount=${count}`);
 
       const { data } = response;
 

@@ -20,14 +20,14 @@ export default function InputPayment({ navigation, route }) {
       }
       axios
         .put(
-          "https://j9c109.p.ssafy.io/api/app/users/gift-cards/deductAmount",
+          "/api/app/users/gift-cards/deductAmount",
           {
             sosoticonCode: sosoticon,
             amount: parseInt(payment.toString().replace(/[^0-9]/g, "")),
           }
         )        
         .then(() => {
-          axios.post("https://j9c109.p.ssafy.io/app/v1/settlement/create", {
+          axios.post("/app/v1/settlement/create", {
             storeSeq: storeSeq,
             settlementPrice: parseInt(payment.toString().replace(/[^0-9]/g, "")),
           })
@@ -38,7 +38,7 @@ export default function InputPayment({ navigation, route }) {
           계속 오류가 발생한다면 고객센터로 문의주시기 바랍니다.`)
         });
 
-      axios.post("https://j9c109.p.ssafy.io/app/settlement/create", {});
+      axios.post("/app/settlement/create", {});
     }
   };
 

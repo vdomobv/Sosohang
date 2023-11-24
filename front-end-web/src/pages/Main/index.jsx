@@ -538,7 +538,7 @@ function Main() {
                 사업자 번호 : 2222-888888
                 <br />
                 Tel : 010-0000-0000 Fax : 050-0000-0000 E-mail :
-                haebojagu@ssafy.com
+                haebojagu@sosohang.com
                 <br />
                 All Photo by ⓒ C109 Crew on Unsplash view
               </div>

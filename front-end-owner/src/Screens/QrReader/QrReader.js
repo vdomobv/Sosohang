@@ -25,7 +25,7 @@ export default function QrReader({ navigation }) {
     })();
     setScanned(false);
     axios
-      .get("https://j9c109.p.ssafy.io/api/v1/store/token_test")
+      .get("/api/v1/store/token_test")
       .then((res) => {
         if (res.data !== false) {
           setStoreSeq(res.data.storeSeq);
@@ -43,7 +43,7 @@ export default function QrReader({ navigation }) {
       JSON.parse(qrData.data);
       axios
         .get(
-          `https://j9c109.p.ssafy.io/api/app/users/gift-cards/${
+          `/api/app/users/gift-cards/${
             JSON.parse(qrData.data).uuid
           }/balance`
         )

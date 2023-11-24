@@ -3,7 +3,7 @@ import axios from "axios";
 export const getStoreData = async (storeSeq) => {
   try {
     const response = await axios.get(
-      `https://j9c109.p.ssafy.io/api/v1/store/${storeSeq}`
+      `/api/v1/store/${storeSeq}`
     );
     return response.data;
   } catch (error) {
@@ -13,7 +13,7 @@ export const getStoreData = async (storeSeq) => {
 
 export const getAllStoreData = async () => {
   try {
-    const response = await axios.get("https://j9c109.p.ssafy.io/api/v1/store");
+    const response = await axios.get("/api/v1/store");
     return response.data;
   } catch (error) {
     // console.error("Error fetching store data:", error);
@@ -23,7 +23,7 @@ export const getAllStoreData = async () => {
 export const getRecentStoreByLocation = async (latitute, longitude) => {
   try {
     const response = await axios.get(
-      `https://j9c109.p.ssafy.io/api/v1/store/nearby?latitude=${latitute}&longitude=${longitude}`
+      `/api/v1/store/nearby?latitude=${latitute}&longitude=${longitude}`
     );
 
     const result = response.data.sort((a, b) => b.storeSeq - a.storeSeq);
@@ -36,7 +36,7 @@ export const getRecentStoreByLocation = async (latitute, longitude) => {
 export const getStoreByLocation = async (latitute, longitude) => {
   try {
     const response = await axios.get(
-      `https://j9c109.p.ssafy.io/api/v1/store/nearby?latitude=${latitute}&longitude=${longitude}`
+      `/api/v1/store/nearby?latitude=${latitute}&longitude=${longitude}`
     );
 
     return response.data;
@@ -52,7 +52,7 @@ export const getKeywordStoreByLocation = async (
 ) => {
   try {
     const response = await axios.get(
-      `https://j9c109.p.ssafy.io/api/v1/store/nearby/keyword?latitude=${latitute}&longitude=${longitude}&keywordSeq=${keywordSeq}`
+      `/api/v1/store/nearby/keyword?latitude=${latitute}&longitude=${longitude}&keywordSeq=${keywordSeq}`
     );
 
     return response.data;
@@ -67,7 +67,7 @@ export const getKeywordStoreByLocation = async (
 export const getKeywords = async () => {
   try {
     const response = await axios.get(
-      `https://j9c109.p.ssafy.io/api/v1/keywords`
+      `/api/v1/keywords`
     );
 
     const temp = response.data;
@@ -91,7 +91,7 @@ export const getKeywords = async () => {
 export const getReviewData = async (storeSeq) => {
   try {
     const response = await axios.get(
-      `https://j9c109.p.ssafy.io/api/v1/review/${storeSeq}`
+      `/api/v1/review/${storeSeq}`
     );
 
     const temp = response.data;

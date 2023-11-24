@@ -8,7 +8,7 @@ export const makeOrder = async (memberSeq, productList) => {
             'orderItems': productList
         }
         const response = await axios.post(
-            `https://j9c109.p.ssafy.io/api/v1/total-order/create`,
+            `/api/v1/total-order/create`,
             requestBody
         );
         return response.data;
@@ -21,7 +21,7 @@ export const makeSosoticon = async (requestBody) => {
     console.log("bovdy", requestBody);
     try {
         const response = await axios.post(
-            'https://j9c109.p.ssafy.io/api/app/users/gift-cards/generateQR',
+            'api/app/users/gift-cards/generateQR',
             // `http://localhost:8081/api/app/users/gift-cards/generateQR`,
             requestBody
         );
